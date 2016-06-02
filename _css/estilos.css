@@ -1,0 +1,181 @@
+/*******************************************
+ * Área do Servidor - Menu
+ *******************************************/
+p#exibeIP{
+    text-align: center;
+    font-size: 10px;
+}
+
+/*******************************************
+ * Cadastro de Usuários
+ *******************************************/
+tr#senhaOk{
+    background-color: #64E986;
+}
+
+tr#senhaNula{
+    background-color: #FFA07A;
+}
+
+tr#senhaPadrao{
+    background-color: #EDE275;
+}
+div#menuUsuarios{
+    position: absolute;
+    top: 1%;
+    left: 60%;
+} 
+
+div#divLegendaUsuarios{
+    position: absolute;
+    top: 15%;
+    left: 25%;
+    width: 50%;
+    height: auto;
+    display: none;
+}
+
+div#divPermissao{
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: auto;
+    display: none;
+}
+
+/*******************************************
+ * Histórico
+ *******************************************/
+tr#logLogin{
+    background-color:#CCFF99;
+}
+
+tr#logRelatorio{
+    background-color:#EEE8AA;
+}
+
+tr#logGrh{
+    background-color:pink;
+}
+
+tr#logGti{
+    background-color:cornflowerblue;
+}
+
+tr#logProcesso{
+    background-color:khaki;
+}
+
+tr#logOutros{
+    background-color:#E0E0E0;
+}
+
+div#divContagemExterna{
+    position: absolute;
+    top: 1%;
+    left: 10%;
+    width: 140px;
+    font-size: 12px;
+    text-align: center;
+    background-color: #E0E0E0;
+    padding: 5px;
+}
+
+div#divContagemInterna{    
+    text-align: center;
+    color: #B00000;
+}
+ /*******************************************
+ * Cadastro de Avisos
+ *******************************************/
+div#divPreviewAviso{
+    position: absolute;
+    width: 80%;
+    top: 15%;
+    left: 10%;
+    text-align: center;
+    display: none;
+}
+
+/*******************************************
+ * Cadastro de Ramal
+ *******************************************/  
+ div#postitRamal{
+     position: relative;
+     left: 60%;
+     top: -200px;
+ }
+
+ div#calloutRamalServidor{
+     position: absolute;
+     left: 20%;
+     top: 20%;
+     width: 30%;
+     font-size: 14px;
+ }
+
+/*******************************************
+ * Relatórios específico da intranet
+ *******************************************/
+ 
+ table#relatorioRamal{
+     margin: 2px 5% 1px 5%;
+     width: 90%;   
+ }
+ 
+ table#relatorioFeriasGerencia, table#relatorioServicoEstatistica{
+     margin: 2px 15% 1px 15%;
+     width: 70%;     
+ }
+ 
+ p#divMensagemRamal{
+    position: relative;
+    left: 10%;
+    width: 80%;
+    text-align: left;
+    color: #000000;
+ }
+ 
+ div#divRelatorioDbv pre{
+     white-space: pre-wrap; /* for�a o salto de p�gina para um texto longo */
+ }
+ 
+ fieldset#fieldsetRelatorio, fieldset#fieldsetRelatorio legend{
+     color: #000000;
+ }
+  
+ table#relatorioDbv th, table#relatorioFichaCadastral th{
+     font-size: 10px;
+     text-align: left;     
+ }
+ 
+ p#pDbv{
+     color: #000000;
+ }
+ 
+ p#pDbvAssinatura{
+     color: #000000;
+     text-align: center; 
+ }
+ 
+ /* Termo de Abertura e Encerramento de Processo */
+ p#tituloTermo{
+     color: #000000;
+     text-align: center;
+     font-size: 15px;
+ }
+ 
+ p#textoTermo{
+     color: #000000;
+     text-align: justify;
+     font-size: 14px;
+ }
+ 
+ p#dataTermo{
+     color: #000000;
+     text-align: center;
+     font-size: 14px;
+ }
+ 
+ 
