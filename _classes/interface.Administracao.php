@@ -66,12 +66,20 @@
             $botao->set_url('documentacao.php');
             $menu->add_item($botao);
             
-            # Cadastro de Mensagem
+            # Informação do PHP
             $botao = new BotaoGrafico();
             $botao->set_label('PHP Info');
             $botao->set_title('Informações sobre&#10;a versão do PHP');
             $botao->set_image(PASTA_FIGURAS.'phpInfo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('phpInfo.php');
+            $menu->add_item($botao);
+            
+            # Informação do Servidor Web
+            $botao = new BotaoGrafico();
+            $botao->set_label('Web Server');
+            $botao->set_title('Informações sobre&#10;o servidor web');
+            $botao->set_image(PASTA_FIGURAS.'webServer.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('infoWebServer.php');
             $menu->add_item($botao);
             
             $menu->show();

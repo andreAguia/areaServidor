@@ -28,8 +28,8 @@ if($acesso)
 
     titulo('Informações sobre a Versão do PHP');
 
-    phpinfo();
-    
+    phpinfo();    
+   
     $grid->fechaColuna();
     $grid->fechaGrid();
     
