@@ -6,7 +6,7 @@
  */
 
 # Sobre o Sistema Intranet
-define("VERSAO","4.0 Beta");                                     # Versão do Sistema 								
+define("VERSAO","1.0 UENF");                                     # Versão do Sistema 								
 define("ATUALIZACAO","25/01/2016");                              # Última Atualização
 define("SISTEMA","Sistema de Administração de Sistemas");                # Nome do sistema
 define("DESCRICAO","Sistema Gestão dos Sistemas");   # Descrição do sistema

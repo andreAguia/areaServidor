@@ -29,9 +29,8 @@ $page->iniciaPagina();
 AreaServidor::cabecalho("Login do Sistema");
 br(2);
 
-# Limita a tela
 echo '<div class="row align-center">';
-echo '<div class="small-5 columns">';  
+echo '<div class="column small-5">';
 
 switch ($fase)
 {
@@ -182,8 +181,6 @@ switch ($fase)
         $alerta->show();        
         break;
 }
-
-
 
 echo '</div>';
 echo '</div>';
