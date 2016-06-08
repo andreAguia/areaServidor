@@ -54,10 +54,6 @@ $menu->show();
 $top = new TopBar($fase);
 $top->show();
 
-# div editar descrição            
-echo '<div class="callout warning" id="divPreviewAviso">';
-echo '</div>';
-
 # Conecta com o banco de dados
 $servico = new Doc();
 
