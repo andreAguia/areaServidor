@@ -21,31 +21,43 @@ $fase = get('fase','pessoal');
 $menu = new MenuBar();
 
 # Botão voltar
-$linkBotao1 = new Link("Voltar",'administracao.php');
+$linkBotao1 = new Link("Voltar",'documentacao.php');
 $linkBotao1->set_class('button');
 $linkBotao1->set_title('Volta para a página anterior');
 $linkBotao1->set_accessKey('V');
 $menu->add_link($linkBotao1,"left");
 
-# Framework
-$linkBotao2 = new Link("Framework","documentacao.php?fase=Framework");
-$linkBotao2->set_class('button');
-$linkBotao2->set_title('Documentação das Classes e Funções do Framework');
-$linkBotao2->set_accessKey('F');
+# Administração (intra)
+$linkBotao2 = new Link("Intra","?fase=intra");
+if($fase <> "intra"){
+   $linkBotao2->set_class('button');
+}else{
+   $linkBotao2->set_class('disabled button');
+}
+$linkBotao2->set_title('Banco de Dados da Documentação');
+$linkBotao2->set_accessKey('I');
 $menu->add_link($linkBotao2,"right");
 
 # Sistema de Pessoal
-$linkBotao3 = new Link("Pessoal","documentacao.php?fase=Pessoal");
-$linkBotao3->set_class('button');
-$linkBotao3->set_title('Documentação das Classes e Funções do Sistema de Pessoal');
+$linkBotao3 = new Link("Pessoal","?fase=pessoal");
+if($fase <> "pessoal"){
+   $linkBotao3->set_class('button');
+}else{
+   $linkBotao3->set_class('disabled button');
+}
+$linkBotao3->set_title('Banco de Dados do Sistema de Pessoal');
 $linkBotao3->set_accessKey('P');
 $menu->add_link($linkBotao3,"right");
 
-# Botão bd
-$linkBotao4 = new Link("Banco de Dados","documentaBd.php");
-$linkBotao4->set_class('disabled button');
-$linkBotao4->set_title('Documentação de Banco de Dados');
-$linkBotao4->set_accessKey('B');
+# Sistema de Pessoal
+$linkBotao4 = new Link("Importação","?fase=grh001");
+if($fase <> "grh001"){
+   $linkBotao4->set_class('button');
+}else{
+   $linkBotao4->set_class('disabled button');
+}
+$linkBotao4->set_title('Banco de Dados para importação');
+#$linkBotao4->set_accessKey('I');
 $menu->add_link($linkBotao4,"right");
 
 $menu->show();

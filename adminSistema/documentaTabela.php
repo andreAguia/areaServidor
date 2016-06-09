@@ -24,7 +24,7 @@ $bd = get('bd');
 $fase = get('fase');
 
 # Botão voltar
-$linkBotaoVoltar = new Link("Voltar",'documentaBd.php?fase='.$bd);
+$linkBotaoVoltar = new Link("Voltar",'documentabd.php?fase='.$bd);
 $linkBotaoVoltar->set_class('button float-left');
 $linkBotaoVoltar->set_title('Volta para a página anterior');
 $linkBotaoVoltar->set_accessKey('V');
