@@ -8,238 +8,149 @@
 # Configuração
 include ("_config.php");
 
+# Cabeçalho
+AreaServidor::cabecalho();
+
+# Limita o tamanho da tela
+$grid = new Grid();
+$grid->abreColuna(12);
+
 # Pega a função a ser documentada
 $funcao = trim(get('funcao'));
+$fase = get('fase');
 
 # Começa uma nova página
 $page = new Page();
 $page->iniciaPagina();
 
 # Botão voltar
-$linkBotaoVoltar = new Link("Voltar",'documentacao.php');
-$linkBotaoVoltar->set_class('hollow button float-left');
-$linkBotaoVoltar->set_title('Volta para a página anterior');
-$linkBotaoVoltar->set_accessKey('V');
+$linkBotao1 = new Link("Voltar",'documentacao.php');
+$linkBotao1->set_class('button');
+$linkBotao1->set_title('Volta para a página anterior');
+$linkBotao1->set_accessKey('V');
+
+# Botão codigo
+$linkBotao2 = new Link("Código","?funcao=$funcao&fase=codigo");
+if($fase == "codigo"){
+    $linkBotao2->set_class('disabled button');
+}
+else{
+    $linkBotao2->set_class('button');
+}
+$linkBotao2->set_title('Exibe o código fonte');
+$linkBotao2->set_accessKey('C');
 
 # Cria um menu
 $menu = new MenuBar();
-$menu->add_link($linkBotaoVoltar,"left");
+$menu->add_link($linkBotao1,"left");
+$menu->add_link($linkBotao2,"right");
 $menu->show();
 
 # Variáveis
-$nomeFuncao = null;			// O nome da função que está o ponteiro
-$linhaFuncao = null;		// A linha do arquivo onde está o nome da função	
-$funcaoDesejada = false;	// Se true informa que essa é a função solicittada
-$primeiroParametros = true;	// Flag que informa se é o primeiro parâmetro de uma função 
-$temTabelaAberta = false;	// Flag que informa que existe uma tabela da lista de parâmetros aberta se a tag não for @param terá que fechá-la
-$temExemploAberto = false;	// Flag que informa se tem um exemplo aberto
+$nomeFuncao = null;		// Nome da função
+$funcaoEncontrada = FALSE;      // Verifica se encontrou a função
+$funcãoEscolhida = NULL;        // Nome da função escolhida
+$descricaoFuncao = NULL;        // Descrição da função
+$linhaComentario = NULL;        // Linha do comentário
+$notaFuncao = NULL;             // Nota da Função
+
+$linhaFuncao = NULL;		// A linha do arquivo onde está o nome da função	
+$funcaoDesejada = FALSE;	// Se true informa que essa é a função solicittada
+$primeiroParametros = TRUE;	// Flag que informa se é o primeiro parâmetro de uma função 
+$temTabelaAberta = FALSE;	// Flag que informa que existe uma tabela da lista de parâmetros aberta se a tag não for @param terá que fechá-la
+$temExemploAberto = FALSE;	// Flag que informa se tem um exemplo aberto
 
 # Define o arquivo e caminho das funções gerais
-$arquivoFuncaoGeral = PASTA_FUNCOES_GERAIS.'/funcoes.gerais.php';
+$lines = file(PASTA_FUNCOES_GERAIS."/funcoes.gerais.php",FILE_TEXT);
 
-# Lê e guarda no array $lines o conteúdo do arquivo
-$lines = file ($arquivoFuncaoGeral);
-
-# Divide a tela
-echo '<div class="row">';
-
-# Coluna de atalhos para os métodos da classe
-echo '<div class="small-3 columns">';
-echo '<div class="callout secondary">';
-
-# Define o arquivo e caminho das funções gerais
-$arquivoFuncaoGeral = PASTA_FUNCOES_GERAIS.'/funcoes.gerais.php';
-
-# Lê e guarda no array $lines o conteúdo do arquivo
-$lines = file ($arquivoFuncaoGeral);
-
-# Inicia o menu
-#echo '<ul class="menu vertical">';
-
-echo '<h6>Funções Gerais</h6>';
-
-# Percorre o array
-foreach ($lines as $line_num => $line){
-  $line = htmlspecialchars($line);
-
-  # Função
-  if (stristr($line, "@function")){
-    $posicao = stripos($line,'@');
-
-    echo '<a href="documentaFuncao.php?funcao='.substr($line, $posicao+10).'">';
-    echo substr($line, $posicao+10);
-    echo '</a>';
-    br();
-  }
-}
-
-echo '</div>';
-echo '</div>';
-
-echo '<div class="small-9 columns">';
-echo '<div class="callout primary">';
-
-# Percorre o array
-foreach ($lines as $line_num => $line){
-  	$line = htmlspecialchars($line);
-
-	# Nome da Função
-	if (stristr($line, "@function")){
-		$posicao = stripos($line,'@');
-
-		# Pega o nome da função
-		$nomeFuncao = trim(substr($line, $posicao+10));
-
-		# Verifica se é a função desejada
-		if($funcao == $nomeFuncao){
-
-			# Informa ao ponteiro
-			$funcaoDesejada = true;
-
-			# Exibe o nome da função
-			echo '<h4>'.$nomeFuncao.'</h4>';
-
-			# Guarda o número da linha da função
-			if (is_null($linhaFuncao))
-				$linhaFuncao = $line_num;
-		}
-		else{
-			$funcaoDesejada = false;    	
-		}
-	}
-
-	# Descrição
-	if (($funcaoDesejada) AND ($line_num == ($linhaFuncao+2))){
-		$posicao = stripos($line,'*');
-		echo substr($line, $posicao+2);
-		hr();
-	}
-
-	# Sintaxe
-	if (($funcaoDesejada) AND (stristr($line, "@syntax"))){
-		$posicao = stripos($line,'@');
-		echo 'Sintaxe:';
-		echo '<div class="callout secondary">';
-		echo substr($line, $posicao+8);
-		echo '</div>';
-	}
-
-	# Nota
-	if (($funcaoDesejada) AND (stristr($line, "@note"))){
-		$posicao = stripos($line,'@');
-
-		# Verifica se tem tabela a berta e a fecha
-        if ($temTabelaAberta){
-          echo '</table>';
-
-          # informa que fechou a tabela
-          $temTabelaAberta = false;
+# Percorre o arquivo e guarda os dados em um array
+foreach ($lines as $line_num => $line) {
+    $line = htmlspecialchars($line);
+    
+    # Função
+    if(stristr($line, "function")){
+        $posicao = stripos($line,'function');
+        $posicaoParentesis = stripos($line,'(');
+        $tamanhoNome = $posicaoParentesis - ($posicao+9);
+        $nomeFuncao = substr($line, $posicao+9,$tamanhoNome);
+        
+        # Verifica se é a função desejada
+        if($nomeFuncao == $funcao){
+            $funcaoEncontrada = TRUE;
+            $funcãoEscolhida = $nomeFuncao;
+        }else{
+            $funcaoEncontrada = FALSE;
+        }
+    }
+        
+    # Enqualto for a função desejada
+    if($funcaoEncontrada){
+        # Verifica se é o começo de um comentário da função
+        if(stristr($line, "/**")){
+            $linhaComentario = $line_num;
+            continue;
         }
 
-		echo 'Nota:';
-		echo '<div class="callout warning">';
-		echo substr($line, $posicao+5);
-		echo '</div>';
-	}
-
-	# Deprecated
-	if (($funcaoDesejada) AND (stristr($line, "@deprecated"))){
-		echo '<div class="callout alert">';
-		echo '<h6>DEPRECATED</h6> Esta função deverá ser descontiuada nas próximas versões.<br/>Seu uso é desaconselhado.';
-		echo '</div>';
-	}
-
-	# Parâmetros de um método
-	if (($funcaoDesejada) AND (stristr($line, "@param"))){
-		$piecesParam = str_word_count($line,1,'/:ãõáéíúóâê1234567890');
-
-		if($primeiroParametros){
-		  echo 'Parâmetros:';
-
-		  echo '<table>';
-		  echo '<col style="width:10%">';        
-		  echo '<col style="width:10%">';
-		  echo '<col style="width:10%">';
-		  echo '<col style="width:70%">';
-		 
-		  echo '<tr>';
-		  echo '<th>Nome</th>';
-		  echo '<th>Tipo</th>';
-		  echo '<th>Padrão</th>';
-		  echo '<th>Descrição</th>';
-		  echo '</tr>';
-
-		  # Volta a opçào de não ser o primeiro parâmetro
-		  $primeiroParametros = false;
-
-		  # informa que existe uma tabela de parâmetros aberta
-		  $temTabelaAberta = true;
-		}
-
-		echo '<tr>';
-		echo '<td>';
-		echo $piecesParam[1];
-		echo '</td>';
-
-		echo '<td>';
-		echo $piecesParam[2];
-		echo '</td>';
-
-		echo '<td>';
-		echo $piecesParam[3];
-		echo '</td>';
-
-		echo '<td>';
-		for($i=4; $i<count($piecesParam); $i++){
-		  echo $piecesParam[$i];
-		  echo ' ';
-		}
-		echo '</td>';
-		echo '</tr>';       
-	}
-
-	# Exemplo
-	if (($funcaoDesejada) AND (stristr($line, "@codeInicio"))){
-
-		# Informa que abriu uma div de exemplo
-		$temExemploAberto = true;
-
-		# Verifica se tem tabela a berta e a fecha
-        if ($temTabelaAberta){
-          echo '</table>';
-
-          # informa que fechou a tabela
-          $temTabelaAberta = false;
+        # Descrição da Função
+        if ($line_num == ($linhaComentario+1)){
+            $posicao = stripos($line,'*');
+            $descricaoFuncao = substr($line, $posicao+2);
         }
-
-		echo 'Exemplo:';
-		echo '<div class="callout secondary" id="codigo">';
-		echo '<pre>';
-
-		continue;      
-	}
-
-	if (($funcaoDesejada) AND (stristr($line, "@codeFim"))){
-
-		# Informa que fechou uma div de exemplo
-		$temExemploAberto = false;
-
-		echo '</pre>';
-		echo '</div>';		
-	}
-
-
-	if ($temExemploAberto){
-		$posicao = stripos($line,'*');
-		echo substr($line, $posicao+2);
-		br();
-	}
-
-	
+        
+        # Nota
+        if (stristr($line, "@note")){
+            $posicao = stripos($line,'@');
+            $notaFuncao = substr($line, $posicao+5);
+        }
+    }
 }
 
-echo '</div>';
-echo '</div>';
-echo '</div>';
+# Exibe a função
+if(!is_null($funcãoEscolhida)){
+    
+    # Divide a tela
+    $grid2 = new Grid();
+    $grid2->abreColuna(4,3);
+
+    # Coluna de atalhos para os métodos da classe
+    $callout = new Callout();
+    $callout->abre();
+
+    # Função
+    echo '<h4>'.$funcãoEscolhida.'</h4>';
+
+    $callout->fecha();
+    $grid2->fechaColuna();
+
+    # Coluna da documentação detalhada
+    $grid2->abreColuna(8,9);
+    $callout = new Callout("success");
+    $callout->abre();
+    
+    # Nome
+    echo '<h5>'.$funcãoEscolhida.'</h5>';
+    
+    # Decrição
+    echo $descricaoFuncao;
+    br(2);
+    
+    # Nota
+    if(!is_null($notaFuncao)){
+        echo 'Nota:';
+        $callout = new Callout("warning");
+        $callout->abre();
+        echo $notaFuncao;
+        $callout->fecha();
+    }
+
+    $callout->fecha();
+    $grid2->fechaColuna();
+    $grid2->fechaGrid();    
+}
+
+
+
+$grid->fechaColuna();
+$grid->fechaGrid();
 
 $page->terminaPagina();

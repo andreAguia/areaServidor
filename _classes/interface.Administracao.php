@@ -27,7 +27,7 @@
         
         # Limita o tamanho da tela
         $grid = new Grid();
-        $grid->abreColuna(6);
+        $grid->abreColuna(12,6);
 
         $fieldset = new Fieldset('Geral');
         $fieldset->abre();
@@ -87,7 +87,7 @@
         
         
         $grid->fechaColuna();
-        $grid->abreColuna(6);
+        $grid->abreColuna(0,6);
         $fieldset = new Fieldset('Sistema de Gestão de Pessoas');
         $fieldset->abre();
         

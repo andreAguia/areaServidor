@@ -131,11 +131,13 @@ foreach ($lines as $line_num => $line){
   $line = htmlspecialchars($line);
 
   # Função
-  if (stristr($line, "@function")){
-    $posicao = stripos($line,'@');
+  if (stristr($line, "function")){
+    $posicao = stripos($line,'function');
+    $posicaoParentesis = stripos($line,'(');
+    $tamanhoNome = $posicaoParentesis - ($posicao+9);
 
-    echo '<a href="documentaFuncao.php?funcao='.substr($line, $posicao+10).'">';
-    echo substr($line, $posicao+10);
+    echo '<a href="documentaFuncao.php?funcao='.substr($line, $posicao+9,$tamanhoNome).'">';
+    echo substr($line, $posicao+9,$tamanhoNome);
     echo '</a>';
     br();
   }
