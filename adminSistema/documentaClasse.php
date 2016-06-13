@@ -62,12 +62,48 @@ $callout->abre();
 # Inicia a documentação
 $doc = new Documenta(PASTA_CLASSES_GERAIS.$arquivoClasse.".php");
 
+# Pega os dados da classe
+$nomeClasse = $doc->get_nomeClasse();
+$descricaoClasse = $doc->get_descricaoClasse();
+$autorClasse = $doc->get_autorClasse();
+$notaClasse = $doc->get_notaClasse();
+$deprecatedClasse = $doc->get_deprecatedClasse();
+$numVariaveis = $doc->get_numVariaveis();
+$variaveisClasse = $doc->get_variaveisClasse();
+$exemploClasse = $doc->get_exemploClasse();
+
+# Pega os dados do método
+$nomeMetodo = $doc->get_nomeMetodo();
+$numMetodo = $doc->get_numMetodo();
+$visibilidadeMetodo = $doc->get_visibilidadeMetodo();
+$descricaoMetodo = $doc->get_descricaoMetodo();
+$deprecatedMetodo = $doc->get_deprecatedMetodo();
+$syntaxMetodo = $doc->get_syntaxMetodo();
+$retornoMetodo = $doc->get_retornoMetodo();
+$notaMetodo = $doc->get_notaMetodo();
+$parametrosMetodo = $doc->get_parametrosMetodo();
+$exemploMetodo = $doc->get_exemploMetodo();
+        
 # Classe
 echo '<h4>';
 echo '<a href="?classe='.$arquivoClasse.'">';
-echo $doc->get_nomeClasse();
+echo $nomeClasse;
 echo '</a>';
 echo '</h4>';
+
+# Percorre os métodos
+for ($i=1; $i <= $numMetodo;$i++){
+    # link
+    echo '<a href="?classe='.$arquivoClasse.'&metodo='.$i.'" title="'.$descricaoMetodo[$i].'">';
+   if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
+        echo '<del>'.$nomeMetodo[$i].'</del>';
+    }else{
+        echo $nomeMetodo[$i];    
+    }
+    
+    echo '</a>';
+    br();
+}
 
 $callout->fecha();
 $grid2->fechaColuna();
@@ -82,7 +118,7 @@ switch ($metodo)
         echo '<div class="callout success">';
         
         # Nome
-        echo '<h4>'.$doc->get_nomeClasse().'</h4>';
+        echo '<h4>'.$nomeClasse.'</h4>';
         
         # Decrição
         echo $descricaoClasse;
@@ -172,7 +208,7 @@ switch ($metodo)
         }
         
         # Exemplo
-        if(isset($exemploClasse)){
+        if(!is_null($exemploClasse)){
             # Define o arquivo de exemplo
             $arquivoExemplo = PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse);
             
@@ -222,8 +258,6 @@ switch ($metodo)
                 echo "Arquivo de exemplo não encontrado";
                 $callout1->fecha();
             }
-            
-            
             br();
         }            
         break;

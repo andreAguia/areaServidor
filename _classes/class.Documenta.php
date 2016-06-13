@@ -20,9 +20,11 @@ class Documenta
     private $notaClasse = NULL;             // Nota da classe
     private $deprecatedClasse = FALSE;      // Se a classe está sendo descontinuada
     private $variaveisClasse = NULL;        // Array com as variáveis da classe
+    private $numVariaveis = 0;              // Inteiro que informa o número de variáveis de uma classe
     private $exemploClasse = NULL;          // Arquivo de exemplo da classe
     
     # dos Métodos e/ Funções
+    private $numMetodo = 0;                 // Número de métodos de uma classe
     private $nomeMetodo = NULL;             // Array com os nomes dos métodos
     private $visibilidadeMetodo = NULL;     // Array com a visibilidade dos métodos (public, private ou protected)
     private $descricaoMetodo = NULL;        // Array com a descrição dos métodos
@@ -47,20 +49,19 @@ class Documenta
     
     	# Variáveis
         
-        $linhaComentarioClasse = NULL;  // Determina a linha do início do comentário da classe
-        $numVariaveis = 0;              // Número de variáveis de uma classe
-        $numMetodo = 0;                 // Número de métodos de uma classe
+        $linhaComentarioClasse = NULL;  // Determina a linha do início do comentário da classe        
         $linhaComentarioMetodo = NULL;  // Determina a linha do início do comentário do método
-        $linhaMetodo = null;      // Determina a linha da declaração do método
-        $numParMetodo = 0;        // Determina o número de parâmetros de um método
-        $metodoNome = null;       // Nome do método que está sendo exibido
-        $temTabelaAberta = FALSE; // Flag que informa que existe uma tabela da lista de parâmetros aberta se a tag não for @param terá que fechá-la
-        $temClasseAberta = FALSE; // Informa se é de uma classe ou de um método a tag
-        $caracteresAceitos = '#(),.|/:çãõáéíúóâê1234567890';  // caracteres aceitos nas descrições de variáveis e parâmetros
+        $linhaMetodo = null;            // Determina a linha da declaração do método
+        $numParMetodo = 0;              // Determina o número de parâmetros de um método
+        $metodoNome = null;             // Nome do método que está sendo exibido
+        $temTabelaAberta = FALSE;       // Flag que informa que existe uma tabela da lista de parâmetros aberta se a tag não for @param terá que fechá-la
+        $temClasseAberta = FALSE;       // Informa se é de uma classe ou de um método a tag
+        
+        $caracteresAceitos = '#(),.|/:çãõáéíúóâê1234567890';  // caracteres especiais aceitos nas descrições de variáveis e parâmetros
         
         # Define o arquivo e caminho da classe
         $lines = file($arquivo,FILE_TEXT);
-
+        
         # Percorre o arquivo e guarda os dados em um array
         foreach ($lines as $line_num => $line) {
             $line = htmlspecialchars($line);
@@ -68,45 +69,45 @@ class Documenta
             # Classe
             if (stristr($line, "class") AND ($line_num < 3)){
                 $posicao = stripos($line,'class');
-                $nomeClasse = substr($line, $posicao+6);
+                $this->nomeClasse = substr($line, $posicao+6);
             }
 
             # Verifica se é o começo de um comentário da classe
-            if(stristr($line, "/**") AND ($numMetodo == 0)){
+            if(stristr($line, "/**") AND ($this->numMetodo == 0)){
                 $linhaComentarioClasse = $line_num;
             }
 
             # Descrição da classe
-            if (($line_num == ($linhaComentarioClasse+1)) AND ($numMetodo == 0)){
+            if (($line_num == ($linhaComentarioClasse+1)) AND ($this->numMetodo == 0)){
                 $posicao = stripos($line,'*');
-                $descricaoClasse = substr($line, $posicao+2);
+                $this->descricaoClasse = substr($line, $posicao+2);
             }
 
             # Autor
             if (stristr($line, "@author")){
                 $posicao = stripos($line,'@');
-                $autorClasse = substr($line, $posicao+7);
+                $this->autorClasse = substr($line, $posicao+7);
             }
 
             # Nota
-            if ((stristr($line, "@note")) AND ($numMetodo == 0)){
+            if ((stristr($line, "@note")) AND ($this->numMetodo == 0)){
                 $posicao = stripos($line,'@');
-                $notaClasse = substr($line, $posicao+5);
+                $this->notaClasse = substr($line, $posicao+5);
             }
 
             # Deprecated
-            if ((stristr($line, "@deprecated")) AND ($numMetodo == 0))
-                $deprecatedClasse = TRUE;
+            if ((stristr($line, "@deprecated")) AND ($this->numMetodo == 0))
+                $this->deprecatedClasse = TRUE;
 
             # Nome do grupo de variáveis
-            if ((stristr($line, "@group")) AND ($numMetodo == 0)){
+            if ((stristr($line, "@group")) AND ($this->numMetodo == 0)){
                 $posicao = stripos($line,'@');
                 $grupo = substr($line, $posicao+6);
-                $variaveisClasse[] = array("group",$grupo);
+                $this->variaveisClasse[] = array("group",$grupo);
             }
 
             # Variáveis da Classe
-            if ((stristr($line, "@var")) AND ($numMetodo == 0)){
+            if ((stristr($line, "@var")) AND ($this->numMetodo == 0)){
 
                 # inicia a variável que será guardada a descrição 
                 $descricao = null;
@@ -126,28 +127,28 @@ class Documenta
                 }
 
                 # Junta a variavel no novo array
-                $variaveisClasse[] = array($piecesVar[0],$piecesVar[1],$piecesVar[2],$piecesVar[3],$descricao);          
+                $this->variaveisClasse[] = array($piecesVar[0],$piecesVar[1],$piecesVar[2],$piecesVar[3],$descricao);          
 
                 # incremente o número de variáveis
-                $numVariaveis++;
+                $this->numVariaveis++;
             }
 
             # Example
-            if ((stristr($line, "@example")) AND ($numMetodo == 0)){
+            if ((stristr($line, "@example")) AND ($this->numMetodo == 0)){
                 $posicao = stripos($line,'@');
-                $exemploClasse = substr($line, $posicao+9);
+                $this->exemploClasse = substr($line, $posicao+9);
             }    
 
             # Métodos
             # Nome do Método
             if (stristr($line, "public function")){
-                $numMetodo++;                           // incrementa o número de métodos
+                $this->numMetodo++;                           // incrementa o número de métodos
                 $posicao = stripos($line,'function');   // marca posição da palavra function
                 $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
                 $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
 
-                $nomeMetodo[$numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                $visibilidadeMetodo[$numMetodo] = 'public';
+                $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
+                $this->visibilidadeMetodo[$this->numMetodo] = 'public';
                 $linhaMetodo = $line_num;
             }
 
@@ -157,8 +158,8 @@ class Documenta
                 $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
                 $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
 
-                $nomeMetodo[$numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                $visibilidadeMetodo[$numMetodo] = 'private';
+                $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
+                $this->visibilidadeMetodo[$this->numMetodo] = 'private';
                 $linhaMetodo = $line_num;
             }
 
@@ -168,49 +169,49 @@ class Documenta
                 $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
                 $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
 
-                $nomeMetodo[$numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                $visibilidadeMetodo[$numMetodo] = 'protected';
+                $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
+                $this->visibilidadeMetodo[$this->numMetodo] = 'protected';
                 $linhaMetodo = $line_num;
             }
 
             # Verifica se é o começo de um comentário do método
-            if (stristr($line, "/**") AND ($numMetodo > 0)){
+            if (stristr($line, "/**") AND ($this->numMetodo > 0)){
                 $linhaComentarioMetodo = $line_num;
             }
 
             # Descrição do Método
-            if (($line_num == ($linhaComentarioMetodo+1)) AND ($numMetodo > 0)){
+            if (($line_num == ($linhaComentarioMetodo+1)) AND ($this->numMetodo > 0)){
                 $posicao = stripos($line,'*');
-                $descricaoMetodo[$numMetodo] = substr($line, $posicao+2);
+                $this->descricaoMetodo[$this->numMetodo] = substr($line, $posicao+2);
             }
 
             # Syntax do método
             if (stristr($line, "@syntax")){
                 $posicao = stripos($line,'@');
-                $syntaxMetodo[$numMetodo] = substr($line, $posicao+8);
+                $this->syntaxMetodo[$this->numMetodo] = substr($line, $posicao+8);
             }
 
             # Return
             if (stristr($line, "@return")){
                 $posicao = stripos($line,'@');
-                $retornoMetodo[$numMetodo] = substr($line, $posicao+8);
+                $this->retornoMetodo[$this->numMetodo] = substr($line, $posicao+8);
             }
 
             # Example
             if (stristr($line, "@example")){
                 $posicao = stripos($line,'@');
-                $exemploMetodo[$numMetodo] = substr($line, $posicao+9);
+                $this->exemploMetodo[$this->numMetodo] = substr($line, $posicao+9);
             }    
 
             # Nota
             if (stristr($line, "@note")){
                 $posicao = stripos($line,'@');
-                $notaMetodo[$numMetodo] = substr($line, $posicao+6);
+                $this->notaMetodo[$this->numMetodo] = substr($line, $posicao+6);
             }
 
             # Deprecated (sendo descontinuado)
             if (stristr($line, "@deprecated")){
-                $deprecatedMetodo[$numMetodo] = TRUE;
+                $this->deprecatedMetodo[$this->numMetodo] = TRUE;
             }
 
             # Parâmetros de um método
@@ -233,7 +234,7 @@ class Documenta
                 $piecesParam[3] = $descParam;
 
                 # Joga para para o array de parâmetros
-                $parametrosMetodo[$numMetodo][] = $piecesParam;
+                $this->parametrosMetodo[$this->numMetodo][] = $piecesParam;
               }
 
         }
@@ -263,7 +264,199 @@ class Documenta
         return $this->descricaoClasse;
     }
     
-###########################################################       
+###########################################################     
+    
+    public function get_autorClasse(){        
+        /**
+         * Informa o autor da classe.
+         *
+         * @syntax $documenta->get_autorClasse();
+        `*/
+        
+        return $this->autorClasse;
+    }
+    
+###########################################################     
+    
+    public function get_notaClasse(){        
+        /**
+         * Informa, se tiver, uma nota explicativa da classe.
+         *
+         * @syntax $documenta->get_notaClasse();
+        `*/
+        
+        return $this->notaClasse;
+    }
+    
+###########################################################     
+    
+    public function get_deprecatedClasse(){        
+        /**
+         * Informa se a classe está ou não deprecated, ou seja, em descontinuação.
+         *
+         * @syntax $documenta->get_deprecatedClasse();
+        `*/
+        
+        return $this->deprecatedClasse;
+    }
+    
+###########################################################     
+    
+    public function get_variaveisClasse(){        
+        /**
+         * Retorna um array com  as informações das variávels da classe.
+         *
+         * @syntax $documenta->get_variaveisClasse();
+        `*/
+        
+        return $this->variaveisClasse;
+    }
+    
+##########################################################     
+    
+    public function get_numVariaveis(){        
+        /**
+         * Informa a quantidade de variáveis da classe.
+         *
+         * @syntax $documenta->get_numVariaveis();
+        `*/
+        
+        return $this->numVariaveis;
+    }
+    
+##########################################################     
+    
+    public function get_exemploClasse(){        
+        /**
+         * Informa o nome do arqwuivo na pasta de exemplos a ser exibido.
+         *
+         * @syntax $documenta->get_exemploClasse();
+        `*/
+        
+        return $this->exemploClasse;
+    }
+    
+##########################################################     
+    
+    public function get_numMetodo(){        
+        /**
+         * Informa o número de métodos de uma classe.
+         *
+         * @syntax $documenta->get_numMetodo();
+        `*/
+        
+        return $this->numMetodo;
+    }
+    
+##########################################################     
+    
+    public function get_nomeMetodo(){        
+        /**
+         * Fornece um array com os nomes dos métodos
+         *
+         * @syntax $documenta->get_nomeMetodo();
+        `*/
+        
+        return $this->nomeMetodo;
+    }
+    
+##########################################################     
+    
+    public function get_visibilidadeMetodo(){        
+        /**
+         * Fornece um array com a visibilidade de cada método
+         *
+         * @syntax $documenta->get_visibilidadeMetodo();
+        `*/
+        
+        return $this->visibilidadeMetodo;
+    }
+    
+##########################################################     
+    
+    public function get_descricaoMetodo(){        
+        /**
+         * Fornece um array com a descrição de cada método
+         *
+         * @syntax $documenta->get_descricaoMetodo();
+        `*/
+        
+        return $this->descricaoMetodo;
+    }
+    
+##########################################################     
+    
+    public function get_deprecatedMetodo(){        
+        /**
+         * Fornece array de TRUE OR FALSE para informar se o método está sendo, ou não, descontinuado
+         *
+         * @syntax $documenta->get_deprecatedMetodo();
+        `*/
+        
+        return $this->deprecatedMetodo;
+    }
+    
+##########################################################     
+    
+    public function get_syntaxMetodo(){        
+        /**
+         * Fornece array com a syntax do método
+         *
+         * @syntax $documenta->get_syntaxMetodo();
+        `*/
+        
+        return $this->syntaxMetodo;
+    }
+    
+##########################################################     
+    
+    public function get_retornoMetodo(){        
+        /**
+         * Fornece array com o retorno de cada método
+         *
+         * @syntax $documenta->get_retornoMetodo();
+        `*/
+        
+        return $this->retornoMetodo;
+    }
+    
+##########################################################     
+    
+    public function get_notaMetodo(){        
+        /**
+         * Fornece array com a nota dos métidos
+         *
+         * @syntax $documenta->get_notaMetodo();
+        `*/
+        
+        return $this->notaMetodo;
+    }
+    
+##########################################################     
+    
+    public function get_parametrosMetodo(){        
+        /**
+         * Fornece array com os parametros do método
+         *
+         * @syntax $documenta->get_parametrosMetodo();
+        `*/
+        
+        return $this->parametrosMetodo;
+    }
+    
+##########################################################     
+    
+    public function get_exemploMetodo(){        
+        /**
+         * Fornece array com os exemplos do método
+         *
+         * @syntax $documenta->get_exemploMetodo();
+        `*/
+        
+        return $this->exemploMetodo;
+    }
+    
+###########################################################                                                                                          
       
     
     
