@@ -7,6 +7,27 @@ p#exibeIP{
 }
 
 /*******************************************
+ * Rotina de Documentação
+ *******************************************/
+pre, code{
+    max-height: 750px;
+    color: #000;
+    background: #fff;
+    font-size: 13px;
+    
+    display: block;
+    unicode-bidi: embed;
+    font-family: monospace;
+    white-space: pre;
+    
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-left: 10px solid #ccc;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+/*******************************************
  * Cadastro de Usuários
  *******************************************/
 tr#senhaOk{

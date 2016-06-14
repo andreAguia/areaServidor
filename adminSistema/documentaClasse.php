@@ -60,7 +60,7 @@ $callout = new Callout();
 $callout->abre();
 
 # Inicia a documentação
-$doc = new Documenta(PASTA_CLASSES_GERAIS.$arquivoClasse.".php");
+$doc = new Documenta(PASTA_CLASSES_GERAIS.$arquivoClasse.".php","classe");
 
 # Pega os dados da classe
 $nomeClasse = $doc->get_nomeClasse();

@@ -46,78 +46,35 @@ $menu->add_link($linkBotao1,"left");
 $menu->add_link($linkBotao2,"right");
 $menu->show();
 
-# Variáveis
-$nomeFuncao = null;		// Nome da função
-$funcaoEncontrada = FALSE;      // Verifica se encontrou a função
-$funcãoEscolhida = NULL;        // Nome da função escolhida
-$descricaoFuncao = NULL;        // Descrição da função
-$linhaComentario = NULL;        // Linha do comentário
-$notaFuncao = NULL;             // Nota da Função
-
-$linhaFuncao = NULL;		// A linha do arquivo onde está o nome da função	
-$funcaoDesejada = FALSE;	// Se true informa que essa é a função solicittada
-$primeiroParametros = TRUE;	// Flag que informa se é o primeiro parâmetro de uma função 
-$temTabelaAberta = FALSE;	// Flag que informa que existe uma tabela da lista de parâmetros aberta se a tag não for @param terá que fechá-la
-$temExemploAberto = FALSE;	// Flag que informa se tem um exemplo aberto
-
-# Define o arquivo e caminho das funções gerais
-$lines = file(PASTA_FUNCOES_GERAIS."/funcoes.gerais.php",FILE_TEXT);
-
-# Percorre o arquivo e guarda os dados em um array
-foreach ($lines as $line_num => $line) {
-    $line = htmlspecialchars($line);
-    
-    # Função
-    if(stristr($line, "function")){
-        $posicao = stripos($line,'function');
-        $posicaoParentesis = stripos($line,'(');
-        $tamanhoNome = $posicaoParentesis - ($posicao+9);
-        $nomeFuncao = substr($line, $posicao+9,$tamanhoNome);
-        
-        # Verifica se é a função desejada
-        if($nomeFuncao == $funcao){
-            $funcaoEncontrada = TRUE;
-            $funcãoEscolhida = $nomeFuncao;
-        }else{
-            $funcaoEncontrada = FALSE;
-        }
-    }
-        
-    # Enqualto for a função desejada
-    if($funcaoEncontrada){
-        # Verifica se é o começo de um comentário da função
-        if(stristr($line, "/**")){
-            $linhaComentario = $line_num;
-            continue;
-        }
-
-        # Descrição da Função
-        if ($line_num == ($linhaComentario+1)){
-            $posicao = stripos($line,'*');
-            $descricaoFuncao = substr($line, $posicao+2);
-        }
-        
-        # Nota
-        if (stristr($line, "@note")){
-            $posicao = stripos($line,'@');
-            $notaFuncao = substr($line, $posicao+5);
-        }
-    }
-}
-
 # Exibe a função
-if(!is_null($funcãoEscolhida)){
+if(!is_null($funcao)){
     
     # Divide a tela
     $grid2 = new Grid();
     $grid2->abreColuna(4,3);
 
-    # Coluna de atalhos para os métodos da classe
+    # Coluna do nome da função
     $callout = new Callout();
     $callout->abre();
 
+    # Inicia a documentação
+    $doc = new Documenta(PASTA_FUNCOES_GERAIS."/funcoes.gerais.php","funcao");
+    
+    # Pega os dados da funcao
+    $nomeFuncao = $doc->get_nomeMetodo();
+    $descricaoFuncao = $doc->get_descricaoMetodo();
+    $deprecatedFuncao = $doc->get_deprecatedMetodo();
+    $syntaxFuncao = $doc->get_syntaxMetodo();
+    $retornoFuncao = $doc->get_retornoMetodo();
+    $notaFuncao = $doc->get_notaMetodo();
+    $parametrosFuncao = $doc->get_parametrosMetodo();
+    $exemploFuncao = $doc->get_exemploMetodo();
+
+    # Busca a função dentro do array
+    $keyFuncao = array_search($funcao, $nomeFuncao);
+    
     # Função
-    echo '<h4>'.$funcãoEscolhida.'</h4>';
+    echo '<h4>'.$nomeFuncao[$keyFuncao].'</h4>';
 
     $callout->fecha();
     $grid2->fechaColuna();
@@ -126,29 +83,145 @@ if(!is_null($funcãoEscolhida)){
     $grid2->abreColuna(8,9);
     $callout = new Callout("success");
     $callout->abre();
-    
-    # Nome
-    echo '<h5>'.$funcãoEscolhida.'</h5>';
-    
-    # Decrição
-    echo $descricaoFuncao;
-    br(2);
-    
-    # Nota
-    if(!is_null($notaFuncao)){
-        echo 'Nota:';
-        $callout = new Callout("warning");
-        $callout->abre();
-        echo $notaFuncao;
-        $callout->fecha();
-    }
 
+    switch ($fase)
+    {
+        case "" :    
+            # Nome
+            echo '<h5>'.$nomeFuncao[$keyFuncao].'</h5>';
+
+            # Decrição
+            echo $descricaoFuncao[$keyFuncao];
+            br(2);
+
+            # Deprecated        
+            if((isset($deprecatedFuncao[$keyFuncao])) AND ($deprecatedFuncao[$keyFuncao])) {
+                br(2);
+                echo '<div class="callout alert">';
+                echo '<h6>DEPRECATED</h6> Esta Função deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.';
+                echo '</div>';
+            }
+
+            hr();
+
+            # Syntax
+            if(isset($syntaxFuncao[$keyFuncao])){
+                echo 'Sintaxe:';
+                echo '<pre>'.$syntaxFuncao[$keyFuncao].'</pre>';
+                br();
+            }
+
+            # Return
+            if(isset($retornoFuncao[$keyFuncao])){
+              echo 'Valor Retornado:';
+              echo '<div class="callout secondary">';
+              echo $retornoFuncao[$keyFuncao];
+              echo '</div>';
+            }
+
+            # Nota
+            if(isset($notaFuncao[$keyFuncao])){
+                echo 'Nota:';
+                $callout = new Callout("warning");
+                $callout->abre();
+                echo $notaFuncao[$keyFuncao];
+                $callout->fecha();
+            }
+
+            # Parâmetros
+            if(isset($parametrosFuncao[$keyFuncao])){
+                echo 'Parâmetros:';
+
+                $tabela = new Tabela();
+                #array_shift($lista);     
+                $tabela->set_conteudo($parametrosFuncao[$keyFuncao]);
+                $tabela->set_label(array('Nome','Tipo','Padrão','Descrição'));
+                $tabela->set_align(array("center","center","center","left"));
+                $tabela->set_width(array(10,10,10,60));
+                $tabela->show();
+            }
+
+            # Exemplo
+            if(isset($exemploFuncao[$keyFuncao])){
+                echo 'Exemplo:';
+                echo '<pre>';
+                $linesExample = file(PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploFuncao[$keyFuncao]));
+
+                # Percorre o arquivo e guarda os dados em um array
+                foreach ($linesExample as $linha) {
+                    $linha = htmlspecialchars($linha);
+                    echo $linha;
+                }
+                echo '</pre>';
+                br();
+            }
+            break;
+            
+        case "codigo" :
+            echo '<pre>';
+
+            # Define o arquivo da classe
+            $arquivoExemplo = PASTA_FUNCOES_GERAIS."/funcoes.gerais.php";
+
+            # Exibe o nome do arquivo
+            echo str_repeat("#", 80);
+            br();
+            echo '# Arquivo:'.$arquivoExemplo;
+            br();       
+            echo str_repeat("#", 80);
+            br(2);
+            
+            # Marca se é a função desejada
+            $funcaoDesejada = FALSE;
+
+            # variável que conta o número da linha
+            $numLinha = 1;
+
+            # Verifica a existência do arquivo
+            if(file_exists($arquivoExemplo)){
+                $linesCodigo = file($arquivoExemplo);
+
+                # Percorre o arquivo e guarda os dados em um array
+                foreach ($linesCodigo as $linha) {
+                    $linha = htmlspecialchars($linha);
+                        
+                        if (stristr($linha, "function")){            
+                            $posicao = stripos($linha,'function');   // marca posição da palavra function
+                            $posicaoFinal = stripos($linha,'(');     // marca posição final do nome do método
+                            $tamanho = $posicaoFinal-$posicao-9;     // define o tamanho 
+
+                            $nome = substr($linha, $posicao+9,$tamanho);   // extrai o nome
+                            if($nome == $nomeFuncao[$keyFuncao]){
+                                $funcaoDesejada = TRUE;
+                            }else{
+                                $funcaoDesejada = FALSE;
+                            }
+                        }
+                        
+                        if($funcaoDesejada){
+                            # Exibe o número da linha
+                            echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinha)."</span> ";
+
+                            # Exibe o código
+                            echo $linha;
+
+                            # Incrementa o ~umero da linha
+                            $numLinha++;
+                        }
+                }
+            }
+            else{
+                echo "Arquivo de exemplo não encontrado";
+            }
+
+            echo '</pre>';
+            break;
+    }
+    
     $callout->fecha();
     $grid2->fechaColuna();
-    $grid2->fechaGrid();    
-}
-
-
+    $grid2->fechaGrid();
+}   
 
 $grid->fechaColuna();
 $grid->fechaGrid();
