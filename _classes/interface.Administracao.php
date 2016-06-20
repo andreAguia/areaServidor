@@ -82,6 +82,14 @@
             $botao->set_url('infoWebServer.php');
             $menu->add_item($botao);
             
+            # Importação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Importação');
+            $botao->set_title('Executa a rotina de importação');
+            $botao->set_image(PASTA_FIGURAS.'importacao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('importacao.php');
+            $menu->add_item($botao);
+            
             $menu->show();
             $fieldset->fecha();
         
