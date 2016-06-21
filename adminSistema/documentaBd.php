@@ -38,7 +38,7 @@ $linkBotao2->set_title('Banco de Dados da Documentação');
 $linkBotao2->set_accessKey('I');
 $menu->add_link($linkBotao2,"right");
 
-# Sistema de Pessoal
+# Banco Pessoal
 $linkBotao3 = new Link("Pessoal","?fase=pessoal");
 if($fase <> "pessoal"){
    $linkBotao3->set_class('button');
@@ -49,7 +49,18 @@ $linkBotao3->set_title('Banco de Dados do Sistema de Pessoal');
 $linkBotao3->set_accessKey('P');
 $menu->add_link($linkBotao3,"right");
 
-# Sistema de Pessoal
+# Banco Grh
+$linkBotao5 = new Link("Grh","?fase=grh");
+if($fase <> "grh"){
+   $linkBotao5->set_class('button');
+}else{
+   $linkBotao5->set_class('disabled button');
+}
+$linkBotao5->set_title('Banco de Dados do Novo Sistema de Pessoal');
+$linkBotao5->set_accessKey('G');
+$menu->add_link($linkBotao5,"right");
+
+# Importação
 $linkBotao4 = new Link("Importação","?fase=grh001");
 if($fase <> "grh001"){
    $linkBotao4->set_class('button');
