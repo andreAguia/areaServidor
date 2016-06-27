@@ -12,7 +12,7 @@ $matricula = null;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($matricula,7);
+$acesso = Verifica::acesso($idusuario,1);
 
 if($acesso)
 {    

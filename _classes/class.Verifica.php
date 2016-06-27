@@ -13,9 +13,8 @@ class Verifica
      * 
      * @param $matricula string matrícula do servidor logado
      * @param $rotina integer codigo numérico da rotina a ser verificada
-     * @param $god bool flag que indica se somente usuário God tem acesso
      */
-    static function acesso($matricula,$rotina = null,$somenteGod = false)
+    static function acesso($idusuario,$rotina = null)
     {        
         # Flag de permissão do acesso
         $acesso = true;
@@ -30,24 +29,20 @@ class Verifica
          */
         
         # Verifica se foi logado se não redireciona para o login
-        if(is_null($matricula))
+        if(is_null($idusuario))
             $acesso = false;
         
         # Verifica se matricula é nula acesso bloqueado para a área do servidor
-        $servidor = new Pessoal();
-        if(($servidor->get_senha($matricula) == '') and ($matricula <>0))
+        if(($intra->get_senha($idusuario) == '') and ($idusuario <>0))
             $acesso = false;
 
         # Verifica se o login foi feito ou se a sessão foi "recuperada" pelo browser
-        if (($servidor->get_ultimoAcesso($matricula)) <> date("Y-m-d"))
-            $acesso = false;
+        #if (($intra->get_ultimoAcesso($idusuario)) <> date("Y-m-d"))
+        #    $acesso = false;
 
-        # Verifica de o usuário logado tem permissão para essa rotina        
-        if(($somenteGod) AND ($matricula <> GOD))
-            $acesso = false;
-        elseif(!(is_null($rotina)))
-        {
-            if(!($intra->verificaPermissao($matricula,$rotina)))
+        # Verifica de o usuário logado tem permissão para essa rotina 
+        if(!is_null($rotina)){
+            if(!($intra->verificaPermissao($idusuario,$rotina)))
                 $acesso = false;
         }
         
@@ -60,8 +55,7 @@ class Verifica
         $ipMaquina = $_SERVER['REMOTE_ADDR'];       		// ip da máquina  
         
         # Verifica se está em Manutenção
-        if ($intra->get_variavel('manutencao_intranet'))
-        {
+        if ($intra->get_variavel('manutencao_intranet')){
             if($ipManutencao <> $ipMaquina)
                 $manutecao = true;
         }
@@ -71,11 +65,8 @@ class Verifica
             loadPage("../manutencao.php");
         elseif($acesso)
             return $acesso;
-        else
-        {
-            loadPage("../../admin/adminSistema/login.php");           
-            echo'<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL '.$_SERVER['PHP_SELF'].' was not found on this server.</p></body></html>';
-        }            
+        else{
+            #loadPage("../../admin/adminSistema/login.php");
+        }
     }    
 }
-?>

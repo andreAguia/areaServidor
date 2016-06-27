@@ -92,7 +92,7 @@ $select = "SELECT TABLE_NAME,
 $conteudo = $servico->select($select);
 
 $label = array("Nome","Descrição","Tipo","Motor","Num. Registros","Tamanho Médio","Tamanho Total","AI");
-$width = array(15,25,10,10,10,10,10,5);
+$width = array(10,30,10,10,10,10,10,5);
 #$function = array("datetime_to_php",null,null,null,"get_nome");
 $align = array("left","left");
 
