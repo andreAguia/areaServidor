@@ -5,8 +5,8 @@
  * By Alat
  */
 
-# Reservado para a matrícula do servidor logado
-$matricula = null;
+# Reservado para o servidor logado
+$idusuario = null;
 
 # Configuração
 include ("_config.php");
@@ -97,9 +97,7 @@ if($acesso)
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
-
-    if ($matricula == GOD)
-        $objeto->set_linkExcluir('?fase=excluir');
+    $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
     $objeto->set_label(array("Nome","Valor","Comentário"));
@@ -118,19 +116,6 @@ if($acesso)
     # Tipo de label do formulário
     $objeto->set_formlabelTipo(1);
 
-    # Se for GOD
-    if ($matricula == GOD)
-    {
-        $objeto->set_formFocus('nome');	# Foco do form
-        $readonly = false;	
-    }
-    else
-    {
-        $objeto->set_formFocus('valor');	# Foco do form
-        $readonly = true;
-        $objeto->set_botaoIncluir(false);
-    }
-
     # Campos para o formulario
     $objeto->set_campos(array( 
                         array ( 'nome' => 'nome',
@@ -139,14 +124,12 @@ if($acesso)
                                 'size' => 90,
                                 'title' => 'Nome da Variável.',
                                 'required' => true,
-                                'readOnly' => $readonly,
                                 'col' => 12,
                                 'linha' => 1),					
                         array ( 'nome' => 'comentario',
                                 'label' => 'Comentário:',
                                 'tipo' => 'textarea',
                                 'size' => array(90,5),
-                                'readOnly' => $readonly,
                                 'required' => true,
                                 'title' => 'Descrição resumida da utilidade da variável.',
                                 'col' => 12,
@@ -161,8 +144,9 @@ if($acesso)
                                 'linha' => 3),	 	 	 	 	 	 
                     ));
 
-    # Matrícula para o Log
-    $objeto->set_matricula($matricula);						 
+    # Log
+    $objeto->set_idusuario($idusuario);
+    
     ################################################################
     switch ($fase)
     {

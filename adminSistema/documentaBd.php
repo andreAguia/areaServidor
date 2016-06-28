@@ -49,6 +49,17 @@ $linkBotao3->set_title('Banco de Dados do Sistema de Pessoal');
 $linkBotao3->set_accessKey('P');
 $menu->add_link($linkBotao3,"right");
 
+# Banco Admin
+$linkBotao4 = new Link("Admin","?fase=admin");
+if($fase <> "admin"){
+   $linkBotao4->set_class('button');
+}else{
+   $linkBotao4->set_class('disabled button');
+}
+$linkBotao4->set_title('Banco de Dados Administrados dos Sistemas');
+$linkBotao4->set_accessKey('A');
+$menu->add_link($linkBotao4,"right");
+
 # Banco Grh
 $linkBotao5 = new Link("Grh","?fase=grh");
 if($fase <> "grh"){
