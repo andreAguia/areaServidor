@@ -9,7 +9,7 @@
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idusuario,1);
+$acesso = Verifica::acesso($idUsuario,1);
 
 if($acesso)
 {    

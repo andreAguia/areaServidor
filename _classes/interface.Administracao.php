@@ -149,14 +149,6 @@
             $botao->set_title('Cadastro de Tipos de Progressões');
             #$botao->set_accesskey('S');
             $menu->add_item($botao);
-
-            $botao = new BotaoGrafico();
-            $botao->set_label('Feriados');
-           $botao->set_url("../../grh/grhSistema/cadastroFeriado.php");
-            $botao->set_image(PASTA_FIGURAS.'diaria.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Cadastro de Feriados para a Folha de Presença');
-            #$botao->set_accesskey('S');
-            $menu->add_item($botao);
             
             $menu->show();
             $fieldset->fecha();

@@ -161,9 +161,9 @@ class Intra extends Bd
 	
 	public function verificaLogin($usuario,$senha){	
 			
-            # Pega a senha e o idusuario					
-            $idusuario = $this->get_idusuario($usuario);
-            $senhaServidor = $this->get_senha($idusuario);
+            # Pega a senha e o idUsuario					
+            $idUsuario = $this->get_idUsuario($usuario);
+            $senhaServidor = $this->get_senha($idUsuario);
             
             # Verifica se a senha é nula
             if(is_null($senhaServidor)){
@@ -184,10 +184,10 @@ class Intra extends Bd
 
             if($senhaServidor == $senha){
                 if ($senha == SENHA_PADRAO){
-                    set_session('idusuario',$idusuario);	
+                    set_session('idUsuario',$idUsuario);	
                     return 2;
                 }else{
-                    set_session('idusuario',$idusuario);
+                    set_session('idUsuario',$idUsuario);
                     return 1;			
                 }
             }
@@ -201,14 +201,14 @@ class Intra extends Bd
 	 * 
 	 * @param string $usuario	matricula do servidor
 	 */
-	public function get_senha($idusuario){ 
+	public function get_senha($idUsuario){ 
 
             $select = "SELECT senha		  
                          FROM tbusuario
-                        WHERE idusuario = '".$idusuario."'";
+                        WHERE idUsuario = '".$idUsuario."'";
             
             # verifica se o id foi fornecido
-            if(is_null($idusuario))
+            if(is_null($idUsuario))
                 return 0;
             else
             {
@@ -224,9 +224,9 @@ class Intra extends Bd
 	 * 
 	 * @param string $usuario	matricula do servidor
 	 */
-	public function get_idusuario($usuario){ 
+	public function get_idUsuario($usuario){ 
 
-            $select = "SELECT idusuario		  
+            $select = "SELECT idUsuario		  
                          FROM tbusuario
                         WHERE usuario = '".$usuario."'";
             
@@ -248,14 +248,14 @@ class Intra extends Bd
 	 * 
 	 * @param string $usuario	matricula do servidor
 	 */
-	public function get_usuario($idusuario){ 
+	public function get_usuario($idUsuario){ 
 
             $select = "SELECT usuario		  
                          FROM tbusuario
-                        WHERE idusuario = '".$idusuario."'";
+                        WHERE idUsuario = '".$idUsuario."'";
             
             # verifica se a matricula foi informada
-            if(is_null($idusuario))
+            if(is_null($idUsuario))
                 return 0;
             else
             {
@@ -276,14 +276,14 @@ class Intra extends Bd
     * @param	integer	$idRegra	-> o id da regra
     */
 
-    public function verificaPermissao($idusuario,$idRegra)
+    public function verificaPermissao($idUsuario,$idRegra)
     {
         $select = 'SELECT idPermissao
                      FROM tbpermissao
-                    WHERE idusuario = '.$idusuario.' AND idRegra = '.$idRegra;
+                    WHERE idUsuario = '.$idUsuario.' AND idRegra = '.$idRegra;
         
         # verifica se o id foi preenchido
-        if(is_null($idusuario)){
+        if(is_null($idUsuario)){
             return false;
         }else{
             $numReg = parent::count($select);
@@ -297,7 +297,7 @@ class Intra extends Bd
                     return false;
                 }else{
                     # verifica se tem para admin
-                    if($this->verificaPermissao($idusuario,1)){
+                    if($this->verificaPermissao($idUsuario,1)){
                         return true;
                     }else{
                         return false;

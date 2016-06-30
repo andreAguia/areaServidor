@@ -3,7 +3,7 @@
 class Importa
 {
     private $nomeTabela;
-    private $novoNomeTabela = NULL;    // Usado para quando se quer alterar o nome da tabela
+    private $novoNomeTabela = NULL;     // Usado para quando se quer alterar o nome da tabela
     private $campoId;
     private $descricao;
     
@@ -148,6 +148,8 @@ class Importa
         $sql .= utf8_decode($this->descricao);
         $sql .= "';";
         
+        #echo $sql;
+        
         # Criando a tabela no banco grh
         mysql_select_db("grh") or die(mysql_error());
         mysql_query($sql) Or die(mysql_error());
@@ -211,7 +213,12 @@ class Importa
             }
         }
 
-        echo $this->nomeTabela." ".$numRegistros." importados";
+        echo $this->nomeTabela;
+        if(is_null($this->novoNomeTabela)){
+            echo " ".$numRegistros." importados";
+        }else{
+            echo " (".$this->novoNomeTabela.") ".$numRegistros." importados";
+        }
         br();
         
     }

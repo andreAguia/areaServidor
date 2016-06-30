@@ -6,13 +6,13 @@
  */
 
 # Reservado para o servidor logado
-$idusuario = null;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idusuario,1);
+$acesso = Verifica::acesso($idUsuario,1);
 
 if($acesso)
 {    
@@ -74,7 +74,7 @@ if($acesso)
     $objeto->set_selectLista ('SELECT usuario,
                                       idservidor,
                                       ultimoAcesso,
-                                      idusuario
+                                      idUsuario
                                  FROM tbusuario
                                 WHERE usuario LIKE "%'.$parametro.'%"
                              ORDER BY '.$orderCampo.' '.$orderTipo);
@@ -83,7 +83,7 @@ if($acesso)
     $objeto->set_selectEdita('SELECT usuario,
                                      obs
                                 FROM tbusuario
-                               WHERE idusuario = '.$id);
+                               WHERE idUsuario = '.$id);
 
     # ordem da lista
     $objeto->set_orderCampo($orderCampo);
@@ -112,7 +112,7 @@ if($acesso)
     $objeto->set_tabela('tbusuario');
 
     # Nome do campo id
-    $objeto->set_idCampo('idusuario');
+    $objeto->set_idCampo('idUsuario');
 
     # Campos para o formulario
     $objeto->set_campos(array(
@@ -125,7 +125,7 @@ if($acesso)
                'size' => 15)));
 
     # Log
-    $objeto->set_idusuario($idusuario);
+    $objeto->set_idUsuario($idUsuario);
 
     ################################################################
     switch ($fase)

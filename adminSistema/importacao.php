@@ -236,7 +236,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbaverbacao
         $tab = "tbaverbacao";
@@ -246,7 +246,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbbanco
         $tab = "tbbanco";
@@ -256,7 +256,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbcargo
         $tab = "tbcargo";
@@ -266,7 +266,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbcedido
         $tab = "tbcedido";
@@ -278,7 +278,7 @@ switch ($fase)
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
         $importa->criarCampo($criarCampo);          // Necessário pois não existia esse campo
-        #$importa->go();
+        $importa->go();
         
         # tbclasse
         $tab = "tbclasse";
@@ -288,7 +288,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbcomissao
         $tab = "tbcomissao";
@@ -298,7 +298,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbconcurso
         $tab = "tbconcurso";
@@ -308,7 +308,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
 
         # tbcontatos
         $tab = "tbcontatos";
@@ -318,7 +318,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbdependente
         $tab = "tbdependente";
@@ -328,7 +328,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go(); 
+        $importa->go(); 
         
         # tbdiaria
         $tab = "tbdiaria";
@@ -338,7 +338,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go(); 
+        $importa->go(); 
         
         # tbdocumentacao
         $tab = "tbdocumentacao";
@@ -350,7 +350,7 @@ switch ($fase)
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
         $importa->criarCampo($criarCampo);
-        #$importa->go();
+        $importa->go();
         
         # tbelogio
         $tab = "tbelogio";
@@ -360,7 +360,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbescolaridade
         $tab = "tbescolaridade";
@@ -370,7 +370,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbestciv
         $tab = "tbestciv";
@@ -380,7 +380,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbfaltas
         $tab = "tbfaltas";
@@ -390,7 +390,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbferias
         $tab = "tbferias";
@@ -400,7 +400,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbfolga
         $tab = "tbfolga";
@@ -410,7 +410,7 @@ switch ($fase)
         
         $importa = new Importa($tab,$idTab,$descricao);
         $importa->ignoraCampos($ignoraCampos);
-        #$importa->go();
+        $importa->go();
         
         # tbtrabalhotre
         $tab = "tbfolgatre";
@@ -425,1812 +425,191 @@ switch ($fase)
         $importa->criarCampo($criarCampo);
         $importa->go();
         
-        /*
-        
-        #########################################################################
-        #                         tbformacao
-        #########################################################################
-
+        # tbformacao
         $tab = "tbformacao";
-        $idTab = "idformacao";
+        $idTab = "idFormacao";
         $descricao = "Tabela de controle da formação escolar do servidor";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
+        $ignoraCampos = NULL;
         
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbgratificacao
-        #########################################################################
-
-        $tab = "tbgratificacao";
-        $idTab = "idgratificacao";
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbgratificacao
+        $tab = "tbgratif";
+        $idTab = "idGratificacao";
         $descricao = "Tabela de controle das gratificações especiais dos servidores";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $sql .= "idServidor,";
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $pessoal2 = new Pessoal2();
-                        $valor = $pessoal2->get_idServidor($row[$camp['Field']]);
-                        $sql .= $valor.',';
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbhistcessao
-        #########################################################################
-
+        $ignoraCampos = array("idGratif");
+        $criarCampo = "idGratificacao INT(11) UNSIGNED NOT NULL AUTO_INCREMENT";
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->novoNomeTabela("tbgratificacao");
+        $importa->criarCampo($criarCampo);
+        $importa->go();
+        
+        # tbhistcessao
         $tab = "tbhistcessao";
-        $idTab = "idhistcessao";
+        $idTab = "idHistCessao";
         $descricao = "Tabela de histórico de cessões de servidores da uenf para outros órtgãos";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $sql .= "idServidor,";
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $pessoal2 = new Pessoal2();
-                        $valor = $pessoal2->get_idServidor($row[$camp['Field']]);
-                        $sql .= $valor.',';
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbhistlot
-        #########################################################################
-
+        $ignoraCampos = NULL;
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbhistlot
         $tab = "tbhistlot";
-        $idTab = "idhistlot";
+        $idTab = "idHistLot";
         $descricao = "Tabela de histórico de lotações dos servidores";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $sql .= "idServidor,";
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $pessoal2 = new Pessoal2();
-                        $valor = $pessoal2->get_idServidor($row[$camp['Field']]);
-                        $sql .= $valor.',';
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tblicenca
-        #########################################################################
-
+        $ignoraCampos = NULL;
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tblicenca
         $tab = "tblicenca";
-        $idTab = "idlicenca";
+        $idTab = "idLicenca";
         $descricao = "Tabela de controle de licencas dos servidores";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case "apagado" :
-                case "log" :
-                    break;
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "apagado" :
-                    case "log" :
-                        break;
-                    case "matricula" :
-                        $sql .= "idServidor,";
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "apagado" :
-                    case "log" :
-                        break;
-                    case "matricula" :
-                        $pessoal2 = new Pessoal2();
-                        $valor = $pessoal2->get_idServidor($row[$camp['Field']]);
-                        $sql .= $valor.',';
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-       echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tblotacao
-        #########################################################################
-
+        $ignoraCampos = array("apagado","log");
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tblotacao
         $tab = "tblotacao";
-        $idTab = "idlotacao";
+        $idTab = "idLotacao";
         $descricao = "Tabela de controle de lotação dos servidores";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case "repPatrimonio" :        
-                    break;
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "repPatrimonio" :        
-                        break;
-                    case "matricula" :
-                        $sql .= "idServidor,";
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "repPatrimonio" :
-                        break;
-                    case "matricula" :
-                        $pessoal2 = new Pessoal2();
-                        $valor = $pessoal2->get_idServidor($row[$camp['Field']]);
-                        $sql .= $valor.',';
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbparentesco
-        #########################################################################
-
+        $ignoraCampos = array("repPatrimonio");
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbparentesco
         $tab = "tbparentesco";
-        $idTab = "idparentesco";
+        $idTab = "idParentesco";
         $descricao = "Tabela de tipos de parentesco";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbperfil
-        #########################################################################
-
+        $ignoraCampos = NULL;
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbperfil
         $tab = "tbperfil";
-        $idTab = "idperfil";
+        $idTab = "idPerfil";
         $descricao = "Tabela de perfil dos servidores";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case "matIni" : 
-                case "matFim" : 
-                    break;
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matIni" : 
-                    case "matFim" :         
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matIni" : 
-                    case "matFim" : 
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbpessoa
-        #########################################################################
-
+        $ignoraCampos = array("matIni","matFim");
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbpessoa
         $tab = "tbpessoa";
-        $idTab = "idpessoa";
+        $idTab = "idPessoa";
         $descricao = "Tabela dos dados pessoais";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbplano
-        #########################################################################
-
+        $ignoraCampos = NULL;
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbplano
         $tab = "tbplano";
-        $idTab = "idplano";
+        $idTab = "idPlano";
         $descricao = "Tabela dos planos";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbprogressao
-        #########################################################################
-
+        $ignoraCampos = NULL;
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbprogressao
         $tab = "tbprogressao";
-        $idTab = "idprogressao";
+        $idTab = "idProgressao";
         $descricao = "Tabela de controle de progressão e enquadramento dos servidores";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $sql .= "idServidor,";
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $pessoal2 = new Pessoal2();
-                        $valor = $pessoal2->get_idServidor($row[$camp['Field']]);
-                        $sql .= $valor.',';
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbpublicacaopremio
-        #########################################################################
-
+        $ignoraCampos = NULL;
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbpublicacaopremio
         $tab = "tbpublicacaopremio";
-        $idTab = "idpublicacaopremio";
+        $idTab = "idPublicacaoPremio";
         $descricao = "Tabela de controle de publicação de licença prêmio dos servidores";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $sql .= "idServidor,";
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $pessoal2 = new Pessoal2();
-                        $valor = $pessoal2->get_idServidor($row[$camp['Field']]);
-                        $sql .= $valor.',';
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
+        $ignoraCampos = NULL;
         
-        #########################################################################
-        #                         tbsituacao
-        #########################################################################
-
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbsituacao
         $tab = "tbsituacao";
-        $idTab = "idsit";
+        $idTab = "idSituacao";
         $descricao = "Tabela dos tipos de situação de um servidor";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY(idSituacao),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "idSituacao INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "idSit" :
-                        $sql .= "idsituacao,";
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
+        $ignoraCampos = array("IdSit");                              // Renomeia a chave 
+        $criarCampo = "idSituacao INT(11) UNSIGNED NOT NULL AUTO_INCREMENT";
         
-        #########################################################################
-        #                         tbsuspensao
-        #########################################################################
-
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->criarCampo($criarCampo);
+        $importa->go();
+        
+        # tbsuspensao
         $tab = "tbsuspensao";
-        $idTab = "idsuspensao";
+        $idTab = "idSuspensao";
         $descricao = "Tabela de controle de suspenão de servidores";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $sql .= "idServidor,";
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $pessoal2 = new Pessoal2();
-                        $valor = $pessoal2->get_idServidor($row[$camp['Field']]);
-                        $sql .= $valor.',';
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbtipocomissao
-        #########################################################################
-
+        $ignoraCampos = NULL;
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbtipocomissao
         $tab = "tbtipocomissao";
-        $idTab = "idtipocomissao";
+        $idTab = "idTipoComissao";
         $descricao = "Tabela dos tipos de cargos em comissão";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case "exibeSite":
-                    break;
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "exibeSite":
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "exibeSite":
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-
-        #########################################################################
-        #                         tbtipolicenca
-        #########################################################################
-
+        $ignoraCampos = array("exibeSite");
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbtipolicenca
         $tab = "tbtipolicenca";
-        $idTab = "idtipolicenca";
+        $idTab = "idTpLicenca";
         $descricao = "Tabela dos tipos de licença";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
+        $ignoraCampos = NULL;
         
-        #########################################################################
-        #                         tbtipoprogressao
-        #########################################################################
-
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbtipoprogressao
         $tab = "tbtipoprogressao";
-        $idTab = "idtipoprogressao";
+        $idTab = "idTpProgressao";
         $descricao = "Tabela dos tipos de progressao e enquadramento";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
-
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        echo "<td>tabela criada no banco grh</td>";
-        echo "<td>importando os dados</td>";
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        #########################################################################
-        #                         tbtrienio
-        #########################################################################
-
-        $tab = "tbtrienio";
-        $idTab = "idtrienio";
-        $descricao = "Tabela de controle de triênio dos servidores";
-
-        $numRegistros = 0;      // Contador de registros importados
-
-        # Exibe o nome da tabela
-        echo $tab;
+        $ignoraCampos = NULL;
         
-        # Inicia o sql
-        $sql = "CREATE TABLE $tab (";
-
-        $sql .= "PRIMARY KEY($idTab),";
-
-        # le os nomes dos campos e preenche o sql
-        foreach ($campos[$tab] as $camp){
-            switch ($camp['Field'])
-            {
-                case $idTab :
-                    $sql .= "$idTab INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
-                    break;
-                case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
-                    break;
-                default :
-                    $sql .= $camp['Field']." ".$camp['Type'];
-
-                    if((isset($camp['NULL'])) AND  ($camp['NULL'] == "YES")){
-                        $sql .= " NOT NULL";
-                    }
-                    $sql .= ",";
-                    break;
-            }
-        }
-
-        # Retira a última vírgula e coloca os parentesis
-        $sql = substr($sql,0,-1);
-        $sql .= ")";
-        $sql .= "COMMENT = '";
-        $sql .= utf8_decode($descricao);
-        $sql .= "';";
-
-        # Criando a tabela no banco grh
-        mysql_select_db("grh") or die(mysql_error());
-        mysql_query($sql) Or die(mysql_error());
-
-        # Conecta ao Banco de Dados da Fenorte
-        $select = "SELECT * FROM $tab";
-        $servidor = new Pessoal();
-        $result = $servidor->select($select);
-
-        # le o array e monta o sql de gravação
-        foreach ($result as $row){
-            $sql = 'INSERT INTO grh.'.$tab.' (';
-
-            # Nome dos campos
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $sql .= "idServidor,";
-                        break;
-                    default :
-                        $sql .= $camp['Field'].",";
-                        break;
-                }
-            }
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ') VALUES (';
-
-            # Valores
-            foreach ($campos[$tab] as $camp){
-                switch ($camp['Field']){
-                    case "matricula" :
-                        $pessoal2 = new Pessoal2();
-                        $valor = $pessoal2->get_idServidor($row[$camp['Field']]);
-                        $sql .= $valor.',';
-                        break;
-                    default :
-                        if((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")){
-                            $sql .= 'NULL,';
-                        }else{
-                            $sql .= '"'.utf8_decode($row[$camp['Field']]).'",';
-                        }
-                        break;
-                }
-            }
-            $numRegistros ++;
-            # Retira a última vírgula e coloca os parentesis
-            $sql = substr($sql,0,-1);
-            $sql .= ")";
-
-            if(!mysql_query($sql)) {
-              echo mysql_error();
-            }
-        }
-
-        echo $numRegistros." importados";
-        br();
-         * 
-         */
-
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+        
+        # tbtrienio
+        $tab = "tbtrienio";
+        $idTab = "idTrienio";
+        $descricao = "Tabela de controle de triênio dos servidores";
+        $ignoraCampos = NULL;
+        
+        $importa = new Importa($tab,$idTab,$descricao);
+        $importa->ignoraCampos($ignoraCampos);
+        $importa->go();
+     
         $painel->fecha();
         break;
 }

@@ -87,7 +87,7 @@ if(CHAMADOR == 'grh.php'){
 }
 
 # carrega as session
-$idusuario = get_session('idusuario');	      # id do usuário logado
+$idUsuario = get_session('idUsuario');	      # id do usuário logado
 
 
 # Define se usa o input type data do html5 ou se usa o javascript
