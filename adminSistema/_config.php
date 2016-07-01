@@ -15,12 +15,13 @@ define("AUTOR","Alat");                                          # Autor do sist
 
 # Classes
 define("PASTA_CLASSES_GERAIS","../../_framework/_classesGerais/"); # Classes Gerais
-define("PASTA_CLASSES_GRH","../../grh/_classes/");                # Classes do sistema de Pessoal 
+define("PASTA_CLASSES_GRH","../../grh/_classes/");                 # Classes do sistema de Pessoal 
 define("PASTA_CLASSES","../_classes/");                            # Classes Específicas
 
 # Funções
-define("PASTA_FUNCOES_GERAIS","../../_framework/_funcoesGerais/"); # Funções Gerais
-define("PASTA_FUNCOES","../_funcoes/");                 # Funções Específicas
+define("PASTA_FUNCOES_GERAIS","../../_framework/_funcoesGerais/");  # Funções Gerais
+define("PASTA_FUNCOES","../_funcoes/");                             # Funções Específicas
+define("PASTA_FUNCOES_GRH","../../grh/_funcoes/");                  # Funções Específicas GRH
 
 # Figuras
 define("PASTA_FIGURAS_GERAIS","../../_framework/_imgGerais/");     # Figuras Gerais

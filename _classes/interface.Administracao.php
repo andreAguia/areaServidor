@@ -13,10 +13,9 @@
     * método menu
     * Exibe o menu da área do servidor
     * 
-    * @param $nivel string  informa o nível do usuario logado para ver 
-    *                       se exibe ou não alguns menus
+    * @param $idUsuario integer Informa o usuario logado para exibir ou não alguns menus
     */
-    public static function menu($matricula)
+    public static function menu($idUsuario)
     {
         /**
          * Menu de Administração

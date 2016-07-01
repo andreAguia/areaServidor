@@ -18,13 +18,29 @@ $grid->abreColuna(12);
 # Pega a função a ser documentada
 $funcao = trim(get('funcao'));
 $fase = get('fase');
+$sistema = get('sistema');
+
+switch ($sistema)
+{
+  case "Framework" :
+      $pasta = PASTA_CLASSES_GERAIS;
+      break;
+
+  case "Grh" :
+      $pasta = PASTA_CLASSES_GRH;
+      break;
+  
+  case "Administracao" :
+      $pasta = PASTA_CLASSES;
+      break;
+}
 
 # Começa uma nova página
 $page = new Page();
 $page->iniciaPagina();
 
 # Botão voltar
-$linkBotao1 = new Link("Voltar",'documentacao.php');
+$linkBotao1 = new Link("Voltar",'documentaCodigo.php?fase='.$sistema);
 $linkBotao1->set_class('button');
 $linkBotao1->set_title('Volta para a página anterior');
 $linkBotao1->set_accessKey('V');

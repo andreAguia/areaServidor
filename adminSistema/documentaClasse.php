@@ -16,36 +16,58 @@ $grid = new Grid();
 $grid->abreColuna(12);
 
 # Pega a classe a ser documentada
-$arquivoClasse = get('classe');
+$arquivoClasse = get('classe'); // Classe a ser exibida
+$metodo = get('metodo');        // Método a ser exibido, se for "" exibe os dados da classe, se for "codigo" exibe o código
+$sistema = get('sistema');      // Informa a pasta a ser lido
 
-# Verifica o método a ser exibido
-$metodo = get('metodo');
+switch ($sistema){
+  case "Framework" :
+      $pasta = PASTA_CLASSES_GERAIS;
+      break;
+
+  case "Grh" :
+      $pasta = PASTA_CLASSES_GRH;
+      break;
+  
+  case "Administracao" :
+      $pasta = PASTA_CLASSES;
+      break;
+}
 
 # Começa uma nova página
 $page = new Page();
 $page->iniciaPagina();
 
 # Botão voltar
-$linkBotao1 = new Link("Voltar",'documentacao.php');
+switch ($metodo){
+    case NULL :
+        $linkBotao1 = new Link("Voltar",'?documentacao.php?sistema='.$sistema);
+        break;
+    case "codigo":
+        $linkBotao1 = new Link("Voltar",'documentaCodigo.php?metodo=codigo&sistema='.$sistema);
+        break;
+    default:
+        $linkBotao1 = new Link("Voltar",'?classe='.$arquivoClasse.'&sistema='.$sistema);
+        break;
+    
+}
 $linkBotao1->set_class('button');
 $linkBotao1->set_title('Volta para a página anterior');
 $linkBotao1->set_accessKey('V');
 
 # Botão codigo
-$linkBotao2 = new Link("Código","?classe=$arquivoClasse&metodo=codigo");
-if($metodo == "codigo"){
-    $linkBotao2->set_class('disabled button');
-}
-else{
-    $linkBotao2->set_class('button');
-}
+$linkBotao2 = new Link("Código","?sistema=$sistema&classe=$arquivoClasse&metodo=codigo");
+$linkBotao2->set_class('button');
 $linkBotao2->set_title('Exibe o código fonte');
 $linkBotao2->set_accessKey('C');
 
 # Cria um menu
 $menu = new MenuBar();
 $menu->add_link($linkBotao1,"left");
-$menu->add_link($linkBotao2,"right");
+
+if($metodo == ""){
+    $menu->add_link($linkBotao2,"right");
+}
 $menu->show();
 
 $grid->fechaColuna();
@@ -60,7 +82,7 @@ $callout = new Callout();
 $callout->abre();
 
 # Inicia a documentação
-$doc = new Documenta(PASTA_CLASSES_GERAIS.$arquivoClasse.".php","classe");
+$doc = new Documenta($pasta.$arquivoClasse.".php","classe");
 
 # Pega os dados da classe
 $nomeClasse = $doc->get_nomeClasse();
@@ -86,7 +108,7 @@ $exemploMetodo = $doc->get_exemploMetodo();
         
 # Classe
 echo '<h4>';
-echo '<a href="?classe='.$arquivoClasse.'">';
+echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'">';
 echo $nomeClasse;
 echo '</a>';
 echo '</h4>';
@@ -94,7 +116,7 @@ echo '</h4>';
 # Percorre os métodos
 for ($i=1; $i <= $numMetodo;$i++){
     # link
-    echo '<a href="?classe='.$arquivoClasse.'&metodo='.$i.'" title="'.$descricaoMetodo[$i].'">';
+    echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'&metodo='.$i.'" title="'.$descricaoMetodo[$i].'">';
    if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
         echo '<del>'.$nomeMetodo[$i].'</del>';
     }else{
@@ -111,8 +133,7 @@ $grid2->fechaColuna();
 # Coluna da documentação detalhada
 $grid2->abreColuna(8,9);
 
-switch ($metodo)
-{
+switch ($metodo){
     case "" :
         ### Classe
         echo '<div class="callout success">';

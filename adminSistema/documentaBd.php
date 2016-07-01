@@ -15,74 +15,28 @@ $grid = new Grid();
 $grid->abreColuna(12);
 
 # Verifica a fase do programa
-$fase = get('fase','pessoal');
+$fase = get('fase');
 
 # Cria um menu
 $menu = new MenuBar();
 
+switch ($fase)
+{
+  case "Framework" :
+      loadPage("documentacao.php");
+      break;
+
+  case "Grh" :
+      $banco = "grh";
+      break;
+  
+  case "Administracao" :
+      $banco = "admin";
+      break;
+}
+
 # Botão voltar
-$linkBotao1 = new Link("Voltar",'documentacao.php');
-$linkBotao1->set_class('button');
-$linkBotao1->set_title('Volta para a página anterior');
-$linkBotao1->set_accessKey('V');
-$menu->add_link($linkBotao1,"left");
-
-# Administração (intra)
-$linkBotao2 = new Link("Intra","?fase=intra");
-if($fase <> "intra"){
-   $linkBotao2->set_class('button');
-}else{
-   $linkBotao2->set_class('disabled button');
-}
-$linkBotao2->set_title('Banco de Dados da Documentação');
-$linkBotao2->set_accessKey('I');
-$menu->add_link($linkBotao2,"right");
-
-# Banco Pessoal
-$linkBotao3 = new Link("Pessoal","?fase=pessoal");
-if($fase <> "pessoal"){
-   $linkBotao3->set_class('button');
-}else{
-   $linkBotao3->set_class('disabled button');
-}
-$linkBotao3->set_title('Banco de Dados do Sistema de Pessoal');
-$linkBotao3->set_accessKey('P');
-$menu->add_link($linkBotao3,"right");
-
-# Banco Admin
-$linkBotao4 = new Link("Admin","?fase=admin");
-if($fase <> "admin"){
-   $linkBotao4->set_class('button');
-}else{
-   $linkBotao4->set_class('disabled button');
-}
-$linkBotao4->set_title('Banco de Dados Administrados dos Sistemas');
-$linkBotao4->set_accessKey('A');
-$menu->add_link($linkBotao4,"right");
-
-# Banco Grh
-$linkBotao5 = new Link("Grh","?fase=grh");
-if($fase <> "grh"){
-   $linkBotao5->set_class('button');
-}else{
-   $linkBotao5->set_class('disabled button');
-}
-$linkBotao5->set_title('Banco de Dados do Novo Sistema de Pessoal');
-$linkBotao5->set_accessKey('G');
-$menu->add_link($linkBotao5,"right");
-
-# Importação
-$linkBotao4 = new Link("Importação","?fase=grh001");
-if($fase <> "grh001"){
-   $linkBotao4->set_class('button');
-}else{
-   $linkBotao4->set_class('disabled button');
-}
-$linkBotao4->set_title('Banco de Dados para importação');
-#$linkBotao4->set_accessKey('I');
-$menu->add_link($linkBotao4,"right");
-
-$menu->show();
+botaoVoltar("documentacao.php");
 
 # Topbar        
 $top = new TopBar($fase);
@@ -99,7 +53,7 @@ $select = "SELECT TABLE_NAME,
                   AVG_ROW_LENGTH,
                   DATA_LENGTH,
                   AUTO_INCREMENT
-             FROM information_schema.TABLES WHERE TABLE_SCHEMA = '".$fase."'"; 
+             FROM information_schema.TABLES WHERE TABLE_SCHEMA = '".$banco."'"; 
 $conteudo = $servico->select($select);
 
 $label = array("Nome","Descrição","Tipo","Motor","Num. Registros","Tamanho Médio","Tamanho Total","AI");
@@ -113,7 +67,7 @@ $tabela->set_conteudo($conteudo);
 $tabela->set_cabecalho($label,$width,$align);
 #$tabela->set_funcao($function); 
 $tabela->set_numeroOrdem(true);
-$tabela->set_editar("documentaTabela.php?bd=".$fase);
+$tabela->set_editar("documentaTabela.php?fase=$fase&bd=".$banco);
 $tabela->set_idCampo('TABLE_NAME');
 $tabela->set_nomeColunaEditar('Ver');
 $tabela->set_editarBotao('ver.png');
