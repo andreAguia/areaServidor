@@ -5,7 +5,7 @@
  * By Alat
  */
 
-# Reservado para o servidor logado
+# Servidor logado 
 $idUsuario = null;
 
 # Configuração
@@ -18,6 +18,7 @@ if($acesso)
 {    
     # Conecta ao Banco de Dados
     $intra = new Intra();
+    $pessoal = new Pessoal();
 	
     # Verifica a fase do programa
     $fase = get('fase','listar');
@@ -72,8 +73,9 @@ if($acesso)
 
     # select da lista
     $objeto->set_selectLista ('SELECT usuario,
-                                      idservidor,
+                                      idServidor,
                                       ultimoAcesso,
+                                      obs,
                                       idUsuario
                                  FROM tbusuario
                                 WHERE usuario LIKE "%'.$parametro.'%"
@@ -81,6 +83,7 @@ if($acesso)
 
     # select do edita
     $objeto->set_selectEdita('SELECT usuario,
+                                     idServidor,
                                      obs
                                 FROM tbusuario
                                WHERE idUsuario = '.$id);
@@ -97,13 +100,24 @@ if($acesso)
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("Usuário","Nome","Último Acesso"));
-    $objeto->set_width(array(20,50,20));
-    $objeto->set_align(array("center"));
+    $objeto->set_label(array("Usuário","Nome","Último Acesso", "Obs","Padrão"));
+    $objeto->set_width(array(10,30,10,30,5));
+    $objeto->set_align(array("center","left","center","left"));
 
-    #$objeto->set_classe(array(null,null,null,null,null,null,"pessoal"));
-    #$objeto->set_metodo(array(null,null,null,null,null,null,"get_lotacaoNumServidores"));
+    $objeto->set_classe(array(null,"pessoal"));
+    $objeto->set_metodo(array(null,"get_nome"));
     #$objeto->set_function(array(null,null,null,null,null,null,null,"get_lotacaoNumServidores"));
+    
+    # Botão da solicitação de férias
+    $botao1 = new BotaoGrafico();
+    $botao1->set_title('Redefine para senha padrão');
+    $botao1->set_label('');
+    $botao1->set_url('?fase=senhaPadrao&idSenhaPadrao=');
+    #$botao1->set_confirma('Você deseja realmente redefinir esse senha para a senha padrão?');    
+    $botao1->set_image(PASTA_FIGURAS.'senha.png',20,20);;
+    
+    # Coloca o objeto link na tabela			
+    $objeto->set_link(array("","","","",$botao1));	
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -113,16 +127,38 @@ if($acesso)
 
     # Nome do campo id
     $objeto->set_idCampo('idUsuario');
+    
+    # Pega os dados da combo nome
+    $result = $pessoal->select('SELECT idServidor, 
+                                     tbpessoa.nome
+                                FROM tbservidor JOIN tbpessoa ON(tbservidor.idPessoa = tbPessoa.idPessoa)
+                                WHERE tbservidor.situacao = 1
+                            ORDER BY tbpessoa.nome');
+    array_push($result, array(0,null)); # Adiciona o valor de nulo
 
     # Campos para o formulario
     $objeto->set_campos(array(
         array ('linha' => 1,
-                'col' => 4, 
+               'col' => 4, 
                'nome' => 'usuario',
                'label' => 'Usuário:',
                'tipo' => 'texto',
                'autofocus' => true,
-               'size' => 15)));
+               'size' => 15),
+        array ('linha' => 1,
+               'col' => 6, 
+               'nome' => 'idServidor',
+               'label' => 'Servidor:',
+               'tipo' => 'combo',
+               'array' => $result,
+               'size' => 20),
+        array ('linha' => 2,
+               'col' => 12,
+               'nome' => 'obs',
+               'label' => 'Observação:',
+               'tipo' => 'textarea',
+               'size' => array(80,5))
+        ));
 
     # Log
     $objeto->set_idUsuario($idUsuario);
@@ -140,6 +176,30 @@ if($acesso)
         case "gravar" :
             $objeto->$fase($id);
             break;
+        
+        ###################################################################
+
+        case "senhaPadrao" :
+            # Pega o usuário que vai alterar senha
+            $idSenhaPadrao = get('idSenhaPadrao');
+            
+            # Troca a senha
+            $intra->set_senha($idSenhaPadrao);
+            
+            # Pega o idServidor desse usuário
+            $idServidorSenhaPadrao = $intra->get_idServidor($idSenhaPadrao);
+
+            # Grava no log a atividade
+            $log = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $atividade = 'Passou '.$idServidorSenhaPadrao.' para senha padrão';
+            $log->registraLog($idSenhaPadrao,$data,$atividade,'tbservidor',$idServidorSenhaPadrao);
+
+            loadPage('?fase=listar');
+
+            break;
+
+        ###################################################################	
     }									 	 		
 
     $page->terminaPagina();

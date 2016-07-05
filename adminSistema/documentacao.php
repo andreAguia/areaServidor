@@ -1,140 +1,147 @@
 <?php
 
-# Servidor logado
+# Servidor logado 
 $idUsuario = null;
 
 # Configuração
 include ("_config.php");
 
-# Começa uma nova página
-$page = new Page();
-$page->iniciaPagina();
+# Permissão de Acesso
+$acesso = Verifica::acesso($idUsuario,1);
 
-# Cabeçalho
-AreaServidor::cabecalho();
+if($acesso)
+{    
 
-# Limita o tamanho da tela
-$grid = new Grid();
-$grid->abreColuna(12);
+    # Começa uma nova página
+    $page = new Page();
+    $page->iniciaPagina();
 
-botaoVoltar("administracao.php");
+    # Cabeçalho
+    AreaServidor::cabecalho();
 
-# Exibe o título
-titulo("Documentação dos Sistemas");
-        
-$tamanhoImage = 60;
+    # Limita o tamanho da tela
+    $grid = new Grid();
+    $grid->abreColuna(12);
 
-# Cria 3 colunas
-$grid = new Grid();
+    botaoVoltar("administracao.php");
 
-$grid->abreColuna(4);
-$fieldset = new Fieldset('Framework');
-$fieldset->abre();
+    # Exibe o título
+    titulo("Documentação dos Sistemas");
 
-    $menu = new MenuGrafico(3);
+    $tamanhoImage = 60;
 
-    # Código
-    $botao = new BotaoGrafico();
-    $botao->set_label('Código');
-    $botao->set_url('documentaCodigo.php?fase=Framework');
-    $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-    $botao->set_title('Classes e Funções');
-    $menu->add_item($botao);
+    # Cria 3 colunas
+    $grid = new Grid();
 
-    # Variáveis de Configuração
-    $botao = new BotaoGrafico();
-    $botao->set_label('Banco de Dados');
-    $botao->set_url('documentaBd.php?fase=Framework');
-    $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
-    $botao->set_title('Exibe informações do banco de dados');
-    $menu->add_item($botao);
+    $grid->abreColuna(4);
+    $fieldset = new Fieldset('Framework');
+    $fieldset->abre();
 
-    # Histórico Geral
-    $botao = new BotaoGrafico();
-    $botao->set_label('Diagrama');
-    $botao->set_url('documentaDiagrama.php?fase=Framework');
-    $botao->set_title('Diagramas do sistema');
-    $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
-    $menu->add_item($botao);
+        $menu = new MenuGrafico(3);
 
-    $menu->show();
-    
-$fieldset->fecha();
-$grid->fechaColuna();
+        # Código
+        $botao = new BotaoGrafico();
+        $botao->set_label('Código');
+        $botao->set_url('documentaCodigo.php?fase=Framework');
+        $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+        $botao->set_title('Classes e Funções');
+        $menu->add_item($botao);
+
+        # Variáveis de Configuração
+        $botao = new BotaoGrafico();
+        $botao->set_label('Banco de Dados');
+        $botao->set_url('documentaBd.php?fase=Framework');
+        $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
+        $botao->set_title('Exibe informações do banco de dados');
+        $menu->add_item($botao);
+
+        # Histórico Geral
+        $botao = new BotaoGrafico();
+        $botao->set_label('Diagrama');
+        $botao->set_url('documentaDiagrama.php?fase=Framework');
+        $botao->set_title('Diagramas do sistema');
+        $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
+        $menu->add_item($botao);
+
+        $menu->show();
+
+    $fieldset->fecha();
+    $grid->fechaColuna();
 
 
-$grid->abreColuna(4);
-$fieldset = new Fieldset('Administração');
-$fieldset->abre();
+    $grid->abreColuna(4);
+    $fieldset = new Fieldset('Administração');
+    $fieldset->abre();
 
-    $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(3);
 
-    # Código
-    $botao = new BotaoGrafico();
-    $botao->set_label('Código');
-    $botao->set_url('documentaCodigo.php?fase=Administracao');
-    $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-    $botao->set_title('Classes e Funções');
-    $menu->add_item($botao);
+        # Código
+        $botao = new BotaoGrafico();
+        $botao->set_label('Código');
+        $botao->set_url('documentaCodigo.php?fase=Administracao');
+        $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+        $botao->set_title('Classes e Funções');
+        $menu->add_item($botao);
 
-    # Variáveis de Configuração
-    $botao = new BotaoGrafico();
-    $botao->set_label('Banco de Dados');
-    $botao->set_url('documentaBd.php?fase=Administracao');
-    $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
-    $botao->set_title('Exibe informações do banco de dados');
-    $menu->add_item($botao);
+        # Variáveis de Configuração
+        $botao = new BotaoGrafico();
+        $botao->set_label('Banco de Dados');
+        $botao->set_url('documentaBd.php?fase=Administracao');
+        $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
+        $botao->set_title('Exibe informações do banco de dados');
+        $menu->add_item($botao);
 
-    # Histórico Geral
-    $botao = new BotaoGrafico();
-    $botao->set_label('Diagrama');
-    $botao->set_url('documentaDiagrama.php?fase=Administracao');
-    $botao->set_title('Diagramas do sistema');
-    $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
-    $menu->add_item($botao);
+        # Histórico Geral
+        $botao = new BotaoGrafico();
+        $botao->set_label('Diagrama');
+        $botao->set_url('documentaDiagrama.php?fase=Administracao');
+        $botao->set_title('Diagramas do sistema');
+        $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
+        $menu->add_item($botao);
 
-    $menu->show();
-    
-$fieldset->fecha();
-$grid->fechaColuna();
+        $menu->show();
 
-$grid->abreColuna(4);
-$fieldset = new Fieldset('GRH');
-$fieldset->abre();
+    $fieldset->fecha();
+    $grid->fechaColuna();
 
-    $menu = new MenuGrafico(3);
+    $grid->abreColuna(4);
+    $fieldset = new Fieldset('GRH');
+    $fieldset->abre();
 
-    # Código
-    $botao = new BotaoGrafico();
-    $botao->set_label('Código');
-    $botao->set_url('documentaCodigo.php?fase=Grh');
-    $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-    $botao->set_title('Classes e Funções');
-    $menu->add_item($botao);
+        $menu = new MenuGrafico(3);
 
-    # Variáveis de Configuração
-    $botao = new BotaoGrafico();
-    $botao->set_label('Banco de Dados');
-    $botao->set_url('documentaBd.php?fase=Grh');
-    $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
-    $botao->set_title('Exibe informações do banco de dados');
-    $menu->add_item($botao);
+        # Código
+        $botao = new BotaoGrafico();
+        $botao->set_label('Código');
+        $botao->set_url('documentaCodigo.php?fase=Grh');
+        $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+        $botao->set_title('Classes e Funções');
+        $menu->add_item($botao);
 
-    # Histórico Geral
-    $botao = new BotaoGrafico();
-    $botao->set_label('Diagrama');
-    $botao->set_url('documentaDiagrama.php?fase=Grh');
-    $botao->set_title('Diagramas do sistema');
-    $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
-    $menu->add_item($botao);
+        # Variáveis de Configuração
+        $botao = new BotaoGrafico();
+        $botao->set_label('Banco de Dados');
+        $botao->set_url('documentaBd.php?fase=Grh');
+        $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
+        $botao->set_title('Exibe informações do banco de dados');
+        $menu->add_item($botao);
 
-    $menu->show();
-    
-$fieldset->fecha();
-$grid->fechaColuna();
-$grid->fechaGrid();
+        # Histórico Geral
+        $botao = new BotaoGrafico();
+        $botao->set_label('Diagrama');
+        $botao->set_url('documentaDiagrama.php?fase=Grh');
+        $botao->set_title('Diagramas do sistema');
+        $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
+        $menu->add_item($botao);
 
-$grid->fechaColuna();
-$grid->fechaGrid();
+        $menu->show();
 
-$page->terminaPagina();
+    $fieldset->fecha();
+    $grid->fechaColuna();
+    $grid->fechaGrid();
+
+    $grid->fechaColuna();
+    $grid->fechaGrid();
+
+    $page->terminaPagina();
+}

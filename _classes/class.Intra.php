@@ -54,16 +54,14 @@ class Intra extends Bd
     * Método Gravar
     */
     public function gravar($campos = NULL,$valor = NULL,$idValor = NULL,$tabela = NULL,$idCampo = NULL,$alerta = TRUE){
-    
-        parent::gravar($campos,$valor,$idValor,$this->tabela,$this->idCampo,$alerta);
+        
+        if(is_null($tabela))
+                $tabela = $this->tabela;
 
-        # Grava o status na tabela servi�o sempre que a tabela movimento for atualizada
-        if ($this->tabela == 'tbmovimento')
-        {
-            $lastId = parent::get_lastId();		# salva o last id da primeira grava��o (a que importa)
-            parent::gravar(array('status','encarregado'),array($valor[3],$valor[4]),$valor[6],'tbservico','idservico',false);
-            parent::set_lastId($lastId);		# recupera o last id para o arquivo de log
-        }
+            if(is_null($idCampo))
+                $idCampo = $this->idCampo;
+
+            parent::gravar($campos,$valor,$idValor,$tabela,$idCampo,$alerta);
     }
 
     ###########################################################
@@ -167,22 +165,22 @@ class Intra extends Bd
             
             # Verifica se a senha é nula
             if(is_null($senhaServidor)){
-                    return 0;
+                return 0;
             }
 
             # Verifica se a senha é vazia
             if($senhaServidor == ""){
-                    return 0;
+                return 0;
             }
 
             # Pega a senha digitada e cripitografa
             $senha_md5 = md5($senha);
-
-            if($senhaServidor <> $senha){
+            
+            if($senhaServidor <> $senha_md5){
                 return 0;
             }
 
-            if($senhaServidor == $senha){
+            if($senhaServidor == $senha_md5){
                 if ($senha == SENHA_PADRAO){
                     set_session('idUsuario',$idUsuario);	
                     return 2;
@@ -194,20 +192,21 @@ class Intra extends Bd
 	}
 	
 	###########################################################
-  
+	
 	/**
 	 * M�todo get_senha
 	 * Informa a senha (criptografada) 
 	 * 
-	 * @param string $usuario	matricula do servidor
+	 * @param	string $usuario	O usuario
 	 */
-	public function get_senha($idUsuario){ 
+	public function get_senha($idUsuario)
+        { 
 
             $select = "SELECT senha		  
                          FROM tbusuario
-                        WHERE idUsuario = '".$idUsuario."'";
-            
-            # verifica se o id foi fornecido
+                        WHERE idUsuario = ".$idUsuario;
+
+            # verifica se a idServidor foi informada
             if(is_null($idUsuario))
                 return 0;
             else
@@ -216,6 +215,29 @@ class Intra extends Bd
                 return $result[0]; 
             }
         }
+	
+	###########################################################
+	
+	/**
+	 * M�todo set_senha
+	 * muda a senha de um usu�rio
+	 * 
+	 * @param	string 	$idUsuario 	-> o usuario
+	 * @param 	string	$senha		-> senha (n�o criptofrafada) a ser gravada (se nulo grava-se a senha padr�o)
+	 */
+	public function set_senha($idUsuario,$senha = NULL,$alert = true)
+	{
+            # Define a senha padrão de acordo com o que está nas variáveis
+            define("SENHA_PADRAO",$this->get_variavel('senha_padrao'));
+            
+            # Grava a data quando � para senha padr�o (para controle dos 2 dias)
+		if (is_null($senha))
+			parent::gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false); 
+			
+		$senha = md5($senha);
+		parent::gravar('senha',$senha,$idUsuario,'tbusuario','idUsuario',$alert);
+	}
+	
 	###########################################################
   
 	/**
@@ -244,6 +266,30 @@ class Intra extends Bd
   
 	/**
 	 * M�todo get_senha
+	 * Informa a senha (criptografada) 
+	 * 
+	 * @param string $usuario	matricula do servidor
+	 */
+	public function get_idServidor($idUsuario){ 
+
+            $select = "SELECT idServidor		  
+                         FROM tbusuario
+                        WHERE idUsuario = '".$idUsuario."'";
+            
+            # verifica se a matricula foi informada
+            if(is_null($idUsuario))
+                return 0;
+            else
+            {
+                $result = parent::select($select,false);
+                return $result[0]; 
+            }
+        }
+	
+	###########################################################
+  
+	/**
+	 * M�todo get_usuario
 	 * Informa a senha (criptografada) 
 	 * 
 	 * @param string $usuario	matricula do servidor
@@ -308,5 +354,55 @@ class Intra extends Bd
     }
     
     ###########################################################
+
+
+    /**
+     * Método registraLog
+     * 
+     * Método que registra na tabela tblog um evento
+     * 
+     * @param 	$idUsuario 		string		o usuário logado 
+     * @param 	$data			datetime	a data e a hora do evento
+     * @param	$atividade		string		um texto exibindo a ação Inserir/Editar/Excluir/Login
+     * @param	$tabela			string		a tabela que sofreu o evento
+     * @param	$idValor		string		o id quando do registro
+     * @param	$tipo			integer		o tipo de atividade
+	 * @param	$ip				string		o ip da máquina que fez a atividade
+	 * @param	$browser		string		o browser usado pelo usuário
+	 * @param	$idAuxiliar		integer		guarda o id de uma tabela auxiliar (quando necessário) Ex. usado para guardar o id do processo quando log de movimento do processo	 
+    */
+
+    public function registraLog($idUsuario,$data,$atividade,$tabela=null,$idValor=null,$tipo=0,$ip=null,$browser=null,$idAuxiliar=null)
+    {
+        # Verifica o tipo do log
+        switch ($tabela)
+        {
+            # Acesso da GTI
+             case "tbcomputador" :
+             case "tbservico" :
+             case "tbmovimento" :
+             case "tbgrupo" :
+                $tipo = 4;
+                break;
+
+            # Acesso do Protocolo
+            case "tbprocesso" :
+            case "tbprocessomovimento" :
+            case "tbprocessoMovimento" :
+                $tipo = 5;
+                break;
+
+            # Acesso Noticias 
+            case "tbNoticias" :
+                $tipo = 6;
+                break;
+        }
+
         
+        $campos = array('idUsuario','data','atividade','tabela','idValor','ip','browser','tipo','idAuxiliar');
+        $valor = array($idUsuario,$data,$atividade,$tabela,$idValor,IP,BROWSER_NAME.' '.BROWSER_VERSION,$tipo,$idAuxiliar);
+        parent::gravar($campos,$valor,null,'tblog','idlog',false);
+    }
+
+    ###########################################################
 }

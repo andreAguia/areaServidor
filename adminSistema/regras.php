@@ -5,8 +5,8 @@
  * By Alat
  */
 
-# Inicia as variáveis que receberão as sessions
-$matricula = null;
+# Servidor logado 
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -15,7 +15,7 @@ include ("_config.php");
 $acesso = Verifica::acesso($idUsuario,1);
 
 if($acesso)
-{    
+{     
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();

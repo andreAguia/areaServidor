@@ -82,14 +82,8 @@ define("CHAMADOR",$arquivo);
 setlocale (LC_ALL, 'pt_BR');
 setlocale (LC_CTYPE, 'pt_BR');
 
-if(CHAMADOR == 'grh.php'){    
-    set_session('sessionParametro');	# Zera a session do par�metro de pesquisa da classe modelo1
-    set_session('sessionPaginacao');	# Zera a session de pagina��o da classe modelo1
-}
-
 # carrega as session
-$idUsuario = get_session('idUsuario');	      # id do usuário logado
-
+$idUsuario = get_session('idUsuario');                       # Servidor Logado
 
 # Define se usa o input type data do html5 ou se usa o javascript
 # Se usar o html 5 o controle não trabalha com formato brasileiro

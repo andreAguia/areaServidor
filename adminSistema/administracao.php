@@ -5,8 +5,8 @@
  * By Alat
  */
 
-# Reservado para a matrícula do servidor logado
-$matricula = null;
+# Servidor logado 
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -50,8 +50,8 @@ if($acesso)
     {	
         # Exibe o Menu Inicial
         case "menu" :            
-            #AreaServidor::listaOcorrencias($matricula);            
-            Administracao::menu($matricula);            
+            #AreaServidor::listaOcorrencias($idUsuario);            
+            Administracao::menu($idUsuario);            
             break;
     }
 }

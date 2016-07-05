@@ -5,8 +5,8 @@
  * By Alat
  */
 
-# Reservado para a matrícula do servidor logado
-$matricula = null;	
+# Servidor logado 
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -17,8 +17,8 @@ $acesso = Verifica::acesso($idUsuario,1);
 if($acesso)
 {    
     # Conecta ao Banco de Dados
-    $intra = new Intra();
-    $servidor = new Pessoal();
+    $admin = new Intra();
+    #$servidor = new Pessoal();
 	
     # Verifica a fase do programa
     $fase = get('fase','listar');
@@ -63,32 +63,31 @@ if($acesso)
     $objeto->set_voltarLista('administracao.php');
 
     # select da lista
-    $selectLista = 'SELECT tblog.tipo,
-                           tblog.matricula,
-                           tbpessoa.nome,
-                           tblog.data,
-                           tblog.ip,
-                           tblog.tabela,
-                           tblog.idValor,
-                           tblog.atividade,                                      
-                           tblog.idlog
-                      FROM intra.tblog 
-                 LEFT JOIN pessoal.tbfuncionario ON intra.tblog.matricula = pessoal.tbfuncionario.matricula
-                 LEFT JOIN pessoal.tbpessoa ON pessoal.tbfuncionario.idpessoa = pessoal.tbpessoa.idpessoa 
-                     WHERE date(tblog.data) = "'.$parametro.'"';
+    $selectLista = 'SELECT tipo,
+                           grh.tbpessoa.nome,
+                           data,
+                           ip,
+                           tabela,
+                           idValor,
+                           atividade,                                      
+                           idlog
+                      FROM tblog JOIN tbusuario ON(tblog.idUsuario = tbusuario.idUsuario)
+                                 JOIN grh.tbservidor ON(tbusuario.idServidor = grh.tbservidor.idServidor)
+                                 JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
+                     WHERE date(data) = "'.$parametro.'"';
     
     if($servidorLog <> "*")
-        $selectLista .=' AND tblog.matricula = "'.$servidorLog.'"';
+        $selectLista .=' AND idServidor = "'.$servidorLog.'"';
     
     if($servidorIp <> "*")
-        $selectLista .=' AND tblog.ip = "'.$servidorIp.'"';
+        $selectLista .=' AND ip = "'.$servidorIp.'"';
        
-    $selectLista .=' ORDER BY 9 desc';
+    $selectLista .=' ORDER BY 8 desc';
     
     $objeto->set_selectLista ($selectLista);
 
     # select do edita
-    $objeto->set_selectEdita('SELECT matricula,
+    $objeto->set_selectEdita('SELECT idUsuario,
                                      data,
                                      atividade
                                 FROM tblog
@@ -102,10 +101,10 @@ if($acesso)
     $objeto->set_botaoIncluir(false);
 
     # Parametros da tabela
-    $objeto->set_label(array("","Matrícula","Usuário","Data","IP","Tabela","Id","Atividade"));
-    $objeto->set_width(array(1,6,15,10,6,8,5,48));		
-    $objeto->set_align(array("center","center","center","center","center","center","center","left"));
-    $objeto->set_function(array (null,"dv",null,"datetime_to_php"));
+    $objeto->set_label(array("","Usuário","Data","IP","Tabela","Id","Atividade"));
+    $objeto->set_width(array(1,10,10,10,10,5,40));		
+    $objeto->set_align(array("center","center","center","center","center","center","left"));
+    $objeto->set_function(array (null,null,"datetime_to_php"));
     $objeto->set_formatacaoCondicional(array( array('coluna' => 0,
                                                     'valor' => 0,
                                                     'operador' => '=',
@@ -179,7 +178,7 @@ if($acesso)
     $objeto->set_formlabelTipo(1);
 
     # Foco do form
-    $objeto->set_formFocus('matricula');
+    $objeto->set_formFocus('idUsuario');
 
     # Paginação
     #$objeto->set_paginacao(true);
@@ -209,12 +208,10 @@ if($acesso)
                 $form->add_item($controle);
                 
                 # Pega os servidores
-                $result = $servidor->select('SELECT DISTINCT tblog.matricula,
-                                                    tbpessoa.nome
-                                               FROM intra.tblog 
-                                          LEFT JOIN pessoal.tbfuncionario ON intra.tblog.matricula = pessoal.tbfuncionario.matricula
-                                          LEFT JOIN pessoal.tbpessoa ON pessoal.tbfuncionario.idpessoa = pessoal.tbpessoa.idpessoa 
-                                              WHERE date(tblog.data) = "'.$parametro.'"								
+                $result = $admin->select('SELECT DISTINCT idUsuario,
+                                                    idUsuario
+                                               FROM tblog 
+                                              WHERE date(data) = "'.$parametro.'"								
                                            ORDER BY 2');
                 array_push($result,array('*','-- Todos --'));
                 
@@ -229,12 +226,10 @@ if($acesso)
                 $form->add_item($controle);
                 
                 # Pega os ips
-                $result2 = $servidor->select('SELECT DISTINCT tblog.ip,
-                                                    tblog.ip
-                                               FROM intra.tblog 
-                                          LEFT JOIN pessoal.tbfuncionario ON intra.tblog.matricula = pessoal.tbfuncionario.matricula
-                                          LEFT JOIN pessoal.tbpessoa ON pessoal.tbfuncionario.idpessoa = pessoal.tbpessoa.idpessoa 
-                                              WHERE date(tblog.data) = "'.$parametro.'"							
+                $result2 = $admin->select('SELECT DISTINCT ip,
+                                                    ip
+                                               FROM tblog
+                                              WHERE date(data) = "'.$parametro.'"							
                                            ORDER BY 2');
                 array_push($result2,array('*','-- Todos --'));
                 

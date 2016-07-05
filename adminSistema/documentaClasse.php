@@ -5,411 +5,420 @@
  * Gera documentação de uma classe
  */
 
+# Servidor logado 
+$idUsuario = null;
+
 # Configuração
 include ("_config.php");
 
-# Cabeçalho
-AreaServidor::cabecalho();
+# Permissão de Acesso
+$acesso = Verifica::acesso($idUsuario,1);
 
-# Limita o tamanho da tela
-$grid = new Grid();
-$grid->abreColuna(12);
+if($acesso)
+{    
+    # Cabeçalho
+    AreaServidor::cabecalho();
 
-# Pega a classe a ser documentada
-$arquivoClasse = get('classe'); // Classe a ser exibida
-$metodo = get('metodo');        // Método a ser exibido, se for "" exibe os dados da classe, se for "codigo" exibe o código
-$sistema = get('sistema');      // Informa a pasta a ser lido
+    # Limita o tamanho da tela
+    $grid = new Grid();
+    $grid->abreColuna(12);
 
-switch ($sistema){
-  case "Framework" :
-      $pasta = PASTA_CLASSES_GERAIS;
-      break;
+    # Pega a classe a ser documentada
+    $arquivoClasse = get('classe'); // Classe a ser exibida
+    $metodo = get('metodo');        // Método a ser exibido, se for "" exibe os dados da classe, se for "codigo" exibe o código
+    $sistema = get('sistema');      // Informa a pasta a ser lido
 
-  case "Grh" :
-      $pasta = PASTA_CLASSES_GRH;
-      break;
-  
-  case "Administracao" :
-      $pasta = PASTA_CLASSES;
-      break;
-}
+    switch ($sistema){
+      case "Framework" :
+          $pasta = PASTA_CLASSES_GERAIS;
+          break;
 
-# Começa uma nova página
-$page = new Page();
-$page->iniciaPagina();
+      case "Grh" :
+          $pasta = PASTA_CLASSES_GRH;
+          break;
 
-# Botão voltar
-switch ($metodo){
-    case NULL :
-        $linkBotao1 = new Link("Voltar",'?documentacao.php?sistema='.$sistema);
-        break;
-    case "codigo":
-        $linkBotao1 = new Link("Voltar",'documentaCodigo.php?metodo=codigo&sistema='.$sistema);
-        break;
-    default:
-        $linkBotao1 = new Link("Voltar",'?classe='.$arquivoClasse.'&sistema='.$sistema);
-        break;
-    
-}
-$linkBotao1->set_class('button');
-$linkBotao1->set_title('Volta para a página anterior');
-$linkBotao1->set_accessKey('V');
-
-# Botão codigo
-$linkBotao2 = new Link("Código","?sistema=$sistema&classe=$arquivoClasse&metodo=codigo");
-$linkBotao2->set_class('button');
-$linkBotao2->set_title('Exibe o código fonte');
-$linkBotao2->set_accessKey('C');
-
-# Cria um menu
-$menu = new MenuBar();
-$menu->add_link($linkBotao1,"left");
-
-if($metodo == ""){
-    $menu->add_link($linkBotao2,"right");
-}
-$menu->show();
-
-$grid->fechaColuna();
-$grid->fechaGrid();
-
-# Divide a tela
-$grid2 = new Grid();
-$grid2->abreColuna(4,3);
-
-# Coluna de atalhos para os métodos da classe
-$callout = new Callout();
-$callout->abre();
-
-# Inicia a documentação
-$doc = new Documenta($pasta.$arquivoClasse.".php","classe");
-
-# Pega os dados da classe
-$nomeClasse = $doc->get_nomeClasse();
-$descricaoClasse = $doc->get_descricaoClasse();
-$autorClasse = $doc->get_autorClasse();
-$notaClasse = $doc->get_notaClasse();
-$deprecatedClasse = $doc->get_deprecatedClasse();
-$numVariaveis = $doc->get_numVariaveis();
-$variaveisClasse = $doc->get_variaveisClasse();
-$exemploClasse = $doc->get_exemploClasse();
-
-# Pega os dados do método
-$nomeMetodo = $doc->get_nomeMetodo();
-$numMetodo = $doc->get_numMetodo();
-$visibilidadeMetodo = $doc->get_visibilidadeMetodo();
-$descricaoMetodo = $doc->get_descricaoMetodo();
-$deprecatedMetodo = $doc->get_deprecatedMetodo();
-$syntaxMetodo = $doc->get_syntaxMetodo();
-$retornoMetodo = $doc->get_retornoMetodo();
-$notaMetodo = $doc->get_notaMetodo();
-$parametrosMetodo = $doc->get_parametrosMetodo();
-$exemploMetodo = $doc->get_exemploMetodo();
-        
-# Classe
-echo '<h4>';
-echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'">';
-echo $nomeClasse;
-echo '</a>';
-echo '</h4>';
-
-# Percorre os métodos
-for ($i=1; $i <= $numMetodo;$i++){
-    # link
-    echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'&metodo='.$i.'" title="'.$descricaoMetodo[$i].'">';
-   if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
-        echo '<del>'.$nomeMetodo[$i].'</del>';
-    }else{
-        echo $nomeMetodo[$i];    
+      case "Administracao" :
+          $pasta = PASTA_CLASSES;
+          break;
     }
-    
+
+    # Começa uma nova página
+    $page = new Page();
+    $page->iniciaPagina();
+
+    # Botão voltar
+    switch ($metodo){
+        case NULL :
+            $linkBotao1 = new Link("Voltar",'?documentacao.php?sistema='.$sistema);
+            break;
+        case "codigo":
+            $linkBotao1 = new Link("Voltar",'documentaCodigo.php?metodo=codigo&sistema='.$sistema);
+            break;
+        default:
+            $linkBotao1 = new Link("Voltar",'?classe='.$arquivoClasse.'&sistema='.$sistema);
+            break;
+
+    }
+    $linkBotao1->set_class('button');
+    $linkBotao1->set_title('Volta para a página anterior');
+    $linkBotao1->set_accessKey('V');
+
+    # Botão codigo
+    $linkBotao2 = new Link("Código","?sistema=$sistema&classe=$arquivoClasse&metodo=codigo");
+    $linkBotao2->set_class('button');
+    $linkBotao2->set_title('Exibe o código fonte');
+    $linkBotao2->set_accessKey('C');
+
+    # Cria um menu
+    $menu = new MenuBar();
+    $menu->add_link($linkBotao1,"left");
+
+    if($metodo == ""){
+        $menu->add_link($linkBotao2,"right");
+    }
+    $menu->show();
+
+    $grid->fechaColuna();
+    $grid->fechaGrid();
+
+    # Divide a tela
+    $grid2 = new Grid();
+    $grid2->abreColuna(4,3);
+
+    # Coluna de atalhos para os métodos da classe
+    $callout = new Callout();
+    $callout->abre();
+
+    # Inicia a documentação
+    $doc = new Documenta($pasta.$arquivoClasse.".php","classe");
+
+    # Pega os dados da classe
+    $nomeClasse = $doc->get_nomeClasse();
+    $descricaoClasse = $doc->get_descricaoClasse();
+    $autorClasse = $doc->get_autorClasse();
+    $notaClasse = $doc->get_notaClasse();
+    $deprecatedClasse = $doc->get_deprecatedClasse();
+    $numVariaveis = $doc->get_numVariaveis();
+    $variaveisClasse = $doc->get_variaveisClasse();
+    $exemploClasse = $doc->get_exemploClasse();
+
+    # Pega os dados do método
+    $nomeMetodo = $doc->get_nomeMetodo();
+    $numMetodo = $doc->get_numMetodo();
+    $visibilidadeMetodo = $doc->get_visibilidadeMetodo();
+    $descricaoMetodo = $doc->get_descricaoMetodo();
+    $deprecatedMetodo = $doc->get_deprecatedMetodo();
+    $syntaxMetodo = $doc->get_syntaxMetodo();
+    $retornoMetodo = $doc->get_retornoMetodo();
+    $notaMetodo = $doc->get_notaMetodo();
+    $parametrosMetodo = $doc->get_parametrosMetodo();
+    $exemploMetodo = $doc->get_exemploMetodo();
+
+    # Classe
+    echo '<h4>';
+    echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'">';
+    echo $nomeClasse;
     echo '</a>';
-    br();
-}
+    echo '</h4>';
 
-$callout->fecha();
-$grid2->fechaColuna();
-
-# Coluna da documentação detalhada
-$grid2->abreColuna(8,9);
-
-switch ($metodo){
-    case "" :
-        ### Classe
-        echo '<div class="callout success">';
-        
-        # Nome
-        echo '<h4>'.$nomeClasse.'</h4>';
-        
-        # Decrição
-        echo $descricaoClasse;
-        br(2);
-        
-        # Autor
-        if(!is_null($autorClasse))
-            echo '<small>Autor: '.$autorClasse.'</small>';
-            
-        hr();
-        
-        # Nota
-        if(!is_null($notaClasse)){
-            echo 'Nota:';
-            echo '<div class="callout warning">';
-            echo $notaClasse;
-            echo '</div>';
+    # Percorre os métodos
+    for ($i=1; $i <= $numMetodo;$i++){
+        # link
+        echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'&metodo='.$i.'" title="'.$descricaoMetodo[$i].'">';
+       if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
+            echo '<del>'.$nomeMetodo[$i].'</del>';
+        }else{
+            echo $nomeMetodo[$i];    
         }
-        
-        # Deprecated
-        if($deprecatedClasse){
-            echo '<div class="callout alert">';
-            echo '<h6>DEPRECATED</h6> Esta classe deverá ser descontiuada nas próximas versões.<br/>Seu uso é desaconselhado.';
-            echo '</div>';
-        }
-        
-        # Variáveis da Classe
-        if($numVariaveis > 0){
-            echo 'Variáveis da Classe:';
-            br();
-            $novoArray = null;      // Armazena a tabela
-            $grupoAnterior = null;  // Guarda o nome do grupo anterior
-            $grupo = 0;             // Qual grupo será exibido
 
-            foreach ($variaveisClasse as $vc){
-                if($vc[0] == "group"){
-                    if($grupo == 0){
-                        $grupoAnterior = $vc[1];
-                        $grupo++;
-                    }
-                    elseif($grupo > 0) {
-                        echo $grupoAnterior;
-                        br();
+        echo '</a>';
+        br();
+    }
 
-                        if($grupo == 1){
-                            array_shift($novoArray);
+    $callout->fecha();
+    $grid2->fechaColuna();
+
+    # Coluna da documentação detalhada
+    $grid2->abreColuna(8,9);
+
+    switch ($metodo){
+        case "" :
+            ### Classe
+            echo '<div class="callout success">';
+
+            # Nome
+            echo '<h4>'.$nomeClasse.'</h4>';
+
+            # Decrição
+            echo $descricaoClasse;
+            br(2);
+
+            # Autor
+            if(!is_null($autorClasse))
+                echo '<small>Autor: '.$autorClasse.'</small>';
+
+            hr();
+
+            # Nota
+            if(!is_null($notaClasse)){
+                echo 'Nota:';
+                echo '<div class="callout warning">';
+                echo $notaClasse;
+                echo '</div>';
+            }
+
+            # Deprecated
+            if($deprecatedClasse){
+                echo '<div class="callout alert">';
+                echo '<h6>DEPRECATED</h6> Esta classe deverá ser descontiuada nas próximas versões.<br/>Seu uso é desaconselhado.';
+                echo '</div>';
+            }
+
+            # Variáveis da Classe
+            if($numVariaveis > 0){
+                echo 'Variáveis da Classe:';
+                br();
+                $novoArray = null;      // Armazena a tabela
+                $grupoAnterior = null;  // Guarda o nome do grupo anterior
+                $grupo = 0;             // Qual grupo será exibido
+
+                foreach ($variaveisClasse as $vc){
+                    if($vc[0] == "group"){
+                        if($grupo == 0){
+                            $grupoAnterior = $vc[1];
+                            $grupo++;
                         }
+                        elseif($grupo > 0) {
+                            echo $grupoAnterior;
+                            br();
 
-                        $tabela = new Tabela();
-                        $tabela->set_conteudo($novoArray);
-                        $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
-                        $tabela->set_align(array("center","center","center","center","left"));
-                        $tabela->set_width(array(10,10,10,10,60));
-                        $tabela->show(); 
+                            if($grupo == 1){
+                                array_shift($novoArray);
+                            }
 
-                        $grupoAnterior = $vc[1];
-                        $novoArray = null;
-                        $grupo++;
-                    }                 
+                            $tabela = new Tabela();
+                            $tabela->set_conteudo($novoArray);
+                            $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
+                            $tabela->set_align(array("center","center","center","center","left"));
+                            $tabela->set_width(array(10,10,10,10,60));
+                            $tabela->show(); 
+
+                            $grupoAnterior = $vc[1];
+                            $novoArray = null;
+                            $grupo++;
+                        }                 
+                    }
+                    else{
+                        $novoArray[] = $vc;
+                    }   
+                }
+                # Exibe a lista de variáveis quando não se definiu grupos    
+                if($grupo == 0){        
+                    $tabela = new Tabela();
+                    array_shift($variaveisClasse);     
+                    $tabela->set_conteudo($variaveisClasse);
+                    $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
+                    $tabela->set_align(array("center","center","center","center","left"));
+                    $tabela->set_width(array(10,10,10,10,60));
+                    $tabela->show();
                 }
                 else{
-                    $novoArray[] = $vc;
-                }   
+                    # Exibe o último grupo de variáveis
+                    echo $grupoAnterior;
+                    br();
+                    $tabela = new Tabela();
+                    #array_shift($variaveisClasse);     
+                    $tabela->set_conteudo($novoArray);
+                    $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
+                    $tabela->set_align(array("center","center","center","center","left"));
+                    $tabela->set_width(array(10,10,10,10,60));
+                    $tabela->show(); 
+                }            
             }
-            # Exibe a lista de variáveis quando não se definiu grupos    
-            if($grupo == 0){        
-                $tabela = new Tabela();
-                array_shift($variaveisClasse);     
-                $tabela->set_conteudo($variaveisClasse);
-                $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
-                $tabela->set_align(array("center","center","center","center","left"));
-                $tabela->set_width(array(10,10,10,10,60));
-                $tabela->show();
+
+            # Exemplo
+            if(!is_null($exemploClasse)){
+                # Define o arquivo de exemplo
+                $arquivoExemplo = PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse);
+
+                # Verifica se o arquivo existe
+                if(file_exists($arquivoExemplo)){
+
+                    # Exibe o exemplo
+                    echo 'Exemplo:';
+
+                    # Cria borda para o exemplo
+                    $calloutExemplo = new Callout();
+                    $calloutExemplo->abre();
+
+                    include PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse);
+
+                    $calloutExemplo->fecha();
+
+                    # Exibe o código do exemplo
+                    echo 'Código do exemplo:';
+                    echo '<pre>';
+
+                    # Variável que conta o número da linha
+                    $numLinhaExemplo = 1;
+
+                    # Percorre o arquivo
+                    $linesExample = file($arquivoExemplo);
+
+                    # Percorre o arquivo e guarda os dados em um array
+                    foreach ($linesExample as $linha) {
+                        $linha = htmlspecialchars($linha);
+
+                        # Exibe o número da linha
+                        echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinhaExemplo)."</span> ";
+
+                        # Exibe o código
+                        echo $linha;
+
+                        # Incrementa o ~umero da linha
+                        $numLinhaExemplo++;
+                    }
+                    echo '</pre>';
+                }
+                else{
+                    echo 'Exemplo:';
+                    $callout1 = new Callout();
+                    $callout1->abre();
+                    echo "Arquivo de exemplo não encontrado";
+                    $callout1->fecha();
+                }
+                br();
+            }            
+            break;
+
+        case "codigo" :
+            echo '<pre>';
+
+            # Define o arquivo da classe
+            $arquivoExemplo = PASTA_CLASSES_GERAIS.rtrim($arquivoClasse).".php";
+
+            # Exibe o nome do arquivo
+            echo str_repeat("#", 80);
+            br();
+            echo '# Arquivo:'.$arquivoExemplo;
+            br();       
+            echo str_repeat("#", 80);
+            br(2);
+
+            # variável que conta o número da linha
+            $numLinha = 1;
+
+            # Verifica a existência do arquivo
+            if(file_exists($arquivoExemplo)){
+                $linesCodigo = file($arquivoExemplo);
+
+                # Percorre o arquivo e guarda os dados em um array
+                foreach ($linesCodigo as $linha) {
+                    $linha = htmlspecialchars($linha);
+
+                        # Exibe o número da linha
+                        echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinha)."</span> ";
+
+                        # Exibe o código
+                        echo $linha;
+
+                        # Incrementa o ~umero da linha
+                        $numLinha++;
+                }
             }
             else{
-                # Exibe o último grupo de variáveis
-                echo $grupoAnterior;
+                echo "Arquivo de exemplo não encontrado";
+            }
+
+            echo '</pre>';
+            break;
+
+        default:
+            ### Método
+            echo '<div class="callout primary">';
+
+            # Nome
+            echo '<h5> Método '.$nomeMetodo[$metodo].'</h5>';
+
+            # Visibilidade
+            echo '<small>('.$visibilidadeMetodo[$metodo].')</small>';
+
+            # Descrição
+            br(2);
+            echo $descricaoMetodo[$metodo];
+
+            # Deprecated        
+            if((isset($deprecatedMetodo[$metodo])) AND ($deprecatedMetodo[$metodo])) {
+                br(2);
+                echo '<div class="callout alert">';
+                echo '<h6>DEPRECATED</h6> Este método deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.';
+                echo '</div>';
+            }
+
+            hr();
+
+            # Syntax do método
+            if(isset($syntaxMetodo[$metodo])){
+                echo 'Sintaxe:';
+                #echo '<div class="callout secondary">';
+                echo '<pre>'.$syntaxMetodo[$metodo].'</pre>';
+               # echo '</div>';
                 br();
+            }
+
+            # Return
+            if(isset($retornoMetodo[$metodo])){
+              echo 'Valor Retornado:';
+              echo '<div class="callout secondary">';
+              echo $retornoMetodo[$metodo];
+              echo '</div>';
+            }
+
+            # Nota
+            if(isset($notaMetodo[$metodo])){
+                $posicao = stripos($line,'@');
+                echo 'Nota:';
+                echo '<div class="callout warning">';
+                echo $notaMetodo[$metodo];
+                echo '</div>';
+            }
+
+            # Parâmetros de um método
+            if(isset($parametrosMetodo[$metodo])){
+                echo 'Parâmetros:';
+
                 $tabela = new Tabela();
-                #array_shift($variaveisClasse);     
-                $tabela->set_conteudo($novoArray);
-                $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
-                $tabela->set_align(array("center","center","center","center","left"));
-                $tabela->set_width(array(10,10,10,10,60));
-                $tabela->show(); 
-            }            
-        }
-        
-        # Exemplo
-        if(!is_null($exemploClasse)){
-            # Define o arquivo de exemplo
-            $arquivoExemplo = PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse);
-            
-            # Verifica se o arquivo existe
-            if(file_exists($arquivoExemplo)){
-            
-                # Exibe o exemplo
+                #array_shift($lista);     
+                $tabela->set_conteudo($parametrosMetodo[$metodo]);
+                $tabela->set_label(array('Nome','Tipo','Padrão','Descrição'));
+                $tabela->set_align(array("center","center","center","left"));
+                $tabela->set_width(array(10,10,10,60));
+                $tabela->show();
+            }
+
+            # Exemplo
+            if(isset($exemploMetodo[$metodo])){
                 echo 'Exemplo:';
-                
-                # Cria borda para o exemplo
-                $calloutExemplo = new Callout();
-                $calloutExemplo->abre();
-                
-                include PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse);
-                
-                $calloutExemplo->fecha();
-
-                # Exibe o código do exemplo
-                echo 'Código do exemplo:';
+                #echo '<div class="callout secondary">';
                 echo '<pre>';
-
-                # Variável que conta o número da linha
-                $numLinhaExemplo = 1;
-            
-                # Percorre o arquivo
-                $linesExample = file($arquivoExemplo);
+                $linesExample = file(PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploMetodo[$metodo]));
 
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($linesExample as $linha) {
                     $linha = htmlspecialchars($linha);
-                    
-                    # Exibe o número da linha
-                    echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinhaExemplo)."</span> ";
-                    
-                    # Exibe o código
                     echo $linha;
-                    
-                    # Incrementa o ~umero da linha
-                    $numLinhaExemplo++;
                 }
                 echo '</pre>';
+               # echo '</div>';
+                br();
             }
-            else{
-                echo 'Exemplo:';
-                $callout1 = new Callout();
-                $callout1->abre();
-                echo "Arquivo de exemplo não encontrado";
-                $callout1->fecha();
-            }
-            br();
-        }            
-        break;
-        
-    case "codigo" :
-        echo '<pre>';
-            
-        # Define o arquivo da classe
-        $arquivoExemplo = PASTA_CLASSES_GERAIS.rtrim($arquivoClasse).".php";
-        
-        # Exibe o nome do arquivo
-        echo str_repeat("#", 80);
-        br();
-        echo '# Arquivo:'.$arquivoExemplo;
-        br();       
-        echo str_repeat("#", 80);
-        br(2);
+            break;     
+    }
 
-        # variável que conta o número da linha
-        $numLinha = 1;
-        
-        # Verifica a existência do arquivo
-        if(file_exists($arquivoExemplo)){
-            $linesCodigo = file($arquivoExemplo);
+    $callout->fecha();
 
-            # Percorre o arquivo e guarda os dados em um array
-            foreach ($linesCodigo as $linha) {
-                $linha = htmlspecialchars($linha);
-                    
-                    # Exibe o número da linha
-                    echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinha)."</span> ";
-                    
-                    # Exibe o código
-                    echo $linha;
-                    
-                    # Incrementa o ~umero da linha
-                    $numLinha++;
-            }
-        }
-        else{
-            echo "Arquivo de exemplo não encontrado";
-        }
+    $grid2->fechaColuna();
+    $grid2->fechaGrid();
 
-        echo '</pre>';
-        break;
-    
-    default:
-        ### Método
-        echo '<div class="callout primary">';
-        
-        # Nome
-        echo '<h5> Método '.$nomeMetodo[$metodo].'</h5>';
-        
-        # Visibilidade
-        echo '<small>('.$visibilidadeMetodo[$metodo].')</small>';
-        
-        # Descrição
-        br(2);
-        echo $descricaoMetodo[$metodo];
-        
-        # Deprecated        
-        if((isset($deprecatedMetodo[$metodo])) AND ($deprecatedMetodo[$metodo])) {
-            br(2);
-            echo '<div class="callout alert">';
-            echo '<h6>DEPRECATED</h6> Este método deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.';
-            echo '</div>';
-        }
-        
-        hr();
-        
-        # Syntax do método
-        if(isset($syntaxMetodo[$metodo])){
-            echo 'Sintaxe:';
-            #echo '<div class="callout secondary">';
-            echo '<pre>'.$syntaxMetodo[$metodo].'</pre>';
-           # echo '</div>';
-            br();
-        }
-        
-        # Return
-        if(isset($retornoMetodo[$metodo])){
-          echo 'Valor Retornado:';
-          echo '<div class="callout secondary">';
-          echo $retornoMetodo[$metodo];
-          echo '</div>';
-        }
-        
-        # Nota
-        if(isset($notaMetodo[$metodo])){
-            $posicao = stripos($line,'@');
-            echo 'Nota:';
-            echo '<div class="callout warning">';
-            echo $notaMetodo[$metodo];
-            echo '</div>';
-        }
-      
-        # Parâmetros de um método
-        if(isset($parametrosMetodo[$metodo])){
-            echo 'Parâmetros:';
-
-            $tabela = new Tabela();
-            #array_shift($lista);     
-            $tabela->set_conteudo($parametrosMetodo[$metodo]);
-            $tabela->set_label(array('Nome','Tipo','Padrão','Descrição'));
-            $tabela->set_align(array("center","center","center","left"));
-            $tabela->set_width(array(10,10,10,60));
-            $tabela->show();
-        }
-        
-        # Exemplo
-        if(isset($exemploMetodo[$metodo])){
-            echo 'Exemplo:';
-            #echo '<div class="callout secondary">';
-            echo '<pre>';
-            $linesExample = file(PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploMetodo[$metodo]));
-            
-            # Percorre o arquivo e guarda os dados em um array
-            foreach ($linesExample as $linha) {
-                $linha = htmlspecialchars($linha);
-                echo $linha;
-            }
-            echo '</pre>';
-           # echo '</div>';
-            br();
-        }
-        break;     
+    $page->terminaPagina();
 }
-
-$callout->fecha();
-
-$grid2->fechaColuna();
-$grid2->fechaGrid();
-
-$page->terminaPagina();

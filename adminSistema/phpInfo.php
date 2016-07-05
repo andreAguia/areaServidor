@@ -5,6 +5,9 @@
  * By Alat
  */
 
+# Servidor logado 
+$idUsuario = null;
+
 # Configuração
 include ("_config.php");
 

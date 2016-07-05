@@ -5,12 +5,11 @@
  * By Alat
  */
 
-# Configurações
-include ("_config.php");
+# Servidor logado 
+$idUsuario = null;
 
-# Limpa as sessions
-set_session('intranet');            // Zera a session do usuário logado
-set_session('matriculaGrh');        // Zera a session da pesquisa do sistema grh
+# Configuração
+include ("_config.php");
 
 # Define a senha padrão de acordo com o que está nas variáveis
 $intra = new Intra();
@@ -77,9 +76,12 @@ switch ($fase)
 
         # Pega os dados digitados
         $usuario = post('usuario');
-        $senha = post('senha');
+        $senha = post('senha');        
         
-        $verifica = $intra->verificaLogin($usuario,$senha);  # pega situação do servidor
+        # Verifica o Login
+        $verifica = $intra->verificaLogin($usuario,$senha);
+        
+        
         #$diasAusentes = $intra->get_diasAusentes($usuario);	# pega número de dias ausentes do servidor
 
         # Exibe uma mensagem de aguarde
@@ -95,14 +97,17 @@ switch ($fase)
                 break;
 
             Case 1: // Login Correto
-                # Grava o último acesso
-                #S$servidor->gravar('ult_acesso',date("Y-m-d H:i:s"),$usuario,'tbfuncionario','matricula',false);
-
                 # Pega o ip da máquina que fez login
-                #$ip = getenv("REMOTE_ADDR");
+                $ip = getenv("REMOTE_ADDR");
+                
+                # Pega o idUsuario desse servidor
+                $idUsuario = $intra->get_idUsuario($usuario);
+                
+                # Grava o último acesso
+                #$intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
 
                 # Grava no log a atividade
-                #$intra->registraLog($usuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,1);
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,1);
 
                 # Verifica se o servidor está aniversariando hoje
                 #if($servidor->aniversariante($usuario))
@@ -116,13 +121,16 @@ switch ($fase)
                 alert('Sua Senha não é Segura !! Favor Alterar !');
                 
                 # Pega o ip da máquina que fez login
-                #$ip = getenv("REMOTE_ADDR");
+                $ip = getenv("REMOTE_ADDR");
+                
+                # Pega o idUsuario desse servidor
+                $idUsuario = $intra->get_idUsuario($usuario);
                 
                 # Grava o último acesso
-                #$servidor->gravar('ult_acesso',date("Y-m-d H:i:s"),$usuario,'tbfuncionario','matricula',false);
+                $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
 
                 # Grava no log a atividade        
-                #$intra->registraLog($usuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,1);
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,1);
 
                 #loadPage('areaServidor.php?fase=trocaSenhaSV&metodo=editar');
                 loadPage('../../grh/grhSistema/grh.php'); 

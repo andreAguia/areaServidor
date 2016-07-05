@@ -1,64 +1,74 @@
 <?php
 
+# Servidor logado 
+$idUsuario = null;
+
 # Configuração
 include ("_config.php");
 
-# Começa uma nova página
-$page = new Page();
-$page->iniciaPagina();
+# Permissão de Acesso
+$acesso = Verifica::acesso($idUsuario,1);
 
-# Cabeçalho
-AreaServidor::cabecalho();
+if($acesso)
+{    
 
-# Verifica a fase do programa
-$fase = get('fase');
+    # Começa uma nova página
+    $page = new Page();
+    $page->iniciaPagina();
 
-# Limita o tamanho da tela
-$grid = new Grid();
-$grid->abreColuna(12);
+    # Cabeçalho
+    AreaServidor::cabecalho();
 
-switch ($fase)
-{
-  case "Framework" :
-      $pasta = '../_diagramas/framework';
-      break;
+    # Verifica a fase do programa
+    $fase = get('fase');
 
-  case "Grh" :
-      $pasta = '../_diagramas/grh';
-      break;
-  
-  case "Administracao" :
-      $pasta = '../_diagramas/admin';
-      break;
-}
+    # Limita o tamanho da tela
+    $grid = new Grid();
+    $grid->abreColuna(12);
 
-botaoVoltar("documentacao.php");
+    switch ($fase)
+    {
+      case "Framework" :
+          $pasta = '../_diagramas/framework';
+          break;
 
-titulo('Diagramas');
+      case "Grh" :
+          $pasta = '../_diagramas/grh';
+          break;
 
-$callout = new Callout();
-$callout->abre();
-    echo '<dl>';
-    # Abre a pasta das Classes
-    $ponteiro  = opendir($pasta);
-    while ($arquivo = readdir($ponteiro)) {
-
-        # Desconsidera os diretorios 
-        if($arquivo == ".." || $arquivo == "."){
-            continue;
-        }
-
-        # Divide o nome do arquivos
-        $partesArquivo = explode('.',$arquivo);
-
-        echo '<dd><a href="'.$pasta.'/'.$partesArquivo[0].'.'.$partesArquivo[1].'" target="_blank">'.$partesArquivo[0].'</a></dd>';
+      case "Administracao" :
+          $pasta = '../_diagramas/admin';
+          break;
     }
 
-    echo '</dl>';
-    echo '</div>';
-$callout->fecha();
+    botaoVoltar("documentacao.php");
 
-$grid->fechaColuna();
-$grid->fechaGrid();
+    titulo('Diagramas');
 
-$page->terminaPagina();
+    $callout = new Callout();
+    $callout->abre();
+        echo '<dl>';
+        # Abre a pasta das Classes
+        $ponteiro  = opendir($pasta);
+        while ($arquivo = readdir($ponteiro)) {
+
+            # Desconsidera os diretorios 
+            if($arquivo == ".." || $arquivo == "."){
+                continue;
+            }
+
+            # Divide o nome do arquivos
+            $partesArquivo = explode('.',$arquivo);
+
+            echo '<dd><a href="'.$pasta.'/'.$partesArquivo[0].'.'.$partesArquivo[1].'" target="_blank">'.$partesArquivo[0].'</a></dd>';
+        }
+
+        echo '</dl>';
+        echo '</div>';
+    $callout->fecha();
+
+    $grid->fechaColuna();
+    $grid->fechaGrid();
+
+    $page->terminaPagina();
+}

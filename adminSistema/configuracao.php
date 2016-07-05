@@ -5,7 +5,7 @@
  * By Alat
  */
 
-# Reservado para o servidor logado
+# Servidor logado 
 $idUsuario = null;
 
 # Configuração
@@ -168,4 +168,3 @@ if($acesso)
 
     $page->terminaPagina();
 }
-?>
