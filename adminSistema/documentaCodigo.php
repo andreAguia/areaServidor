@@ -21,10 +21,35 @@ if($acesso)
 
     # Verifica a fase do programa
     $fase = get('fase');
-
+    
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
+    
+    # Botão voltar
+    $linkBotao1 = new Link("Voltar",'administracao.php');
+    $linkBotao1->set_class('button');
+    $linkBotao1->set_title('Volta para a página anterior');
+    $linkBotao1->set_accessKey('V');
+
+    # Banco de Dados
+    $linkBotao2 = new Link("Banco de Dados","documentaBd.php?fase=$fase");
+    $linkBotao2->set_class('button');
+    $linkBotao2->set_title('Exibe informações do banco de dados');
+    $linkBotao2->set_accessKey('B');
+    
+    # Diagramas
+    $linkBotao3 = new Link("Diagramas","documentaDiagrama.php?fase=$fase");
+    $linkBotao3->set_class('button');
+    $linkBotao3->set_title('Diagramas do sistema');
+    $linkBotao3->set_accessKey('D');
+
+    # Cria um menu
+    $menu = new MenuBar();
+    $menu->add_link($linkBotao1,"left");
+    $menu->add_link($linkBotao2,"right");
+    $menu->add_link($linkBotao3,"right");    
+    $menu->show();
 
     switch ($fase)
     {
@@ -43,8 +68,6 @@ if($acesso)
           $arquivoFuncao = PASTA_FUNCOES.'/funcoes.especificas.php';
           break;
     }
-
-    botaoVoltar("documentacao.php");
 
     # Topbar        
     $top = new TopBar($fase);
@@ -113,7 +136,7 @@ if($acesso)
         $posicaoParentesis = stripos($line,'(');
         $tamanhoNome = $posicaoParentesis - ($posicao+9);
 
-        echo '<a href="documentaFuncao.php?funcao='.substr($line, $posicao+9,$tamanhoNome).'">';
+        echo '<a href="documentaFuncao.php?sistema='.$fase.'&funcao='.substr($line, $posicao+9,$tamanhoNome).'">';
         echo substr($line, $posicao+9,$tamanhoNome);
         echo '</a>';
         br();

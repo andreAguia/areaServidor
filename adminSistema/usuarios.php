@@ -19,6 +19,9 @@ if($acesso)
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $pessoal = new Pessoal();
+    
+    # Define a senha padrão de acordo com o que está nas variáveis
+    define("SENHA_PADRAO",$intra->get_variavel('senha_padrao'));
 	
     # Verifica a fase do programa
     $fase = get('fase','listar');
@@ -72,10 +75,13 @@ if($acesso)
         $orderTipo = 'asc';
 
     # select da lista
-    $objeto->set_selectLista ('SELECT usuario,
+    $objeto->set_selectLista ('SELECT idUsuario,
+                                      usuario,
                                       idServidor,
                                       ultimoAcesso,
                                       obs,
+                                      idUsuario,
+                                      idUsuario,
                                       idUsuario
                                  FROM tbusuario
                                 WHERE usuario LIKE "%'.$parametro.'%"
@@ -95,29 +101,64 @@ if($acesso)
 
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
-    #$objeto->set_linkExcluir('?fase=excluir');
+    $objeto->set_linkExcluir('?fase=excluir');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("Usuário","Nome","Último Acesso", "Obs","Padrão"));
-    $objeto->set_width(array(10,30,10,30,5));
-    $objeto->set_align(array("center","left","center","left"));
+    $objeto->set_label(array("","Usuário","Nome","Último Acesso", "Obs","Padrão","Bloquear","Permissões"));
+    $objeto->set_width(array(5,10,30,10,30,5,5,5));
+    $objeto->set_align(array("center","center","left","center","left"));
 
-    $objeto->set_classe(array(null,"pessoal"));
-    $objeto->set_metodo(array(null,"get_nome"));
-    #$objeto->set_function(array(null,null,null,null,null,null,null,"get_lotacaoNumServidores"));
+    $objeto->set_classe(array("intra",null,"pessoal"));
+    $objeto->set_metodo(array("get_tipoSenha",null,"get_nome"));
+    $objeto->set_function(array (null,null,null,"datetime_to_php"));
     
-    # Botão da solicitação de férias
+    # Imagem Condicional (não funcionou) usando a função numtografic
+    $imageSenhaPadrao = new Imagem(PASTA_FIGURAS.'exclamation.png','Usuário com senha padrão.');
+    $imageAcessoBloqueado = new Imagem(PASTA_FIGURAS.'bloqueado2.png','Usuário Bloqueado.');
+    $imageSenhaOk = new Imagem(PASTA_FIGURAS.'accept.png','Usuário Habilitado.');    
+   
+    $objeto->set_imagemCondicional(array(array('coluna' => 0,
+                                               'valor' => 1,
+                                               'operador' => '=',
+                                               'imagem' => $imageSenhaPadrao),
+                                         array('coluna' => 0,
+                                               'valor' => 2,
+                                               'operador' => '=',
+                                               'imagem' => $imageAcessoBloqueado),
+                                         array('coluna' => 0,
+                                               'valor' => 3,
+                                               'operador' => '=',
+                                               'imagem' => $imageSenhaOk)));
+   
+    
+    
+    # Passar usuário para senha Padrão
     $botao1 = new BotaoGrafico();
     $botao1->set_title('Redefine para senha padrão');
     $botao1->set_label('');
-    $botao1->set_url('?fase=senhaPadrao&idSenhaPadrao=');
+    $botao1->set_url('?fase=senhaPadrao&idUsuarioSenhaPadrao=');
     #$botao1->set_confirma('Você deseja realmente redefinir esse senha para a senha padrão?');    
-    $botao1->set_image(PASTA_FIGURAS.'senha.png',20,20);;
+    $botao1->set_image(PASTA_FIGURAS.'senha.png',20,20);
+    
+    # Bloquear usuário    
+    $botao2 = new BotaoGrafico();
+    $botao2->set_title('Bloqueia o acesso desse servidor a área do servidor. (passa a senha para null)');
+    $botao2->set_label('');
+    $botao2->set_url('?fase=bloquear&idUsuarioBloqueado=');
+    #$botao1->set_confirma('Você deseja realmente bloquear o acesso desse servidor a área do servidor?');
+    $botao2->set_image(PASTA_FIGURAS.'bloquear.png',20,20);
+    
+    # Permisões    
+    $botao3 = new BotaoGrafico();
+    $botao3->set_title('Gerencia as permissões do usuário');
+    $botao3->set_label('');
+    $botao3->set_url('?fase=permissoes&idUsuarioPermissao=');
+    $botao3->set_image(PASTA_FIGURAS.'group_edit.png',20,20);
     
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array("","","","",$botao1));	
+    $objeto->set_link(array(null,null,null,null,null,$botao1,$botao2,$botao3));	
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -181,19 +222,39 @@ if($acesso)
 
         case "senhaPadrao" :
             # Pega o usuário que vai alterar senha
-            $idSenhaPadrao = get('idSenhaPadrao');
+            $idUsuarioSenhaPadrao = get('idUsuarioSenhaPadrao');
             
             # Troca a senha
-            $intra->set_senha($idSenhaPadrao);
+            $intra->set_senha($idUsuarioSenhaPadrao);
             
             # Pega o idServidor desse usuário
-            $idServidorSenhaPadrao = $intra->get_idServidor($idSenhaPadrao);
+            $idServidorSenhaPadrao = $intra->get_idServidor($idUsuarioSenhaPadrao);
 
             # Grava no log a atividade
             $log = new Intra();
             $data = date("Y-m-d H:i:s");
             $atividade = 'Passou '.$idServidorSenhaPadrao.' para senha padrão';
-            $log->registraLog($idSenhaPadrao,$data,$atividade,'tbservidor',$idServidorSenhaPadrao);
+            $log->registraLog($idUsuario,$data,$atividade,'tbservidor',$idServidorSenhaPadrao);
+
+            loadPage('?fase=listar');
+
+            break;
+        
+        ###################################################################	
+        # Bloquear accesso
+
+        case "bloquear" :
+            # Pega o usuário que vai alterar senha
+            $idUsuarioBloqueado = get('idUsuarioBloqueado');
+            
+            # Troca a senha
+            $intra->set_senhaNull($idUsuarioBloqueado);
+
+            # Grava no log a atividade
+            $log = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $atividade = 'Bloqueou acesso de '.$idUsuarioBloqueado;
+            $log->registraLog($idUsuario,$data,$atividade,'tbfuncionario',$idUsuarioBloqueado);
 
             loadPage('?fase=listar');
 

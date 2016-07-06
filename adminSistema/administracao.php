@@ -24,8 +24,8 @@ if($acesso)
     set_session('origem'); 
 
     # Verifica a fase do programa
-    $fase = get('fase','menu');         # Qual a classe
-    $metodo = get('metodo','menu');	# Qual o método da classe
+    $fase = get('fase','menu'); # Qual a fase
+    $metodo = get('sistema');	# Qual o sistema. Usado na rotina de Documentação
 
     # Ordem da tabela
     $orderCampo = get('orderCampo');
@@ -39,19 +39,16 @@ if($acesso)
     # Cabeçalho
     AreaServidor::cabecalho();
     
-     # Limita o tamanho da tela
-     $grid = new Grid();
-     $grid->abreColuna(12);
-
-    botaoVoltar('../../grh/grhSistema/grh.php');
-    titulo('Administração dos Sistemas');
-    
     switch ($fase)
     {	
         # Exibe o Menu Inicial
-        case "menu" :            
-            #AreaServidor::listaOcorrencias($idUsuario);            
-            Administracao::menu($idUsuario);            
+        case "menu" :       
+            Administracao::menu();            
+            break;
+        
+        # Exibe o Menu de Documentação
+        case "documentacao" :          
+            Administracao::menuDocumentacao();            
             break;
     }
 }

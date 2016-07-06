@@ -11,8 +11,10 @@ $idUsuario = null;
 # Configuração
 include ("_config.php");
 
-# Define a senha padrão de acordo com o que está nas variáveis
+# Conecta ao Banco de Dados
 $intra = new Intra();
+
+# Define a senha padrão de acordo com o que está nas variáveis
 define("SENHA_PADRAO",$intra->get_variavel('senha_padrao'));
 
 # Verifica a fase do programa
@@ -79,8 +81,7 @@ switch ($fase)
         $senha = post('senha');        
         
         # Verifica o Login
-        $verifica = $intra->verificaLogin($usuario,$senha);
-        
+        $verifica = $intra->verificaLogin($usuario,$senha);        
         
         #$diasAusentes = $intra->get_diasAusentes($usuario);	# pega número de dias ausentes do servidor
 

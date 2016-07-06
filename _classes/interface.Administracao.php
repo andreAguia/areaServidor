@@ -15,20 +15,32 @@
     * 
     * @param $idUsuario integer Informa o usuario logado para exibir ou não alguns menus
     */
-    public static function menu($idUsuario)
+    public static function menu()
     {
         /**
          * Menu de Administração
          */
         
+        # Limita o tamanho da tela
+        $grid = new Grid();
+        $grid->abreColuna(12);
+
+            botaoVoltar('../../grh/grhSistema/grh.php');
+            titulo('Administração');
+       
+        $grid->fechaColuna();
+        $grid->fechaGrid();  
+        
+        # Define o tamanho do ícone
         $tamanhoImage = 60;
         $permissao = new Intra();
         
-        # Limita o tamanho da tela
+        # Cria o grid
         $grid = new Grid();
+        
+        # Área de Gestão de Usuários
         $grid->abreColuna(12,6);
-
-        $fieldset = new Fieldset('Geral');
+        $fieldset = new Fieldset('Gestão de Usuários');
         $fieldset->abre();
         
             $menu = new MenuGrafico(4);
@@ -41,12 +53,12 @@
             $botao->set_title('Gerencia os Usuários na Intranet');
             $menu->add_item($botao);
             
-            # Variáveis de Configuração
+            # Regras
             $botao = new BotaoGrafico();
-            $botao->set_label('Configurações');
-            $botao->set_url('configuracao.php');
-            $botao->set_image(PASTA_FIGURAS.'configuracao.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
+            $botao->set_label('Regras');
+            $botao->set_url('regras.php');
+            $botao->set_image(PASTA_FIGURAS.'regras.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Cadastro de Regras');
             $menu->add_item($botao);
             
             # Histórico Geral
@@ -56,14 +68,74 @@
             $botao->set_image(PASTA_FIGURAS.'historico.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('historico.php');
             $menu->add_item($botao);
-
-            # Documentação
+            
+            $menu->show();
+            
+        $fieldset->fecha();
+        $grid->fechaColuna();
+        
+        # Área de Configuração
+        $grid->abreColuna(12,6);
+        $fieldset = new Fieldset('Configuração');
+        $fieldset->abre();
+        
+            $menu = new MenuGrafico(4);
+            
+            # Variáveis de Configuração
             $botao = new BotaoGrafico();
-            $botao->set_label('Documentação');
-            $botao->set_title('Documentação do Sistema');
-            $botao->set_image(PASTA_FIGURAS.'documentacao.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('documentacao.php');
+            $botao->set_label('Configurações');
+            $botao->set_url('configuracao.php');
+            $botao->set_image(PASTA_FIGURAS.'configuracao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
             $menu->add_item($botao);
+            
+            $menu->show();
+            
+        $fieldset->fecha();
+        $grid->fechaColuna();
+        
+        # Documentação
+        $grid->abreColuna(12,6);
+        $fieldset = new Fieldset('Documentação');
+        $fieldset->abre();
+            
+            $menu = new MenuGrafico(4);
+
+            # Framework
+            $botao = new BotaoGrafico();
+            $botao->set_label('FrameWork');
+            $botao->set_title('Documentação do Framework');
+            $botao->set_image(PASTA_FIGURAS.'framework.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentaCodigo.php?fase=Framework');
+            $menu->add_item($botao);
+            
+            # Administração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Administração');
+            $botao->set_title('Documentação da Área de Administração');
+            $botao->set_image(PASTA_FIGURAS.'administracao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentaCodigo.php?fase=Administracao');
+            $menu->add_item($botao);
+            
+            # Sistema de Pessoal
+            $botao = new BotaoGrafico();
+            $botao->set_label('Pessoal');
+            $botao->set_title('Documentação do Sistema de Pessoal');
+            $botao->set_image(PASTA_FIGURAS.'servidores.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentaCodigo.php?fase=Grh');
+            $menu->add_item($botao);
+            
+            $menu->show();
+        
+        $fieldset->fecha();
+        $grid->fechaColuna();
+        
+        # Servidor
+        $grid->abreColuna(12,6);
+        $fieldset = new Fieldset('Servidor');
+        $fieldset->abre();
+        
+            $menu = new MenuGrafico(4);
             
             # Informação do PHP
             $botao = new BotaoGrafico();
@@ -87,14 +159,24 @@
             $botao->set_title('Executa a rotina de importação');
             $botao->set_image(PASTA_FIGURAS.'importacao.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('importacao.php');
+            #$menu->add_item($botao);
+            
+            # PhpMyAdmin
+            $botao = new BotaoGrafico();
+            $botao->set_label('PhpMyAdmin');
+            $botao->set_title('Executa o PhpMyAdmin');
+            $botao->set_target('_blank');
+            $botao->set_image(PASTA_FIGURAS.'mysql.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('http://localhost/phpmyadmin');
             $menu->add_item($botao);
             
             $menu->show();
-            $fieldset->fecha();
-        
-        
+            
+        $fieldset->fecha();        
         $grid->fechaColuna();
-        $grid->abreColuna(0,6);
+        
+        
+        $grid->abreColuna(12,6);
         $fieldset = new Fieldset('Sistema de Gestão de Pessoas');
         $fieldset->abre();
         
@@ -155,4 +237,141 @@
         $grid->fechaColuna();
         $grid->fechaGrid();        
     }
+    
+    ##########################################################
+    
+    public static function menuDocumentacao($sistema)
+    {
+        /**
+         * Menu de Documentação
+         */
+        
+        # Limita o tamanho da tela
+        $grid = new Grid();
+        $grid->abreColuna(12);
+
+            botaoVoltar("administracao.php");
+            titulo('Documentação dos Sistemas');
+       
+        $grid->fechaColuna();
+        $grid->fechaGrid();  
+        
+        # Define o tamanho do ícone
+        $tamanhoImage = 60;
+
+        # Cria 3 colunas
+        $grid = new Grid();
+
+        $grid->abreColuna(4);
+        $fieldset = new Fieldset('Framework');
+        $fieldset->abre();
+
+            $menu = new MenuGrafico(3);
+
+            # Código
+            $botao = new BotaoGrafico();
+            $botao->set_label('Código');
+            $botao->set_url('documentaCodigo.php?fase=Framework');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Classes e Funções');
+            $menu->add_item($botao);
+
+            # Variáveis de Configuração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Banco de Dados');
+            $botao->set_url('documentaBd.php?fase=Framework');
+            $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Exibe informações do banco de dados');
+            $menu->add_item($botao);
+
+            # Histórico Geral
+            $botao = new BotaoGrafico();
+            $botao->set_label('Diagrama');
+            $botao->set_url('documentaDiagrama.php?fase=Framework');
+            $botao->set_title('Diagramas do sistema');
+            $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
+            $menu->add_item($botao);
+
+            $menu->show();
+
+        $fieldset->fecha();
+        $grid->fechaColuna();
+
+
+        $grid->abreColuna(4);
+        $fieldset = new Fieldset('Administração');
+        $fieldset->abre();
+
+            $menu = new MenuGrafico(3);
+
+            # Código
+            $botao = new BotaoGrafico();
+            $botao->set_label('Código');
+            $botao->set_url('documentaCodigo.php?fase=Administracao');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Classes e Funções');
+            $menu->add_item($botao);
+
+            # Variáveis de Configuração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Banco de Dados');
+            $botao->set_url('documentaBd.php?fase=Administracao');
+            $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Exibe informações do banco de dados');
+            $menu->add_item($botao);
+
+            # Histórico Geral
+            $botao = new BotaoGrafico();
+            $botao->set_label('Diagrama');
+            $botao->set_url('documentaDiagrama.php?fase=Administracao');
+            $botao->set_title('Diagramas do sistema');
+            $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
+            $menu->add_item($botao);
+
+            $menu->show();
+
+        $fieldset->fecha();
+        $grid->fechaColuna();
+
+        $grid->abreColuna(4);
+        $fieldset = new Fieldset('GRH');
+        $fieldset->abre();
+
+            $menu = new MenuGrafico(3);
+
+            # Código
+            $botao = new BotaoGrafico();
+            $botao->set_label('Código');
+            $botao->set_url('documentaCodigo.php?fase=Grh');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Classes e Funções');
+            $menu->add_item($botao);
+
+            # Variáveis de Configuração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Banco de Dados');
+            $botao->set_url('documentaBd.php?fase=Grh');
+            $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Exibe informações do banco de dados');
+            $menu->add_item($botao);
+
+            # Histórico Geral
+            $botao = new BotaoGrafico();
+            $botao->set_label('Diagrama');
+            $botao->set_url('documentaDiagrama.php?fase=Grh');
+            $botao->set_title('Diagramas do sistema');
+            $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
+            $menu->add_item($botao);
+
+            $menu->show();
+
+        $fieldset->fecha();
+        $grid->fechaColuna();
+        $grid->fechaGrid();
+
+        $grid->fechaColuna();
+        $grid->fechaGrid();
+    }
+
+        
 }

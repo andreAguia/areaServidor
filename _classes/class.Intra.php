@@ -163,7 +163,12 @@ class Intra extends Bd
             $idUsuario = $this->get_idUsuario($usuario);
             $senhaServidor = $this->get_senha($idUsuario);
             
-            # Verifica se a senha é nula
+            # Verifica se o usuário existe
+            if(is_null($idUsuario)){
+                return 0;
+            }
+            
+            # Verifica se a senha é nula. Seja pq nâo foi digitada ou pq o usuário está desabilitado.
             if(is_null($senhaServidor)){
                 return 0;
             }
@@ -227,19 +232,74 @@ class Intra extends Bd
 	 */
 	public function set_senha($idUsuario,$senha = NULL,$alert = true)
 	{
-            # Define a senha padrão de acordo com o que está nas variáveis
-            define("SENHA_PADRAO",$this->get_variavel('senha_padrao'));
+            # Verifica se a senha foi informada
+            if (is_null($senha)){
+                # Define a senha com senha padrão
+                $senha = SENHA_PADRAO;
+                
+                # Grava o acesso para o controle de dias com senha padrão
+                parent::gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
+            }			
+            #criptografa a senha
+            $senha = md5($senha);
             
-            # Grava a data quando � para senha padr�o (para controle dos 2 dias)
-		if (is_null($senha))
-			parent::gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false); 
-			
-		$senha = md5($senha);
-		parent::gravar('senha',$senha,$idUsuario,'tbusuario','idUsuario',$alert);
+            # Grava a senha
+            parent::gravar('senha',$senha,$idUsuario,'tbusuario','idUsuario',$alert);
 	}
 	
-	###########################################################
-  
+        ###########################################################
+	
+	/**
+	 * M�todo set_senha
+	 * muda a senha de um usu�rio
+	 * 
+	 * @param	string 	$idUsuario 	-> o usuario
+	 * @param 	string	$senha		-> senha (n�o criptofrafada) a ser gravada (se nulo grava-se a senha padr�o)
+	 */
+	public function set_senhaNull($idUsuario,$alert = true)
+	{
+            # Grava a senha
+            parent::gravar('senha',NULL,$idUsuario,'tbusuario','idUsuario',$alert);
+	}
+	
+        ###########################################################
+        
+	/**
+     * Método get_tipoSenha
+     * Informa o tipo da senha (padrão/bloqueada/Ok) 
+     * 
+     * @param	string $idUsuario	o usuario
+     */
+
+    function get_tipoSenha($idUsuario)
+    { 
+
+        $select = "SELECT senha		  
+                         FROM tbusuario
+                        WHERE idUsuario = ".$idUsuario;
+        
+        $result = parent::select($select,false);
+        $padrao = MD5(SENHA_PADRAO);
+        
+        switch ($result[0])
+        {
+            # senha padrão
+            case $padrao :
+                return 1;
+                break;
+            
+            # senha bloqueada
+            case NULL :
+                return 2;
+                break;
+
+            # senha ok
+            default:
+                return 3;
+                break;
+        }
+    }
+  ###########################################################
 	/**
 	 * M�todo get_senha
 	 * Informa a senha (criptografada) 
@@ -252,7 +312,7 @@ class Intra extends Bd
                          FROM tbusuario
                         WHERE usuario = '".$usuario."'";
             
-            # verifica se a matricula foi informada
+            # verifica se foi informado o usuário
             if(is_null($usuario))
                 return 0;
             else
@@ -354,6 +414,25 @@ class Intra extends Bd
     }
     
     ###########################################################
+	
+    function get_numeroUsuariosPermissao($idRegra)
+
+    /**
+    * informa o número de Usuarios com permissão a uma regra
+    * 
+    * @param string $idRegra id da regra
+    */
+    
+    {
+        $select = 'SELECT idUsuario
+                     FROM tbpermissao
+                    WHERE idRegra = '.$idRegra;		
+
+        $count = parent::count($select);
+        return $count;
+    }
+
+###########################################################
 
 
     /**

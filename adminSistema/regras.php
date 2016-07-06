@@ -50,13 +50,13 @@ if($acesso)
     ################################################################
 
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome('Regras e Permissões');
+    $objeto->set_nome('Regras');
 
     # botão salvar
     $objeto->set_botaoSalvarGrafico(false);
 
     # botão de voltar da lista   
-    $objeto->set_voltarLista('usuarios.php');
+    $objeto->set_voltarLista('administracao.php');
 
     # ordenação
     if(is_null($orderCampo))
@@ -71,8 +71,8 @@ if($acesso)
     $objeto->set_orderChamador('?fase=listar');
     
     # Parametros da tabela
-    $objeto->set_label(array("Num","Nome","Descrição","Servidores","Ver","Visível?"));
-    $objeto->set_width(array(5,25,40,10,5,5));		
+    $objeto->set_label(array("Num","Nome","Descrição","Servidores","Ver"));
+    $objeto->set_width(array(5,25,40,10,5));		
     $objeto->set_align(array("center","left","left"));
 
     # select da lista
@@ -80,8 +80,7 @@ if($acesso)
                                      nome,
                                      descricao,
                                      idRegra,
-                                     idRegra,
-                                     IF(visivel,"Sim","Não")
+                                     idRegra
                                 FROM tbregra
                             ORDER BY '.$orderCampo.' '.$orderTipo);	
 
@@ -110,7 +109,7 @@ if($acesso)
     $objeto->set_linkListar('?fase=listar');    
 
     $objeto->set_classe(array(null,null,null,"Intra"));
-    $objeto->set_metodo(array(null,null,null,"get_numeroServidoresPermissao")); 
+    $objeto->set_metodo(array(null,null,null,"get_numeroUsuariosPermissao")); 
 
     # Botão de exibição dos servidores com permissão a essa regra
     $botao = new BotaoGrafico();
@@ -144,16 +143,7 @@ if($acesso)
                             'required' => true,
                             'title' => 'Nome da Regra.',                            
                             'col' => 8,
-                            'linha' => 1),
-                    array ( 'nome' => 'visivel',
-                            'label' => 'Visivel:',
-                            'tipo' => 'combo',
-                            'array' => array(array(1,"Sim"),array(0,"Não")),
-                            'title' => 'Se é Visível ou não',
-                            'padrao' => 0,
-                            'size' => 10,
-                            'col' => 4,
-                            'linha' => 1),        
+                            'linha' => 1),     
                     array ( 'nome' => 'descricao',
                             'label' => 'Descrição:',
                             'tipo' => 'textarea',
@@ -165,8 +155,8 @@ if($acesso)
 
     $objeto->set_campos($campos);
 
-    # Matrícula para o Log
-    $objeto->set_matricula($matricula);
+    # Log
+    $objeto->set_idUsuario($idUsuario);
 
     ################################################################
     switch ($fase)
@@ -193,32 +183,33 @@ if($acesso)
         case "servidoresPermissao":
             # Informa os servidores com essa permissão
             $callout = new Callout();
+            $callout->set_botaoFechar(TRUE);
             $callout->abre();
+                br();
                 titulo('Permissões');
             
                 # Monta a tabela        
-                $select = 'SELECT tbpermissao.matricula,
-                                  pessoal.tbpessoa.nome,
-                                  tbpermissao.matricula,							  
-                                  tbpermissao.matricula,
-                                  idpermissao
-                             FROM tbpermissao JOIN pessoal.tbfuncionario on(tbpermissao.matricula = pessoal.tbfuncionario.matricula)
-                                              JOIN pessoal.tbpessoa on(pessoal.tbfuncionario.idPessoa = pessoal.tbpessoa.idPessoa)
-                            WHERE idregra = '.$id.'
-                         ORDER BY pessoal.tbpessoa.nome';
+                $select = 'SELECT tbusuario.usuario,
+                                  tbusuario.idServidor,
+                                  tbusuario.idServidor,
+                                  tbusuario.idServidor,
+                                  idPermissao
+                             FROM tbpermissao JOIN tbusuario ON(tbpermissao.idUsuario = tbusuario.idUsuario)
+                            WHERE tbpermissao.idregra = '.$id.'
+                         ORDER BY tbusuario.usuario';
                 $result = $intra->select($select,true);
                 $tabela = new tabela();
                 $tabela->set_conteudo($result);
-                $tabela->set_label(array("Matricula","Nome","Lotação","Cargo"));
-                $tabela->set_width(array(10,25,30,30));
-                $tabela->set_align(array("center","left","center","left"));
-                $tabela->set_funcao(array('dv'));
+                $tabela->set_label(array("Usuário","Nome","Cargo","Lotação"));
+                $tabela->set_width(array(10,30,30,20));
+                $tabela->set_align(array("center"));
                 
-                $tabela->set_classe(array(null,null,"Pessoal","Pessoal"));
-                $tabela->set_metodo(array(null,null,'get_lotacao','get_cargo')); 
+                #$tabela->set_funcao(array('dv'));
+                $tabela->set_classe(array(null,"Pessoal","Pessoal","Pessoal"));
+                $tabela->set_metodo(array(null,'get_nome','get_cargo','get_lotacao')); 
     
                 $tabela->set_excluir('?fase=excluirPermissao');
-                $tabela->set_idCampo('idpermissao');
+                $tabela->set_idCampo('idPermissao');
 
                 if(count($result) == 0){        
                     p('<br/><br/>Não há Servidores.<br/><br/>','center');

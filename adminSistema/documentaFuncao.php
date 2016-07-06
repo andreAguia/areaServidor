@@ -55,7 +55,7 @@ if($acesso)
     $linkBotao1->set_accessKey('V');
 
     # Botão codigo
-    $linkBotao2 = new Link("Código","?funcao=$funcao&fase=codigo");
+    $linkBotao2 = new Link("Código","?sistema=$sistema&funcao=$funcao&fase=codigo");
     if($fase == "codigo"){
         $linkBotao2->set_class('disabled button');
     }

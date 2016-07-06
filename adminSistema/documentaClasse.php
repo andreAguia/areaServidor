@@ -49,7 +49,7 @@ if($acesso)
     # Botão voltar
     switch ($metodo){
         case NULL :
-            $linkBotao1 = new Link("Voltar",'?documentacao.php?sistema='.$sistema);
+            $linkBotao1 = new Link("Voltar",'documentaCodigo.php?fase='.$sistema);
             break;
         case "codigo":
             $linkBotao1 = new Link("Voltar",'documentaCodigo.php?metodo=codigo&sistema='.$sistema);

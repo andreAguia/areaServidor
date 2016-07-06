@@ -21,6 +21,38 @@ if($acesso)
 
     # Verifica a fase do programa
     $fase = get('fase');
+    
+    # Limita o tamanho da tela
+    $grid = new Grid();
+    $grid->abreColuna(12);
+    
+    # Botão voltar
+    $linkBotao1 = new Link("Voltar",'administracao.php');
+    $linkBotao1->set_class('button');
+    $linkBotao1->set_title('Volta para a página anterior');
+    $linkBotao1->set_accessKey('V');
+
+    # Código
+    $linkBotao2 = new Link("Código","documentaCodigo.php?fase=$fase");
+    $linkBotao2->set_class('button');
+    $linkBotao2->set_title('Classes e Funções');
+    $linkBotao2->set_accessKey('C');
+    
+    # Banco de Dados
+    $linkBotao3 = new Link("Banco de Dados","documentaBd.php?fase=$fase");
+    $linkBotao3->set_class('button');
+    $linkBotao3->set_title('Exibe informações do banco de dados');
+    $linkBotao3->set_accessKey('B');
+
+    # Cria um menu
+    $menu = new MenuBar();
+    $menu->add_link($linkBotao1,"left");
+    $menu->add_link($linkBotao2,"right");
+    $menu->add_link($linkBotao3,"right");    
+    $menu->show();
+    
+    $grid->fechaColuna();
+    $grid->fechaGrid();
 
     # Limita o tamanho da tela
     $grid = new Grid();
@@ -40,10 +72,11 @@ if($acesso)
           $pasta = '../_diagramas/admin';
           break;
     }
-
-    botaoVoltar("documentacao.php");
-
-    titulo('Diagramas');
+    
+    # Topbar        
+    $top = new TopBar('Diagramas');
+    $top->show();
+    br();
 
     $callout = new Callout();
     $callout->abre();
