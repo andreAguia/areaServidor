@@ -114,7 +114,7 @@ if($acesso)
     $objeto->set_metodo(array("get_tipoSenha",null,"get_nome"));
     $objeto->set_function(array (null,null,null,"datetime_to_php"));
     
-    # Imagem Condicional (não funcionou) usando a função numtografic
+    # Imagem Condicional 
     $imageSenhaPadrao = new Imagem(PASTA_FIGURAS.'exclamation.png','Usuário com senha padrão.');
     $imageAcessoBloqueado = new Imagem(PASTA_FIGURAS.'bloqueado2.png','Usuário Bloqueado.');
     $imageSenhaOk = new Imagem(PASTA_FIGURAS.'accept.png','Usuário Habilitado.');    

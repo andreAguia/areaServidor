@@ -69,27 +69,11 @@ div#divPermissao{
  * Histórico
  *******************************************/
 tr#logLogin{
-    background-color:#CCFF99;
+    background-color:#ccffcc;
 }
 
-tr#logRelatorio{
-    background-color:#EEE8AA;
-}
-
-tr#logGrh{
-    background-color:pink;
-}
-
-tr#logGti{
-    background-color:cornflowerblue;
-}
-
-tr#logProcesso{
-    background-color:khaki;
-}
-
-tr#logOutros{
-    background-color:#E0E0E0;
+tr#logExclusao{
+    background-color:#ffdcc3;
 }
 
 div#divContagemExterna{

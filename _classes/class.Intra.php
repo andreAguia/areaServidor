@@ -445,13 +445,14 @@ class Intra extends Bd
      * @param	$atividade		string		um texto exibindo a ação Inserir/Editar/Excluir/Login
      * @param	$tabela			string		a tabela que sofreu o evento
      * @param	$idValor		string		o id quando do registro
+     * @param	$idServidor		integer		o idServdor 
      * @param	$tipo			integer		o tipo de atividade
-	 * @param	$ip				string		o ip da máquina que fez a atividade
-	 * @param	$browser		string		o browser usado pelo usuário
-	 * @param	$idAuxiliar		integer		guarda o id de uma tabela auxiliar (quando necessário) Ex. usado para guardar o id do processo quando log de movimento do processo	 
+    * @param	$ip				string		o ip da máquina que fez a atividade
+    * @param	$browser		string		o browser usado pelo usuário
+	 
     */
 
-    public function registraLog($idUsuario,$data,$atividade,$tabela=null,$idValor=null,$tipo=0,$ip=null,$browser=null,$idAuxiliar=null)
+    public function registraLog($idUsuario,$data,$atividade,$tabela=null,$idValor=null,$tipo=0,$idServidor = null,$ip=null,$browser=null)
     {
         # Verifica o tipo do log
         switch ($tabela)
@@ -478,8 +479,8 @@ class Intra extends Bd
         }
 
         
-        $campos = array('idUsuario','data','atividade','tabela','idValor','ip','browser','tipo','idAuxiliar');
-        $valor = array($idUsuario,$data,$atividade,$tabela,$idValor,IP,BROWSER_NAME.' '.BROWSER_VERSION,$tipo,$idAuxiliar);
+        $campos = array('idUsuario','data','atividade','tabela','idValor','tipo','idServidor','ip','browser');
+        $valor = array($idUsuario,$data,$atividade,$tabela,$idValor,$tipo,$idServidor,IP,BROWSER_NAME.' '.BROWSER_VERSION);
         parent::gravar($campos,$valor,null,'tblog','idlog',false);
     }
 

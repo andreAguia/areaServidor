@@ -105,10 +105,10 @@ switch ($fase)
                 $idUsuario = $intra->get_idUsuario($usuario);
                 
                 # Grava o último acesso
-                #$intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
+                $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
 
                 # Grava no log a atividade
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,1);
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,0);
 
                 # Verifica se o servidor está aniversariando hoje
                 #if($servidor->aniversariante($usuario))
@@ -131,7 +131,7 @@ switch ($fase)
                 $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
 
                 # Grava no log a atividade        
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,1);
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,0);
 
                 #loadPage('areaServidor.php?fase=trocaSenhaSV&metodo=editar');
                 loadPage('../../grh/grhSistema/grh.php'); 

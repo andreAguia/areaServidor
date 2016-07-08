@@ -12,7 +12,7 @@ $idUsuario = null;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,1);
+$acesso = Verifica::acesso($idUsuario,2);
 
 if($acesso)
 {    
@@ -25,6 +25,9 @@ if($acesso)
 
     # pega o id se tiver)
     $id = soNumeros(get('id'));
+    
+    # pega o idServidor (se tiver) quando for exibir somente o histórico de um servidor
+    $idServidor = soNumeros(get('idServidor'));
 
     # Pega o parametro de pesquisa (se tiver)
     if(HTML5)
@@ -32,8 +35,8 @@ if($acesso)
     else
         $parametro = retiraAspas(post('parametro',get('parametro',date("d/m/Y"))));
     
-    $servidorLog = post('servidorLog','*');
-    $servidorIp = post('servidorIp','*');
+    $usuarioLog = post('usuarioLog','*');
+    $usuarioIp = post('usuarioIp','*');
     
     # Aparentemente a rotina acima só funciona a contento no chrome
     # Como é uma rotina de acesso restrito deixei para avaliar esse problema depois
@@ -60,7 +63,11 @@ if($acesso)
     $objeto->set_nome('Log');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    if(is_null($idServidor)){
+        $objeto->set_voltarLista('administracao.php');
+    }else{
+        $objeto->set_voltarLista('../../grh/grhSistema/servidorMenu.php');
+    }
 
     # select da lista
     $selectLista = 'SELECT tipo,
@@ -69,20 +76,32 @@ if($acesso)
                            ip,
                            tabela,
                            idValor,
+                           tblog.idServidor,
                            atividade,                                      
                            idlog
                       FROM tblog JOIN tbusuario ON(tblog.idUsuario = tbusuario.idUsuario)
                                  JOIN grh.tbservidor ON(tbusuario.idServidor = grh.tbservidor.idServidor)
                                  JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
-                     WHERE date(data) = "'.$parametro.'"';
+                     WHERE ';
     
-    if($servidorLog <> "*")
-        $selectLista .=' AND idServidor = "'.$servidorLog.'"';
+    # Data
+   if (is_null($idServidor)){
+        $selectLista .=' date(data) = "'.$parametro.'"';
+   }else{
+        $selectLista .=' tblog.idServidor = '.$idServidor;
+    }
     
-    if($servidorIp <> "*")
-        $selectLista .=' AND ip = "'.$servidorIp.'"';
+    # idServidor
+    if($usuarioLog <> "*")
+        $selectLista .=' AND idServidor = "'.$usuarioLog.'"';
+    
+    # IP
+    if($usuarioIp <> "*")
+        $selectLista .=' AND ip = "'.$usuarioIp.'"';
+    
+    
        
-    $selectLista .=' ORDER BY 8 desc';
+    $selectLista .=' ORDER BY 9 desc';
     
     $objeto->set_selectLista ($selectLista);
 
@@ -101,69 +120,50 @@ if($acesso)
     $objeto->set_botaoIncluir(false);
 
     # Parametros da tabela
-    $objeto->set_label(array("","Usuário","Data","IP","Tabela","Id","Atividade"));
-    $objeto->set_width(array(1,10,10,10,10,5,40));		
-    $objeto->set_align(array("center","center","center","center","center","center","left"));
+    $objeto->set_label(array("","Usuário","Data","IP","Tabela","Id","IdServidor","Atividade"));
+    $objeto->set_width(array(5,10,10,5,10,5,5,40));		
+    $objeto->set_align(array("center","center","center","center","center","center","center","left"));
+    $objeto->set_zebrado(false);   
     $objeto->set_function(array (null,null,"datetime_to_php"));
     $objeto->set_formatacaoCondicional(array( array('coluna' => 0,
                                                     'valor' => 0,
                                                     'operador' => '=',
-                                                    'id' => 'logOutros'),
-                                              array('coluna' => 0,
-                                                    'valor' => 1,
-                                                    'operador' => '=',
-                                                    'id' => 'logLogin'),
-                                              array('coluna' => 0,
-                                                    'valor' => 2,
-                                                    'operador' => '=',
-                                                    'id' => 'logRelatorio'),
+                                                    'id' => 'logLogin'),                                              
                                               array('coluna' => 0,
                                                     'valor' => 3,
                                                     'operador' => '=',
-                                                    'id' => 'logGrh'),
-                                              array('coluna' => 0,
-                                                    'valor' => 4,
-                                                    'operador' => '=',
-                                                    'id' => 'logGti'),
-                                             array('coluna' => 0,
-                                                    'valor' => 5,
-                                                    'operador' => '=',
-                                                    'id' => 'logProcesso')
+                                                    'id' => 'logExclusao')
+                                              
                                                     ));
     
     # Imagem Condicional
-    $imagemLogin = new Imagem(PASTA_FIGURAS.'login.gif','Usuário efetuou o login',15,15);
-    $imagemRelatorio = new Imagem(PASTA_FIGURAS.'printer.png','Usuário Visualizou um Relatório',15,15);
-    $imagemGti = new Imagem(PASTA_FIGURAS.'logGti.png','',15,15);
-    $imagemGrh = new Imagem(PASTA_FIGURAS.'logGrh.png','Cadastro de Pessoal',15,15);
-    $imagemProcesso = new Imagem(PASTA_FIGURAS.'logProcesso.png','Cadastro de Processo',15,15);
-    $imagemOutros = new Imagem(PASTA_FIGURAS.'logOutros.png','Log',15,15);
-    
+    $imagemLogin = new Imagem(PASTA_FIGURAS.'login.png','Usuário efetuou o login',15,15);
+    $imagemInclusao = new Imagem(PASTA_FIGURAS.'logInclusao.png','Inclusão de Registro',15,15);
+    $imagemAlterar = new Imagem(PASTA_FIGURAS.'logAlterar.png','Alteração de Registro',15,15);
+    $imagemExclusao = new Imagem(PASTA_FIGURAS.'logExclusao.png','Exclusão de Registro',15,15);
+    $imagemRelatorio = new Imagem(PASTA_FIGURAS.'logRelatorio.png','Visualizou Relatório',15,15);
     
     $objeto->set_imagemCondicional(array(array('coluna' => 0,
                                                'valor' => 0,
                                                'operador' => '=',
-                                               'imagem' => $imagemOutros),
+                                               'imagem' => $imagemLogin),
                                          array('coluna' => 0,
                                                'valor' => 1,
                                                'operador' => '=',
-                                               'imagem' => $imagemLogin),
+                                               'imagem' => $imagemInclusao),
                                          array('coluna' => 0,
                                                'valor' => 2,
                                                'operador' => '=',
-                                               'imagem' => $imagemRelatorio),
+                                               'imagem' => $imagemAlterar),
                                          array('coluna' => 0,
                                                'valor' => 3,
                                                'operador' => '=',
-                                               'imagem' => $imagemGrh),
+                                               'imagem' => $imagemExclusao),
                                          array('coluna' => 0,
                                                'valor' => 4,
                                                'operador' => '=',
-                                               'imagem' => $imagemGti),
-                                         array('coluna' => 0,
-                                               'valor' => 5,
-                                               'operador' => '=',
-                                               'imagem' => $imagemProcesso)));
+                                               'imagem' => $imagemRelatorio)
+                                        ));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -205,21 +205,25 @@ if($acesso)
                 $controle->set_onChange('formPadrao.submit();');
                 $controle->set_linha(1);
                 $controle->set_col(3);
-                $form->add_item($controle);
+                if (is_null($idServidor)){
+                    $form->add_item($controle);
+                }
                 
-                # Pega os servidores
-                $result = $admin->select('SELECT DISTINCT idUsuario,
-                                                    idUsuario
-                                               FROM tblog 
+                # Pega os Usuarios
+                $result = $admin->select('SELECT DISTINCT tblog.idUsuario,
+                                                    grh.tbpessoa.nome
+                                               FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
+                                                          JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
+                                                          JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
                                               WHERE date(data) = "'.$parametro.'"								
                                            ORDER BY 2');
                 array_push($result,array('*','-- Todos --'));
                 
-                $controle = new Input('servidorLog','combo','Filtra por Servidor',1);
+                $controle = new Input('usuarioLog','combo','Filtra por Usuário',1);
                 $controle->set_size(30);
                 $controle->set_title('Servidor');
                 $controle->set_array($result);
-                $controle->set_valor($servidorLog);
+                $controle->set_valor($usuarioLog);
                 $controle->set_onChange('formPadrao.submit();');
                 $controle->set_linha(1);
                 $controle->set_col(6);
@@ -233,11 +237,11 @@ if($acesso)
                                            ORDER BY 2');
                 array_push($result2,array('*','-- Todos --'));
                 
-                $controle = new Input('servidorIp','combo','Filtra por IP',1);
+                $controle = new Input('usuarioIp','combo','Filtra por IP',1);
                 $controle->set_size(20);
                 $controle->set_title('Ip do computador');
                 $controle->set_array($result2);
-                $controle->set_valor($servidorIp);
+                $controle->set_valor($usuarioIp);
                 $controle->set_onChange('formPadrao.submit();');
                 $controle->set_linha(1);
                 $controle->set_col(3);
