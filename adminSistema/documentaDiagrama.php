@@ -77,28 +77,36 @@ if($acesso)
     $top = new TopBar('Diagramas');
     $top->show();
     br();
+    
+    # Verifica a existencia da pasta
+    if (file_exists($pasta)) {
+        $callout = new Callout();
+        $callout->abre();
+            echo '<dl>';
+            # Abre a pasta das Classes
+            $ponteiro  = opendir($pasta);
+            while ($arquivo = readdir($ponteiro)) {
 
-    $callout = new Callout();
-    $callout->abre();
-        echo '<dl>';
-        # Abre a pasta das Classes
-        $ponteiro  = opendir($pasta);
-        while ($arquivo = readdir($ponteiro)) {
+                # Desconsidera os diretorios 
+                if($arquivo == ".." || $arquivo == "."){
+                    continue;
+                }
 
-            # Desconsidera os diretorios 
-            if($arquivo == ".." || $arquivo == "."){
-                continue;
+                # Divide o nome do arquivos
+                $partesArquivo = explode('.',$arquivo);
+
+                echo '<dd><a href="'.$pasta.'/'.$partesArquivo[0].'.'.$partesArquivo[1].'" target="_blank">'.$partesArquivo[0].'</a></dd>';
             }
 
-            # Divide o nome do arquivos
-            $partesArquivo = explode('.',$arquivo);
-
-            echo '<dd><a href="'.$pasta.'/'.$partesArquivo[0].'.'.$partesArquivo[1].'" target="_blank">'.$partesArquivo[0].'</a></dd>';
-        }
-
-        echo '</dl>';
-        echo '</div>';
-    $callout->fecha();
+            echo '</dl>';
+            echo '</div>';
+        $callout->fecha();
+    }else{
+        $callout = new Callout();
+        $callout->abre();
+            p('Nenhum item encontrado !!','center');
+        $callout->fecha();
+    }
 
     $grid->fechaColuna();
     $grid->fechaGrid();

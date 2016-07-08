@@ -32,18 +32,17 @@ if($acesso)
     $linkBotao1->set_title('Volta para a página anterior');
     $linkBotao1->set_accessKey('V');
 
-    # 
+    # Código
     $linkBotao2 = new Link("Código","documentaCodigo.php?fase=$fase");
     $linkBotao2->set_class('button');
     $linkBotao2->set_title('Classes e Funções');
     $linkBotao2->set_accessKey('C');
     
-    # 
+    # Diagramas
     $linkBotao3 = new Link("Diagramas","documentaDiagrama.php?fase=$fase");
     $linkBotao3->set_class('button');
     $linkBotao3->set_title('Diagramas do sistema');
     $linkBotao3->set_accessKey('D');
-
 
     # Cria um menu
     $menu = new MenuBar();
@@ -65,7 +64,7 @@ if($acesso)
     switch ($fase)
     {
       case "Framework" :
-          loadPage("documentacao.php");
+          $banco = "framework";
           break;
 
       case "Grh" :
@@ -111,8 +110,16 @@ if($acesso)
     $tabela->set_nomeColunaEditar('Ver');
     $tabela->set_editarBotao('ver.png');
 
-    # exibe a tabela
-    $tabela->show();
+    if(count($conteudo) == 0){
+        br();
+        $callout = new Callout();
+        $callout->abre();
+            p('Nenhum item encontrado !!','center');
+        $callout->fecha();
+    }else{
+        # exibe a tabela
+        $tabela->show();
+    }
 
     $grid->fechaColuna();
     $grid->fechaGrid();
