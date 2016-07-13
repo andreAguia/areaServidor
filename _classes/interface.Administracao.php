@@ -172,68 +172,7 @@
             
             $menu->show();
             
-        $fieldset->fecha();        
-        $grid->fechaColuna();
-        
-        
-        $grid->abreColuna(12,6);
-        $fieldset = new Fieldset('Sistema de Gestão de Pessoas');
-        $fieldset->abre();
-        
-            $menu = new MenuGrafico(4);
-                        
-            $botao = new BotaoGrafico();
-            $botao->set_label('Banco');
-            $botao->set_url("../../grh/grhSistema/cadastroBanco.php");
-            #$botao->set_onClick("abreDivId('divMensagemAguarde'); fechaDivId('divMenu'); window.location='banco.php'");
-            $botao->set_image(PASTA_FIGURAS.'banco.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Cadastro de Bancos');
-            #$botao->set_accesskey('S');
-            $menu->add_item($botao);
-
-            $botao = new BotaoGrafico();
-            $botao->set_label('Escolaridade');
-            $botao->set_url("../../grh/grhSistema/cadastroEscolaridade.php");
-            $botao->set_image(PASTA_FIGURAS.'diploma.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Cadastro de Escolaridades');
-            #$botao->set_accesskey('S');
-            $menu->add_item($botao);
-
-            $botao = new BotaoGrafico();
-            $botao->set_label('Estado Civil');
-            $botao->set_url("../../grh/grhSistema/cadastroEstadoCivil.php");
-            $botao->set_image(PASTA_FIGURAS.'licenca.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Cadastro de Estado Civil');
-            #$botao->set_accesskey('S');
-            $menu->add_item($botao);
-
-            $botao = new BotaoGrafico();
-            $botao->set_label('Parentesco');
-            $botao->set_url("../../grh/grhSistema/cadastroParentesco.php");
-            $botao->set_image(PASTA_FIGURAS.'parentesco.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Cadastro de Parentesco');
-            #$botao->set_accesskey('S');
-            $menu->add_item($botao);
-
-            $botao = new BotaoGrafico();
-            $botao->set_label('Situação');
-            $botao->set_url("../../grh/grhSistema/cadastroSituacao.php");
-            $botao->set_image(PASTA_FIGURAS.'usuarios.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Cadastro de Situação');
-            #$botao->set_accesskey('S');
-            $menu->add_item($botao);
-
-            $botao = new BotaoGrafico();
-            $botao->set_label('Progressão');
-            $botao->set_url("../../grh/grhSistema/cadastroProgressao.php");
-            $botao->set_image(PASTA_FIGURAS.'dinheiro.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Cadastro de Tipos de Progressões');
-            #$botao->set_accesskey('S');
-            $menu->add_item($botao);
-            
-            $menu->show();
-            $fieldset->fecha();
-        
+        $fieldset->fecha();  
         $grid->fechaColuna();
         $grid->fechaGrid();        
     }

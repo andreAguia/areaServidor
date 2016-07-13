@@ -91,3 +91,10 @@ div#divContagemInterna{
     text-align: center;
     color: #B00000;
 }
+
+/*******************************************
+ * Rotina que lista dados do servidor
+ *******************************************/
+tr#listaDados{
+    background-color: #D7D7D7;
+}

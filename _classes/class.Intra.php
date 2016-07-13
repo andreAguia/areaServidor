@@ -485,4 +485,27 @@ class Intra extends Bd
     }
 
     ###########################################################
+	
+    /**
+     * Método get_ultimoAcesso
+     * informa a data do último acesso a área do servidor de uma matrícula
+     * 
+     * @param	string idUsuario id do usuário
+     */
+
+    public function get_ultimoAcesso($idUsuario){
+        $select = 'SELECT date(ultimoAcesso)
+                     FROM tbusuario
+                    WHERE idUsuario = '.$idUsuario;
+
+        # verifica se a $idUsuario foi informada
+        if(is_null($idUsuario)){
+            $data[0] = "1900-01-01";
+        }else{
+            $data = parent::select($select,false);
+        }
+        return $data[0];
+    }
+	
+    ##########################################################################################
 }

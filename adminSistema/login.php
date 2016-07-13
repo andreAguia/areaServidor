@@ -110,11 +110,21 @@ switch ($fase)
                 # Grava no log a atividade
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,0);
 
+                # Acesso ao sistema GRH
+                $pagina = 'areaServidor.php';
+                if(Verifica::acesso($idUsuario,2)){
+                    $pagina = '../../grh/grhSistema/grh.php';
+                }
+                
+                if(Verifica::acesso($idUsuario,1)){
+                    $pagina = 'areaServidor.php';
+                }
+                
                 # Verifica se o servidor está aniversariando hoje
                 #if($servidor->aniversariante($usuario))
                  #   loadPage('?fase=parabens');
                 #else
-                    loadPage('../../grh/grhSistema/grh.php');                
+                    loadPage($pagina);                
                 break;
             
             Case 2: // Senha Padrão

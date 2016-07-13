@@ -20,9 +20,6 @@ if($acesso)
     $intra = new Intra();
     $servidor = new Pessoal();
 
-    # Resseta a session da flag origem
-    set_session('origem'); 
-
     # Verifica a fase do programa
     $fase = get('fase','menu'); # Qual a fase
     $metodo = get('sistema');	# Qual o sistema. Usado na rotina de Documentação
@@ -33,7 +30,6 @@ if($acesso)
 
     # Começa uma nova página
     $page = new Page();
-    #$page->set_bodyOnLoad("fechaDivId('divMensagemAguarde');");
     $page->iniciaPagina();
     
     # Cabeçalho
@@ -51,4 +47,5 @@ if($acesso)
             Administracao::menuDocumentacao();            
             break;
     }
+    $page->terminaPagina();
 }
