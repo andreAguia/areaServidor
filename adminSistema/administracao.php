@@ -39,7 +39,13 @@ if($acesso)
     {	
         # Exibe o Menu Inicial
         case "menu" :       
-            Administracao::menu();            
+            Administracao::menu(); 
+            
+            $callout = new Callout();
+            $callout->set_botaoFechar(true);
+            $callout->abre();
+                echo "oi";
+            $callout->fecha();
             break;
         
         # Exibe o Menu de Documentação

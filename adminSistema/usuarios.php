@@ -231,10 +231,9 @@ if($acesso)
             $idServidorSenhaPadrao = $intra->get_idServidor($idUsuarioSenhaPadrao);
 
             # Grava no log a atividade
-            $log = new Intra();
             $data = date("Y-m-d H:i:s");
-            $atividade = 'Passou '.$idServidorSenhaPadrao.' para senha padrão';
-            $log->registraLog($idUsuario,$data,$atividade,'tbservidor',$idServidorSenhaPadrao);
+            $atividade = 'Passou '.$pessoal->get_nome($idServidorSenhaPadrao).' para senha padrão';
+            $intra->registraLog($idUsuario,$data,$atividade,'tbservidor',$idServidorSenhaPadrao,2,$idServidorSenhaPadrao);
 
             loadPage('?fase=listar');
 
@@ -249,12 +248,15 @@ if($acesso)
             
             # Troca a senha
             $intra->set_senhaNull($idUsuarioBloqueado);
+            
+            # Pega o idServidor desse usuário
+            $idServidorBloqueado = $intra->get_idServidor($idUsuarioBloqueado);
 
             # Grava no log a atividade
             $log = new Intra();
             $data = date("Y-m-d H:i:s");
-            $atividade = 'Bloqueou acesso de '.$idUsuarioBloqueado;
-            $log->registraLog($idUsuario,$data,$atividade,'tbfuncionario',$idUsuarioBloqueado);
+            $atividade = 'Bloqueou acesso de '.$pessoal->get_nome($idServidorBloqueado);
+            $log->registraLog($idUsuario,$data,$atividade,'tbservidor',$idUsuarioBloqueado,2,$idServidorBloqueado);
 
             loadPage('?fase=listar');
 

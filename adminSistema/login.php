@@ -29,7 +29,7 @@ $page->iniciaPagina();
 AreaServidor::cabecalho("Login do Sistema");
 br(2);
 
-# Cadastro de Servidores 
+# Login 
 $grid = new Grid("center");
 $grid->abreColuna(5);
 
