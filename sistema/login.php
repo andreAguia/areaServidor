@@ -104,11 +104,14 @@ switch ($fase)
                 # Pega o idUsuario desse servidor
                 $idUsuario = $intra->get_idUsuario($usuario);
                 
+                # Pega o idServidor
+                $idServidor = $intra->get_idServidor($idUsuario);
+                
                 # Grava o último acesso
                 $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
 
                 # Grava no log a atividade
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,0);
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,0,$idServidor);
 
                 # Acesso ao sistema GRH
                 $pagina = 'areaServidor.php';
@@ -137,14 +140,16 @@ switch ($fase)
                 # Pega o idUsuario desse servidor
                 $idUsuario = $intra->get_idUsuario($usuario);
                 
+                # Pega o idServidor
+                $idServidor = $intra->get_idServidor($idUsuario);
+                
                 # Grava o último acesso
                 $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
 
                 # Grava no log a atividade        
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,0);
-
-                #loadPage('areaServidor.php?fase=trocaSenhaSV&metodo=editar');
-                loadPage('../../grh/grhSistema/grh.php'); 
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,0,$idServidor);
+                
+                loadPage('trocarSenha.php'); 
                 break;
         }
         break;

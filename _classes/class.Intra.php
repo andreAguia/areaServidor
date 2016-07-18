@@ -10,7 +10,7 @@ class Intra extends Bd
     private $servidor = "localhost";        // servidor
     private $usuario = "intranet";          // usuário
     private $senha = "txzVHnMdh53ZWX9p";    // senha
-    private $banco = "admin";               // nome do banco
+    private $banco = "areaServidor";               // nome do banco
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela
     private $idCampo;                       // o nome do campo id
@@ -413,7 +413,7 @@ class Intra extends Bd
         }
     }
     
-    ###########################################################
+###########################################################
 	
     function get_numeroUsuariosPermissao($idRegra)
 
@@ -427,6 +427,25 @@ class Intra extends Bd
         $select = 'SELECT idUsuario
                      FROM tbpermissao
                     WHERE idRegra = '.$idRegra;		
+
+        $count = parent::count($select);
+        return $count;
+    }
+
+###########################################################
+	
+    function get_numeroPermissaoUsuarios($idUsuario)
+
+    /**
+    * informa o número de Permissões de um idUsuario
+    * 
+    * @param string $idUsuario id da regra
+    */
+    
+    {
+        $select = 'SELECT idUsuario
+                     FROM tbpermissao
+                    WHERE idUsuario = '.$idUsuario;		
 
         $count = parent::count($select);
         return $count;
@@ -452,7 +471,7 @@ class Intra extends Bd
 	 
     */
 
-    public function registraLog($idUsuario,$data,$atividade,$tabela=null,$idValor=null,$tipo=0,$idServidor = null,$ip=null,$browser=null)
+    public function registraLog($idUsuario,$data,$atividade,$tabela = null,$idValor = null,$tipo = 0,$idServidor = null,$ip = null,$browser = null)
     {
         # Verifica o tipo do log
         switch ($tabela)
@@ -507,5 +526,24 @@ class Intra extends Bd
         return $data[0];
     }
 	
-    ##########################################################################################
+    ###########################################################
+
+    /**
+    * Método get_permissao
+    * 
+    * Retorna o idUsuario e a regra de uma permissão (usada no log de inclusão e exclusão de permissões)
+    * 
+    * @param	integer	$idPermissao	-> o id da permissao
+    */
+
+    public function get_permissao($idPermissao)
+    {
+        $select = 'SELECT tbregra.nome
+                     FROM tbpermissao LEFT JOIN tbregra ON (tbregra.idregra = tbpermissao.idregra) 
+                    WHERE idPermissao = '.$idPermissao;
+        $row = parent::select($select,false);
+        return $row[0];
+    }
+
+    ###########################################################
 }

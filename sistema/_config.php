@@ -55,10 +55,11 @@ $mes = array(array("1","Janeiro"),
 session_start();
 session_cache_limiter('private'); 
 
-# Funçõess gerais	
+# Funções	
 include_once (PASTA_FUNCOES_GERAIS."funcoes.gerais.php");
 include_once (PASTA_FUNCOES_GERAIS."funcoes.data.php");
 include_once (PASTA_FUNCOES."funcoes.especificas.php");
+include_once (PASTA_FUNCOES_GRH."funcoes.especificas.php");
 
 # Framework gráfico 
 include ('../../_framework/_outros/libchart/classes/libchart.php');

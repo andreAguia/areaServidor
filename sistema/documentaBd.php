@@ -71,8 +71,8 @@ if($acesso)
           $banco = "grh";
           break;
 
-      case "Administracao" :
-          $banco = "admin";
+      case "areaServidor" :
+          $banco = "areaServidor";
           break;
     }
 

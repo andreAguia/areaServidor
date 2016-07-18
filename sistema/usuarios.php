@@ -79,7 +79,9 @@ if($acesso)
                                       usuario,
                                       idServidor,
                                       ultimoAcesso,
-                                      obs,
+                                      idServidor,
+                                      idServidor,
+                                      idUsuario,
                                       idUsuario,
                                       idUsuario,
                                       idUsuario
@@ -106,12 +108,12 @@ if($acesso)
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("","Usuário","Nome","Último Acesso", "Obs","Padrão","Bloquear","Permissões"));
-    $objeto->set_width(array(5,10,30,10,30,5,5,5));
-    $objeto->set_align(array("center","center","left","center","left"));
+    $objeto->set_label(array("","Usuário","Nome","Último Acesso", "Lotação","Cargo","nº","Padrão","Bloquear","Permissões"));
+    $objeto->set_width(array(5,10,20,10,20,20,5,5,5,5));
+    $objeto->set_align(array("center","center","left"));
 
-    $objeto->set_classe(array("intra",null,"pessoal"));
-    $objeto->set_metodo(array("get_tipoSenha",null,"get_nome"));
+    $objeto->set_classe(array("intra",null,"pessoal",null,"pessoal","pessoal","intra"));
+    $objeto->set_metodo(array("get_tipoSenha",null,"get_nome",null,"get_lotacao","get_cargo","get_numeroPermissaoUsuarios"));
     $objeto->set_function(array (null,null,null,"datetime_to_php"));
     
     # Imagem Condicional 
@@ -154,11 +156,11 @@ if($acesso)
     $botao3 = new BotaoGrafico();
     $botao3->set_title('Gerencia as permissões do usuário');
     $botao3->set_label('');
-    $botao3->set_url('?fase=permissoes&idUsuarioPermissao=');
+    $botao3->set_url('permissoes.php?idUsuarioPesquisado=');
     $botao3->set_image(PASTA_FIGURAS.'group_edit.png',20,20);
     
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array(null,null,null,null,null,$botao1,$botao2,$botao3));	
+    $objeto->set_link(array(null,null,null,null,null,null,null,$botao1,$botao2,$botao3));	
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -185,12 +187,14 @@ if($acesso)
                'label' => 'Usuário:',
                'tipo' => 'texto',
                'autofocus' => true,
+               'required' => true, 
                'size' => 15),
         array ('linha' => 1,
                'col' => 6, 
                'nome' => 'idServidor',
                'label' => 'Servidor:',
                'tipo' => 'combo',
+               'required' => true,
                'array' => $result,
                'size' => 20),
         array ('linha' => 2,

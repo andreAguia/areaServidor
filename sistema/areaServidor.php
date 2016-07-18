@@ -38,12 +38,16 @@ if($acesso)
     $grid = new Grid();
     $grid->abreColuna(12);
     
-    # Verifica se tem acesso ao sistema de grh
-    if(Verifica::acesso($idUsuario,2)){
-        botaoVoltar('../../grh/grhSistema/grh.php');
-    }else{
-        botaoVoltar('');
-    }
+    # Cria um menu
+    $menu1 = new MenuBar();
+    
+    # Sair da Área do Servidor
+    $linkBotao1 = new Link("Sair","../../areaServidor/sistema/login.php");
+    $linkBotao1->set_class('button');
+    $linkBotao1->set_title('Sair do Sistema');
+    $linkBotao1->set_accessKey('S');
+    $menu1->add_link($linkBotao1,"left");
+    $menu1->show();
     
     # Exibe os dados do Servidor    
     Grh::listaDadosServidor($intra->get_idServidor($idUsuario));
@@ -52,7 +56,7 @@ if($acesso)
     br();
     $tamanhoImage = 70;
 
-    $menu = new MenuGrafico(2);
+    $menu = new MenuGrafico(3);
     
     $botao = new BotaoGrafico();
     $botao->set_label('Alterar Senha');
@@ -67,6 +71,16 @@ if($acesso)
     $botao->set_url('../../grh/grhSistema/grh.php');
     $botao->set_image(PASTA_FIGURAS.'sistemaPessoal.png',$tamanhoImage,$tamanhoImage);
     $botao->set_title('Acessa o Sistema de Pessoal');
+    #$botao->set_accesskey('S');
+    if(Verifica::acesso($idUsuario,2)){
+        $menu->add_item($botao);
+    }
+    
+    $botao = new BotaoGrafico();
+    $botao->set_label('Administração');
+    $botao->set_url('administracao.php');
+    $botao->set_image(PASTA_FIGURAS.'administracaoSistemas.png',$tamanhoImage,$tamanhoImage);
+    $botao->set_title('Administração dos Sistemas');
     #$botao->set_accesskey('S');
     if(Verifica::acesso($idUsuario,2)){
         $menu->add_item($botao);

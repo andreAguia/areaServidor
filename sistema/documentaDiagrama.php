@@ -68,8 +68,8 @@ if($acesso)
           $pasta = '../_diagramas/grh';
           break;
 
-      case "Administracao" :
-          $pasta = '../_diagramas/admin';
+      case "areaServidor" :
+          $pasta = '../_diagramas/areaServidor';
           break;
     }
     

@@ -11,7 +11,7 @@ class Verifica
     /**
      * Método Construtor
      * 
-     * @param $matricula string matrícula do servidor logado
+     * @param $idUsuario string $idUsuario do servidor logado
      * @param $rotina integer codigo numérico da rotina a ser verificada
      */
     static function acesso($idUsuario,$rotina = null)
@@ -29,16 +29,19 @@ class Verifica
          */
         
         # Verifica se foi logado se não redireciona para o login
-        if(is_null($idUsuario))
+        if(is_null($idUsuario)){
             $acesso = false;
+        }
         
         # Verifica se $idUsuario é nula acesso bloqueado para a área do servidor
-        if(($intra->get_senha($idUsuario) == '') and ($idUsuario <>0))
+        if(($intra->get_senha($idUsuario) == '') and ($idUsuario <>0)){
             $acesso = false;
-
+        }
+        
         # Verifica se o login foi feito ou se a sessão foi "recuperada" pelo browser
-        if (($intra->get_ultimoAcesso($idUsuario)) <> date("Y-m-d"))
+        if (($intra->get_ultimoAcesso($idUsuario)) <> date("Y-m-d")){
             $acesso = false;
+        }
 
         # Verifica de o usuário logado tem permissão para essa rotina 
         if(!is_null($rotina)){
@@ -66,7 +69,7 @@ class Verifica
         elseif($acesso)
             return $acesso;
         else{
-            loadPage("../../admin/adminSistema/login.php");
+           # loadPage("../../areaServidor/sistema/login.php");
         }
     }    
 }

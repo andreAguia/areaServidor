@@ -39,7 +39,7 @@ if($acesso)
           $pasta = PASTA_CLASSES_GRH;
           break;
 
-      case "Administracao" :
+      case "areaServidor" :
           $pasta = PASTA_CLASSES;
           break;
     }

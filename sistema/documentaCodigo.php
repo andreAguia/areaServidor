@@ -63,7 +63,7 @@ if($acesso)
           $arquivoFuncao = PASTA_FUNCOES_GRH.'/funcoes.especificas.php';
           break;
 
-      case "Administracao" :
+      case "areaServidor" :
           $pastaClasses = PASTA_CLASSES;
           $arquivoFuncao = PASTA_FUNCOES.'/funcoes.especificas.php';
           break;

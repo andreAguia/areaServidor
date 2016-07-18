@@ -77,7 +77,7 @@ if($acesso)
             $form = new Form('?fase=gravar','login');        
 
                 # usuário
-                $controle = new Input('senha1','password','Digite a Senha:',1);
+                $controle = new Input('senha1','password','Digite a Nova Senha:',1);
                 $controle->set_size(20);
                 $controle->set_linha(1);
                 $controle->set_required(true);
@@ -88,7 +88,7 @@ if($acesso)
                 $form->add_item($controle);
 
                 # senha
-                $controle = new Input('senha2','password','Redigite a Senha:',1);
+                $controle = new Input('senha2','password','Redigite a Nova Senha:',1);
                 $controle->set_size(20);
                 $controle->set_linha(2);
                 $controle->set_required(true);
@@ -148,11 +148,14 @@ if($acesso)
         if ($erro == 0){
                 # Altera a senha
                 $intra->set_senha($idUsuario,$senha1);
+                
+                # Pega o idServidor
+                $idServidor = $intra->get_idServidor($idUsuario);
 
                 # Grava no log a atividade
                 $data = date("Y-m-d H:i:s");
                 $atividade = 'Alterou a própria senha';
-                $intra->registraLog($idUsuario,$data,$atividade,null,null);
+                $intra->registraLog($idUsuario,$data,$atividade,'tbusuario',$idUsuario,2,$idServidor);
                 loadPage('areaServidor.php');
         }else{
                 alert($msgErro);
