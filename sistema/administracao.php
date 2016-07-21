@@ -173,8 +173,8 @@ if($acesso)
                 $botao->set_label('Importação');
                 $botao->set_title('Executa a rotina de importação');
                 $botao->set_image(PASTA_FIGURAS.'importacao.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('importacao.php');
-                #$menu->add_item($botao);
+                $botao->set_url('importacaoUenfNovaUenf.php');
+                $menu->add_item($botao);
 
                 # PhpMyAdmin
                 $botao = new BotaoGrafico();

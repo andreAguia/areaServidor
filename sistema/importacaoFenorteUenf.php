@@ -46,7 +46,7 @@ if($acesso)
     $menu->add_link($linkBotao2,"right");
     $menu->show();
 
-    titulo("Importação do Banco de dados");
+    titulo("Importação do Banco de dados Antigo da FENORTE para UENF");
 
     # Verifica a fase do programa
     $fase = get('fase');
