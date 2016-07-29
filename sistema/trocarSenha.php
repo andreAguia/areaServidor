@@ -12,7 +12,7 @@ $idUsuario = null;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,1);
+$acesso = Verifica::acesso($idUsuario);
 
 if($acesso)
 {    

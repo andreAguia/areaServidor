@@ -82,10 +82,14 @@ if($acesso)
             
             # Variáveis
             $numItens = 0;            // Número de itens importados
-            $numItensDescartados = 0; // Número de itens descartados
+            $numItensDescartados = 0; // Número de itens descartados            
             
             # Inicia a Importação
-            $select = "SELECT matr,nm,email,sit FROM fen001 WHERE vinc <> 9";
+            $select = "SELECT matr,nm,email,sit,"
+                    . "tp_rua,rua,compl,bai,cep,cid,uf,"
+                    . "sexo,eciv,"
+                    . "id,orgao_id,emi_id,cp,ser_cp,uf_cp,cart_habil,titulo,zona,secao,reservista,"
+                    . "fen001.natural,nacion FROM fen001 WHERE vinc <> 9";
             
             $conteudo = $uenf->select($select,true);
             
@@ -99,9 +103,139 @@ if($acesso)
                     echo "------------------------";
                     br();
                 }else{
+                    # Verifica se está vazio os campos para colocar o texto NULL
+                    for ($i = 1; $i < 25; $i++) {
+                        if(($i == 4) OR ($i == 5) OR ($i == 6)){
+                            continue;
+                        }elseif(empty($campo[$i])){
+                            $campo[$i] = 'NULL';
+                        }
+                    }
+                    
+                    # Regra para o endereço (verifica se o campo 4 5 e 6 estão vazio juntos)
+                    $endereco = NULL;
+                    if((empty($campo[4])) AND  (empty($campo[5])) AND (empty($campo[6]))){
+                        $endereco = 'NULL';
+                    }else{
+                        $endereco = $campo[4].' '.$campo[5].' '.$campo[6];
+                    }
+                    
+                    # Regra para o campo sexo
+                    $sexo = 'NULL';
+                    if($campo[11] == 1){
+                        $sexo = "Masculino";
+                    }elseif($campo[11] == 2){
+                        $sexo = "Feminino";
+                    }
+                    
+                    # Regra para o campo eciv
+                    $estadoCivil = NULL;
+                    switch ($campo[12]){
+                        case 3:
+                            $estadoCivil = 5;
+                            break;
+                        case 4:
+                            $estadoCivil = 3;
+                            break;
+                        case 5:
+                        case 0:    
+                            $estadoCivil = 9;
+                            break;
+                        case 6:
+                            $estadoCivil = 8;
+                            break;
+                        default :
+                            $estadoCivil = $campo[12];
+                    }
+                    
+                    # Regra para o campo nacional (nacionalidade)
+                    $nacionalidade = NULL;
+                    switch ($campo[25]){
+                        case 10:    // brasileiro
+                            $nacionalidade = 1;
+                            break;
+                        case 20:    // naturalizado
+                            $nacionalidade = 2;
+                            break;                        
+                        case 21:    // argentino
+                            $nacionalidade = 4;
+                            break;
+                        case 22:    // boliviano
+                            $nacionalidade = 6;
+                            break;
+                        case 23:    // chileno
+                            $nacionalidade = 9;
+                            break;
+                        case 24:
+                            $nacionalidade = 19;
+                            break;
+                        case 25:
+                            $nacionalidade = 22;
+                            break;
+                        case 26:
+                            $nacionalidade = 24;
+                            break;
+                        case 30:
+                            $nacionalidade = 3;
+                            break;
+                        case 31:
+                            $nacionalidade = 5;
+                            break;
+                        case 32:
+                            $nacionalidade = 7;
+                            break;
+                        case 34:
+                            $nacionalidade = 8;
+                            break;
+                        case 35:
+                            $nacionalidade = 13;
+                            break;
+                        case 36:
+                            $nacionalidade = 18;
+                            break;
+                        case 37:
+                            $nacionalidade = 14;
+                            break;
+                        case 38:
+                            $nacionalidade = 21;
+                            break;
+                        case 39:
+                            $nacionalidade = 16;
+                            break;
+                        case 41:
+                            $nacionalidade = 17;
+                            break;
+                        case 42:
+                            $nacionalidade = 10;
+                            break;
+                        case 43:
+                            $nacionalidade = 12;
+                            break;
+                        case 45:
+                            $nacionalidade = 20;
+                            break;
+                        case 48:
+                        case 49:
+                        case 50:    
+                            $nacionalidade = 25;
+                            break;
+                        case 53:
+                            $nacionalidade = 11;
+                            break;
+                        default:
+                            $nacionalidade = 25;
+                            break;
+                    }
+                                        
                     # tbpessoa
-                    $tbpessoa = 'INSERT INTO tbpessoa (nome,situacao) values ('.$campo[1].')';
-
+                    $campos = array("nome","endereco","bairro","cep","cidade","uf","sexo","estCiv","naturalidade","nacionalidade");
+                    $valor = array($campo[1],$endereco,$campo[7],$campo[8],$campo[9],$campo[10],$sexo,$estadoCivil,$campo[24],$nacionalidade);
+                    
+                    # Grava na tabela tbpessoa
+                    $uenf->set_tabela('tbpessoa');
+                    $uenf->set_idCampo('idPessoa');
+                    $uenf->gravar($campos,$valor,$id);
+                    
                     # regra para a situação
                     switch ($campo[3]){
                         case 9:         // Demitido
@@ -124,11 +258,12 @@ if($acesso)
                     # tbservidor                    
                     $tbservidor = 'INSERT INTO tbservidor (matricula,idPessoa,situacao) values ('.$campo[0].',idPessoa,'.$campo[3].')';
                     
-                    # tbcontatos
-                    if((is_null($campo[2])) OR ($campo[2] == "")){
-                            $campo[2] = 'NULL';
-                    }
+                    # tbcontatos                    
                     $tbcontatos = 'INSERT INTO tbcontatos (idPessoa,tipo,numero) values (idPessoa,E-mail,'.$campo[2].')';
+                    
+                    # tbdocumentacao                    
+                    $tbcontatos = 'INSERT INTO tbdocumentacao (idPessoa,identidade,orgaoId,dtId,cp,serieCp,ufCp,motorista,titulo,zona,secao,reservista)'
+                                                   . ' values (idPessoa,'.$campo[13].','.$campo[14].','.$campo[15].','.$campo[16].','.$campo[17].','.$campo[18].','.$campo[19].','.$campo[20].','.$campo[21].','.$campo[22].','.$campo[23].')';
                     
                     echo $tbpessoa;
                     br();

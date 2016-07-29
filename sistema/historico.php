@@ -82,25 +82,16 @@ if($acesso)
                       FROM tblog JOIN tbusuario ON(tblog.idUsuario = tbusuario.idUsuario)
                                  JOIN grh.tbservidor ON(tbusuario.idServidor = grh.tbservidor.idServidor)
                                  JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
-                     WHERE ';
+                     WHERE date(data) = "'.$parametro.'"';
     
-    # Data
-   if (is_null($idServidor)){
-        $selectLista .=' date(data) = "'.$parametro.'"';
-   }else{
-        $selectLista .=' tblog.idServidor = '.$idServidor;
-    }
-    
-    # idServidor
+    # usuário
     if($usuarioLog <> "*")
-        $selectLista .=' AND idServidor = "'.$usuarioLog.'"';
+        $selectLista .=' AND tblog.idUsuario = '.$usuarioLog;
     
     # IP
     if($usuarioIp <> "*")
         $selectLista .=' AND ip = "'.$usuarioIp.'"';
     
-    
-       
     $selectLista .=' ORDER BY 9 desc';
     
     $objeto->set_selectLista ($selectLista);

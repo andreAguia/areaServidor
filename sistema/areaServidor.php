@@ -82,7 +82,7 @@ if($acesso)
     $botao->set_image(PASTA_FIGURAS.'administracaoSistemas.png',$tamanhoImage,$tamanhoImage);
     $botao->set_title('Administração dos Sistemas');
     #$botao->set_accesskey('S');
-    if(Verifica::acesso($idUsuario,2)){
+    if(Verifica::acesso($idUsuario,1)){
         $menu->add_item($botao);
     }
 
