@@ -421,4 +421,6 @@ if($acesso)
     $grid2->fechaGrid();
 
     $page->terminaPagina();
+}else{
+    loadPage("login.php");
 }

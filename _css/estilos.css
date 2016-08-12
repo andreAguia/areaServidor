@@ -76,6 +76,10 @@ tr#logExclusao{
     background-color:#ffdcc3;
 }
 
+tr#logLoginIncorreto{
+    background-color: tomato;
+}
+
 div#divContagemExterna{
     position: absolute;
     top: 1%;

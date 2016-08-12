@@ -170,28 +170,28 @@ class Intra extends Bd
             
             # Verifica se a senha é nula. Seja pq nâo foi digitada ou pq o usuário está desabilitado.
             if(is_null($senhaServidor)){
-                return 0;
+                return 1;
             }
 
             # Verifica se a senha é vazia
             if($senhaServidor == ""){
-                return 0;
+                return 1;
             }
 
             # Pega a senha digitada e cripitografa
             $senha_md5 = md5($senha);
             
             if($senhaServidor <> $senha_md5){
-                return 0;
+                return 2;
             }
 
             if($senhaServidor == $senha_md5){
                 if ($senha == SENHA_PADRAO){
                     set_session('idUsuario',$idUsuario);	
-                    return 2;
+                    return 4;
                 }else{
                     set_session('idUsuario',$idUsuario);
-                    return 1;			
+                    return 3;			
                 }
             }
 	}
@@ -466,38 +466,12 @@ class Intra extends Bd
      * @param	$idValor		string		o id quando do registro
      * @param	$idServidor		integer		o idServdor 
      * @param	$tipo			integer		o tipo de atividade
-    * @param	$ip				string		o ip da máquina que fez a atividade
-    * @param	$browser		string		o browser usado pelo usuário
+     * @param	$ip			string		o ip da máquina que fez a atividade
+     * @param	$browser		string		o browser usado pelo usuário
 	 
     */
 
-    public function registraLog($idUsuario,$data,$atividade,$tabela = null,$idValor = null,$tipo = 0,$idServidor = null,$ip = null,$browser = null)
-    {
-        # Verifica o tipo do log
-        switch ($tabela)
-        {
-            # Acesso da GTI
-             case "tbcomputador" :
-             case "tbservico" :
-             case "tbmovimento" :
-             case "tbgrupo" :
-                $tipo = 4;
-                break;
-
-            # Acesso do Protocolo
-            case "tbprocesso" :
-            case "tbprocessomovimento" :
-            case "tbprocessoMovimento" :
-                $tipo = 5;
-                break;
-
-            # Acesso Noticias 
-            case "tbNoticias" :
-                $tipo = 6;
-                break;
-        }
-
-        
+    public function registraLog($idUsuario,$data,$atividade,$tabela = null,$idValor = null,$tipo = 0,$idServidor = null,$ip = null,$browser = null) {        
         $campos = array('idUsuario','data','atividade','tabela','idValor','tipo','idServidor','ip','browser');
         $valor = array($idUsuario,$data,$atividade,$tabela,$idValor,$tipo,$idServidor,IP,BROWSER_NAME.' '.BROWSER_VERSION);
         parent::gravar($campos,$valor,null,'tblog','idlog',false);

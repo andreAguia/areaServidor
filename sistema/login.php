@@ -13,6 +13,15 @@ include ("_config.php");
 
 # Conecta ao Banco de Dados
 $intra = new Intra();
+$pessoal = new Pessoal();
+
+# Verifica se o sistema está fora do ar em manutenção
+$ipManutencao = $intra->get_variavel('manutencao_ip');	// ip isento da mensagem
+$ipMaquina = $_SERVER['REMOTE_ADDR'];			// ip da máquina
+
+if (($intra->get_variavel('manutencao_intranet')) AND ($ipManutencao <> $ipMaquina)){
+    loadPage("manutencao.php");    
+}else{
 
 # Define a senha padrão de acordo com o que está nas variáveis
 define("SENHA_PADRAO",$intra->get_variavel('senha_padrao'));
@@ -91,13 +100,37 @@ switch ($fase)
         # Verifica a senha
         switch ($verifica)
         {
-            case 0: // Login Incorreto
+            case 0: // Login Incorreto: Usuário inexistente
                 # Informa o Erro
                 alert('Login Incorreto!');
+                
+                # Grava no log a atividade
+                $intra->registraLog(0,date("Y-m-d H:i:s"),'Tentativa de Login com usuário inexistente ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                
+                loadPage('login.php');
+                break;
+            
+            case 1: // Login Incorreto: Senha nula no servidor
+                # Informa o Erro
+                alert('Login Incorreto!');
+                
+                # Grava no log a atividade
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Tentativa de Login. Usuário com senha nula no servidor ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                
+                loadPage('login.php');
+                break;
+            
+            case 2: // Login Incorreto: Senha Errada
+                # Informa o Erro
+                alert('Login Incorreto!');
+                
+                # Grava no log a atividade
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Tentativa de Login com senha errada. ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                
                 loadPage('login.php');
                 break;
 
-            Case 1: // Login Correto
+            Case 3: // Login Correto
                 # Pega o ip da máquina que fez login
                 $ip = getenv("REMOTE_ADDR");
                 
@@ -111,7 +144,7 @@ switch ($fase)
                 $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
 
                 # Grava no log a atividade
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,0,$idServidor);
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
 
                 # Acesso ao sistema GRH
                 $pagina = 'areaServidor.php';
@@ -124,13 +157,13 @@ switch ($fase)
                 }
                 
                 # Verifica se o servidor está aniversariando hoje
-                #if($servidor->aniversariante($usuario))
-                 #   loadPage('?fase=parabens');
-                #else
+                if($pessoal->aniversariante($idServidor))
+                   loadPage('?fase=parabens');
+                else
                     loadPage($pagina);                
                 break;
             
-            Case 2: // Senha Padrão
+            Case 4: // Senha Padrão
                 # altera a senha de início
                 alert('Sua Senha não é Segura !! Favor Alterar !');
                 
@@ -147,7 +180,7 @@ switch ($fase)
                 $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
 
                 # Grava no log a atividade        
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,0,$idServidor);
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
                 
                 loadPage('trocarSenha.php'); 
                 break;
@@ -155,14 +188,51 @@ switch ($fase)
         break;
 
     Case "parabens":
+        # Acesso ao sistema GRH
+        $pagina = 'areaServidor.php';
+        if(Verifica::acesso($idUsuario,2)){
+            $pagina = '../../grh/grhSistema/grh.php';
+        }
+
+        if(Verifica::acesso($idUsuario,1)){
+            $pagina = 'areaServidor.php';
+        }
+        
         br();
-        $img = new Imagem(PASTA_FIGURAS."parabens.jpg","Parabéns Servidor",300,100);
-        $img->show();
+        $grid = new Grid("center");
+        $grid->abreColuna(12);
+        
+        $img = new Imagem(PASTA_FIGURAS."parabens.jpg","Parabéns Servidor",'100%','100%');
+        $img->show();        
+        
+        $grid->fechaColuna();
+        $grid->fechaGrid();
+        
         br(2);
-        $msg = '<h5>Querido Servidor, Feliz Aniversário !</h5><br/>A DGA te deseja paz, alegrias, felicidades e muito sucesso.';
-        $alerta = new Alert($msg,"secondary");
-        $alerta->set_page('areaServidor.php');
-        $alerta->show();        
+        
+        $div = new Div("center");
+        $div->abre();
+        p('<h5>Querido Servidor, Feliz Aniversário !</h5>','center','center');
+        p('A DGA te deseja paz, alegrias, felicidades e muito sucesso.');
+        $div->fecha();
+        br(2);
+        
+        # Botão
+        $grid = new Grid();
+        $grid->abreColuna(12);
+        $menu = new MenuBar();
+
+        # Botão 
+        $linkBotaoVoltar = new Button('Continua');
+        $linkBotaoVoltar->set_title('Continua');
+        $linkBotaoVoltar->set_url($pagina);
+        $linkBotaoVoltar->set_accessKey('C');
+        $menu->add_link($linkBotaoVoltar,"right");
+
+        $menu->show();        
+
+        $grid->fechaColuna();
+        $grid->fechaGrid();
         break;
 }
 
@@ -171,3 +241,4 @@ $grid->fechaGrid();
 
 # Termina a Página
 $page->terminaPagina();
+}

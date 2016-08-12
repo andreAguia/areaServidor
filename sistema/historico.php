@@ -44,8 +44,7 @@ if($acesso)
     
     # Começa uma nova página
     $page = new Page();
-    if(($parametro == date("Y-m-d")) OR ($parametro == date("d/m/Y")))
-    {
+    if(($parametro == date("Y-m-d")) OR ($parametro == date("d/m/Y"))){
         $page->set_refresh(true);
         $page->set_bodyOnLoad('contagemRegressiva(30,"divContagemInterna")');
     }
@@ -79,10 +78,17 @@ if($acesso)
                            tblog.idServidor,
                            atividade,                                      
                            idlog
-                      FROM tblog JOIN tbusuario ON(tblog.idUsuario = tbusuario.idUsuario)
-                                 JOIN grh.tbservidor ON(tbusuario.idServidor = grh.tbservidor.idServidor)
-                                 JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
-                     WHERE date(data) = "'.$parametro.'"';
+                      FROM tblog LEFT JOIN tbusuario ON(tblog.idUsuario = tbusuario.idUsuario)
+                                 LEFT JOIN grh.tbservidor ON(tbusuario.idServidor = grh.tbservidor.idServidor)
+                                 LEFT JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
+                     WHERE';
+    
+    # Quando for histórico de um único servidor
+    if(is_null($idServidor)){
+        $selectLista .=' date(data) = "'.$parametro.'"';
+    }else{
+        $selectLista .=' tblog.idServidor = '.$idServidor;
+    }
     
     # usuário
     if($usuarioLog <> "*")
@@ -123,8 +129,11 @@ if($acesso)
                                               array('coluna' => 0,
                                                     'valor' => 3,
                                                     'operador' => '=',
-                                                    'id' => 'logExclusao')
-                                              
+                                                    'id' => 'logExclusao'),
+                                              array('coluna' => 0,
+                                                    'valor' => 5,
+                                                    'operador' => '=',
+                                                    'id' => 'logLoginIncorreto')                                              
                                                     ));
     
     # Imagem Condicional
@@ -133,6 +142,7 @@ if($acesso)
     $imagemAlterar = new Imagem(PASTA_FIGURAS.'logAlterar.png','Alteração de Registro',15,15);
     $imagemExclusao = new Imagem(PASTA_FIGURAS.'logExclusao.png','Exclusão de Registro',15,15);
     $imagemRelatorio = new Imagem(PASTA_FIGURAS.'logRelatorio.png','Visualizou Relatório',15,15);
+    $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS.'loginIncorreto.png','Visualizou Relatório',15,15);
     
     $objeto->set_imagemCondicional(array(array('coluna' => 0,
                                                'valor' => 0,
@@ -153,7 +163,11 @@ if($acesso)
                                          array('coluna' => 0,
                                                'valor' => 4,
                                                'operador' => '=',
-                                               'imagem' => $imagemRelatorio)
+                                               'imagem' => $imagemRelatorio),
+                                         array('coluna' => 0,
+                                               'valor' => 5,
+                                               'operador' => '=',
+                                               'imagem' => $imagemLoginIncorreto)
                                         ));
 
     # Classe do banco de dados
@@ -261,5 +275,7 @@ if($acesso)
     }									 	 		
 
     $page->terminaPagina();
+}else{
+    loadPage("login.php");
 }
 

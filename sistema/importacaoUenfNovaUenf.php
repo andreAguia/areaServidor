@@ -14,8 +14,9 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){
+    
+    # cria um cronômetro a ser exibido na tela
     $script = '<script>
         function formatatempo(segs) {
         min = 0;
@@ -114,6 +115,7 @@ if($acesso)
             break;
 
         case"importa" :
+            # Cria um painel
             $painel = new Callout();
             $painel->abre();
             
@@ -136,8 +138,8 @@ if($acesso)
             br(2);
             
             # Variáveis
-            $numItens = 0;            // Número de itens importados
-            $numItensDescartados = 0; // Número de itens descartados            
+            $numItens = 0;              // Número de itens importados
+            $numItensDescartados = 0;   // Número de itens descartados            
             
             # Inicia a Importação
             $select = "SELECT matr,nm,email,sit,"
@@ -145,9 +147,19 @@ if($acesso)
                     . "sexo,eciv,"
                     . "id,orgao_id,emi_id,cp,ser_cp,uf_cp,cart_habil,titulo,zona,secao,reservista,"
                     . "fen001.natural,nacion,dir,ger,"
-                    . "categ_res,pais,ano_cheg FROM fen001 WHERE vinc <> 9";
-            
+                    . "categ_res,pais,ano_cheg,"
+                    . "perfil,cpf,pis,dt_adm,dt_nasc,obs,dt_dem,"
+                    . "matr_est,causa_dem FROM fen001 where (vinc <> 9 or (vinc = 9 and perfil = 21)) and cpf is not null";
+
             $conteudo = $uenf->select($select,true);
+            
+            echo "<table class='tabelaPadrao'>";
+            echo "<tr>";
+            echo "<th>Matrícula</th>";
+            echo "<th>Cpf</th>";
+            echo "<th>IdPessoa Existente</th>";
+            echo "<th>idPessoa Novo</th>";
+            echo "<tr>";
             
             # Percorre o Fen001 e monta o sql
             foreach ($conteudo as $campo){
@@ -159,25 +171,19 @@ if($acesso)
                     echo "------------------------";
                     br();
                 }else{
-                    # Verifica se está vazio os campos para colocar o texto NULL
-                    for ($i = 1; $i < 25; $i++) {
-                        if(($i == 4) OR ($i == 5) OR ($i == 6)){
-                            continue;
-                        }elseif(empty($campo[$i])){
-                            $campo[$i] = 'NULL';
-                        }
-                    }
+                    # Variáveis
+                    $jaExistePessoa = FALSE;    // Informa se já existe alguma pessoa com esse cpf
                     
                     # Regra para o endereço (verifica se o campo 4 5 e 6 estão vazio juntos)
                     $endereco = NULL;
-                    if((empty($campo[4])) AND  (empty($campo[5])) AND (empty($campo[6]))){
-                        $endereco = 'NULL';
+                    if((empty($campo[4])) AND (empty($campo[5])) AND (empty($campo[6]))){
+                        $endereco = NULL;
                     }else{
                         $endereco = $campo[4].' '.$campo[5].' '.$campo[6];
                     }
                     
                     # Regra para o campo sexo
-                    $sexo = 'NULL';
+                    $sexo = NULL;
                     if($campo[11] == 1){
                         $sexo = "Masculino";
                     }elseif($campo[11] == 2){
@@ -543,65 +549,167 @@ if($acesso)
                                     break;
                             }
                             break;
+                        default:
+                            $idLotacao = 110;
+                            break;  
                     }
+                    
+                    # Perfil
+                    $perfil = $campo[31];
+                    $idPerfil = NULL;
+                    
+                    switch ($perfil){
+                        case 17:
+                        case 18:
+                            $idPerfil = 1;
+                            break;
+                        case 10:
+                        case 20:
+                            $idPerfil = 2;
+                            break;
+                        case 16:
+                            $idPerfil = 3;
+                            break;
+                        case 1:
+                        case 2:
+                            $idPerfil = 4;
+                            break;
+                        case 23:
+                        case 22:
+                            $idPerfil = 5;
+                            break;
+                        case 25:
+                        case 24:
+                            $idPerfil = 6;
+                            break;
+                        case 21:
+                            $idPerfil = 7;
+                            break;
+                        default :
+                            $idPerfil = 8;
+                            break;
+                    }
+                    
+                    # Campo obs (o odiado campo vermelho !!!)
+                    $obs = htmlentities($campo[36],ENT_QUOTES,'UTF-8');
+                    
+                    # CPF
+                    $cpf = soNumeros($campo[32]);
+                    $cpf = trim(substr($cpf,0,3).'.'.substr($cpf,3,3).'.'.substr($cpf,6,3).'-'.substr($cpf,9,2));
+                    
+                    # Verifica se esse cpf já existe na tbpessoa
+                    $idPessoaExistente = $pessoal->get_idPessoaCPF($cpf);
+                    if(empty($idPessoaExistente)){
+                        $jaExistePessoa = FALSE;
+                    }else{
+                        $jaExistePessoa = TRUE;
+                    }
+                    
+                    echo "<tr>";
+                    echo "<td>".$campo[0]."</td>";
+                    echo "<td>".$cpf."</td>";
+                    echo "<td>".$idPessoaExistente."</td>";
                     
                     # tbpessoa
                     $nome = ucwords(strtolower($campo[1]));
                     $tabela = 'tbpessoa';
                     $idCampo = 'idPessoa';
-                    $campos = array("nome","endereco","bairro","cep","cidade","uf","sexo","estCiv","naturalidade","nacionalidade","paisOrigem","anoChegada");
-                    $valor = array($nome,$endereco,$campo[7],$campo[8],$campo[9],$campo[10],$sexo,$estadoCivil,$campo[24],$nacionalidade,$campo[29],$campo[30]);
-                    $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
-                    $idPessoa = $pessoal->get_lastId();
+                    $campos = array("nome","endereco","bairro","cep","cidade","uf","sexo","estCiv","naturalidade","nacionalidade","paisOrigem","anoChegada","dtNasc");
+                    $valor = array($nome,$endereco,$campo[7],$campo[8],$campo[9],$campo[10],$sexo,$estadoCivil,$campo[24],$nacionalidade,$campo[29],$campo[30],$campo[35]);
                     
-                    # regra para a situação
-                    switch ($campo[3]){
-                        case 9:         // Demitido
-                        case 38:        // Aposentadoria Integral Voluntária
-                        case 39:        // Aposentadoria Integral por Invalidez
-                        case 40:        // Aposentadoria Integral Compulsória
-                        case 41:        // Aposentadoria Proporcional Voluntária   
-                        case 42:        // Aposentadoria Proporcional por Invalidez
-                        case 43:        // Aposentadoria Proporcional Compulsória
-                        case 54:        // Falecimento
-                        case 55:        // Recisão de Contrato
-                        case 57:        // Suspensão de Contrato
-                            $campo[3] = 2;
-                            break;
-                            
-                        default :
-                            $campo[3] = 1;
+                    # Se não existe alguem com esse CPF 
+                    if($jaExistePessoa){
+                        $idPessoa = $idPessoaExistente;
+                        echo "<td></td>";
+                    }else{
+                        $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
+                        $idPessoa = $pessoal->get_lastId();
+                        echo "<td>".$idPessoa."</td>";
                     }
+                    
+                    # regra para a situação e a causa de demissão (uma coisa depende da outra)
+                    $motivoDemissao = $campo[39];   // Motivo da demissão
+                    $situacao = $campo[3];          // Situação  
+                    
+                    if($situacao == 1){
+                        $motivoDemissao = null;
+                    }else{
+                        switch ($motivoDemissao){
+                            case 75:                // Exonerado a pedido
+                                $situacao = 3;
+                                $motivoDemissao = 1;
+                                break;
+                            case 60:                // Falecimento
+                                $situacao = 5;
+                                $motivoDemissao = 2;
+                                break;
+                            case 70:                // Aposentadoria Voluntária Integral
+                            case 71:    
+                                $situacao = 2;
+                                $motivoDemissao = 3;
+                                break;
+                            case 72:                // Aposentadoria Voluntária Proporcional
+                                $situacao = 2;
+                                $motivoDemissao = 4;
+                                break;
+                            case 88:                // Rescisão do contrato de trabalho
+                                $situacao = 3;
+                                $motivoDemissao = 8;
+                                break;
+                            case 13:                // Término do contrato de trabalho
+                                $situacao = 3;
+                                $motivoDemissao = 9;
+                                break;
+                            case 10:               // Demissão por justa causa
+                            case 20:    
+                                $situacao = 4;
+                                $motivoDemissao = 10;
+                                break;
+                            case 11:               // Demissão sem justa causa
+                            case 21:    
+                                $situacao = 4;
+                                $motivoDemissao = 11;
+                                break;
+                            case 0:                 // Valor 0 ?! tentar identificar pela situação   
+                                switch ($situacao){
+                                    case 9:
+                                        break;
+                                    
+                                
+                                }
+                                break;
+                        }
+                    }
+                    
+                    
                     
                     # tbservidor
                     $tabela = 'tbservidor';
                     $idCampo = 'idServidor';
-                    $campos = array("matricula","idPessoa","situacao");
-                    $valor = array($campo[0],$idPessoa,$campo[3]);                    
+                    $campos = array("matricula","idPessoa","situacao","idPerfil","dtAdmissao","obs","dtDemissao","idFuncional");
+                    $valor = array($campo[0],$idPessoa,$campo[3],$idPerfil,$campo[34],$obs,$campo[37],$campo[38]);                    
                     $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
                     $idServidor = $pessoal->get_lastId();
                     
                     # tbcontatos
-                    $tabela = 'tbcontatos';
-                    $idCampo = 'idContatos';
-                    $campos = array("idPessoa","tipo","numero");
-                    $valor = array($idPessoa,"E-mail",$campo[2]);                    
-                    $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
+                    $email = $campo[2];
+                        if(!empty($email)){
+                        $tabela = 'tbcontatos';
+                        $idCampo = 'idContatos';
+                        $campos = array("idPessoa","tipo","numero");
+                        $valor = array($idPessoa,"E-mail",$email);                    
+                        $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
+                    }
                     
                     # tbdocumentacao
                     $tabela = 'tbdocumentacao';
                     $idCampo = 'idDocumentacao';
-                    $campos = array("idPessoa","identidade","orgaoId","dtId","cp","serieCp","ufCp","motorista","titulo","zona","secao","reservista","reservistaCateg");
-                    $valor = array($idPessoa,$campo[13],$campo[14],$campo[15],$campo[16],$campo[17],$campo[18],$campo[19],$campo[20],$campo[21],$campo[22],$campo[23],$campo[28]);                    
-                    $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
-                    
-                    echo "---------------------------------------";br();
-                    echo "Nome:->".$nome;br();
-                    echo "Dir:->".$dir;br();
-                    echo "Ger:->".$ger;br();
-                    echo "Lotação escolhida:->".$idLotacao;br();
-                    echo "---------------------------------------";
-                    
+                    $campos = array("idPessoa","identidade","orgaoId","dtId","cp","serieCp","ufCp","motorista","titulo","zona","secao","reservista","reservistaCateg","cpf","pisPasep");
+                    $valor = array($idPessoa,$campo[13],$campo[14],$campo[15],$campo[16],$campo[17],$campo[18],$campo[19],$campo[20],$campo[21],$campo[22],$campo[23],$campo[28],$cpf,$campo[33]);                    
+                    if(!$jaExistePessoa){
+                        $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
+                    }
+                                                           
                     # tbhistlot
                     $data = date('Y-m-d');
                     $tabela = 'tbhistlot';
@@ -613,6 +721,9 @@ if($acesso)
                     $numItens ++;
                 }
             }
+            
+            echo "</table>";
+            
             # Exibe o número de itens importado
             echo $numItens." registros importados";
             br();

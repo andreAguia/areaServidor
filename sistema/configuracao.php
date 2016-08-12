@@ -167,4 +167,6 @@ if($acesso)
     }									 	 		
 
     $page->terminaPagina();
+}else{
+    loadPage("login.php");
 }

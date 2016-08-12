@@ -37,7 +37,7 @@
             $grid->fechaColuna();
             $grid->fechaGrid();
         }
-
+        
         echo '</header>';
     }
 }
