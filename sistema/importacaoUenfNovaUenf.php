@@ -634,54 +634,141 @@ if($acesso){
                     if($situacao == 1){
                         $motivoDemissao = null;
                     }else{
+                        if($perfil == 2){   // Verifica se é cedido
+                            switch ($motivoDemissao){
+                                case 60:
+                                    $situacao = 5;          // -- Falecido
+                                    $motivoDemissao = 2;    // -- Falecimento
+                                    break;
+                                default:
+                                    $situacao = 6;          // -- Fim de Cessão
+                                    $motivoDemissao = 14;   // -- Fim de Cessão
+                                    break;
+                            }
+                        }else{
                         switch ($motivoDemissao){
-                            case 75:                // Exonerado a pedido
-                                $situacao = 3;
-                                $motivoDemissao = 1;
-                                break;
-                            case 60:                // Falecimento
-                                $situacao = 5;
-                                $motivoDemissao = 2;
-                                break;
-                            case 70:                // Aposentadoria Voluntária Integral
-                            case 71:    
-                                $situacao = 2;
-                                $motivoDemissao = 3;
-                                break;
-                            case 72:                // Aposentadoria Voluntária Proporcional
-                                $situacao = 2;
-                                $motivoDemissao = 4;
-                                break;
-                            case 88:                // Rescisão do contrato de trabalho
-                                $situacao = 3;
-                                $motivoDemissao = 8;
-                                break;
-                            case 13:                // Término do contrato de trabalho
-                                $situacao = 3;
-                                $motivoDemissao = 9;
-                                break;
-                            case 10:               // Demissão por justa causa
-                            case 20:    
-                                $situacao = 4;
-                                $motivoDemissao = 10;
-                                break;
-                            case 11:               // Demissão sem justa causa
-                            case 21:    
-                                $situacao = 4;
-                                $motivoDemissao = 11;
-                                break;
                             case 0:                 // Valor 0 ?! tentar identificar pela situação   
                                 switch ($situacao){
+                                    case 3:
+                                    case 7:
                                     case 9:
+                                    case 34:
+                                    case 36:
+                                        $situacao = 4;          // -- Demitido
+                                        $motivoDemissao = 11;   // -- Demissão sem justa causa
                                         break;
                                     
-                                
+                                    case 53:                    // Pedido de Exoneração
+                                        $situacao = 3;          // -- Exonerado
+                                        $motivoDemissao = 1;    // -- Exonerado a pedido
+                                        break;                                
                                 }
                                 break;
+                            
+                            case 1:                     // Duplicidade de Bolsa (não se aplica)
+                                $situacao = 4;          // -- Demitido
+                                $motivoDemissao = 11;   // -- Demissão sem justa causa
+                                break;
+                            
+                            case 2:                     // Não comparecimento ao setor (abandono de emprego)
+                                $situacao = 4;          // -- Demitido
+                                $motivoDemissao = 12;   // -- Abandono de Emprego
+                                break;
+                            
+                            case 4:                     // Término de Bolsa (aplca-se somente ao prof visitante)
+                                $situacao = 4;          // -- Demitido
+                                $motivoDemissao = 9;    // -- Término do Contrato
+                                break;
+                            
+                            case 10:                 // Demissão com justa causa
+                            case 20:    
+                                $situacao = 4;       // -- Demitido
+                                $motivoDemissao = 10;// -- Demissão com justa causa
+                                break;
+                            
+                            case 11:                    // Demissão sem justa causa
+                            case 21:    
+                                $situacao = 4;          // -- Demitido
+                                $motivoDemissao = 11;   // -- Demissão sem justa causa
+                                break;
+                            
+                            case 13:                    // Término do contrato de trabalho
+                                $situacao = 4;          // -- Demitido
+                                $motivoDemissao = 9;    // -- Término do contrato
+                                break;
+                            
+                            case 30:                    // Transferência com ônus (??)
+                            case 31:                    // Transferência sem ônus (??)
+                                $situacao = 4;          // -- Demitido
+                                $motivoDemissao = 13;   // -- Outros
+                                break;
+                            
+                            case 40:                    // Mudança de regime (??) São 2 prof. visitantes
+                                $situacao = 4;          // -- Demitido
+                                $motivoDemissao = 13;   // -- Outros
+                                break;
+                            
+                            case 60:                    // Falecimento
+                                $situacao = 5;          // -- Falecido
+                                $motivoDemissao = 2;    // -- Falecimento
+                                break;
+                            
+                            case 69:                    // Não existe esse tipo de demissão mas existe 15 pessoas com essa causa.Todas sit 38 (APOSENTADORIA INTEGRAL VOLUNTARIA) 
+                                $situacao = 2;          // -- Aposentado (inativo) 
+                                $motivoDemissao = 3;    // -- Aposentadoria Voluntária Integral
+                                break;
+                            
+                            case 70:                    // Aposentadoria Voluntária Integral
+                            case 71:    
+                                $situacao = 2;          // -- Aposentado (inativo) 
+                                $motivoDemissao = 3;    // -- Aposentadoria Voluntária Integral
+                                break;
+                            
+                            case 72:                    // Aposentadoria Voluntária Proporcional
+                                $situacao = 2;          // -- Aposentado (inativo) 
+                                $motivoDemissao = 4;    // -- Aposentadoria Voluntária Proporcional
+                                break;
+                            
+                            case 73:                    // Aposentadoria por Invalidez - Acidente de Trabalho
+                                $situacao = 2;          // -- Aposentado (inativo) 
+                                
+                                break;
+                            
+                            case 74:                    // Aposentadoria por Invalidez - Doença Profissional
+                                $situacao = 2;          // -- Aposentado (inativo) 
+                                
+                                break;
+                            
+                            case 74:                   // Não existe esse tipo de demissão (8 pessoas (3 - sit 38 e 5 sit 41)
+                                if($situacao == 38){
+                                    $situacao = 2;      // -- Aposentado (inativo)
+                                    $motivoDemissao = 3;// -- Aposentadoria Voluntária Integral
+                                }
+                                
+                                if($situacao == 41){
+                                    $situacao = 2;      // -- Aposentado (inativo)
+                                    $motivoDemissao = 4;// -- Aposentadoria Voluntária Proporcional
+                                }
+                                break;
+                                
+                            case 75:                    // Exonerado a pedido
+                                $situacao = 3;          // -- exonerado
+                                $motivoDemissao = 1;    // -- exonerado a pedido
+                                break;
+                            
+                            case 88:                    // Rescisão do contrato de trabalho
+                                $situacao = 4;          // -- Demitido
+                                $motivoDemissao = 8;    // -- Rescisão de contrato à pedido
+                                break;
+                            
+                            case 90:                    // Outros
+                                $situacao = 4;          // -- Demitido
+                                $motivoDemissao = 13;   // -- Outros
+                                break;
+                            
+                        }
                         }
                     }
-                    
-                    
                     
                     # tbservidor
                     $tabela = 'tbservidor';
