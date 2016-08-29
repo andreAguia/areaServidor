@@ -121,7 +121,7 @@ if($acesso)
     $objeto->set_width(array(5,10,10,5,10,5,5,40));		
     $objeto->set_align(array("center","center","center","center","center","center","center","left"));
     $objeto->set_zebrado(false);   
-    $objeto->set_function(array (null,null,"datetime_to_php"));
+    $objeto->set_function(array (null,null,"datetime_to_php",null,null,null,"exibeNomeTitle"));
     $objeto->set_formatacaoCondicional(array( array('coluna' => 0,
                                                     'valor' => 0,
                                                     'operador' => '=',
