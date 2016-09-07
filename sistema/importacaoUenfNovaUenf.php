@@ -151,7 +151,7 @@ if($acesso){
                     . "perfil,cpf,pis,dt_adm,dt_nasc,obs,dt_dem,"
                     . "matr_est,causa_dem,"
                     . "cargo,funcao "
-                    . "FROM fen001 where (vinc <> 9 or (vinc = 9 and perfil = 21)) and cpf is not null";
+                    . "FROM fen001 where vinc <> 9 and cpf is not null";
 
             $conteudo = $uenf->select($select,true);
             
@@ -972,7 +972,7 @@ if($acesso){
                             case 55:        // Desenho Técnico
                                 $NovoCargo = 40;
                                 break;
-                            case 56:        // Edificções
+                            case 56:        // Edificações
                                 $NovoCargo = 41;
                                 break;
                             case 57:        // Editoração Eletrônica
@@ -1053,18 +1053,56 @@ if($acesso){
                             case 108:        // Analise de Sistema
                                 $NovoCargo = 8;
                                 break;
-                            case 108:        // Analise de Sistema
-                                $NovoCargo = 8;
+                            case 109:        // Editoração Eletrônica
+                                $NovoCargo = 42;
+                                break;
+                            case 110:        // Edificação
+                                $NovoCargo = 41;
+                                break;
+                            case 111:        // Agrícola e Agropecuaria
+                            case 112:
+                                $NovoCargo = 39;
+                                break;
+                            case 115:        // Eletrotécnica -> Eletricidade
+                                $NovoCargo = 80;
+                                break;
+                            case 117:        // Audiovisual
+                                $NovoCargo = 88;
+                                break;
+                            case 118:        // Imunologista
+                                $NovoCargo = 118;
+                                break;
+                            case 119:        // Analise Orçamento
+                                $NovoCargo = 101;
+                                break;
+                            case 121:        // Engenharia Mecânica
+                                $NovoCargo = 112;
+                                break;
+                            case 130:        // Geologia
+                                $NovoCargo = 30;
+                                break;
+                            case 133:        // Serviço Social
+                                $NovoCargo = 37;
+                                break;
+                            case 157:        // Física
+                                $NovoCargo = 27;
+                                break;
+                            case 158:        // Engenharia de Materiais
+                                $NovoCargo = 23;
+                                break;
+                            case 159:        // Eletromecanica
+                                $NovoCargo = 81;
+                                break;
+                            default:
+                                $novoCargo = 0;
                                 break;
                     }
-                    
-                    
                     
                     # tbservidor
                     $tabela = 'tbservidor';
                     $idCampo = 'idServidor';
-                    $campos = array("matricula","idPessoa","situacao","idPerfil","dtAdmissao","obs","dtDemissao","idFuncional","motivo","tipoAposentadoria");
-                    $valor = array($campo[0],$idPessoa,$situacao,$idPerfil,$campo[34],$obs,$campo[37],$campo[38],$motivoDemissao,$tipoAposentadoria);                    
+                    $campos = array("matricula","idPessoa","situacao","idPerfil","dtAdmissao","obs","dtDemissao","idFuncional","motivo","tipoAposentadoria","idCargo");
+                    $valor = array($campo[0],$idPessoa,$situacao,$idPerfil,$campo[34],$obs,$campo[37],$campo[38],$motivoDemissao,$tipoAposentadoria,$NovoCargo);                    
                     $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
                     $idServidor = $pessoal->get_lastId();
                     
