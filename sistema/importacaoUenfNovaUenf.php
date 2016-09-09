@@ -158,6 +158,8 @@ if($acesso){
             echo "<table class='tabelaPadrao'>";
             echo "<tr>";
             echo "<th>Matrícula</th>";
+            echo "<th>Sexo</th>";
+            echo "<th>Estado Civil</th>";
             echo "<th>Cpf</th>";
             echo "<th>IdPessoa Existente</th>";
             echo "<th>idPessoa Novo</th>";
@@ -173,6 +175,12 @@ if($acesso){
                     echo "------------------------";
                     br();
                 }else{
+                    # Começa a linha da tabela
+                    echo "<tr>";
+                    
+                    # Nome
+                    echo "<td>".$campo[0]."</td>";
+                    
                     # Variáveis
                     $jaExistePessoa = FALSE;    // Informa se já existe alguma pessoa com esse cpf
                     
@@ -192,6 +200,8 @@ if($acesso){
                         $sexo = "Feminino";
                     }
                     
+                    echo "<td>".$sexo."</td>";
+                    
                     # Regra para o campo eciv
                     $estadoCivil = NULL;
                     switch ($campo[12]){
@@ -210,7 +220,10 @@ if($acesso){
                             break;
                         default :
                             $estadoCivil = $campo[12];
+                            break;
                     }
+                    
+                    echo "<td>".$campo[12]."-".$estadoCivil."</td>";
                     
                     # Regra para o campo nacional (nacionalidade)
                     $nacionalidade = NULL;
@@ -607,8 +620,8 @@ if($acesso){
                         $jaExistePessoa = TRUE;
                     }
                     
-                    echo "<tr>";
-                    echo "<td>".$campo[0]."</td>";
+                    
+                    
                     echo "<td>".$cpf."</td>";
                     echo "<td>".$idPessoaExistente."</td>";
                     
@@ -628,7 +641,7 @@ if($acesso){
                         $idPessoa = $pessoal->get_lastId();
                         echo "<td>".$idPessoa."</td>";
                     }
-                    
+                    echo "</tr>";
                     # Situação e Causa de Demissão
                     # regra para a situação e a causa de demissão (uma coisa depende da outra)
                     $motivoDemissao = $campo[39];   // Motivo da demissão
