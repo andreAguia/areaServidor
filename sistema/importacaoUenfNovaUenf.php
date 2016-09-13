@@ -115,6 +115,9 @@ if($acesso){
             break;
 
         case"importa" :
+            # Começa a medir o tempo
+            $time_start = microtime(true);
+            
             # Cria um painel
             $painel = new Callout();
             $painel->abre();
@@ -158,6 +161,7 @@ if($acesso){
             echo "<table class='tabelaPadrao'>";
             echo "<tr>";
             echo "<th>Matrícula</th>";
+            echo "<th>Nome</th>";
             echo "<th>Sexo</th>";
             echo "<th>Estado Civil</th>";
             echo "<th>Cpf</th>";
@@ -178,8 +182,9 @@ if($acesso){
                     # Começa a linha da tabela
                     echo "<tr>";
                     
-                    # Nome
+                    # Matrícula & Nome
                     echo "<td>".$campo[0]."</td>";
+                    echo "<td>".$campo[1]."</td>";
                     
                     # Variáveis
                     $jaExistePessoa = FALSE;    // Informa se já existe alguma pessoa com esse cpf
@@ -1156,6 +1161,15 @@ if($acesso){
             echo $numItens." registros importados";
             br();
             echo $numItensDescartados." registros descartados";
+            
+            # Pega o tempo final
+            $time_end = microtime(true);
+            
+            # Calcula  e exibe o tempo
+            $time = $time_end - $time_start;
+            br();
+            echo "$time segundos";
+            
     
             $painel->fecha();
             break;
