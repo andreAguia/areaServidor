@@ -154,7 +154,8 @@ if($acesso){
                     . "perfil,cpf,pis,dt_adm,dt_nasc,obs,dt_dem,"
                     . "matr_est,causa_dem,"
                     . "cargo,funcao "
-                    . "FROM fen001 where vinc <> 9 and cpf is not null";
+                    . "FROM fen001 where vinc <> 9 and cpf is not null "
+                    . "ORDER BY dt_adm desc";
 
             $conteudo = $uenf->select($select,true);
             
@@ -1168,7 +1169,7 @@ if($acesso){
             # Calcula  e exibe o tempo
             $time = $time_end - $time_start;
             br();
-            echo "$time segundos";
+            echo ($time/60).":".fmod($time,60)."  minutos";
             
     
             $painel->fecha();
