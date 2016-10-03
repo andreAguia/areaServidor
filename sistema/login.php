@@ -105,7 +105,7 @@ switch ($fase)
                 alert('Login Incorreto!');
                 
                 # Grava no log a atividade
-                $intra->registraLog(0,date("Y-m-d H:i:s"),'Tentativa de Login com usuário inexistente ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                $intra->registraLog(0,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') inexistente ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
                 
                 loadPage('login.php');
                 break;
@@ -125,7 +125,7 @@ switch ($fase)
                 alert('Login Incorreto!');
                 
                 # Grava no log a atividade
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Tentativa de Login com senha errada. ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') e com senha errada. ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
                 
                 loadPage('login.php');
                 break;

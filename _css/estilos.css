@@ -77,7 +77,7 @@ tr#logExclusao{
 }
 
 tr#logLoginIncorreto{
-    background-color: tomato;
+    background-color: lightsalmon;
 }
 
 div#divContagemExterna{
