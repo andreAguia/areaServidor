@@ -81,7 +81,7 @@ if($acesso)
     $tabela = new Tabela();
     $tabela->set_conteudo($conteudo);
     $tabela->set_cabecalho($label,$width,$align);
-    $tabela->set_editar("documentaTabela.php?fase=editaDescricaoCampo");
+    #$tabela->set_editar("documentaTabela.php?fase=editaDescricaoCampo");
     $tabela->set_idCampo('COLUMN_NAME');
 
     # exibe a tabela

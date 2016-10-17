@@ -157,10 +157,15 @@ switch ($fase)
                 }
                 
                 # Verifica se o servidor está aniversariando hoje
-                if($pessoal->aniversariante($idServidor))
-                   loadPage('?fase=parabens');
-                else
-                    loadPage($pagina);                
+                if($intra->get_tipoUsuario($idUsuario) == 1){
+                    if($pessoal->aniversariante($idServidor)){
+                        loadPage('?fase=parabens');
+                    }else{
+                        loadPage($pagina);                
+                    }
+                }else{
+                    loadPage($pagina);   
+                }
                 break;
             
             Case 4: // Senha Padrão

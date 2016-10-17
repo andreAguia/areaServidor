@@ -50,6 +50,8 @@ if($acesso)
     $objeto = new Modelo();
 
     ################################################################
+    # Nome do Modelo
+    $objeto->set_nome('Permissões');
     
     # Exibe os dados do Servidor
     $objeto->set_rotinaExtra("get_DadosServidor");
@@ -91,7 +93,7 @@ if($acesso)
 
     # Parametros da tabela
     $objeto->set_label(array("Num","Regra","Descrição"));
-    $objeto->set_width(array(10,30,50));		
+    $objeto->set_width(array(5,30,60));		
     $objeto->set_align(array("center","left","left"));
 
     # Classe do banco de dados

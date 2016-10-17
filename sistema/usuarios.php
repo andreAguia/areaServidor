@@ -75,8 +75,9 @@ if($acesso)
         $orderTipo = 'asc';
 
     # select da lista
-    $objeto->set_selectLista ('SELECT idUsuario,
+    $objeto->set_selectLista ('(SELECT idUsuario,
                                       usuario,
+                                      if(tipoUsuario = 1,"S","B"),
                                       idServidor,
                                       ultimoAcesso,
                                       idServidor,
@@ -86,12 +87,28 @@ if($acesso)
                                       idUsuario,
                                       idUsuario
                                  FROM tbusuario
-                                WHERE usuario LIKE "%'.$parametro.'%"
+                                WHERE tipoUsuario = 1 AND usuario LIKE "%'.$parametro.'%")
+                                UNION
+                             (SELECT idUsuario,
+                                      usuario,
+                                      if(tipoUsuario = 1,"S","B"),
+                                      nome,
+                                      ultimoAcesso,
+                                      idServidor,
+                                      idServidor,
+                                      idUsuario,
+                                      idUsuario,
+                                      idUsuario,
+                                      idUsuario
+                                 FROM tbusuario
+                                WHERE tipoUsuario = 2 AND usuario LIKE "%'.$parametro.'%")
                              ORDER BY '.$orderCampo.' '.$orderTipo);
 
     # select do edita
     $objeto->set_selectEdita('SELECT usuario,
+                                     tipoUsuario,
                                      idServidor,
+                                     nome,
                                      obs
                                 FROM tbusuario
                                WHERE idUsuario = '.$id);
@@ -108,19 +125,20 @@ if($acesso)
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("","Usuário","Nome","Último Acesso", "Lotação","Cargo","nº","Padrão","Bloquear","Permissões"));
-    $objeto->set_width(array(5,10,20,10,20,20,5,5,5,5));
-    $objeto->set_align(array("center","center","left"));
+    $objeto->set_label(array("Status","Usuário","Tipo","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
+    #$objeto->set_width(array(5,10,5,15,10,15,15,5,5,5));
+    $objeto->set_align(array("center","center","center","left"));
 
-    $objeto->set_classe(array("intra",null,"pessoal",null,"pessoal","pessoal","intra"));
-    $objeto->set_metodo(array("get_tipoSenha",null,"get_nome",null,"get_lotacao","get_cargo","get_numeroPermissaoUsuarios"));
-    $objeto->set_function(array (null,null,null,"datetime_to_php"));
+    $objeto->set_classe(array(null,null,null,"pessoal",null,"pessoal","pessoal"));
+    $objeto->set_metodo(array(null,null,null,"get_nome",null,"get_lotacao","get_cargo"));
+    $objeto->set_function(array("statusUsuario",null,"badgeTipoUsuario",null,"datetime_to_php"));
     
     # Imagem Condicional 
     $imageSenhaPadrao = new Imagem(PASTA_FIGURAS.'exclamation.png','Usuário com senha padrão.');
     $imageAcessoBloqueado = new Imagem(PASTA_FIGURAS.'bloqueado2.png','Usuário Bloqueado.');
     $imageSenhaOk = new Imagem(PASTA_FIGURAS.'accept.png','Usuário Habilitado.');    
    
+    /*
     $objeto->set_imagemCondicional(array(array('coluna' => 0,
                                                'valor' => 1,
                                                'operador' => '=',
@@ -133,7 +151,7 @@ if($acesso)
                                                'valor' => 3,
                                                'operador' => '=',
                                                'imagem' => $imageSenhaOk)));
-   
+   */
     
     
     # Passar usuário para senha Padrão
@@ -177,27 +195,41 @@ if($acesso)
                                 FROM tbservidor JOIN tbpessoa ON(tbservidor.idPessoa = tbPessoa.idPessoa)
                                 WHERE tbservidor.situacao = 1
                             ORDER BY tbpessoa.nome');
-    array_push($result, array(0,null)); # Adiciona o valor de nulo
+    array_unshift($result, array(0,null)); # Adiciona o valor de nulo
 
     # Campos para o formulario
     $objeto->set_campos(array(
         array ('linha' => 1,
-               'col' => 4, 
+               'col' => 5, 
                'nome' => 'usuario',
                'label' => 'Usuário:',
                'tipo' => 'texto',
                'autofocus' => true,
-               'required' => true, 
+               'required' => true,
+               'unique' => true,
                'size' => 15),
         array ('linha' => 1,
+               'col' => 2, 
+               'nome' => 'tipoUsuario',
+               'label' => 'Tipo:',
+               'tipo' => 'combo',
+               'array' => array(array(null,"--"),array(1,"Servidor"),array(2,"Bolsista")),
+               'required' => true,
+               'size' => 10),
+        array ('linha' => 2,
                'col' => 6, 
                'nome' => 'idServidor',
-               'label' => 'Servidor:',
+               'label' => 'Nome (servidor):',
                'tipo' => 'combo',
-               'required' => true,
                'array' => $result,
                'size' => 20),
         array ('linha' => 2,
+               'col' => 6, 
+               'nome' => 'nome',
+               'label' => 'Nome (bolsista):',
+               'tipo' => 'texto',
+               'size' => 100),
+        array ('linha' => 3,
                'col' => 12,
                'nome' => 'obs',
                'label' => 'Observação:',

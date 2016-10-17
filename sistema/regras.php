@@ -72,7 +72,7 @@ if($acesso)
     
     # Parametros da tabela
     $objeto->set_label(array("Num","Nome","Descrição","Servidores","Ver"));
-    $objeto->set_width(array(5,25,40,10,5));		
+    $objeto->set_width(array(5,25,45,10,5));		
     $objeto->set_align(array("center","left","left"));
 
     # select da lista

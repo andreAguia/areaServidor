@@ -65,7 +65,7 @@ if($acesso)
                 $botao->set_label('Usuários');
                 $botao->set_url('usuarios.php');
                 $botao->set_image(PASTA_FIGURAS.'usuarios.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Gerencia os Usuários na Intranet');
+                $botao->set_title('Gerencia os Usuários');
                 $menu->add_item($botao);
 
                 # Regras

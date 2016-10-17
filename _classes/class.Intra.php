@@ -520,4 +520,56 @@ class Intra extends Bd
     }
 
     ###########################################################
+  
+	
+	public function get_nomeUsuario($idUsuario){ 
+
+            $tipo = $this->get_tipoUsuario($idUsuario);
+            
+            switch ($tipo)
+            {
+                case 1:
+                    $select = 'SELECT grh.tbpessoa.nome
+                                 FROM tbusuario LEFT JOIN grh.tbservidor USING (idServidor)
+                                                LEFT JOIN grh.tbpessoa USING (idPessoa)
+                                WHERE idusuario = '.$idUsuario;
+                    break;
+
+                case 2 :
+                    $select = 'SELECT nome
+                                 FROM tbusuario
+                                WHERE idusuario = '.$idUsuario;
+                    break;
+            }
+            
+            # verifica se o id foi informado
+            if(is_null($idUsuario))
+                return 0;
+            else
+            {
+                $result = parent::select($select,false);
+                return $result[0]; 
+            }
+        }
+	
+	###########################################################
+  
+	
+	public function get_tipoUsuario($idUsuario){ 
+
+            $select = "SELECT tipoUsuario		  
+                         FROM tbusuario
+                        WHERE idUsuario = '".$idUsuario."'";
+            
+            # verifica se o id foi informado
+            if(is_null($idUsuario))
+                return 0;
+            else
+            {
+                $result = parent::select($select,false);
+                return $result[0]; 
+            }
+        }
+	
+	###########################################################
 }

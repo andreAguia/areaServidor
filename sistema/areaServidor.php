@@ -51,7 +51,11 @@ if($acesso)
     $menu1->show();
     
     # Exibe os dados do Servidor    
-    Grh::listaDadosServidor($intra->get_idServidor($idUsuario));
+    if($intra->get_tipoUsuario($idUsuario) == 1){
+        Grh::listaDadosServidor($intra->get_idServidor($idUsuario));
+    }else{
+        AreaServidor::listaDadosUsuario($idUsuario);
+    }
 
     titulo('Área do Servidor');
     br();

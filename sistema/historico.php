@@ -70,29 +70,27 @@ if($acesso)
 
     # select da lista
     $selectLista = 'SELECT tipo,
-                           grh.tbpessoa.nome,
+                           idUsuario,
                            data,
                            ip,
                            tabela,
                            idValor,
-                           tblog.idServidor,
+                           idServidor,
                            atividade,                                      
                            idlog
-                      FROM tblog LEFT JOIN tbusuario ON(tblog.idUsuario = tbusuario.idUsuario)
-                                 LEFT JOIN grh.tbservidor ON(tbusuario.idServidor = grh.tbservidor.idServidor)
-                                 LEFT JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
+                      FROM tblog
                      WHERE';
     
     # Quando for histórico de um único servidor
     if(is_null($idServidor)){
         $selectLista .=' date(data) = "'.$parametro.'"';
     }else{
-        $selectLista .=' tblog.idServidor = '.$idServidor;
+        $selectLista .=' idServidor = '.$idServidor;
     }
     
     # usuário
     if($usuarioLog <> "*")
-        $selectLista .=' AND tblog.idUsuario = '.$usuarioLog;
+        $selectLista .=' AND idUsuario = '.$usuarioLog;
     
     # IP
     if($usuarioIp <> "*")
@@ -118,10 +116,13 @@ if($acesso)
 
     # Parametros da tabela
     $objeto->set_label(array("","Usuário","Data","IP","Tabela","Id","IdServidor","Atividade"));
-    $objeto->set_width(array(5,10,10,5,10,5,5,40));		
+    #$objeto->set_width(array(5,10,10,5,10,5,5,40));		
     $objeto->set_align(array("center","center","center","center","center","center","center","left"));
     $objeto->set_zebrado(false);   
     $objeto->set_function(array (null,null,"datetime_to_php",null,null,null,"exibeNomeTitle"));
+   $objeto->set_classe(array(null,"intra"));
+    $objeto->set_metodo(array(null,"get_nomeUsuario"));
+    
     $objeto->set_formatacaoCondicional(array( array('coluna' => 0,
                                                     'valor' => 0,
                                                     'operador' => '=',
