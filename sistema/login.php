@@ -90,8 +90,11 @@ switch ($fase)
         $senha = post('senha');        
         
         # Verifica o Login
-        $verifica = $intra->verificaLogin($usuario,$senha);        
-        
+        $verifica = $intra->verificaLogin($usuario,$senha);
+                
+        # Pega o ip da máquina que fez login
+        $ip = getenv("REMOTE_ADDR");
+                
         #$diasAusentes = $intra->get_diasAusentes($usuario);	# pega número de dias ausentes do servidor
 
         # Exibe uma mensagem de aguarde
@@ -105,7 +108,7 @@ switch ($fase)
                 alert('Login Incorreto!');
                 
                 # Grava no log a atividade
-                $intra->registraLog(0,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') inexistente ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') inexistente ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
                 
                 loadPage('login.php');
                 break;
@@ -115,7 +118,7 @@ switch ($fase)
                 alert('Login Incorreto!');
                 
                 # Grava no log a atividade
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Tentativa de Login. Usuário com senha nula no servidor ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') bloqueado (com senha nula) no servidor ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
                 
                 loadPage('login.php');
                 break;
@@ -125,15 +128,12 @@ switch ($fase)
                 alert('Login Incorreto!');
                 
                 # Grava no log a atividade
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') e com senha errada. ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') e com senha errada. ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
                 
                 loadPage('login.php');
                 break;
 
             Case 3: // Login Correto
-                # Pega o ip da máquina que fez login
-                $ip = getenv("REMOTE_ADDR");
-                
                 # Pega o idUsuario desse servidor
                 $idUsuario = $intra->get_idUsuario($usuario);
                 
@@ -172,9 +172,6 @@ switch ($fase)
                 # altera a senha de início
                 alert('Sua Senha não é Segura !! Favor Alterar !');
                 
-                # Pega o ip da máquina que fez login
-                $ip = getenv("REMOTE_ADDR");
-                
                 # Pega o idUsuario desse servidor
                 $idUsuario = $intra->get_idUsuario($usuario);
                 
@@ -188,6 +185,16 @@ switch ($fase)
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
                 
                 loadPage('trocarSenha.php'); 
+                break;
+            
+            case 5: // Computador Não Autorizado
+                # Informa o Erro
+                alert('Login Incorreto!');
+                
+                # Grava no log a atividade
+                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') em Computador não autorizado ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                
+                loadPage('login.php');
                 break;
         }
         break;

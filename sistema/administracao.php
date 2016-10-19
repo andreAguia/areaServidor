@@ -83,6 +83,14 @@ if($acesso)
                 $botao->set_image(PASTA_FIGURAS.'historico.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_url('historico.php');
                 $menu->add_item($botao);
+                
+                # Computadores (IPs)
+                $botao = new BotaoGrafico();
+                $botao->set_label('Acesso ao Sistema');
+                $botao->set_title('Cadastro de computadores com acesso ao sistema');
+                $botao->set_image(PASTA_FIGURAS.'computador.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_url('computador.php');
+                $menu->add_item($botao);
 
                 $menu->show();
 

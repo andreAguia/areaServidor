@@ -184,6 +184,14 @@ class Intra extends Bd
             if($senhaServidor <> $senha_md5){
                 return 2;
             }
+            
+            # Verifica se o computador está autorizado para acesso
+            $ip = getenv("REMOTE_ADDR"); 
+            $verificaIp = $this->verificaComputador($ip);
+            
+            if(!$verificaIp){
+                return 5;
+            }
 
             if($senhaServidor == $senha_md5){
                 if ($senha == SENHA_PADRAO){
@@ -360,14 +368,8 @@ class Intra extends Bd
                          FROM tbusuario
                         WHERE idUsuario = '".$idUsuario."'";
             
-            # verifica se a matricula foi informada
-            if(is_null($idUsuario))
-                return 0;
-            else
-            {
-                $result = parent::select($select,false);
-                return $result[0]; 
-            }
+            $result = parent::select($select,false);
+            return $result[0]; 
         }
 	
 	###########################################################
@@ -572,4 +574,27 @@ class Intra extends Bd
         }
 	
 	###########################################################
+	
+    function verificaComputador($ip)
+
+    /**
+    * Verifica se o computador com esse ip tem acesso so sistema
+    * 
+    * @param string $ip ip do computador
+    */
+    
+    {
+        $select = 'SELECT idComputador
+                     FROM tbcomputador
+                    WHERE ip = "'.$ip.'"';		
+
+        $result = parent::select($select,false);
+        if(is_null($result[0])){
+            return FALSE;
+        }else{
+            return TRUE; 
+        }
+    }
+
+###########################################################
 }

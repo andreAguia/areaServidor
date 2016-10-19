@@ -121,7 +121,7 @@ if($acesso)
     $objeto->set_zebrado(false);   
     $objeto->set_function(array (null,null,"datetime_to_php",null,null,null,"exibeNomeTitle"));
    $objeto->set_classe(array(null,"intra"));
-    $objeto->set_metodo(array(null,"get_nomeUsuario"));
+    $objeto->set_metodo(array(null,"get_usuario"));
     
     $objeto->set_formatacaoCondicional(array( array('coluna' => 0,
                                                     'valor' => 0,
@@ -217,7 +217,7 @@ if($acesso)
                 
                 # Pega os Usuarios
                 $result = $admin->select('SELECT DISTINCT tblog.idUsuario,
-                                                    grh.tbpessoa.nome
+                                                          CONCAT(tbusuario.usuario," - ",grh.tbpessoa.nome)
                                                FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
                                                           JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
                                                           JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)

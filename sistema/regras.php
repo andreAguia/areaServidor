@@ -89,19 +89,10 @@ if($acesso)
 
     # select do edita
     $objeto->set_selectEdita('SELECT nome,
-                                     descricao,
-                                     visivel
+                                     descricao
                                 FROM tbregra
                                WHERE idRegra = '.$id);
-
-    $objeto->set_formatacaoCondicional(array(array('coluna' => 5,
-                                                   'valor' => 'Sim',
-                                                   'operador' => '=',
-                                                   'id' => 'regraVisivel'),
-                                             array('coluna' => 5,
-                                                   'valor' => 'Não',
-                                                   'operador' => '=',
-                                                   'id' => 'regraInvisivel')));
+    
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkExcluir('?fase=excluir');
@@ -142,7 +133,7 @@ if($acesso)
                             'maxlength' => 45,
                             'required' => true,
                             'title' => 'Nome da Regra.',                            
-                            'col' => 8,
+                            'col' => 12,
                             'linha' => 1),     
                     array ( 'nome' => 'descricao',
                             'label' => 'Descrição:',
