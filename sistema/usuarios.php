@@ -127,7 +127,7 @@ if($acesso)
     # Parametros da tabela
     $objeto->set_label(array("Status","Usuário","Tipo","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
     #$objeto->set_width(array(5,10,5,15,10,15,15,5,5,5));
-    $objeto->set_align(array("center","center","center","left"));
+    $objeto->set_align(array("center","center","center","left","center","center","left"));
 
     $objeto->set_classe(array(null,null,null,"pessoal",null,"pessoal","pessoal"));
     $objeto->set_metodo(array(null,null,null,"get_nome",null,"get_lotacao","get_cargo"));

@@ -54,7 +54,7 @@
         # Conecta com o banco de dados
         $servidor = new Pessoal();
 
-        $select ='SELECT nome                         
+        $select ='SELECT usuario,nome,"Bolsista"                       
                     FROM areaServidor.tbusuario
                    WHERE idUsuario = '.$idUsuario;
 
@@ -63,8 +63,8 @@
         # Monta a tabela
         $tabela = new Tabela();
         $tabela->set_conteudo($conteudo);
-        $tabela->set_label(array("Usuário"));
-        $tabela->set_width(array(100));        
+        $tabela->set_label(array("Usuário","Nome","Perfil"));
+        $tabela->set_width(array(20,50,30));        
         $tabela->set_totalRegistro(false);
         $tabela->set_zebrado(true);
         

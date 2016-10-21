@@ -143,7 +143,7 @@ if($acesso)
     $imagemAlterar = new Imagem(PASTA_FIGURAS.'logAlterar.png','Alteração de Registro',15,15);
     $imagemExclusao = new Imagem(PASTA_FIGURAS.'logExclusao.png','Exclusão de Registro',15,15);
     $imagemRelatorio = new Imagem(PASTA_FIGURAS.'logRelatorio.png','Visualizou Relatório',15,15);
-    $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS.'loginIncorreto.png','Visualizou Relatório',15,15);
+    $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS.'loginIncorreto.png','Login Incorreto',15,15);
     
     $objeto->set_imagemCondicional(array(array('coluna' => 0,
                                                'valor' => 0,
@@ -216,13 +216,17 @@ if($acesso)
                 }
                 
                 # Pega os Usuarios
-                $result = $admin->select('SELECT DISTINCT tblog.idUsuario,
-                                                          CONCAT(tbusuario.usuario," - ",grh.tbpessoa.nome)
-                                               FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
-                                                          JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
-                                                          JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
-                                              WHERE date(data) = "'.$parametro.'"								
-                                           ORDER BY 2');
+                $result = $admin->select('(SELECT DISTINCT tblog.idUsuario,
+                                                           tbusuario.usuario
+                                                      FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
+                                                      JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
+                                                      JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
+                                                     WHERE tipoUsuario = 1 AND date(data) = "'.$parametro.'")
+                                           UNION
+                                          (SELECT DISTINCT tblog.idUsuario,
+                                                           tbusuario.usuario
+                                                      FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
+                                                     WHERE tipoUsuario = 2 AND date(data) = "'.$parametro.'")');
                 array_push($result,array('*','-- Todos --'));
                 
                 $controle = new Input('usuarioLog','combo','Filtra por Usuário',1);
@@ -232,7 +236,7 @@ if($acesso)
                 $controle->set_valor($usuarioLog);
                 $controle->set_onChange('formPadrao.submit();');
                 $controle->set_linha(1);
-                $controle->set_col(6);
+                $controle->set_col(3);
                 $form->add_item($controle);
                 
                 # Pega os ips
