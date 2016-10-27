@@ -175,7 +175,35 @@ if($acesso)
                 $botao->set_image(PASTA_FIGURAS.'webServer.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_url('infoWebServer.php');
                 $menu->add_item($botao);
+                $menu->show();
 
+            $fieldset->fecha();  
+            $grid2->fechaColuna();
+            $grid2->fechaGrid(); 
+
+            # Documentação
+            $grid2->abreColuna(12,6);
+            $fieldset = new Fieldset('Banco de Dados');
+            $fieldset->abre();
+
+                $menu = new MenuGrafico(4);
+
+                # Framework
+                $botao = new BotaoGrafico();
+                $botao->set_label('Backup');
+                $botao->set_title('Executa o backup do banco de dados');
+                $botao->set_image(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_url('backup.php');
+                $menu->add_item($botao);
+
+                # Administração
+                $botao = new BotaoGrafico();
+                $botao->set_label('Restore');
+                $botao->set_title('Executa o restore de um backup');
+                $botao->set_image(PASTA_FIGURAS.'restore.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_url('restore.php');
+                $menu->add_item($botao);
+                                
                 # Importação
                 $botao = new BotaoGrafico();
                 $botao->set_label('Importação');
@@ -197,7 +225,7 @@ if($acesso)
 
             $fieldset->fecha();  
             $grid2->fechaColuna();
-            $grid2->fechaGrid();        
+            $grid2->fechaGrid();       
             break;
         
         # Exibe o Menu de Documentação
