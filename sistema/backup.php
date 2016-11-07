@@ -79,25 +79,30 @@ if($acesso)
             $grid2->abreColuna(5);
           
             # Abre o diretório
-            $ponteiro  = opendir("../_backup/".date('Y.m.d'));
+            $pasta = "../_backup/".date('Y.m.d');
             
+            # Array que guarda s arquivos
             $dadosArquivo = array();
             
-            while ($arquivo = readdir($ponteiro)){ 
+            if (file_exists($pasta)){
+                $ponteiro  = opendir($pasta);
                 
-                if($arquivo == ".." || $arquivo == ".")continue; // Desconsidera os diretorios 
-                if($arquivo == "Thumbs.db")continue; // Desconsidera o thumbs.db
-                
-                # Divide o nome do arquivo
-                $partesArquivo = explode('.',$arquivo);
-                
-                # Organiza as partes
-                $dia = $partesArquivo[2]."/".$partesArquivo[1]."/".$partesArquivo[0];
-                $hora = $partesArquivo[3].":".$partesArquivo[4];
-                $tipo = $partesArquivo[5];
-                $banco = $partesArquivo[6];
-                
-                $dadosArquivo[] = array($dia,$hora,$tipo,$banco,$arquivo);                
+                while ($arquivo = readdir($ponteiro)){ 
+
+                    if($arquivo == ".." || $arquivo == ".")continue; // Desconsidera os diretorios 
+                    if($arquivo == "Thumbs.db")continue; // Desconsidera o thumbs.db
+
+                    # Divide o nome do arquivo
+                    $partesArquivo = explode('.',$arquivo);
+
+                    # Organiza as partes
+                    $dia = $partesArquivo[2]."/".$partesArquivo[1]."/".$partesArquivo[0];
+                    $hora = $partesArquivo[3].":".$partesArquivo[4];
+                    $tipo = $partesArquivo[5];
+                    $banco = $partesArquivo[6];
+
+                    $dadosArquivo[] = array($dia,$hora,$tipo,$banco,$arquivo);                
+                }
             }
             
             # Monta a tabela
