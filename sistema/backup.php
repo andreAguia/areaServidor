@@ -48,12 +48,6 @@ if($acesso)
             $linkBotaoVoltar->set_title('Volta para a página anterior');
             $linkBotaoVoltar->set_accessKey('V');
             
-            # Botão Backup Automático
-            $linkBotaoAut = new Link("Configurar Backup Automático",'?fase=config');
-            $linkBotaoAut->set_class('button');
-            $linkBotaoAut->set_title('Configurar Backup Automático');
-            $linkBotaoAut->set_accessKey('C');
-
             # Botão Fazer Backup Manual
             $linkBotaoEditar = new Link("Backup Manual",'?fase=grh&manual=TRUE');
             $linkBotaoEditar->set_class('button');
@@ -64,7 +58,6 @@ if($acesso)
             $menu = new MenuBar();
             $menu->add_link($linkBotaoVoltar,"left");
             $menu->add_link($linkBotaoEditar,"right");
-            $menu->add_link($linkBotaoAut,"right");
             $menu->show();
             
             titulo("Gerenciamento de Backups");
@@ -79,50 +72,57 @@ if($acesso)
             $grid2->abreColuna(5);
           
             # Abre o diretório
-            $ponteiro  = opendir("../_backup/".date('Y.m.d'));
-            
+            $diretorio = "../_backup/".date('Y.m.d');
             $dadosArquivo = array();
             
-            while ($arquivo = readdir($ponteiro)){ 
-                
-                if($arquivo == ".." || $arquivo == ".")continue; // Desconsidera os diretorios 
-                if($arquivo == "Thumbs.db")continue; // Desconsidera o thumbs.db
-                
-                # Divide o nome do arquivo
-                $partesArquivo = explode('.',$arquivo);
-                
-                # Organiza as partes
-                $dia = $partesArquivo[2]."/".$partesArquivo[1]."/".$partesArquivo[0];
-                $hora = $partesArquivo[3].":".$partesArquivo[4];
-                $tipo = $partesArquivo[5];
-                $banco = $partesArquivo[6];
-                
-                $dadosArquivo[] = array($dia,$hora,$tipo,$banco,$arquivo);                
-            }
-            
-            # Monta a tabela
-            $label = array("Dia","Hora","Tipo","Banco","Ver");
-            $width = array(20,15,15,40,10);
-            $align = array("center","center","center","left");
-            $function = array (null);
-            
-            $tabela = new Tabela();
-            $titulo = "Backups Efetuados no mês de ".get_nomeMes(date('m')). " de ".date('Y');
+            if (is_dir($diretorio)) {
+                $ponteiro  = opendir($diretorio);
 
-            $tabela->set_conteudo($dadosArquivo);
-            $tabela->set_cabecalho($label,$width,$align);
-            $tabela->set_titulo($titulo);
-            
-            # Botão de exibição dos servidores com permissão a essa regra
-            $botao = new BotaoGrafico();
-            $botao->set_label('');
-            $botao->set_url('?arquivoSql=');
-            $botao->set_title('Visualiza arquido de backup');
-            $botao->set_image(PASTA_FIGURAS.'ver.png',20,20);
-    
-            # Coloca o objeto link na tabela			
-            $tabela->set_link(array("","","","",$botao));
-            $tabela->set_idCampo(4);
+                # percorre os arquivos da pasta
+                while ($arquivo = readdir($ponteiro)){ 
+
+                    if($arquivo == ".." || $arquivo == ".")continue; // Desconsidera os diretorios 
+                    if($arquivo == "Thumbs.db")continue; // Desconsidera o thumbs.db
+
+                    # Divide o nome do arquivo
+                    $partesArquivo = explode('.',$arquivo);
+
+                    # Organiza as partes
+                    $dia = $partesArquivo[2]."/".$partesArquivo[1]."/".$partesArquivo[0];
+                    $hora = $partesArquivo[3].":".$partesArquivo[4];
+                    $tipo = $partesArquivo[5];
+                    $banco = $partesArquivo[6];
+                    $extensao = $partesArquivo[7];
+
+                    if($extensao <> "txt"){
+                        $dadosArquivo[] = array($dia,$hora,$tipo,$banco,substr($arquivo, 0, -3)."txt");                
+                    }
+                }
+
+                # Monta a tabela
+                $label = array("Dia","Hora","Tipo","Banco","Ver");
+                $width = array(20,15,15,40,10);
+                $align = array("center","center","center","left");
+                $function = array (null);
+
+                $tabela = new Tabela();
+                $titulo = "Backups Efetuados no mês de ".get_nomeMes(date('m')). " de ".date('Y');
+
+                $tabela->set_conteudo($dadosArquivo);
+                $tabela->set_cabecalho($label,$width,$align);
+                $tabela->set_titulo($titulo);
+
+                # Botão de exibição dos servidores com permissão a essa regra
+                $botao = new BotaoGrafico();
+                $botao->set_label('');
+                $botao->set_url('?arquivoSql=');
+                $botao->set_title('Visualiza arquido de backup');
+                $botao->set_image(PASTA_FIGURAS.'ver.png',20,20);
+
+                # Coloca o objeto link na tabela			
+                $tabela->set_link(array("","","","",$botao));
+                $tabela->set_idCampo(4);
+            }
             
             if(count($dadosArquivo) == 0){
                 $callout = new Callout();
@@ -186,14 +186,8 @@ if($acesso)
             break;
         
         case "grh":
-            $db = new Backup(array(
-                    'driver' => 'mysql',
-                    'host' => '127.0.0.1',
-                    'user' => 'root',
-                    'password' => '',
-                    'database' => 'grh'
-            ));
-            $backup = $db->backup($manual);
+            $db = new Backup('grh',$intra->get_usuario($idUsuario),$manual);
+            $backup = $db->backup();
             
             if(!$backup['error']){
                 // If there isn't errors, show the content
@@ -208,14 +202,8 @@ if($acesso)
             break;
             
         case "areaservidor":
-            $db = new Backup(array(
-                    'driver' => 'mysql',
-                    'host' => '127.0.0.1',
-                    'user' => 'root',
-                    'password' => '',
-                    'database' => 'areaservidor'
-            ));
-            $backup = $db->backup($manual);
+            $db = new Backup('areaServidor',$intra->get_usuario($idUsuario),$manual);
+            $backup = $db->backup();
             
             if(!$backup['error']){
                 // If there isn't errors, show the content

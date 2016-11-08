@@ -146,6 +146,16 @@ switch ($fase)
                 # Grava no log a atividade
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
 
+                # Aproveita o momento e verifica se foi feito algum backup 
+                # Senão faz um backup automático de hoje
+                if(!verificaBackupHoje()){
+                    $db = new Backup('grh',$intra->get_usuario($idUsuario),FALSE);
+                    $backup = $db->backup();
+                    
+                    $db = new Backup('areaServidor',$intra->get_usuario($idUsuario),FALSE);
+                    $backup = $db->backup(FALSE);
+                }
+
                 # Acesso ao sistema GRH
                 $pagina = 'areaServidor.php';
                 if(Verifica::acesso($idUsuario,2)){

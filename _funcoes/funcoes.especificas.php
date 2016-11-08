@@ -82,3 +82,38 @@ function badgeTipoUsuario($tipoUsuario){
             badge("A","warning",NULL,"Usuário Administrador.");
         }
     }
+    
+    ###########################################################
+
+    function verificaBackupHoje(){
+        $return = FALSE;
+        $pasta = "../_backup/".date('Y.m.d');
+        
+        # Verifica se a pasta existe
+        if (is_dir($pasta)) {
+            $ponteiro  = opendir($pasta);
+           
+           # percorre os arquivos da pasta
+           while ($arquivo = readdir($ponteiro)){ 
+
+                if($arquivo == ".." || $arquivo == ".")continue; // Desconsidera os diretorios 
+                if($arquivo == "Thumbs.db")continue; // Desconsidera o thumbs.db
+
+                # Divide o nome do arquivo
+                $partesArquivo = explode('.',$arquivo);
+
+                # Organiza as partes
+                $dia = $partesArquivo[2]."/".$partesArquivo[1]."/".$partesArquivo[0];
+                $hora = $partesArquivo[3].":".$partesArquivo[4];
+                $tipo = $partesArquivo[5];
+                $banco = $partesArquivo[6];
+                $extensao = $partesArquivo[7];
+
+                if($extensao == "sql"){
+                    $return = TRUE;                
+                }
+            }
+        }
+        echo $return;
+        return $return;
+    }
