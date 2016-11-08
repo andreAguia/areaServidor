@@ -28,7 +28,10 @@ if($acesso)
     # Ordem da tabela
     $orderCampo = get('orderCampo');
     $orderTipo = get('orderTipo');
-
+    
+    # Pega a data
+    $dataLista = retiraAspas(post('dataLista',date("Y-m-d")));
+    
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
@@ -64,7 +67,7 @@ if($acesso)
             $menu = new MenuBar();
             $menu->add_link($linkBotaoVoltar,"left");
             $menu->add_link($linkBotaoEditar,"right");
-            $menu->add_link($linkBotaoAut,"right");
+            #$menu->add_link($linkBotaoAut,"right");
             $menu->show();
             
             titulo("Gerenciamento de Backups");
@@ -72,17 +75,36 @@ if($acesso)
             $grid1->fechaColuna();
             $grid1->fechaGrid();
             
+            # Data
+            $form = new Form('?');
+
+            $controle = new Input('dataLista','data','Entre com a data',1);
+            $controle->set_size(30);
+            $controle->set_title('Insira a data');
+            $controle->set_valor($dataLista);
+            $controle->set_autofocus(true);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(3);
+            $form->add_item($controle);
+            
             br();
+            $form->show();
             
             # Divide a tela
             $grid2 = new Grid();
             $grid2->abreColuna(5);
           
+            # Troca o - por .
+            $partesData = explode('-',$dataLista);
+            
             # Abre o diretório
-            $pasta = "../_backup/".date('Y.m.d');
+            $pasta = "../_backup/".$partesData[0].'.'.$partesData[1].'.'.$partesData[2];
             
             # Array que guarda s arquivos
             $dadosArquivo = array();
+            
+            $dia = null;
             
             if (file_exists($pasta)){
                 $ponteiro  = opendir($pasta);
@@ -100,8 +122,13 @@ if($acesso)
                     $hora = $partesArquivo[3].":".$partesArquivo[4];
                     $tipo = $partesArquivo[5];
                     $banco = $partesArquivo[6];
+                    
+                    $extensao = $partesArquivo[7];
+                    $arquivoRelatorio = substr($arquivo,0, -3)."txt";
 
-                    $dadosArquivo[] = array($dia,$hora,$tipo,$banco,$arquivo);                
+                    if($extensao == 'sql'){
+                        $dadosArquivo[] = array($dia,$hora,$tipo,$banco,$arquivoRelatorio);
+                    }
                 }
             }
             
@@ -112,13 +139,13 @@ if($acesso)
             $function = array (null);
             
             $tabela = new Tabela();
-            $titulo = "Backups Efetuados no mês de ".get_nomeMes(date('m')). " de ".date('Y');
+            $titulo = "Backups Efetuados em ".$dia;
 
             $tabela->set_conteudo($dadosArquivo);
             $tabela->set_cabecalho($label,$width,$align);
             $tabela->set_titulo($titulo);
             
-            # Botão de exibição dos servidores com permissão a essa regra
+            # Botão para exibir o relatório do backup
             $botao = new BotaoGrafico();
             $botao->set_label('');
             $botao->set_url('?arquivoSql=');
@@ -191,14 +218,8 @@ if($acesso)
             break;
         
         case "grh":
-            $db = new Backup(array(
-                    'driver' => 'mysql',
-                    'host' => '127.0.0.1',
-                    'user' => 'root',
-                    'password' => '',
-                    'database' => 'grh'
-            ));
-            $backup = $db->backup($manual);
+            $db = new Backup('grh',$manual,$intra->get_usuario($idUsuario));
+            $backup = $db->backup();
             
             if(!$backup['error']){
                 // If there isn't errors, show the content
@@ -209,18 +230,18 @@ if($acesso)
             } else {
                 echo 'An error has ocurred.';
             }
+            
+            # Escreve o log
+            $data = date("Y-m-d H:i:s");
+            $atividade = "Efetuou o Backup Manual do Banco grh";
+            $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
+            
             loadPage('?fase=areaservidor&manual='.$manual);
             break;
             
         case "areaservidor":
-            $db = new Backup(array(
-                    'driver' => 'mysql',
-                    'host' => '127.0.0.1',
-                    'user' => 'root',
-                    'password' => '',
-                    'database' => 'areaservidor'
-            ));
-            $backup = $db->backup($manual);
+            $db = new Backup('areaservidor',$manual,$intra->get_usuario($idUsuario));
+            $backup = $db->backup();
             
             if(!$backup['error']){
                 // If there isn't errors, show the content
@@ -231,6 +252,12 @@ if($acesso)
             } else {
                 echo 'An error has ocurred.';
             }
+            
+            # Escreve o log
+            $data = date("Y-m-d H:i:s");
+            $atividade = "Efetuou o Backup Manual do Banco areaservidor";
+            $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
+            
             loadPage('?');
             break;
         case "ver":

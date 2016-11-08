@@ -144,6 +144,7 @@ if($acesso)
     $imagemExclusao = new Imagem(PASTA_FIGURAS.'logExclusao.png','Exclusão de Registro',15,15);
     $imagemRelatorio = new Imagem(PASTA_FIGURAS.'logRelatorio.png','Visualizou Relatório',15,15);
     $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS.'loginIncorreto.png','Login Incorreto',15,15);
+    $imagemBackup = new Imagem(PASTA_FIGURAS.'backup2.png','Backup',15,15);
     
     $objeto->set_imagemCondicional(array(array('coluna' => 0,
                                                'valor' => 0,
@@ -168,7 +169,11 @@ if($acesso)
                                          array('coluna' => 0,
                                                'valor' => 5,
                                                'operador' => '=',
-                                               'imagem' => $imagemLoginIncorreto)
+                                               'imagem' => $imagemLoginIncorreto),
+                                         array('coluna' => 0,
+                                               'valor' => 6,
+                                               'operador' => '=',
+                                               'imagem' => $imagemBackup)
                                         ));
 
     # Classe do banco de dados

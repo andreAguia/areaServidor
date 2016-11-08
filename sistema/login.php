@@ -156,6 +156,41 @@ switch ($fase)
                     $pagina = 'areaServidor.php';
                 }
                 
+                # Faz backup automático (1 por dia ao menos)
+                # Abre o diretório
+                $pasta = "../_backup/".date("Y.m.d");
+                
+                if(!file_exists($pasta)){
+                    # Grh
+                    $db = new Backup('grh',FALSE);
+                    $backup = $db->backup();
+
+                    if(!$backup['error']){
+                        echo nl2br($backup['msg']);
+                    } else {
+                        echo 'An error has ocurred.';
+                    }
+                    
+                    # Escreve o log
+                    $data = date("Y-m-d H:i:s");
+                    $atividade = "Login disparou o backup automático do banco grh";
+                    $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
+                    
+                    # Areaservidor
+                    $db = new Backup('areaservidor',FALSE);
+                    $backup = $db->backup();
+
+                    if(!$backup['error']){
+                    } else {
+                        echo 'An error has ocurred.';
+                    }
+                    
+                    # Escreve o log
+                    $data = date("Y-m-d H:i:s");
+                    $atividade = "Login disparou o backup automático do banco areaservidor";
+                    $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
+                }
+                                
                 # Verifica se o servidor está aniversariando hoje
                 if($intra->get_tipoUsuario($idUsuario) == 1){
                     if($pessoal->aniversariante($idServidor)){

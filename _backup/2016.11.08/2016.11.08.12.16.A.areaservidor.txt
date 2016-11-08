@@ -1,0 +1,18 @@
+-- UENF - Universidade do Norte Fluminense
+-- GRH - Gerência de Recursos Humanos
+-- Relatório de Backup de Sistema
+-- Backup Automático
+-- Realizado em: 08-11-2016, 12:16 pm
+
+--  Backup do Banco: areaservidor
+-- ---------------------------------------------------
+-- Tabela: tbcomputador		- Registros copiados: 2
+-- Tabela: tblog			- Registros copiados: 99
+-- Tabela: tbpermissao		- Registros copiados: 1
+-- Tabela: tbregra			- Registros copiados: 2
+-- Tabela: tbupo			- Registros copiados: 2868
+-- Tabela: tbusuario		- Registros copiados: 3
+-- Tabela: tbvariaveis		- Registros copiados: 9
+-- ---------------------------------------------------
+-- 7 tabelas copiadas		- Registros copiados: 2984
+-- ---------------------------------------------------
