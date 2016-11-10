@@ -81,4 +81,4 @@ function badgeTipoUsuario($tipoUsuario){
         if($intra->verificaPermissao($idUsuario,1)){
             badge("A","warning",NULL,"Usuário Administrador.");
         }
-    }
+    } 

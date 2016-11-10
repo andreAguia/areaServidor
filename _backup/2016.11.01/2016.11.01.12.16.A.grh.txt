@@ -1,0 +1,54 @@
+-- UENF - Universidade do Norte Fluminense
+-- GRH - Gerência de Recursos Humanos
+-- Relatório de Backup de Sistema
+-- Backup Automático
+-- Realizado em: 01-11-2016, 12:16 pm
+
+--  Backup do Banco: grh
+-- ---------------------------------------------------
+-- Tabela: tbarea			- Registros copiados: 11
+-- Tabela: tbatestado		- Registros copiados: 692
+-- Tabela: tbaverbacao		- Registros copiados: 29
+-- Tabela: tbbanco			- Registros copiados: 2
+-- Tabela: tbcargo			- Registros copiados: 123
+-- Tabela: tbcedido		- Registros copiados: 18
+-- Tabela: tbclasse		- Registros copiados: 251
+-- Tabela: tbcomissao		- Registros copiados: 294
+-- Tabela: tbconcurso		- Registros copiados: 2
+-- Tabela: tbcontatos		- Registros copiados: 1579
+-- Tabela: tbdependente		- Registros copiados: 372
+-- Tabela: tbdiaria		- Registros copiados: 711
+-- Tabela: tbdocumentacao		- Registros copiados: 1782
+-- Tabela: tbelogio		- Registros copiados: 0
+-- Tabela: tbescolaridade		- Registros copiados: 12
+-- Tabela: tbestciv		- Registros copiados: 9
+-- Tabela: tbfaltas		- Registros copiados: 10
+-- Tabela: tbferias		- Registros copiados: 3172
+-- Tabela: tbfolga			- Registros copiados: 8
+-- Tabela: tbformacao		- Registros copiados: 357
+-- Tabela: tbgratificacao		- Registros copiados: 135
+-- Tabela: tbhistcessao		- Registros copiados: 94
+-- Tabela: tbhistlot		- Registros copiados: 2553
+-- Tabela: tblicenca		- Registros copiados: 692
+-- Tabela: tblotacao		- Registros copiados: 107
+-- Tabela: tbmotivo		- Registros copiados: 13
+-- Tabela: tbnacionalidade		- Registros copiados: 25
+-- Tabela: tbpais			- Registros copiados: 24
+-- Tabela: tbparentesco		- Registros copiados: 5
+-- Tabela: tbperfil		- Registros copiados: 7
+-- Tabela: tbpessoa		- Registros copiados: 1782
+-- Tabela: tbplano			- Registros copiados: 6
+-- Tabela: tbprogressao		- Registros copiados: 854
+-- Tabela: tbpublicacaopremio	- Registros copiados: 192
+-- Tabela: tbservidor		- Registros copiados: 2118
+-- Tabela: tbsituacao		- Registros copiados: 6
+-- Tabela: tbsuspensao		- Registros copiados: 0
+-- Tabela: tbtipocargo		- Registros copiados: 6
+-- Tabela: tbtipocomissao		- Registros copiados: 25
+-- Tabela: tbtipolicenca		- Registros copiados: 18
+-- Tabela: tbtipoprogressao	- Registros copiados: 7
+-- Tabela: tbtrabalhotre		- Registros copiados: 26
+-- Tabela: tbtrienio		- Registros copiados: 524
+-- ---------------------------------------------------
+-- 43 tabelas copiadas		- Registros copiados: 18653
+-- ---------------------------------------------------
