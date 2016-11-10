@@ -201,7 +201,7 @@ if($acesso)
                 $botao->set_label('Importação');
                 $botao->set_title('Executa a rotina de importação');
                 $botao->set_image(PASTA_FIGURAS.'importacao.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('importacaoUenfNovaUenf.php');
+                $botao->set_url('?fase=importacao');
                 $menu->add_item($botao);
 
                 # PhpMyAdmin
@@ -221,122 +221,27 @@ if($acesso)
             break;
         
         # Exibe o Menu de Documentação
-        case "documentacao" :
+        case "importacao" :
             botaoVoltar("administracao.php");
-            titulo('Documentação dos Sistemas');
+            titulo('Importação do banco de dados');
 
             # Define o tamanho do ícone
             $tamanhoImage = 60;
-
-            # Cria 3 colunas
-            $grid3 = new Grid();
-
-            $grid3->abreColuna(4);
-            $fieldset = new Fieldset('Framework');
+            
+            $fieldset = new Fieldset('Importação');
             $fieldset->abre();
 
-                $menu = new MenuGrafico(3);
+            $menu = new MenuGrafico(3);
 
-                # Código
-                $botao = new BotaoGrafico();
-                $botao->set_label('Código');
-                $botao->set_url('documentaCodigo.php?fase=Framework');
-                $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Classes e Funções');
-                $menu->add_item($botao);
-
-                # Variáveis de Configuração
-                $botao = new BotaoGrafico();
-                $botao->set_label('Banco de Dados');
-                $botao->set_url('documentaBd.php?fase=Framework');
-                $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Exibe informações do banco de dados');
-                $menu->add_item($botao);
-
-                # Histórico Geral
-                $botao = new BotaoGrafico();
-                $botao->set_label('Diagrama');
-                $botao->set_url('documentaDiagrama.php?fase=Framework');
-                $botao->set_title('Diagramas do sistema');
-                $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
-                $menu->add_item($botao);
-
-                $menu->show();
-
-            $fieldset->fecha();
-            $grid3->fechaColuna();
-
-
-            $grid3->abreColuna(4);
-            $fieldset = new Fieldset('Administração');
-            $fieldset->abre();
-
-                $menu = new MenuGrafico(3);
-
-                # Código
-                $botao = new BotaoGrafico();
-                $botao->set_label('Código');
-                $botao->set_url('documentaCodigo.php?fase=Administracao');
-                $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Classes e Funções');
-                $menu->add_item($botao);
-
-                # Variáveis de Configuração
-                $botao = new BotaoGrafico();
-                $botao->set_label('Banco de Dados');
-                $botao->set_url('documentaBd.php?fase=Administracao');
-                $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Exibe informações do banco de dados');
-                $menu->add_item($botao);
-
-                # Histórico Geral
-                $botao = new BotaoGrafico();
-                $botao->set_label('Diagrama');
-                $botao->set_url('documentaDiagrama.php?fase=Administracao');
-                $botao->set_title('Diagramas do sistema');
-                $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
-                $menu->add_item($botao);
-
-                $menu->show();
-
-            $fieldset->fecha();
-            $grid3->fechaColuna();
-
-            $grid3->abreColuna(4);
-            $fieldset = new Fieldset('GRH');
-            $fieldset->abre();
-
-                $menu = new MenuGrafico(3);
-
-                # Código
-                $botao = new BotaoGrafico();
-                $botao->set_label('Código');
-                $botao->set_url('documentaCodigo.php?fase=Grh');
-                $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Classes e Funções');
-                $menu->add_item($botao);
-
-                # Variáveis de Configuração
-                $botao = new BotaoGrafico();
-                $botao->set_label('Banco de Dados');
-                $botao->set_url('documentaBd.php?fase=Grh');
-                $botao->set_image(PASTA_FIGURAS.'bd.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Exibe informações do banco de dados');
-                $menu->add_item($botao);
-
-                # Histórico Geral
-                $botao = new BotaoGrafico();
-                $botao->set_label('Diagrama');
-                $botao->set_url('documentaDiagrama.php?fase=Grh');
-                $botao->set_title('Diagramas do sistema');
-                $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);    
-                $menu->add_item($botao);
-
-                $menu->show();
-
-            $fieldset->fecha();
-            $grid3->fechaColuna();
-            $grid3->fechaGrid();       
+            # Código
+            $botao = new BotaoGrafico();
+            $botao->set_label('FEN001');
+            $botao->set_url('importacaoUenfNovaUenf.php');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Importação da Tabela de Servidores FEN001');
+            $menu->add_item($botao);
+            $menu->show();  
+            $fieldset->fecha();  
             break;
     }
     $grid1->fechaColuna();

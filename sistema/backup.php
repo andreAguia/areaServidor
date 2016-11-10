@@ -30,7 +30,7 @@ if($acesso)
     $orderTipo = get('orderTipo');
     
     # Pega a data
-    $dataLista = retiraAspas(post('dataLista',date("Y-m-d")));
+    $dataLista = retiraAspas(post('dataLista',get('dataLista',date("Y-m-d"))));
     
     # Começa uma nova página
     $page = new Page();
@@ -148,7 +148,7 @@ if($acesso)
             # Botão para exibir o relatório do backup
             $botao = new BotaoGrafico();
             $botao->set_label('');
-            $botao->set_url('?arquivoSql=');
+            $botao->set_url('?dataLista='.$dataLista.'&arquivoSql=');
             $botao->set_title('Visualiza arquido de backup');
             $botao->set_image(PASTA_FIGURAS.'ver.png',20,20);
     
@@ -178,8 +178,8 @@ if($acesso)
                 }else{
                     echo '<pre>';
 
-                    # Define o arquivo da classe
-                    $arquivoExemplo = "../_backup/".date('Y.m.d')."/".$arquivoSql;
+                    # Define o arquivo
+                    $arquivoExemplo = $pasta."/".$arquivoSql;
 
                     # Exibe o nome do arquivo
                     echo str_repeat("#", 80);

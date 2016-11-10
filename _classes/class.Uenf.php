@@ -10,7 +10,7 @@ class Uenf extends Bd
     private $servidor = "localhost";        // servidor
     private $usuario = "intranet";          // usuário
     private $senha = "txzVHnMdh53ZWX9p";    // senha
-    private $banco = "uenf";               // nome do banco
+    private $banco = "uenf2";               // nome do banco
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela
     private $idCampo;                       // o nome do campo id
