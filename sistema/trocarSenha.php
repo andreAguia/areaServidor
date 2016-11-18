@@ -21,7 +21,7 @@ if($acesso)
     $servidor = new Pessoal();
 
     # Define a senha padrão de acordo com o que está nas variáveis
-    define("SENHA_PADRAO",$intra->get_variavel('senha_padrao'));
+    define("SENHA_PADRAO",$intra->get_variavel('senhaPadrao'));
 
     # Verifica a fase do programa
     $fase = get('fase');

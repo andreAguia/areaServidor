@@ -125,10 +125,10 @@ if($acesso)
     for ($i=1; $i <= $numMetodo;$i++){
         # link
         echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'&metodo='.$i.'" title="'.$descricaoMetodo[$i].'">';
-       if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
+        if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
             echo '<del>'.$nomeMetodo[$i].'</del>';
         }else{
-            echo $nomeMetodo[$i];    
+            span($nomeMetodo[$i],$visibilidadeMetodo[$i]);
         }
 
         echo '</a>';
@@ -161,10 +161,24 @@ if($acesso)
 
             # Nota
             if(!is_null($notaClasse)){
-                echo 'Nota:';
-                echo '<div class="callout warning">';
-                echo $notaClasse;
-                echo '</div>';
+                # Vê quantas notas existem
+                $qtdadeNotaClasse = count($notaClasse);
+
+                # Percorre as notas
+                for ($i = 0; $i < $qtdadeNotaClasse; $i++) {
+
+                    echo 'Nota: ';
+
+                    if($qtdadeNotaClasse > 1){
+                        echo ($i+1);
+                    }
+
+                    # Exibe a nota
+                    $callout = new Callout("warning");
+                    $callout->abre();
+                        echo $notaClasse[$i];
+                    $callout->fecha();
+                }
             }
 
             # Deprecated
@@ -246,17 +260,6 @@ if($acesso)
 
                     # Exibe o exemplo
                     echo 'Exemplo:';
-
-                    # Cria borda para o exemplo
-                    $calloutExemplo = new Callout();
-                    $calloutExemplo->abre();
-
-                    include PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse);
-
-                    $calloutExemplo->fecha();
-
-                    # Exibe o código do exemplo
-                    echo 'Código do exemplo:';
                     echo '<pre>';
 
                     # Variável que conta o número da linha
@@ -279,15 +282,26 @@ if($acesso)
                         $numLinhaExemplo++;
                     }
                     echo '</pre>';
-                }
-                else{
+                    
+                    br();
+
+                    # Roda o exemplo
+                    echo 'O exemplo acima exibirá o seguinte resultado:';
+                    
+                    # Cria borda para o exemplo
+                    $calloutExemplo = new Callout();
+                    $calloutExemplo->abre();
+
+                    include PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse);
+
+                    $calloutExemplo->fecha();
+                }else{
                     echo 'Exemplo:';
                     $callout1 = new Callout();
                     $callout1->abre();
                     echo "Arquivo de exemplo não encontrado";
                     $callout1->fecha();
                 }
-                br();
             }            
             break;
 
@@ -360,10 +374,8 @@ if($acesso)
             # Syntax do método
             if(isset($syntaxMetodo[$metodo])){
                 echo 'Sintaxe:';
-                #echo '<div class="callout secondary">';
                 echo '<pre>'.$syntaxMetodo[$metodo].'</pre>';
-               # echo '</div>';
-                br();
+                p('Parâmetros entre [ ] são opcionais.','right','f10');
             }
 
             # Return
@@ -376,11 +388,24 @@ if($acesso)
 
             # Nota
             if(isset($notaMetodo[$metodo])){
-                $posicao = stripos($line,'@');
-                echo 'Nota:';
-                echo '<div class="callout warning">';
-                echo $notaMetodo[$metodo];
-                echo '</div>';
+                # Vê quantas notas existem
+                $qtdadeNotaMetodo = count($notaMetodo[$metodo]);
+
+                # Percorre as notas
+                for ($i = 0; $i < $qtdadeNotaMetodo; $i++) {
+
+                    echo 'Nota: ';
+
+                    if($qtdadeNotaMetodo > 1){
+                        echo ($i+1);
+                    }
+
+                    # Exibe a nota
+                    $callout = new Callout("warning");
+                    $callout->abre();
+                        echo $notaMetodo[$metodo][$i];
+                    $callout->fecha();
+                }
             }
 
             # Parâmetros de um método

@@ -16,15 +16,15 @@ $intra = new Intra();
 $pessoal = new Pessoal();
 
 # Verifica se o sistema está fora do ar em manutenção
-$ipManutencao = $intra->get_variavel('manutencao_ip');	// ip isento da mensagem
+$ipManutencao = $intra->get_variavel('ipAdmin');	// ip isento da mensagem
 $ipMaquina = $_SERVER['REMOTE_ADDR'];			// ip da máquina
 
-if (($intra->get_variavel('manutencao_intranet')) AND ($ipManutencao <> $ipMaquina)){
+if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)){
     loadPage("manutencao.php");    
 }else{
 
 # Define a senha padrão de acordo com o que está nas variáveis
-define("SENHA_PADRAO",$intra->get_variavel('senha_padrao'));
+define("SENHA_PADRAO",$intra->get_variavel('senhaPadrao'));
 
 # Verifica a fase do programa
 $fase = get('fase');
@@ -94,11 +94,9 @@ switch ($fase)
                 
         # Pega o ip da máquina que fez login
         $ip = getenv("REMOTE_ADDR");
-                
-        #$diasAusentes = $intra->get_diasAusentes($usuario);	# pega número de dias ausentes do servidor
-
-        # Exibe uma mensagem de aguarde
-        #Visual::mensagemAguarde();
+        
+        # Pega a pasta de backup
+        $pastaBackup = $intra->get_variavel('pastaBackup');
 
         # Verifica a senha
         switch ($verifica)
@@ -158,7 +156,7 @@ switch ($fase)
                 
                 # Faz backup automático (1 por dia ao menos)
                 # Abre o diretório
-                $pasta = "../_backup/".date("Y.m.d");
+                $pasta = "../$pastaBackup/".date("Y.m.d");
                 
                 if(!file_exists($pasta)){
                     # Grh

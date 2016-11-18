@@ -36,6 +36,9 @@ if($acesso)
     $page = new Page();
     $page->iniciaPagina();
     
+    # Pega a pasta de backup
+    $pastaBackup = $intra->get_variavel('pastaBackup');
+    
     # Cabeçalho
     AreaServidor::cabecalho();
     
@@ -99,7 +102,7 @@ if($acesso)
             $partesData = explode('-',$dataLista);
             
             # Abre o diretório
-            $pasta = "../_backup/".$partesData[0].'.'.$partesData[1].'.'.$partesData[2];
+            $pasta = "../$pastaBackup/".$partesData[0].'.'.$partesData[1].'.'.$partesData[2];
             
             # Array que guarda s arquivos
             $dadosArquivo = array();

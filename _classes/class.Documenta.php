@@ -18,7 +18,7 @@ class Documenta
     private $nomeClasse = NULL;             // Guarda o nome da classe
     private $descricaoClasse = NULL;        // Guarda a descição da classe
     private $autorClasse = NULL;            // Autor da classe
-    private $notaClasse = NULL;             // Nota da classe
+    private $notaClasse = NULL;             // Array com as anotações importante. Repare que é array ou seja pode se ter mais de uma nota por classe / função
     private $deprecatedClasse = FALSE;      // Se a classe está sendo descontinuada
     private $variaveisClasse = NULL;        // Array com as variáveis da classe
     private $numVariaveis = 0;              // Inteiro que informa o número de variáveis de uma classe
@@ -29,9 +29,9 @@ class Documenta
     private $nomeMetodo = NULL;             // Array com os nomes dos métodos/funções
     private $visibilidadeMetodo = NULL;     // Array com a visibilidade dos métodos (public, private ou protected)
     private $descricaoMetodo = NULL;        // Array com a descrição dos métodos
-    private $syntaxMetodo = null;           // Array com a syntax do método
-    private $retornoMetodo = null;          // Array com o valor retotnado do método
-    private $notaMetodo = null;             // Array com uma nota do método
+    private $syntaxMetodo = NULL;           // Array com a syntax do método
+    private $retornoMetodo = NULL;          // Array com o valor retotnado do método
+    private $notaMetodo = NULL;             // Array com uma nota do método
     private $deprecatedMetodo = NULL;       // Array informando se o método está sendo descontinuado
     private $parametrosMetodo = NULL;       // Array com os parâmetros de cada método
     private $exemploMetodo = NULL;          // Array com arquivos exemplos de códigos
@@ -94,7 +94,7 @@ class Documenta
                 # Nota
                 if ((stristr($line, "@note")) AND ($this->numMetodo == 0)){
                     $posicao = stripos($line,'@');
-                    $this->notaClasse = substr($line, $posicao+5);
+                    $this->notaClasse[] = substr($line, $posicao+5);
                 }
 
                 # Deprecated
@@ -146,7 +146,7 @@ class Documenta
             # Método
             if($this->tipo == "classe"){
                 if (stristr($line, "public function")){
-                    $this->numMetodo++;                           // incrementa o número de métodos
+                    $this->numMetodo++;                     // incrementa o número de métodos
                     $posicao = stripos($line,'function');   // marca posição da palavra function
                     $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
                     $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
@@ -157,7 +157,7 @@ class Documenta
                 }
 
                 if (stristr($line, "private function")){
-                    $numMetodo++;                           // incrementa o número de métodos
+                    $this->numMetodo++;                     // incrementa o número de métodos
                     $posicao = stripos($line,'function');   // marca posição da palavra function
                     $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
                     $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
@@ -168,7 +168,7 @@ class Documenta
                 }
 
                 if (stristr($line, "protected function")){
-                    $numMetodo++;                           // incrementa o número de métodos
+                    $this->numMetodo++;                     // incrementa o número de métodos
                     $posicao = stripos($line,'function');   // marca posição da palavra function
                     $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
                     $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
@@ -226,7 +226,7 @@ class Documenta
             # Nota
             if (stristr($line, "@note")){
                 $posicao = stripos($line,'@');
-                $this->notaMetodo[$this->numMetodo] = substr($line, $posicao+6);
+                $this->notaMetodo[$this->numMetodo][] = substr($line, $posicao+6);
             }
 
             # Deprecated (sendo descontinuado)

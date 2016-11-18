@@ -117,7 +117,7 @@ if($acesso)
 
                 # Decrição
                 echo $descricaoFuncao[$keyFuncao];
-                br(2);
+                br();
 
                 # Deprecated        
                 if((isset($deprecatedFuncao[$keyFuncao])) AND ($deprecatedFuncao[$keyFuncao])) {
@@ -133,7 +133,7 @@ if($acesso)
                 if(isset($syntaxFuncao[$keyFuncao])){
                     echo 'Sintaxe:';
                     echo '<pre>'.$syntaxFuncao[$keyFuncao].'</pre>';
-                    br();
+                    p('Parâmetros entre [ ] são opcionais.','right','f10');
                 }
 
                 # Return
@@ -146,11 +146,24 @@ if($acesso)
 
                 # Nota
                 if(isset($notaFuncao[$keyFuncao])){
-                    echo 'Nota:';
-                    $callout = new Callout("warning");
-                    $callout->abre();
-                    echo $notaFuncao[$keyFuncao];
-                    $callout->fecha();
+                    # Vê quantas notas existem
+                    $qtdadeNota = count($notaFuncao[$keyFuncao]);
+                    
+                    # Percorre as notas
+                    for ($i = 0; $i < $qtdadeNota; $i++) {
+    
+                        echo 'Nota: ';
+                        
+                        if($qtdadeNota > 1){
+                            echo ($i+1);
+                        }
+                        
+                        # Exibe a nota
+                        $callout = new Callout("warning");
+                        $callout->abre();
+                            echo $notaFuncao[$keyFuncao][$i];
+                        $callout->fecha();
+                    }
                 }
 
                 # Parâmetros
@@ -168,19 +181,44 @@ if($acesso)
 
                 # Exemplo
                 if(isset($exemploFuncao[$keyFuncao])){
-                    echo 'Exemplo:';
-                    echo '<pre>';
-                    $linesExample = file(PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploFuncao[$keyFuncao]));
+                    
+                    # Define o arquivo de exemplo
+                    $arquivoExemplo = PASTA_FUNCOES_GERAIS."exemplos/".rtrim($exemploFuncao[$keyFuncao]);
 
-                    # Percorre o arquivo e guarda os dados em um array
-                    foreach ($linesExample as $linha) {
-                        $linha = htmlspecialchars($linha);
-                        echo $linha;
-                    }
-                    echo '</pre>';
-                    br();
+                    # Verifica se o arquivo existe
+                    if(file_exists($arquivoExemplo)){
+
+                        echo 'Exemplo:';
+                        echo '<pre>';
+                        $linesExample = file($arquivoExemplo);
+
+                        # Percorre o arquivo e guarda os dados em um array
+                        foreach ($linesExample as $linha) {
+                            $linha = htmlspecialchars($linha);
+                            echo $linha;
+                        }
+                        echo '</pre>';
+                        br();
+
+                        # Roda o exemplo
+                        echo 'O exemplo acima exibirá o seguinte resultado:';
+
+                        # Cria borda para o exemplo
+                        $calloutExemplo = new Callout();
+                        $calloutExemplo->abre();
+
+                        include PASTA_FUNCOES_GERAIS."exemplos/".rtrim($exemploFuncao[$keyFuncao]);
+
+                        $calloutExemplo->fecha();
+                }else{
+                    echo 'Exemplo:';
+                    $callout1 = new Callout();
+                    $callout1->abre();
+                    echo "Arquivo de exemplo não encontrado";
+                    $callout1->fecha();
                 }
-                break;
+            }            
+            break;
 
             case "codigo" :
                 echo '<pre>';
