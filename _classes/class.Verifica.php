@@ -34,7 +34,7 @@ class Verifica
         }
         
         # Verifica se $idUsuario é nula acesso bloqueado para a área do servidor
-        if(($intra->get_senha($idUsuario) == '') and ($idUsuario <>0)){
+        if(($intra->get_senha($idUsuario) == '') and ($idUsuario <> 0)){
             $acesso = false;
         }
         

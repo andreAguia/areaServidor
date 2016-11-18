@@ -194,10 +194,10 @@ switch ($fase)
                     if($pessoal->aniversariante($idServidor)){
                         loadPage('?fase=parabens');
                     }else{
-                        loadPage($pagina);                
+                        #loadPage($pagina);                
                     }
                 }else{
-                    loadPage($pagina);   
+                    #loadPage($pagina);   
                 }
                 break;
             
