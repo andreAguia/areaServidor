@@ -64,12 +64,10 @@ class Verifica
         }
         
         # Exibe a mensagem de manutenção
-        if($manutencao)
+        if($manutencao){
             loadPage("../manutencao.php");
-        elseif($acesso)
+        }else{
             return $acesso;
-        else{
-            loadPage("../../areaServidor/sistema/login.php");
         }
     }    
 }

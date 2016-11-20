@@ -396,6 +396,8 @@ class Intra extends Bd
         }else{
             $numReg = parent::count($select);
             
+            #echo $idUsuario."-".$idRegra."-".$numReg."-".CHAMADOR;
+            
             # verifica se tem permissão para esse usuário e essa regra 
             if($numReg > 0){
                 return true; 

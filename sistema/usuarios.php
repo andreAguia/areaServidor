@@ -76,6 +76,7 @@ if($acesso)
 
     # select da lista
     $objeto->set_selectLista ('(SELECT idUsuario,
+                                      idUsuario,
                                       usuario,
                                       if(tipoUsuario = 1,"S","B"),
                                       idServidor,
@@ -90,6 +91,7 @@ if($acesso)
                                 WHERE tipoUsuario = 1 AND usuario LIKE "%'.$parametro.'%")
                                 UNION
                              (SELECT idUsuario,
+                                     idUsuario,
                                       usuario,
                                       if(tipoUsuario = 1,"S","B"),
                                       nome,
@@ -125,13 +127,13 @@ if($acesso)
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("Status","Usuário","Tipo","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
-    #$objeto->set_width(array(5,10,5,15,10,15,15,5,5,5));
-    $objeto->set_align(array("center","center","center","left","center","center","left"));
+    $objeto->set_label(array("Status","Id","Usuário","Tipo","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
+    #$objeto->set_width(array(5,4,10,5,15,10,15,11,5,5,5));
+    $objeto->set_align(array("center","center","center","center","left","center","center","left"));
 
-    $objeto->set_classe(array(null,null,null,"pessoal",null,"pessoal","pessoal"));
-    $objeto->set_metodo(array(null,null,null,"get_nome",null,"get_lotacao","get_cargo"));
-    $objeto->set_function(array("statusUsuario",null,"badgeTipoUsuario",null,"datetime_to_php"));
+    $objeto->set_classe(array(null,null,null,null,"pessoal",null,"pessoal","pessoal"));
+    $objeto->set_metodo(array(null,null,null,null,"get_nome",null,"get_lotacao","get_cargo"));
+    $objeto->set_function(array("statusUsuario",null,null,"badgeTipoUsuario",null,"datetime_to_php"));
     
     # Imagem Condicional 
     $imageSenhaPadrao = new Imagem(PASTA_FIGURAS.'exclamation.png','Usuário com senha padrão.');
@@ -178,7 +180,7 @@ if($acesso)
     $botao3->set_image(PASTA_FIGURAS.'group_edit.png',20,20);
     
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array(null,null,null,null,null,null,null,$botao1,$botao2,$botao3));	
+    $objeto->set_link(array(null,null,null,null,null,null,null,null,$botao1,$botao2,$botao3));	
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
