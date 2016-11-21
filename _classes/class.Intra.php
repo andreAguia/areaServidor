@@ -597,6 +597,25 @@ class Intra extends Bd
             return TRUE; 
         }
     }
+    
+    ###########################################################
+	
+    function escolheMensagem()
+
+    /**
+    * Escolhe aleatoriamnte uma mensagem da tabela de mensagens
+    * 
+    * 
+    */
+    
+    {
+        $select = 'SELECT mensagem
+                     FROM tbmensagem
+                    ORDER BY RAND() LIMIT 1';
+        
+        $result = parent::select($select,false);
+        return $result[0];
+    }
 
 ###########################################################
 }

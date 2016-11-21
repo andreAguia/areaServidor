@@ -38,13 +38,13 @@ $page->iniciaPagina();
 AreaServidor::cabecalho("Login do Sistema");
 br(2);
 
-# Login 
-$grid = new Grid("center");
-$grid->abreColuna(5);
-
 switch ($fase)
 {
     case "":
+        # Login 
+        $grid = new Grid("center");
+        $grid->abreColuna(5);
+        
         $callout = new Callout();
         $callout->abre();
         $form = new Form('?fase=valida','login');        
@@ -79,7 +79,28 @@ switch ($fase)
             $form->add_item($controle);
 
         $form->show();
+        $callout->fecha();        
+
+        $grid->fechaColuna();
+        $grid->fechaGrid();        
+        
+        # Mensagem do Dia 
+        br(3);
+        $grid = new Grid("center");
+        $grid->abreColuna(8);
+        
+        P("Mensagem do Dia:","f12");
+        $callout = new Callout();
+        $callout->abre();
+        
+        $mensagem = $intra->escolheMensagem();
+        
+        P('"'.$mensagem.'"',"center","f18");
+        
         $callout->fecha();
+        
+        $grid->fechaColuna();
+        $grid->fechaGrid(); 
         break;
 
     case "valida":
@@ -280,9 +301,6 @@ switch ($fase)
         $grid->fechaGrid();
         break;
 }
-
-$grid->fechaColuna();
-$grid->fechaGrid();
 
 # Termina a Página
 $page->terminaPagina();

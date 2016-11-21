@@ -137,6 +137,7 @@ if($acesso)
                                 'size' => 20,
                                 'title' => 'IP do computador.',
                                 'required' => true,
+                                'autofocus' => true,
                                 'col' => 3,
                                 'linha' => 1),
                         array ('linha' => 1,

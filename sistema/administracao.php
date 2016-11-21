@@ -53,7 +53,7 @@ if($acesso)
             # Cria o grid
             $grid2 = new Grid();
 
-            # Área de Gestão de Usuários
+            # Gestão de Usuários
             $grid2->abreColuna(12,6);
             $fieldset = new Fieldset('Gestão de Usuários');
             $fieldset->abre();
@@ -179,9 +179,8 @@ if($acesso)
 
             $fieldset->fecha();  
             $grid2->fechaColuna();
-            $grid2->fechaGrid(); 
 
-            # Documentação
+            # Banco de dados
             $grid2->abreColuna(12,6);
             $fieldset = new Fieldset('Banco de Dados');
             $fieldset->abre();
@@ -213,6 +212,25 @@ if($acesso)
                 $botao->set_url('http://localhost/phpmyadmin');
                 $menu->add_item($botao);
 
+                $menu->show();
+
+            $fieldset->fecha();  
+            $grid2->fechaColuna();
+            
+            # Outros
+            $grid2->abreColuna(12,6);
+            $fieldset = new Fieldset('Outros');
+            $fieldset->abre();
+
+                $menu = new MenuGrafico(4);
+
+                # Informação do PHP
+                $botao = new BotaoGrafico();
+                $botao->set_label('Mensagens');
+                $botao->set_title('Cadastro de Mensagens');
+                $botao->set_image(PASTA_FIGURAS.'mensagem.jpg',$tamanhoImage,$tamanhoImage);
+                $botao->set_url('mensagem.php');
+                $menu->add_item($botao);
                 $menu->show();
 
             $fieldset->fecha();  
