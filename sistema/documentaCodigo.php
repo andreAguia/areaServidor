@@ -11,7 +11,6 @@ $acesso = Verifica::acesso($idUsuario,1);
 
 if($acesso)
 {    
-
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
@@ -77,6 +76,8 @@ if($acesso)
     # Divide Coluna para classes e funções
     $grid2 = new Grid();
 
+    ##############################################
+    
     # Coluna das classes
     $grid2->abreColuna(6);
     $callout = new Callout();
@@ -115,9 +116,10 @@ if($acesso)
     echo '</div>';
     $grid2->fechaColuna(); // Coluna das classes
 
+    ##############################################
+    
     # Coluna das funções
     $grid2->abreColuna(6);
-
     $callout1 = new Callout();
     $callout1->abre();
     titulo('Funções');
@@ -136,12 +138,21 @@ if($acesso)
         $posicaoParentesis = stripos($line,'(');
         $tamanhoNome = $posicaoParentesis - ($posicao+9);
 
-        echo '<a href="documentaFuncao.php?sistema='.$fase.'&funcao='.substr($line, $posicao+9,$tamanhoNome).'">';
-        echo substr($line, $posicao+9,$tamanhoNome);
-        echo '</a>';
-        br();
+        $nomeFuncao[] = substr($line, $posicao+9,$tamanhoNome);
       }
     }
+    
+    # Ordena array
+    sort($nomeFuncao);
+    
+    # Exibe o array
+    foreach($nomeFuncao as $funcao){
+        echo '<a href="documentaFuncao.php?sistema='.$fase.'&funcao='.$funcao.'">';
+        echo $funcao;
+        echo '</a>';
+        br();
+    }   
+    
     $callout1->fecha();
 
     $grid2->fechaColuna();

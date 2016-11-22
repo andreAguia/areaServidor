@@ -57,7 +57,6 @@ session_cache_limiter('private');
 
 # Funções	
 include_once (PASTA_FUNCOES_GERAIS."funcoes.gerais.php");
-include_once (PASTA_FUNCOES_GERAIS."funcoes.data.php");
 include_once (PASTA_FUNCOES."funcoes.especificas.php");
 include_once (PASTA_FUNCOES_GRH."funcoes.especificas.php");
 

@@ -55,7 +55,7 @@ if($acesso)
     {
         case "" :
             br(4);
-            mensagemAguarde();
+            aguarde();
             loadPage('?fase=importa');
             break;
 

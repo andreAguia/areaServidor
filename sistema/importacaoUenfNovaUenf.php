@@ -107,7 +107,7 @@ if($acesso){
     {
         case "" :
             br(4);
-            mensagemAguarde();
+            aguarde();
             br();
             echo '<script>inicia();</script>';
 

@@ -22,7 +22,7 @@ $page->set_bodyOnLoad("abreDivId('divMensagemAguarde');");
 $page->iniciaPagina();
 
 # Exibe uma mensagem de aguarde
-mensagemAguarde("Aguarde ...");
+aguarde();
 
 # carraga a página se for link
 if(!is_null($pagina))
