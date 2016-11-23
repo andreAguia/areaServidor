@@ -91,7 +91,12 @@ if($acesso)
         $menu->add_item($botao);
     }
 
-    $menu->show();
+    $menu->show();       
+    
+    # Exibe o rodapé da página
+    br();
+    AreaServidor::rodape($idUsuario);
+    
     $grid->fechaColuna();
     $grid->fechaGrid();
 

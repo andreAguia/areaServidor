@@ -133,7 +133,7 @@ if($acesso)
 
     $objeto->set_classe(array(null,null,null,null,"pessoal",null,"pessoal","pessoal"));
     $objeto->set_metodo(array(null,null,null,null,"get_nome",null,"get_lotacao","get_cargo"));
-    $objeto->set_function(array("statusUsuario",null,null,"badgeTipoUsuario",null,"datetime_to_php"));
+    $objeto->set_funcao(array("statusUsuario",null,null,"badgeTipoUsuario",null,"datetime_to_php"));
     
     # Imagem Condicional 
     $imageSenhaPadrao = new Imagem(PASTA_FIGURAS.'exclamation.png','Usuário com senha padrão.');

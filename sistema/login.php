@@ -85,18 +85,16 @@ switch ($fase)
         $grid->fechaGrid();        
         
         # Mensagem do Dia 
-        br(3);
+        br(6);
         $grid = new Grid("center");
-        $grid->abreColuna(8);
+        $grid->abreColuna(8); 
         
-        P("Mensagem do Dia:","f12");
-        $callout = new Callout();
+        
+        span("Mensagem do dia:","mensagemLabel");
+        $callout = new Callout("success");
         $callout->abre();
-        
-        $mensagem = $intra->escolheMensagem();
-        
-        P('"'.$mensagem.'"',"center","f18");
-        
+            $mensagem = $intra->escolheMensagem();
+            P('"'.$mensagem.'"',"mensagem");
         $callout->fecha();
         
         $grid->fechaColuna();
@@ -266,7 +264,7 @@ switch ($fase)
         
         br();
         $grid = new Grid("center");
-        $grid->abreColuna(12);
+        $grid->abreColuna(6);
         
         $img = new Imagem(PASTA_FIGURAS."parabens.jpg","Parabéns Servidor",'100%','100%');
         $img->show();        

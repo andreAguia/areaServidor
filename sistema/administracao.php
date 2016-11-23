@@ -224,18 +224,32 @@ if($acesso)
 
                 $menu = new MenuGrafico(4);
 
-                # Informação do PHP
+                # Cadastro de Mensagens
                 $botao = new BotaoGrafico();
                 $botao->set_label('Mensagens');
                 $botao->set_title('Cadastro de Mensagens');
                 $botao->set_image(PASTA_FIGURAS.'mensagem.jpg',$tamanhoImage,$tamanhoImage);
                 $botao->set_url('mensagem.php');
                 $menu->add_item($botao);
+                
+                # Google Task
+                $botao = new BotaoGrafico();
+                $botao->set_label('Tarefas');
+                $botao->set_title('Acesso o Google Task');
+                $botao->set_image(PASTA_FIGURAS.'tarefas.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_onClick("window.open('https://mail.google.com/tasks/ig','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=460,height=500');");
+                #$botao->set_url('https://mail.google.com/tasks/ig');
+                $menu->add_item($botao);
+                
                 $menu->show();
 
-            $fieldset->fecha();  
+            $fieldset->fecha(); 
             $grid2->fechaColuna();
-            $grid2->fechaGrid();       
+            $grid2->fechaGrid();    
+            
+            # Exibe o rodapé da página
+            br();
+            AreaServidor::rodape($idUsuario);
             break;
         
         # Exibe o Menu de Documentação

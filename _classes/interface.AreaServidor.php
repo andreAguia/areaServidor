@@ -78,5 +78,35 @@
         $grid->fechaGrid();        
     }
 
-    ###########################################################
+    ##########################################################
+    
+    /**
+    * método rodape
+    * Exibe oo rodapé
+    * 
+    * @param    string $idUsuario -> Usuário logado
+    */
+    public static function rodape($idUsuario) {
+       
+        # Exibe faixa azul
+        $grid = new Grid();
+        $grid->abreColuna(12);        
+            titulo();        
+        $grid->fechaColuna();
+        $grid->fechaGrid();
+
+        # Exibe a versão do sistema
+        $intra = new Intra();
+        $grid = new Grid();
+        $grid->abreColuna(4);
+            p('Usuário : '.$intra->get_usuario($idUsuario),'usuarioLogado');
+        $grid->fechaColuna();
+        $grid->abreColuna(4);
+            p('Versão: '.VERSAO,'versao');
+        $grid->fechaColuna();
+        $grid->abreColuna(4);
+            p(BROWSER_NAME." - ".IP,'ip');
+        $grid->fechaColuna();
+        $grid->fechaGrid();
+    }
 }
