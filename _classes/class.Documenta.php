@@ -35,6 +35,7 @@ class Documenta
     private $deprecatedMetodo = NULL;       // Array informando se o método está sendo descontinuado
     private $parametrosMetodo = NULL;       // Array com os parâmetros de cada método
     private $exemploMetodo = NULL;          // Array com arquivos exemplos de códigos
+    private $categoriaMetodo = NULL;        // Array com a categoria dos método
 
 ###########################################################
     
@@ -215,6 +216,12 @@ class Documenta
             if (stristr($line, "@return")){
                 $posicao = stripos($line,'@');
                 $this->retornoMetodo[$this->numMetodo] = substr($line, $posicao+8);
+            }
+            
+            # Category
+            if (stristr($line, "@category")){
+                $posicao = stripos($line,'@');
+                $this->categoriaMetodo[$this->numMetodo] = substr($line, $posicao+10);
             }
 
             # Example
@@ -476,8 +483,17 @@ class Documenta
         return $this->exemploMetodo;
     }
     
-###########################################################                                                                                          
-      
+#####################################################################################     
     
+    public function get_categoriaMetodo(){        
+        /**
+         * Fornece array com a categoria do método
+         *
+         * @syntax $documenta->get_categoriaMetodo();
+        `*/
+        
+        return $this->categoriaMetodo;
+    }
     
+###########################################################       
 }

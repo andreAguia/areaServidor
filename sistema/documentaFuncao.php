@@ -16,7 +16,6 @@ $acesso = Verifica::acesso($idUsuario,1);
 
 if($acesso)
 {    
-
     # Cabeçalho
     AreaServidor::cabecalho();
 
@@ -29,8 +28,7 @@ if($acesso)
     $fase = get('fase');
     $sistema = get('sistema');
 
-    switch ($sistema)
-    {
+    switch ($sistema){
       case "Framework" :
           $pasta = PASTA_CLASSES_GERAIS;
           break;
@@ -58,16 +56,26 @@ if($acesso)
     $linkBotao2 = new Link("Código","?sistema=$sistema&funcao=$funcao&fase=codigo");
     if($fase == "codigo"){
         $linkBotao2->set_class('disabled button');
-    }
-    else{
+    }else{
         $linkBotao2->set_class('button');
     }
     $linkBotao2->set_title('Exibe o código fonte');
     $linkBotao2->set_accessKey('C');
+    
+    # Botão função
+    $linkBotao3 = new Link("Função","?sistema=$sistema&funcao=$funcao");
+    if(is_null($fase)){
+        $linkBotao3->set_class('disabled button');
+    }else{
+        $linkBotao3->set_class('button');
+    }
+    $linkBotao3->set_title('Exibe a Função');
+    $linkBotao3->set_accessKey('F');
 
     # Cria um menu
     $menu = new MenuBar();
     $menu->add_link($linkBotao1,"left");
+    $menu->add_link($linkBotao3,"right");
     $menu->add_link($linkBotao2,"right");
     $menu->show();
 
@@ -94,6 +102,7 @@ if($acesso)
         $notaFuncao = $doc->get_notaMetodo();
         $parametrosFuncao = $doc->get_parametrosMetodo();
         $exemploFuncao = $doc->get_exemploMetodo();
+        $categoriaFuncao = $doc->get_categoriaMetodo();
 
         # Busca a função dentro do array
         $keyFuncao = array_search($funcao, $nomeFuncao);
@@ -125,6 +134,11 @@ if($acesso)
                     echo '<div class="callout alert">';
                     echo '<h6>DEPRECATED</h6> Esta Função deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.';
                     echo '</div>';
+                }
+                
+                # Categoria
+                if(isset($categoriaFuncao[$keyFuncao])){
+                    p("Categoria: $categoriaFuncao[$keyFuncao]",'right','f12');
                 }
 
                 hr();
