@@ -43,7 +43,7 @@ switch ($fase)
     case "":
         # Login 
         $grid = new Grid("center");
-        $grid->abreColuna(5);
+        $grid->abreColuna(10,5);
         
         $callout = new Callout();
         $callout->abre();
