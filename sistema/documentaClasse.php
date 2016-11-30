@@ -47,36 +47,26 @@ if($acesso)
     $page->iniciaPagina();
 
     # Botão voltar
-    switch ($metodo){
-        case NULL :
-            $linkBotao1 = new Link("Voltar",'documentaCodigo.php?fase='.$sistema);
-            break;
-        case "codigo":
-            $linkBotao1 = new Link("Voltar",'documentaCodigo.php?metodo=codigo&sistema='.$sistema);
-            break;
-        default:
-            $linkBotao1 = new Link("Voltar",'?classe='.$arquivoClasse.'&sistema='.$sistema);
-            break;
+    if(is_null($metodo)){
+        $linkBotao1 = new Link("Voltar",'documentaCodigo.php?fase='.$sistema);
+        $linkBotao1->set_class('button');
+        $linkBotao1->set_title('Volta para a página anterior');
+        $linkBotao1->set_accessKey('V');
+    
+        # Botão codigo
+        $linkBotao2 = new Link("Código","?sistema=$sistema&classe=$arquivoClasse&metodo=codigo");
+        $linkBotao2->set_class('button');
+        $linkBotao2->set_title('Exibe o código fonte');
+        $linkBotao2->set_accessKey('C');
 
-    }
-    $linkBotao1->set_class('button');
-    $linkBotao1->set_title('Volta para a página anterior');
-    $linkBotao1->set_accessKey('V');
-
-    # Botão codigo
-    $linkBotao2 = new Link("Código","?sistema=$sistema&classe=$arquivoClasse&metodo=codigo");
-    $linkBotao2->set_class('button');
-    $linkBotao2->set_title('Exibe o código fonte');
-    $linkBotao2->set_accessKey('C');
-
-    # Cria um menu
-    $menu = new MenuBar();
-    $menu->add_link($linkBotao1,"left");
-
-    if($metodo == ""){
+        # Cria um menu
+        $menu = new MenuBar();
+        $menu->add_link($linkBotao1,"left");
         $menu->add_link($linkBotao2,"right");
+        $menu->show();
+    }else{
+        br(2);
     }
-    $menu->show();
 
     $grid->fechaColuna();
     $grid->fechaGrid();
@@ -124,17 +114,16 @@ if($acesso)
     # Percorre os métodos
     for ($i=1; $i <= $numMetodo;$i++){
         # link
-        echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'&metodo='.$i.'" title="'.$descricaoMetodo[$i].'">';
+        echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'&metodo='.$i.'" title="('.$visibilidadeMetodo[$i].') '.$descricaoMetodo[$i].'">';
         if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
-            echo '<del>'.$nomeMetodo[$i].'</del>';
+            span('<del>'.$nomeMetodo[$i].'</del>',$visibilidadeMetodo[$i]);
         }else{
             span($nomeMetodo[$i],$visibilidadeMetodo[$i]);
         }
-
         echo '</a>';
         br();
     }
-
+    echo "</table>";
     $callout->fecha();
     $grid2->fechaColuna();
 

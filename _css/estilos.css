@@ -129,11 +129,11 @@ span#public{
 }
 
 span#private{
-    color: #B00000;
+    color: #ff6600;
 }
 
-span#protect{
-    color: #8a8a8a;
+span#protected{
+    color: #ff3333;
 }
 
 /*******************************************
