@@ -328,8 +328,7 @@ if($acesso)
                         # Incrementa o ~umero da linha
                         $numLinha++;
                 }
-            }
-            else{
+            }else{
                 echo "Arquivo de exemplo não encontrado";
             }
 
