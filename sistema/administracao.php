@@ -265,16 +265,26 @@ if($acesso)
 
             $menu = new MenuGrafico(3);
 
-            # Código
+            # FEN001
             $botao = new BotaoGrafico();
             $botao->set_label('FEN001');
             $botao->set_url('importacaoUenfNovaUenf.php');
             $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Servidores FEN001');
             $menu->add_item($botao);
+            
+            # FEN004
+            $botao = new BotaoGrafico();
+            $botao->set_label('FEN004');
+            $botao->set_url('importaFen004.php');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Importação da Tabela de Afastamentos');
+            $menu->add_item($botao);
             $menu->show();  
             $fieldset->fecha();  
             break;
+        
+        
     }
     $grid1->fechaColuna();
     $grid1->fechaGrid();    
