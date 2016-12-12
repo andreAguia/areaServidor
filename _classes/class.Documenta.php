@@ -114,6 +114,8 @@ class Documenta
 
                     # inicia a variável que será guardada a descrição 
                     $descricao = null;
+                    
+                    $posicao = stripos($line,'@');
 
                     # divide a linha em um array de palavras
                     $piecesVar = str_word_count($line,1,$caracteresAceitos);
