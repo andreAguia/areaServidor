@@ -27,9 +27,6 @@ if($acesso)
     $table = get('id');
 
     # Pega o bd
-    $bd = get('bd');
-
-    # Pega o bd
     $fase = get('fase');
 
     # Botão voltar
@@ -39,7 +36,7 @@ if($acesso)
     $linkBotaoVoltar->set_accessKey('V');
 
     # Botão editar descrição da tabela
-    $linkBotaoEditar = new Link("Conteúdo",'documentaEditaTabela.php?tabela='.$table);
+    $linkBotaoEditar = new Link("Conteúdo",'documentaEditaTabela.php?fase='.$fase.'&tabela='.$table);
     $linkBotaoEditar->set_class('button');
     $linkBotaoEditar->set_title('Exibe o conteúdo da tabela');
     $linkBotaoEditar->set_accessKey('C');
@@ -51,7 +48,7 @@ if($acesso)
     $menu->show();
 
     # Topbar        
-    $top = new TopBar($bd." / ".$table);
+    $top = new TopBar($fase." / ".$table);
     $top->show();
 
     # Conecta com o banco de dados
@@ -67,7 +64,7 @@ if($acesso)
                       COLUMN_DEFAULT,
                       IS_NULLABLE
                  FROM COLUMNS 
-                WHERE TABLE_SCHEMA = '".$bd."' 
+                WHERE TABLE_SCHEMA = '".$fase."' 
                   AND TABLE_NAME = '".$table."'";
 
     $conteudo = $servico->select($select);

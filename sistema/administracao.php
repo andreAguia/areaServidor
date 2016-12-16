@@ -241,6 +241,15 @@ if($acesso)
                 #$botao->set_url('https://mail.google.com/tasks/ig');
                 $menu->add_item($botao);
                 
+                # Administração do Site da GRH
+                $botao = new BotaoGrafico();
+                $botao->set_label('Administração do Site da GRH');
+                $botao->set_title('Acesso a área de administraçao do site da GRH');
+                $botao->set_image(PASTA_FIGURAS.'admin.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_onClick("window.open('http://uenf.br/dga/grh/admin','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=1024,height=768');");
+                #$botao->set_url('http://uenf.br/dga/grh/admin');
+                $menu->add_item($botao);
+                
                 $menu->show();
 
             $fieldset->fecha(); 

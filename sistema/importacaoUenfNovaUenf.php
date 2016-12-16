@@ -1190,7 +1190,7 @@ if($acesso){
             # Calcula  e exibe o tempo
             $time = $time_end - $time_start;
             br();
-            echo ($time/60).":".fmod($time,60)."  minutos";
+            echo intval($time/60).":".intval(fmod($time,60))."  minutos";
             
     
             $painel->fecha();
