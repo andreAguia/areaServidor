@@ -310,10 +310,16 @@ if($acesso){
                     $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
                     break;
 
-                case 17:  ###########################
+                case 17:
                     $tipo = "ATESTADO";
                     echo "Falta abonada.Atestado. Importar para tabela de atestados.";
                     $numItensImportados++;
+                    $numItensTbAtestado++;
+                    
+                    # Grava na tabela
+                    $campos = array("idServidor","dtInicio","numDias");
+                    $valor = array($idServidor,$dt_ini,$numDias);                    
+                    $pessoal->gravar($campos,$valor,NULL,'tbatestado','idAtestado',FALSE);
                     break;
 
                 case 18:
@@ -767,6 +773,7 @@ if($acesso){
         echo $numItensDescartados." itens descartados";br();
         echo $numItensImportados." itens importados";br();
         echo $numItensTbTRE." itens importados para o TRE";br();
+        echo $numItensTbAtestado." itens importados para tabela de atestado";br();        
         echo $numItensFerias." itens Férias";br();
         echo $numItensNAnalisados." itens Não analisados";br();
         echo $numIdInvalido." ids inválidos";br();
