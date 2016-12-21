@@ -391,16 +391,6 @@ if($acesso)
             $importa->ignoraCampos($ignoraCampos);
             $importa->go();
 
-            # tbfaltas
-            $tab = "tbfaltas";
-            $idTab = "idFaltas";
-            $descricao = "Tabela de controle de faltas dos servidores";
-            $ignoraCampos = NULL;
-
-            $importa = new Importa($tab,$idTab,$descricao);
-            $importa->ignoraCampos($ignoraCampos);
-            $importa->go();
-
             # tbferias
             $tab = "tbferias";
             $idTab = "idFerias";
@@ -567,16 +557,6 @@ if($acesso)
             $importa = new Importa($tab,$idTab,$descricao);
             $importa->ignoraCampos($ignoraCampos);
             $importa->criarCampo($criarCampo);
-            $importa->go();
-
-            # tbsuspensao
-            $tab = "tbsuspensao";
-            $idTab = "idSuspensao";
-            $descricao = "Tabela de controle de suspenão de servidores";
-            $ignoraCampos = NULL;
-
-            $importa = new Importa($tab,$idTab,$descricao);
-            $importa->ignoraCampos($ignoraCampos);
             $importa->go();
 
             # tbtipocomissao

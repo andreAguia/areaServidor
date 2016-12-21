@@ -289,6 +289,14 @@ if($acesso)
             $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Afastamentos');
             $menu->add_item($botao);
+            
+            # FEN019
+            $botao = new BotaoGrafico();
+            $botao->set_label('FEN019');
+            $botao->set_url('importaFen019.php');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Importação da Tabela de Férias');
+            $menu->add_item($botao);
             $menu->show();  
             $fieldset->fecha();  
             break;
