@@ -66,7 +66,7 @@ if($acesso){
         $pessoal = new Pessoal();
 
         # Pega a quantidade de registros com os bolsistas
-        $select = "select matr from fen004 WHERE tp_afa = 20";
+        $select = "select matr from fen004";
         $result = $uenf->select($select);
         $totalRegistros = count($result); 
 
@@ -88,7 +88,7 @@ if($acesso){
         $numIdInvalido = 0;         // Número de ids inválidos
 
         # Inicia a Importação
-        $select = "SELECT * FROM fen004 WHERE tp_afa = 20 ORDER BY DT_INI";
+        $select = "SELECT * FROM fen004 ORDER BY DT_INI";
 
         $conteudo = $uenf->select($select,true);
 
@@ -367,7 +367,7 @@ if($acesso){
 
                 ##############################################################################
                 
-                case 20:    #############################
+                case 20: 
                     $tipo = 6;
                     echo "Lic Especial (premio). Importar para tipo 6.";
                     $numItensImportados++;
