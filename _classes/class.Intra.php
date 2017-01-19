@@ -186,11 +186,15 @@ class Intra extends Bd
             }
             
             # Verifica se o computador está autorizado para acesso
-            $ip = getenv("REMOTE_ADDR"); 
-            $verificaIp = $this->verificaComputador($ip);
+            $ip = getenv("REMOTE_ADDR");                    // Pega o ip do usuário
+            $controle = $this->get_variavel("ipAcesso");    // Verifica se o controle por ip está habilitado
             
-            if(!$verificaIp){
-                return 5;
+            if($controle){
+                $verificaIp = $this->verificaComputador($ip);  // Verifica se esse computador está cadastrado
+            
+                if(!$verificaIp){
+                    return 5;           // Retorna o valor 5 quando o computador não estiver cadastrado
+                }
             }
 
             if($senhaServidor == $senha_md5){
