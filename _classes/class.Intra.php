@@ -121,7 +121,14 @@ class Intra extends Bd
                      FROM tbvariaveis
                     WHERE nome = "'.$variavel.'"';
         $valor = parent::select($select,false);
-        return $valor[0];
+        $count = parent::count($select);
+        
+        if($count>0){
+            return $valor[0];
+        }else{
+            alert('Variável não existemte');
+            return NULL;
+        }
     }
 
     ###########################################################
