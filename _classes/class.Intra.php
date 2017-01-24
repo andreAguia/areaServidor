@@ -10,7 +10,7 @@ class Intra extends Bd
     private $servidor = "localhost";        // servidor
     private $usuario = "intranet";          // usuário
     private $senha = "txzVHnMdh53ZWX9p";    // senha
-    private $banco = "areaServidor";               // nome do banco
+    private $banco = "areaServidor";        // nome do banco
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela
     private $idCampo;                       // o nome do campo id
@@ -121,7 +121,14 @@ class Intra extends Bd
                      FROM tbvariaveis
                     WHERE nome = "'.$variavel.'"';
         $valor = parent::select($select,false);
-        return $valor[0];
+        $count = parent::count($select);
+        
+        if($count>0){
+            return $valor[0];
+        }else{
+            alert('Variável não existemte');
+            return NULL;
+        }
     }
 
     ###########################################################
@@ -186,11 +193,15 @@ class Intra extends Bd
             }
             
             # Verifica se o computador está autorizado para acesso
-            $ip = getenv("REMOTE_ADDR"); 
-            $verificaIp = $this->verificaComputador($ip);
+            $ip = getenv("REMOTE_ADDR");                    // Pega o ip do usuário
+            $controle = $this->get_variavel("ipAcesso");    // Verifica se o controle por ip está habilitado
             
-            if(!$verificaIp){
-                return 5;
+            if($controle){
+                $verificaIp = $this->verificaComputador($ip);  // Verifica se esse computador está cadastrado
+            
+                if(!$verificaIp){
+                    return 5;           // Retorna o valor 5 quando o computador não estiver cadastrado
+                }
             }
 
             if($senhaServidor == $senha_md5){
