@@ -5,13 +5,13 @@
  * By Alat
  */
 
-# Sobre o Sistema Intranet
-define("VERSAO","1.0.01 UENF");                                     # Versão do Sistema 								
-define("ATUALIZACAO","21/12/2016");                              # Última Atualização
-define("SISTEMA","Sistema de Administração de Sistemas");                # Nome do sistema
-define("DESCRICAO","Sistema Gestão dos Sistemas");   # Descrição do sistema
-define("PALAVRAS_CHAVE","Uenf");                             # Palavras chave para sites de busca
-define("AUTOR","Alat");                                          # Autor do sistema
+# Sobre o Sistema
+define("VERSAO","1.0.02 UENF");                                # Versão do Sistema 								
+define("ATUALIZACAO","19/01/2017");                            # Última Atualização
+define("SISTEMA","Sistema de Administração de Sistemas");      # Nome do sistema
+define("DESCRICAO","Sistema Gestão dos Sistemas");             # Descrição do sistema
+define("PALAVRAS_CHAVE","Uenf");                               # Palavras chave para sites de busca
+define("AUTOR","Alat");                                        # Autor do sistema
 
 # Classes
 define("PASTA_CLASSES_GERAIS","../../_framework/_classesGerais/"); # Classes Gerais
@@ -59,9 +59,6 @@ session_cache_limiter('private');
 include_once (PASTA_FUNCOES_GERAIS."funcoes.gerais.php");
 include_once (PASTA_FUNCOES."funcoes.especificas.php");
 include_once (PASTA_FUNCOES_GRH."funcoes.especificas.php");
-
-# Framework gráfico 
-include ('../../_framework/_outros/libchart/classes/libchart.php');
 
 # Dados do Browser
 $browser = get_BrowserName();
