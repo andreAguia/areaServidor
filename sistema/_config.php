@@ -68,6 +68,14 @@ define("BROWSER_VERSION",$browser['version']);	# Versão do browser
 # Pega o ip da máquina
 define("IP",getenv("REMOTE_ADDR"));     # Ip da máquina
 
+# Pega o Mac da máquina
+if((IP <> "::1")AND(IP <> "127.0.0.1")){
+    $mac = get_mac(IP);
+    define("MAC",$mac);                     // Coloca na Constante MAC
+}else{
+    define("MAC",NULL);
+}
+
 # Sistema Operacional
 define("SO",get_So());
 
