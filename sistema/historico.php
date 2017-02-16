@@ -118,7 +118,6 @@ if($acesso)
     $objeto->set_label(array("","Usuário","Data","IP","Tabela","Id","IdServidor","Atividade"));
     $objeto->set_width(array(5,8,13,5,10,5,5,40));		
     $objeto->set_align(array("center","center","center","center","center","center","center","left"));
-    $objeto->set_zebrado(false);   
     $objeto->set_funcao(array (null,null,"datetime_to_php",null,null,null,"exibeNomeTitle"));
    $objeto->set_classe(array(null,"intra"));
     $objeto->set_metodo(array(null,"get_usuario"));

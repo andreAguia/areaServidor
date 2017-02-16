@@ -66,7 +66,6 @@
         $tabela->set_label(array("Usuário","Nome","Perfil"));
         $tabela->set_width(array(20,50,30));        
         $tabela->set_totalRegistro(false);
-        $tabela->set_zebrado(true);
         
         # Limita o tamanho da tela
         $grid = new Grid();
