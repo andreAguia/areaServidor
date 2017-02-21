@@ -1,6 +1,6 @@
 <?php
 /**
- * Área do Servidor
+ * Perfil do Usuário
  *  
  * By Alat
  */
@@ -46,22 +46,16 @@ if($acesso)
     $linkBotao1->set_class('button');
     $linkBotao1->set_title('Voltar ao Sistema de Pessoal');
     $linkBotao1->set_accessKey('V');
-    if(Verifica::acesso($idUsuario,2)){
-        $menu1->add_link($linkBotao1,"left");
-    }
-    
-    # Administração
-    $linkAdm = new Link("Administração","administracao.php");
-    $linkAdm->set_class('button');
-    $linkAdm->set_title('Administração dos Sistemas');
-    $linkAdm->set_accessKey('A');
-    if(Verifica::acesso($idUsuario,1)){
-        $menu1->add_link($linkAdm,"right");
-    }   
+    $menu1->add_link($linkBotao1,"left");
     $menu1->show();
-
-    titulo('Área do Servidor');
+    
+    titulo('Perfil do Usuário');
     br();
+    
+    # Exibe os dados do Servidor 
+    AreaServidor::listaDadosUsuario($idUsuario);
+    
+    
     $tamanhoImage = 70;
 
     $menu = new MenuGrafico(3);
@@ -72,8 +66,12 @@ if($acesso)
     $botao->set_image(PASTA_FIGURAS.'alteraSenha.png',$tamanhoImage,$tamanhoImage);
     $botao->set_title('Alterar Senha');
     #$botao->set_accesskey('S');
-    #$menu->add_item($botao);
-    $menu->show(); 
+    $menu->add_item($botao);
+    $menu->show();       
+    
+    # Exibe o rodapé da página
+    br();
+    AreaServidor::rodape($idUsuario);
     
     $grid->fechaColuna();
     $grid->fechaGrid();

@@ -151,8 +151,11 @@ switch ($fase)
                 break;
 
             Case 3: // Login Correto
-                # Pega o idUsuario desse servidor
+                # Pega o idUsuario
                 $idUsuario = $intra->get_idUsuario($usuario);
+                
+                # Pega o tipo de usuário
+                $tipoUsuario = $intra->get_tipoUsuario($idUsuario);
                 
                 # Pega o idServidor
                 $idServidor = $intra->get_idServidor($idUsuario);
@@ -163,16 +166,6 @@ switch ($fase)
                 # Grava no log a atividade
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
 
-                # Acesso ao sistema GRH
-                $pagina = 'areaServidor.php';
-                if(Verifica::acesso($idUsuario,2)){
-                    $pagina = '../../grh/grhSistema/grh.php';
-                }
-                
-                if(Verifica::acesso($idUsuario,1)){
-                    $pagina = 'areaServidor.php';
-                }
-                
                 # Faz backup automático (1 por dia ao menos)
                 # Abre o diretório
                 $pasta = "../$pastaBackup/".date("Y.m.d");
@@ -209,14 +202,10 @@ switch ($fase)
                 }
                                 
                 # Verifica se o servidor está aniversariando hoje
-                if($intra->get_tipoUsuario($idUsuario) == 1){
-                    if($pessoal->aniversariante($idServidor)){
-                        loadPage('?fase=parabens');
-                    }else{
-                        loadPage($pagina);                
-                    }
+                if(($tipoUsuario == 1) AND ($pessoal->aniversariante($idServidor))){
+                    loadPage('?fase=parabens');
                 }else{
-                    loadPage($pagina);   
+                    loadPage('../../grh/grhSistema/grh.php');                
                 }
                 break;
             

@@ -150,20 +150,20 @@ if($acesso)
         }
 
         if ($erro == 0){
-                # Altera a senha
-                $intra->set_senha($idUsuario,$senha1);
-                
-                # Pega o idServidor
-                $idServidor = $intra->get_idServidor($idUsuario);
+            # Altera a senha
+            $intra->set_senha($idUsuario,$senha1);
 
-                # Grava no log a atividade
-                $data = date("Y-m-d H:i:s");
-                $atividade = 'Alterou a própria senha';
-                $intra->registraLog($idUsuario,$data,$atividade,'tbusuario',$idUsuario,2,$idServidor);
-                loadPage('areaServidor.php');
+            # Pega o idServidor
+            $idServidor = $intra->get_idServidor($idUsuario);
+
+            # Grava no log a atividade
+            $data = date("Y-m-d H:i:s");
+            $atividade = 'Alterou a própria senha';
+            $intra->registraLog($idUsuario,$data,$atividade,'tbusuario',$idUsuario,2,$idServidor);
+            loadPage('perfilUsuario.php');
         }else{
-                alert($msgErro);
-                back(1);
+            alert($msgErro);
+            back(1);
         }		   	
         break;
         

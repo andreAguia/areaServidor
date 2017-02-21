@@ -54,18 +54,28 @@
         # Conecta com o banco de dados
         $servidor = new Pessoal();
 
-        $select ='SELECT usuario,nome,"Bolsista"                       
-                    FROM areaServidor.tbusuario
+        $select ='SELECT idUsuario,
+                         usuario,
+                         if(tipoUsuario=2,areaServidor.tbusuario.nome,grh.tbpessoa.nome),
+                         if(tipoUsuario=2,"Bolsista","Servidor")               
+                    FROM areaServidor.tbusuario LEFT JOIN grh.tbservidor USING (idservidor)
+                                                LEFT JOIN grh.tbpessoa USING (idPessoa)
                    WHERE idUsuario = '.$idUsuario;
 
         $conteudo = $servidor->select($select,true);
+        
+        $formatacaoCondicional = array( array('coluna' => 0,
+                                              'valor' => $idUsuario,
+                                              'operador' => '=',
+                                              'id' => 'listaDados'));
 
         # Monta a tabela
         $tabela = new Tabela();
         $tabela->set_conteudo($conteudo);
-        $tabela->set_label(array("Usuário","Nome","Perfil"));
-        $tabela->set_width(array(20,50,30));        
+        $tabela->set_label(array("Id","Usuário","Nome","Perfil"));
+        $tabela->set_width(array(5,20,45,30));        
         $tabela->set_totalRegistro(false);
+        $tabela->set_formatacaoCondicional($formatacaoCondicional);
         
         # Limita o tamanho da tela
         $grid = new Grid();
