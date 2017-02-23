@@ -1,4 +1,4 @@
 # ignora a pasta de backup
 
 _backup/
-/nbproject/private/
+/nbproject/
