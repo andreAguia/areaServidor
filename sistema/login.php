@@ -225,7 +225,7 @@ switch ($fase)
                 # Grava no log a atividade        
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
                 
-                loadPage('trocarSenha.php'); 
+                loadPage('trocarSenha.php?'); 
                 break;
             
             case 5: // Computador Não Autorizado

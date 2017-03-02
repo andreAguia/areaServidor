@@ -25,6 +25,9 @@ if($acesso)
 
     # Verifica a fase do programa
     $fase = get('fase');
+	
+	# Verifica se veio do login ou do sistema de pessoal
+	$origem = get('o');
 
     # Começa uma nova página
     $page = new Page();			
@@ -120,7 +123,7 @@ if($acesso)
         case "gravar" :
         $erro = 0;		  // flag de erro: 1 - tem erro; 0 - não tem	
         $msgErro = null; // repositório de mensagens de erro
-
+echo "--->".$origem;
         # pega as senhas digitadas
         $senha1 = post('senha1');
         $senha2 = post('senha2');
@@ -160,7 +163,13 @@ if($acesso)
             $data = date("Y-m-d H:i:s");
             $atividade = 'Alterou a própria senha';
             $intra->registraLog($idUsuario,$data,$atividade,'tbusuario',$idUsuario,2,$idServidor);
-            loadPage('perfilUsuario.php');
+            
+			if($origem == 'login'){
+				loadPage('grh.php');
+			}else{
+				loadPage('perfilUsuario.php');
+			}
+            
         }else{
             alert($msgErro);
             back(1);
