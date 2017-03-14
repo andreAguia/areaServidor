@@ -6,7 +6,7 @@
  */
 
 # Sobre o Sistema
-define("VERSAO","1.0.02 UENF");                                # Versão do Sistema 								
+define("VERSAO","1.0.02");                                # Versão do Sistema 								
 define("ATUALIZACAO","19/01/2017");                            # Última Atualização
 define("SISTEMA","Sistema de Administração de Sistemas");      # Nome do sistema
 define("DESCRICAO","Sistema Gestão dos Sistemas");             # Descrição do sistema
@@ -88,7 +88,7 @@ setlocale (LC_ALL, 'pt_BR');
 setlocale (LC_CTYPE, 'pt_BR');
 
 # carrega as session
-$idUsuario = get_session('idUsuario');                       # Servidor Logado
+$idUsuario = get_session('idUsuario');    	// Servidor Logado
 
 # Define se usa o input type data do html5 ou se usa o javascript
 # Se usar o html 5 o controle não trabalha com formato brasileiro
