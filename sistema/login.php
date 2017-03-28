@@ -205,7 +205,7 @@ switch ($fase)
                 if(($tipoUsuario == 1) AND ($pessoal->aniversariante($idServidor))){
                     loadPage('?fase=parabens');
                 }else{
-                    loadPage('../../grh/grhSistema/grh.php');                
+                    loadPage('areaServidor.php');                
                 }
                 break;
             

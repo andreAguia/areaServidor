@@ -22,11 +22,6 @@ if($acesso)
 
     # Verifica a fase do programa
     $fase = get('fase','menu'); # Qual a fase
-    $metodo = get('sistema');	# Qual o sistema. Usado na rotina de Documentação
-
-    # Ordem da tabela
-    $orderCampo = get('orderCampo');
-    $orderTipo = get('orderTipo');
 
     # Começa uma nova página
     $page = new Page();
@@ -38,42 +33,65 @@ if($acesso)
     $grid = new Grid();
     $grid->abreColuna(12);
     
-    # Cria um menu
-    $menu1 = new MenuBar();
+    switch ($fase)
+    {	
+        # Exibe o Menu Inicial
+        case "menu" :
     
-    # Sair da Área do Servidor
-    $linkBotao1 = new Link("Voltar",'../../grh/grhSistema/grh.php');
-    $linkBotao1->set_class('button');
-    $linkBotao1->set_title('Voltar ao Sistema de Pessoal');
-    $linkBotao1->set_accessKey('V');
-    if(Verifica::acesso($idUsuario,2)){
-        $menu1->add_link($linkBotao1,"left");
+        # Cria um menu
+        $menu1 = new MenuBar();
+
+        # Sair da Área do Servidor
+        $linkVoltar = new Link("Sair","login.php");
+        $linkVoltar->set_class('button');
+        $linkVoltar->set_title('Sair do Sistema');
+        $linkVoltar->set_confirma('Tem certeza que deseja sair do sistema?');
+        $linkVoltar->set_accessKey('i');
+        $menu1->add_link($linkVoltar,"left");
+        $menu1->show();
+
+        titulo('Área do Servidor');
+        $tamanhoImage = 70;
+
+        $fieldset = new Fieldset('Sistemas');
+        $fieldset->abre();
+
+        $menu = new MenuGrafico();
+
+        $botao = new BotaoGrafico();
+        $botao->set_label('Alterar Senha');
+        $botao->set_url('trocarSenha.php');
+        $botao->set_image(PASTA_FIGURAS.'alteraSenha.png',$tamanhoImage,$tamanhoImage);
+        $botao->set_title('Alterar Senha');
+        $botao->set_accesskey('S');
+        $menu->add_item($botao);
+        
+        if(Verifica::acesso($idUsuario,2)){   // Verifica acesso ao sistema
+            $botao = new BotaoGrafico();
+            $botao->set_label('Sistema de Pessoal');
+            $botao->set_url('../../grh/grhSistema/grh.php');
+            $botao->set_image(PASTA_FIGURAS.'sistemaPessoal.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Acessa o Sistema de Pessoal');
+            $botao->set_accesskey('P');
+            $menu->add_item($botao);
+        }
+        
+        if(Verifica::acesso($idUsuario,1)){   // Somente Administradores
+            $botao = new BotaoGrafico();
+            $botao->set_label('Administração');
+            $botao->set_url('administracao.php');
+            $botao->set_image(PASTA_FIGURAS.'framework.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Administração dos Sistemas');
+            $botao->set_accesskey('A');
+            $menu->add_item($botao);
+        }
+        
+        $menu->show();
+
+        $fieldset->fecha();
+
+        ###############################
     }
-    
-    # Administração
-    $linkAdm = new Link("Administração","administracao.php");
-    $linkAdm->set_class('button');
-    $linkAdm->set_title('Administração dos Sistemas');
-    $linkAdm->set_accessKey('A');
-    if(Verifica::acesso($idUsuario,1)){
-        $menu1->add_link($linkAdm,"right");
-    }   
-    $menu1->show();
-
-    titulo('Área do Servidor');
-    br();
-    $tamanhoImage = 70;
-
-    $menu = new MenuGrafico(3);
-    
-    $botao = new BotaoGrafico();
-    $botao->set_label('Alterar Senha');
-    $botao->set_url('trocarSenha.php');
-    $botao->set_image(PASTA_FIGURAS.'alteraSenha.png',$tamanhoImage,$tamanhoImage);
-    $botao->set_title('Alterar Senha');
-    #$botao->set_accesskey('S');
-    #$menu->add_item($botao);
-    $menu->show(); 
     
     $grid->fechaColuna();
     $grid->fechaGrid();
