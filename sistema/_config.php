@@ -6,8 +6,8 @@
  */
 
 # Sobre o Sistema
-define("VERSAO","1.0.02");                                # Versão do Sistema 								
-define("ATUALIZACAO","19/01/2017");                            # Última Atualização
+define("VERSAO","1.0.04");                                     # Versão do Sistema 								
+define("ATUALIZACAO","05/04/2017");                            # Última Atualização
 define("SISTEMA","Sistema de Administração de Sistemas");      # Nome do sistema
 define("DESCRICAO","Sistema Gestão dos Sistemas");             # Descrição do sistema
 define("PALAVRAS_CHAVE","Uenf");                               # Palavras chave para sites de busca
