@@ -89,6 +89,10 @@ if($acesso)
         $menu->show();
 
         $fieldset->fecha();
+        
+        # Exibe o rodapé da página
+        br();
+        AreaServidor::rodape($idUsuario);
 
         ###############################
     }
