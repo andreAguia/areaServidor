@@ -201,6 +201,8 @@ switch ($fase)
                 # Verifica se o servidor está aniversariando hoje
                 if($pessoal->aniversariante($idServidor)){
                     loadPage('?fase=parabens');
+                }else{
+                    loadPage('areaServidor.php');
                 }
                 break;
             
