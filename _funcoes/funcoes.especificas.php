@@ -23,31 +23,6 @@ function exibeNomeTitle($idServidor){
 
 ##################################################################
 
-function badgeTipoUsuario($tipoUsuario){
-/**
- * Exibe na tabela o tipo de usuario usando a função badge do Fundation
- * 
- * @note Usado na rotina de cadastro de usuários 
- * 
- * @syntax badgeTipoUsuario($tipoUsuario);
- * 
- * @param $tipoUsuario string null o tipo de usuario
- */
-    
-    switch ($tipoUsuario)
-    {
-        case "S" :
-            badge($tipoUsuario,"primary",NULL,"Usuário Servidor");
-            break;
-        
-        case "B" :
-            badge($tipoUsuario,"success",NULL,"Usuário Bolsista");
-            break;
-    }
-}
-    
-    ##################################################################
-
     function statusUsuario($idUsuario){
     /**
      * Exibe na tabela o tipo de usuario usando a função badge do Fundation

@@ -75,10 +75,9 @@ if($acesso)
         $orderTipo = 'asc';
 
     # select da lista
-    $objeto->set_selectLista ('(SELECT idUsuario,
+    $objeto->set_selectLista ('SELECT idUsuario,
                                       idUsuario,
                                       usuario,
-                                      if(tipoUsuario = 1,"S","B"),
                                       idServidor,
                                       ultimoAcesso,
                                       idServidor,
@@ -88,29 +87,12 @@ if($acesso)
                                       idUsuario,
                                       idUsuario
                                  FROM tbusuario
-                                WHERE tipoUsuario = 1 AND usuario LIKE "%'.$parametro.'%")
-                                UNION
-                             (SELECT idUsuario,
-                                     idUsuario,
-                                      usuario,
-                                      if(tipoUsuario = 1,"S","B"),
-                                      nome,
-                                      ultimoAcesso,
-                                      idServidor,
-                                      idServidor,
-                                      idUsuario,
-                                      idUsuario,
-                                      idUsuario,
-                                      idUsuario
-                                 FROM tbusuario
-                                WHERE tipoUsuario = 2 AND usuario LIKE "%'.$parametro.'%")
+                                WHERE usuario LIKE "%'.$parametro.'%"
                              ORDER BY '.$orderCampo.' '.$orderTipo);
 
     # select do edita
     $objeto->set_selectEdita('SELECT usuario,
-                                     tipoUsuario,
                                      idServidor,
-                                     nome,
                                      obs
                                 FROM tbusuario
                                WHERE idUsuario = '.$id);
@@ -127,13 +109,13 @@ if($acesso)
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("Status","Id","Usuário","Tipo","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
+    $objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
     #$objeto->set_width(array(5,4,10,5,15,10,15,11,5,5,5));
-    $objeto->set_align(array("center","center","center","center","left","center","center","left"));
+    $objeto->set_align(array("center","center","center","left","center","center","left"));
 
-    $objeto->set_classe(array(null,null,null,null,"pessoal",null,"pessoal","pessoal"));
-    $objeto->set_metodo(array(null,null,null,null,"get_nome",null,"get_lotacao","get_cargo"));
-    $objeto->set_funcao(array("statusUsuario",null,null,"badgeTipoUsuario",null,"datetime_to_php"));
+    $objeto->set_classe(array(null,null,null,"pessoal",null,"pessoal","pessoal"));
+    $objeto->set_metodo(array(null,null,null,"get_nome",null,"get_lotacao","get_cargo"));
+    $objeto->set_funcao(array("statusUsuario",null,null,null,"datetime_to_php"));
     
     # Imagem Condicional 
     $imageSenhaPadrao = new Imagem(PASTA_FIGURAS.'exclamation.png','Usuário com senha padrão.');
@@ -180,7 +162,7 @@ if($acesso)
     $botao3->set_image(PASTA_FIGURAS.'group_edit.png',20,20);
     
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array(null,null,null,null,null,null,null,null,$botao1,$botao2,$botao3));	
+    $objeto->set_link(array(null,null,null,null,null,null,null,$botao1,$botao2,$botao3));	
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -210,14 +192,6 @@ if($acesso)
                'required' => true,
                'unique' => true,
                'size' => 15),
-        array ('linha' => 1,
-               'col' => 2, 
-               'nome' => 'tipoUsuario',
-               'label' => 'Tipo:',
-               'tipo' => 'combo',
-               'array' => array(array(null,"--"),array(1,"Servidor"),array(2,"Bolsista")),
-               'required' => true,
-               'size' => 10),
         array ('linha' => 2,
                'col' => 6, 
                'nome' => 'idServidor',
@@ -225,12 +199,6 @@ if($acesso)
                'tipo' => 'combo',
                'array' => $result,
                'size' => 20),
-        array ('linha' => 2,
-               'col' => 6, 
-               'nome' => 'nome',
-               'label' => 'Nome (bolsista):',
-               'tipo' => 'texto',
-               'size' => 100),
         array ('linha' => 3,
                'col' => 12,
                'nome' => 'obs',

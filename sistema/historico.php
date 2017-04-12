@@ -116,10 +116,10 @@ if($acesso)
 
     # Parametros da tabela
     $objeto->set_label(array("","Usuário","Data","IP","Tabela","Id","IdServidor","Atividade"));
-    $objeto->set_width(array(5,8,13,5,10,5,5,40));		
+    $objeto->set_width(array(5,8,13,7,10,5,5,38));		
     $objeto->set_align(array("center","center","center","center","center","center","center","left"));
     $objeto->set_funcao(array (null,null,"datetime_to_php",null,null,null,"exibeNomeTitle"));
-   $objeto->set_classe(array(null,"intra"));
+    $objeto->set_classe(array(null,"intra"));
     $objeto->set_metodo(array(null,"get_usuario"));
     
     $objeto->set_formatacaoCondicional(array( array('coluna' => 0,
@@ -220,17 +220,12 @@ if($acesso)
                 }
                 
                 # Pega os Usuarios
-                $result = $admin->select('(SELECT DISTINCT tblog.idUsuario,
+                $result = $admin->select('SELECT DISTINCT tblog.idUsuario,
                                                            tbusuario.usuario
                                                       FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
                                                       JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
                                                       JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
-                                                     WHERE tipoUsuario = 1 AND date(data) = "'.$parametro.'")
-                                           UNION
-                                          (SELECT DISTINCT tblog.idUsuario,
-                                                           tbusuario.usuario
-                                                      FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
-                                                     WHERE tipoUsuario = 2 AND date(data) = "'.$parametro.'")');
+                                                     WHERE date(data) = "'.$parametro.'"');
                 array_push($result,array('*','-- Todos --'));
                 
                 $controle = new Input('usuarioLog','combo','Filtra por Usuário',1);

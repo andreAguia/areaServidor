@@ -61,13 +61,9 @@ if($acesso)
             #$menu->add_link($linkBotao3,"right");    
             $menu->show();
 
-            # Exibe os dados do Servidor    
-            if($intra->get_tipoUsuario($idUsuario) == 1){
-                Grh::listaDadosServidor($intra->get_idServidor($idUsuario));
-            }else{
-                AreaServidor::listaDadosUsuario($idUsuario);
-            }
-    
+            # Exibe os dados do Servidor
+            Grh::listaDadosServidor($intra->get_idServidor($idUsuario));
+            
             # Limita a tela
             $grid = new Grid("center");
             $grid->abreColuna(5);
@@ -113,6 +109,9 @@ if($acesso)
             $callout->fecha();
             $grid->fechaColuna();
             $grid->fechaGrid();
+            
+            br();
+            Grh::rodape($idUsuario);
             break;
         
         #########################################################################################

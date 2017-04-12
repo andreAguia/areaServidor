@@ -52,6 +52,9 @@ if($acesso)
 
         titulo('Área do Servidor');
         $tamanhoImage = 70;
+        
+        # Exibe os dados do Servidor
+        Grh::listaDadosServidor($intra->get_idServidor($idUsuario));
 
         $fieldset = new Fieldset('Sistemas');
         $fieldset->abre();

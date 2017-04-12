@@ -154,9 +154,6 @@ switch ($fase)
                 # Pega o idUsuario
                 $idUsuario = $intra->get_idUsuario($usuario);
                 
-                # Pega o tipo de usuário
-                $tipoUsuario = $intra->get_tipoUsuario($idUsuario);
-                
                 # Pega o idServidor
                 $idServidor = $intra->get_idServidor($idUsuario);
                 
@@ -202,10 +199,8 @@ switch ($fase)
                 }
                                 
                 # Verifica se o servidor está aniversariando hoje
-                if(($tipoUsuario == 1) AND ($pessoal->aniversariante($idServidor))){
+                if($pessoal->aniversariante($idServidor)){
                     loadPage('?fase=parabens');
-                }else{
-                    loadPage('areaServidor.php');                
                 }
                 break;
             
