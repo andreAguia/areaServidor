@@ -209,6 +209,21 @@ if($acesso)
 
     # Log
     $objeto->set_idUsuario($idUsuario);
+    
+    # Senha Padrão
+    $botaoRel = new Button("Padrão");
+    $botaoRel->set_title("Passa para senha padrão");
+    $botaoRel->set_url('?fase=senhaPadrao&idUsuarioSenhaPadrao='.$id);
+    $botaoRel->set_accessKey('P');
+    
+    # Bloquear
+    $botaoRel = new Button("Padrão");
+    $botaoRel->set_title("Passa para senha padrão");
+    $botaoRel->set_url('?fase=senhaPadrao&idUsuarioSenhaPadrao='.$id);
+    $botaoRel->set_accessKey('P');
+    
+    $objeto->set_botaoEditarExtra(array($botaoRel));
+    
 
     ################################################################
     switch ($fase)
