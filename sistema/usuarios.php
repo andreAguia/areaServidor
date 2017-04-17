@@ -109,7 +109,8 @@ if($acesso)
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
+    #$objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
+    $objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo"));
     #$objeto->set_width(array(5,4,10,5,15,10,15,11,5,5,5));
     $objeto->set_align(array("center","center","center","left","center","center","left"));
 
@@ -162,7 +163,7 @@ if($acesso)
     $botao3->set_image(PASTA_FIGURAS.'group_edit.png',20,20);
     
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array(null,null,null,null,null,null,null,$botao1,$botao2,$botao3));	
+    #$objeto->set_link(array(null,null,null,null,null,null,null,$botao1,$botao2,$botao3));	
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -184,7 +185,7 @@ if($acesso)
     # Campos para o formulario
     $objeto->set_campos(array(
         array ('linha' => 1,
-               'col' => 5, 
+               'col' => 3, 
                'nome' => 'usuario',
                'label' => 'Usuário:',
                'tipo' => 'texto',
@@ -193,36 +194,36 @@ if($acesso)
                'unique' => true,
                'size' => 15),
         array ('linha' => 1,
-               'col' => 7, 
+               'col' => 5, 
                'nome' => 'idServidor',
                'label' => 'Nome (servidor):',
                'tipo' => 'combo',
                'array' => $result,
                'size' => 20),
-        array ('linha' => 2,
-               'col' => 12,
+        array ('linha' => 1,
+               'col' => 4,
                'nome' => 'obs',
                'label' => 'Observação:',
-               'tipo' => 'textarea',
-               'size' => array(80,5))
+               'tipo' => 'texto',
+               'size' => 20)
         ));
 
     # Log
     $objeto->set_idUsuario($idUsuario);
     
     # Senha Padrão
-    $botaoRel = new Button("Padrão");
-    $botaoRel->set_title("Passa para senha padrão");
-    $botaoRel->set_url('?fase=senhaPadrao&idUsuarioSenhaPadrao='.$id);
-    $botaoRel->set_accessKey('P');
+    $botaoPadrao = new Button("Padrão");
+    $botaoPadrao->set_title("Passa para senha padrão");
+    $botaoPadrao->set_url('?fase=senhaPadrao&idUsuarioSenhaPadrao='.$id);
     
     # Bloquear
-    $botaoRel = new Button("Padrão");
-    $botaoRel->set_title("Passa para senha padrão");
-    $botaoRel->set_url('?fase=senhaPadrao&idUsuarioSenhaPadrao='.$id);
-    $botaoRel->set_accessKey('P');
+    $botaoBloquear = new Button("Bloquear");
+    $botaoBloquear->set_title("Bloqueia o acesso desse servidor a área do servidor. (passa a senha para null)");
+    $botaoBloquear->set_class('alert button');
+    $botaoBloquear->set_url('?fase=bloquear&idUsuarioBloqueado='.$id);
     
-    $objeto->set_botaoEditarExtra(array($botaoRel));
+    $objeto->set_botaoEditarExtra(array($botaoPadrao,$botaoBloquear));
+    $objeto->set_exibeInfoObrigatoriedade(FALSE);
     
 
     ################################################################
@@ -234,6 +235,63 @@ if($acesso)
             break;
 
         case "editar" :
+            $objeto->$fase($id);
+            br();
+            
+            ### Lista Permissões
+            if(!is_null($id)){
+                $grid = new Grid();
+                $grid->abreColuna(6);
+
+                titulo("Permissões");
+
+                # select
+                $select = 'SELECT tbregra.idRegra,
+                                  tbregra.nome,
+                                  tbregra.descricao,									
+                                  tbpermissao.idPermissao
+                             FROM tbregra LEFT JOIN tbpermissao on tbregra.idRegra = tbpermissao.idRegra
+                            WHERE tbpermissao.idUsuario = '.$id.'
+                         ORDER BY tbregra.nome';
+
+                $conteudo = $intra->select($select,true);
+
+                $tabela = new Tabela();
+                $tabela->set_conteudo($conteudo);
+                $tabela->set_label(array("Num","Regra","Descrição"));
+                $tabela->set_align(array("center","left","left"));
+                $tabela->show();
+
+                ### Lista de lotações do sistema de férias
+
+                # Verifica se tem permissão ao sistema de férias
+                if($intra->verificaPermissao($id,3)){
+                    titulo("Lotações do Sistema de Férias");
+
+                    # select
+                    $select = 'SELECT idLotacao,
+                                      grh.tblotacao.nome
+                                 FROM tblotacaoFerias LEFT JOIN grh.tblotacao USING (idLotacao)
+                                WHERE idUsuario = '.$id.'
+                             ORDER BY grh.tblotacao.nome';
+
+                    $conteudo = $intra->select($select,true);
+
+                    $tabela = new Tabela();
+                    $tabela->set_conteudo($conteudo);
+                    $tabela->set_label(array("Num","Regra","Descrição"));
+                    $tabela->set_align(array("center","left","left"));
+                    $tabela->show();
+                }
+            
+                $grid->fechaColuna();
+                $grid->abreColuna(6);
+
+                $grid->fechaColuna();
+                $grid->fechaGrid();
+            }
+            break;
+            
         case "excluir" :	
         case "gravar" :
             $objeto->$fase($id);
