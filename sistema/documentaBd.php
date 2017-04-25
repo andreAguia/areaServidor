@@ -1,7 +1,7 @@
 <?php
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -103,7 +103,7 @@ if($acesso)
 
     $label = array("Nome","Descrição","Tipo","Motor","Num. Registros","Tamanho Médio","Tamanho Total","AI");
     $width = array(10,30,10,10,10,10,10,5);
-    #$function = array("datetime_to_php",null,null,null,"get_nome");
+    #$function = array("datetime_to_php",NULL,NULL,NULL,"get_nome");
     $align = array("left","left");
 
     # Monta a tabela
@@ -111,7 +111,7 @@ if($acesso)
     $tabela->set_conteudo($conteudo);
     $tabela->set_cabecalho($label,$width,$align);
     #$tabela->set_funcao($function); 
-    $tabela->set_numeroOrdem(true);
+    $tabela->set_numeroOrdem(TRUE);
     $tabela->set_editar("documentaTabela.php?fase=$fase&bd=".$banco);
     $tabela->set_idCampo('TABLE_NAME');
     $tabela->set_nomeColunaEditar('Ver');

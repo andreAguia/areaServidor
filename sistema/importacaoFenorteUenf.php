@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -96,8 +96,8 @@ if($acesso)
             }
 
             # pega os nomes das tabelas e joga em um array
-            $tabela = null; // array de tabelas
-            $campos = null; // array de campos
+            $tabela = NULL; // array de tabelas
+            $campos = NULL; // array de campos
 
             p("Lendo as estruturas das tabelas da Fenorte...");
 

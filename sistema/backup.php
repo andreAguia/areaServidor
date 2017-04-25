@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -85,7 +85,7 @@ if($acesso)
             $controle->set_size(30);
             $controle->set_title('Insira a data');
             $controle->set_valor($dataLista);
-            $controle->set_autofocus(true);
+            $controle->set_autofocus(TRUE);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(1);
             $controle->set_col(3);
@@ -107,7 +107,7 @@ if($acesso)
             # Array que guarda s arquivos
             $dadosArquivo = array();
             
-            $dia = null;
+            $dia = NULL;
             
             if (file_exists($pasta)){
                 $ponteiro  = opendir($pasta);
@@ -139,7 +139,7 @@ if($acesso)
             $label = array("Dia","Hora","Tipo","Banco","Ver");
             $width = array(20,15,15,40,10);
             $align = array("center","center","center","left");
-            $function = array (null);
+            $function = array (NULL);
             
             $tabela = new Tabela();
             $titulo = "Backups Efetuados em ".$dia;

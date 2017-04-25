@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -181,8 +181,8 @@ if($acesso)
             if($numVariaveis > 0){
                 echo 'Variáveis da Classe:';
                 br();
-                $novoArray = null;      // Armazena a tabela
-                $grupoAnterior = null;  // Guarda o nome do grupo anterior
+                $novoArray = NULL;      // Armazena a tabela
+                $grupoAnterior = NULL;  // Guarda o nome do grupo anterior
                 $grupo = 0;             // Qual grupo será exibido
 
                 foreach ($variaveisClasse as $vc){
@@ -207,7 +207,7 @@ if($acesso)
                             $tabela->show(); 
 
                             $grupoAnterior = $vc[1];
-                            $novoArray = null;
+                            $novoArray = NULL;
                             $grupo++;
                         }                 
                     }

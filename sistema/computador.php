@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -55,7 +55,7 @@ if($acesso)
     $objeto->set_nome('Computador');
 
     # botão salvar
-    $objeto->set_botaoSalvarGrafico(false);
+    $objeto->set_botaoSalvarGrafico(FALSE);
 
     # botão de voltar da lista
     $objeto->set_voltarLista('administracao.php');
@@ -127,7 +127,7 @@ if($acesso)
                                            usuario
                                       FROM tbusuario
                                   ORDER BY usuario');
-    array_unshift($comboUsuario, array(null,null)); 
+    array_unshift($comboUsuario, array(NULL,NULL)); 
 
     # Campos para o formulario
     $objeto->set_campos(array( 
@@ -136,8 +136,8 @@ if($acesso)
                                 'tipo' => 'texto',
                                 'size' => 20,
                                 'title' => 'IP do computador.',
-                                'required' => true,
-                                'autofocus' => true,
+                                'required' => TRUE,
+                                'autofocus' => TRUE,
                                 'col' => 3,
                                 'linha' => 1),
                         array ('linha' => 1,

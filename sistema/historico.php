@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -45,7 +45,7 @@ if($acesso)
     # Começa uma nova página
     $page = new Page();
     if(($parametro == date("Y-m-d")) OR ($parametro == date("d/m/Y"))){
-        $page->set_refresh(true);
+        $page->set_refresh(TRUE);
         $page->set_bodyOnLoad('contagemRegressiva(30,"divContagemInterna")');
     }
     $page->iniciaPagina();
@@ -112,15 +112,15 @@ if($acesso)
     #$objeto->set_linkExcluir('?fase=excluir');
     #$objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
-    $objeto->set_botaoIncluir(false);
+    $objeto->set_botaoIncluir(FALSE);
 
     # Parametros da tabela
     $objeto->set_label(array("","Usuário","Data","IP","Tabela","Id","IdServidor","Atividade"));
     $objeto->set_width(array(5,8,13,7,10,5,5,38));		
     $objeto->set_align(array("center","center","center","center","center","center","center","left"));
-    $objeto->set_funcao(array (null,null,"datetime_to_php",null,null,null,"exibeNomeTitle"));
-    $objeto->set_classe(array(null,"intra"));
-    $objeto->set_metodo(array(null,"get_usuario"));
+    $objeto->set_funcao(array (NULL,NULL,"datetime_to_php",NULL,NULL,NULL,"exibeNomeTitle"));
+    $objeto->set_classe(array(NULL,"intra"));
+    $objeto->set_metodo(array(NULL,"get_usuario"));
     
     $objeto->set_formatacaoCondicional(array( array('coluna' => 0,
                                                     'valor' => 0,
@@ -191,7 +191,7 @@ if($acesso)
     $objeto->set_formFocus('idUsuario');
 
     # Paginação
-    #$objeto->set_paginacao(true);
+    #$objeto->set_paginacao(TRUE);
     #$objeto->set_paginacaoInicial($paginacao);
     #$objeto->set_paginacaoItens(20);
 
@@ -211,7 +211,7 @@ if($acesso)
                 $controle->set_size(30);
                 $controle->set_title('Insira a data');
                 $controle->set_valor($parametro);
-                $controle->set_autofocus(true);
+                $controle->set_autofocus(TRUE);
                 $controle->set_onChange('formPadrao.submit();');
                 $controle->set_linha(1);
                 $controle->set_col(3);

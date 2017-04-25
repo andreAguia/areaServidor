@@ -15,7 +15,7 @@ class Doc extends Bd
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela
     private $idCampo;                       // o nome do campo id
-    private $log = true;                    // habilita o log
+    private $log = TRUE;                    // habilita o log
 
     /**
     * Método Construtor
@@ -62,7 +62,7 @@ class Doc extends Bd
         if ($this->tabela == 'tbmovimento')
         {
             $lastId = parent::get_lastId();		# salva o last id da primeira grava��o (a que importa)
-            parent::gravar(array('status','encarregado'),array($valor[3],$valor[4]),$valor[6],'tbservico','idservico',false);
+            parent::gravar(array('status','encarregado'),array($valor[3],$valor[4]),$valor[6],'tbservico','idservico',FALSE);
             parent::set_lastId($lastId);		# recupera o last id para o arquivo de log
         }
     }
@@ -74,8 +74,8 @@ class Doc extends Bd
     */
 
     public function excluir($idValor = NULL,$tabela = NULL,$idCampo = 'id'){
-        $erro = false;		// Flag de erro
-        $msgErro = null;	// Recipiente das mensagens de erro
+        $erro = FALSE;		// Flag de erro
+        $msgErro = NULL;	// Recipiente das mensagens de erro
 
         if ($this->tabela == 'tbregra')
         {
@@ -86,7 +86,7 @@ class Doc extends Bd
             $numRows = parent::count($select);
             if($numRows > 0)
             {
-                $erro = true;
+                $erro = TRUE;
                 $msgErro = 'Existem '.$numRows.' permissão(ões) cadastrada(s) para essa regra. A mesma não pode ser excluída!!';
             }
         }
@@ -97,7 +97,7 @@ class Doc extends Bd
             # Exibe o alerta
             $alert = new Alert($msgErro);
             $alert->show();
-            return 0; # False -> o false não funcionou então colocou 0
+            return 0; # False -> o FALSE não funcionou então colocou 0
         }
         else
         {

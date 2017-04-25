@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -55,7 +55,7 @@ if($acesso)
     $objeto->set_nome('Configurações do Sistema');
 
     # botão salvar
-    $objeto->set_botaoSalvarGrafico(false);
+    $objeto->set_botaoSalvarGrafico(FALSE);
 
     # botão de voltar da lista
     $objeto->set_voltarLista('administracao.php');
@@ -123,14 +123,14 @@ if($acesso)
                                 'tipo' => 'texto',
                                 'size' => 90,
                                 'title' => 'Nome da Variável.',
-                                'required' => true,
+                                'required' => TRUE,
                                 'col' => 12,
                                 'linha' => 1),					
                         array ( 'nome' => 'comentario',
                                 'label' => 'Comentário:',
                                 'tipo' => 'textarea',
                                 'size' => array(90,5),
-                                'required' => true,
+                                'required' => TRUE,
                                 'title' => 'Descrição resumida da utilidade da variável.',
                                 'col' => 12,
                                 'linha' => 2),
@@ -139,7 +139,7 @@ if($acesso)
                                 'tipo' => 'texto',
                                 'size' => 90,
                                 'title' => 'Valor da Variável.',
-                                'required' => true,
+                                'required' => TRUE,
                                 'col' => 12,
                                 'linha' => 3),	 	 	 	 	 	 
                     ));

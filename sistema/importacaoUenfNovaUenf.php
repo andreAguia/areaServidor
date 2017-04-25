@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -116,7 +116,7 @@ if($acesso){
 
         case"importa" :
             # Começa a medir o tempo
-            $time_start = microtime(true);
+            $time_start = microtime(TRUE);
             
             # Cria um painel
             $painel = new Callout();
@@ -154,10 +154,10 @@ if($acesso){
                     . "perfil,cpf,pis,dt_adm,dt_nasc,obs,dt_dem,"
                     . "matr_est,causa_dem,"
                     . "cargo,funcao "
-                    . "FROM fen001 where vinc <> 9 and cpf is not null "
+                    . "FROM fen001 where vinc <> 9 and cpf is not NULL "
                     . "ORDER BY dt_adm desc";
 
-            $conteudo = $uenf->select($select,true);
+            $conteudo = $uenf->select($select,TRUE);
             
             echo "<table class='tabelaPadrao'>";
             echo "<tr>";
@@ -651,7 +651,7 @@ if($acesso){
                     # regra para a situação e a causa de demissão (uma coisa depende da outra)
                     $motivoDemissao = $campo[39];   // Motivo da demissão - (causa_dem)
                     $situacao = $campo[3];          // Situação - (sit)
-                    $tipoAposentadoria = null;      // Tipo de Aposentadoria
+                    $tipoAposentadoria = NULL;      // Tipo de Aposentadoria
                     
                     # Situação
                     switch ($situacao){
@@ -663,15 +663,15 @@ if($acesso){
                         case 7:     // Cedido para outro órgão
                         case 34:    // Disposição para outro órgão
                         case 36:    // Disposição da Justiça Eleitoral  
-                            $motivoDemissao = null;
-                            $tipoAposentadoria = null;
+                            $motivoDemissao = NULL;
+                            $tipoAposentadoria = NULL;
                             $situacao = 1;
                             break;
                         
                         case 54:    // Falecimento
                             $situacao = 5;          // -- Falecido
                             $motivoDemissao = 2;    // -- Falecimento
-                            $tipoAposentadoria = null;
+                            $tipoAposentadoria = NULL;
                             break;
                         
                         case 3:     // Acidente de Trabalho        
@@ -690,12 +690,12 @@ if($acesso){
                                     case 60:
                                         $situacao = 5;          // -- Falecido
                                         $motivoDemissao = 2;    // -- Falecimento
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
                                     default:
                                         $situacao = 6;          // -- Fim de Cessão
                                         $motivoDemissao = 12;   // -- Fim de Cessão
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
                                 }
                             }else{
@@ -705,13 +705,13 @@ if($acesso){
                                             case 9:
                                                 $situacao = 4;          // -- Demitido
                                                 $motivoDemissao = 10;   // -- Demissão sem justa causa
-                                                $tipoAposentadoria = null;
+                                                $tipoAposentadoria = NULL;
                                                 break;
 
                                             case 53:                    // Pedido de Exoneração
                                                 $situacao = 3;          // -- Exonerado
                                                 $motivoDemissao = 1;    // -- Exonerado a pedido
-                                                $tipoAposentadoria = null;
+                                                $tipoAposentadoria = NULL;
                                                 break;                                
                                         }
                                         break;
@@ -719,52 +719,52 @@ if($acesso){
                                     case 1:                     // Duplicidade de Bolsa (não se aplica)
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 10;   // -- Demissão sem justa causa
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 2:                     // Não comparecimento ao setor (abandono de emprego)
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 11;   // -- Abandono de Emprego
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 4:                     // Término de Bolsa (aplca-se somente ao prof visitante)
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 8;    // -- Término do Contrato
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 10:                 // Demissão com justa causa
                                     case 20:    
                                         $situacao = 4;       // -- Demitido
                                         $motivoDemissao = 9; // -- Demissão com justa causa
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 11:                    // Demissão sem justa causa
                                     case 21:    
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 10;   // -- Demissão sem justa causa
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 13:                    // Término do contrato de trabalho
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 8;    // -- Término do contrato
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 30:                    // Transferência com ônus (??)
                                     case 31:                    // Transferência sem ônus (??)
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 13;   // -- Outros
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 40:                    // Mudança de regime (??) São 2 prof. visitantes
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 13;   // -- Outros
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     
@@ -791,13 +791,13 @@ if($acesso){
                                     case 73:                    // Aposentadoria por Invalidez - Acidente de Trabalho
                                         $situacao = 2;          // -- Aposentado (inativo) 
                                         $motivoDemissao = 5;    // -- Aposentadoria por Invalidez Acidente de Trabalho
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 74:                    // Aposentadoria por Invalidez - Doença Profissional
                                         $situacao = 2;          // -- Aposentado (inativo) 
                                         $motivoDemissao = 6;    // -- Aposentadoria por Invalidez Doença Profissional
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 76:                   // Não existe esse tipo de demissão (8 pessoas (3 - sit 38 e 5 sit 41)
@@ -817,19 +817,19 @@ if($acesso){
                                     case 75:                    // Exonerado a pedido
                                         $situacao = 3;          // -- Exonerado
                                         $motivoDemissao = 1;    // -- Exonerado a pedido
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break; 
 
                                     case 88:                    // Rescisão do contrato de trabalho
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 7;    // -- Rescisão de contrato à pedido
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                     case 90:                    // Outros
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 13;   // -- Outros
-                                        $tipoAposentadoria = null;
+                                        $tipoAposentadoria = NULL;
                                         break;
 
                                 }                            
@@ -841,7 +841,7 @@ if($acesso){
                     # Cargo e Função
                     $cargo = $campo[40];
                     $funcao = $campo[41];
-                    $NovoCargo = null;
+                    $NovoCargo = NULL;
                     
                     switch ($funcao){
                             case 0:
@@ -1185,7 +1185,7 @@ if($acesso){
             echo $numItensDescartados." registros descartados";
             
             # Pega o tempo final
-            $time_end = microtime(true);
+            $time_end = microtime(TRUE);
             
             # Calcula  e exibe o tempo
             $time = $time_end - $time_start;

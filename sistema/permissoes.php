@@ -6,7 +6,7 @@
  */
 
 ## Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -83,7 +83,7 @@ if($acesso)
     $objeto->set_orderChamador('?fase=listar&usuarioSelecionado='.$idUsuarioPesquisado);
 
     # botões
-    $objeto->set_botaoEditar(false);        # Não exibe o botão editar
+    $objeto->set_botaoEditar(FALSE);        # Não exibe o botão editar
 
     # Caminhos
     $objeto->set_linkEditar('?fase=editar&idUsuarioPesquisado='.$idUsuarioPesquisado);
@@ -116,10 +116,10 @@ if($acesso)
                                      ORDER BY regra";
     
     # Verifica a quantidade de registros
-    $conteudo = $servidor->select($selectCombo,true);
+    $conteudo = $servidor->select($selectCombo,TRUE);
     if(count($conteudo) == 0){
         # Retira o botão de incluir
-        $objeto->set_botaoIncluir(false);
+        $objeto->set_botaoIncluir(FALSE);
         
         # Informa o porquê
         $mensagem = "O botão de incluir sumiu! Porque? Esse usuário já possui todas as permissões.<br/>"
@@ -137,7 +137,7 @@ if($acesso)
                                 'tipo' => 'combo',
                                 'array' => $result2,
                                 'size' => 90,
-                                'autofocus' => true,
+                                'autofocus' => TRUE,
                                 'title' => 'Regra para esse grupo.',
                                 'linha' => 1,
                                 'col' => 6),

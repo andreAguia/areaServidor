@@ -68,8 +68,8 @@ class Importa
         }
 
         # pega os nomes das tabelas e joga em um array
-        $tabela = null; // array de tabelas
-        $campos = null; // array de campos
+        $tabela = NULL; // array de tabelas
+        $campos = NULL; // array de campos
 
         while ($row = mysql_fetch_row($result)) {
             $tabela[] = $row[0];

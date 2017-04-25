@@ -8,7 +8,7 @@
  */
 
 # Inicia as vari?eis que receber? as sessions
-$matricula = null;		  # Reservado para a matr?ula do servidor logado
+$matricula = NULL;		  # Reservado para a matr?ula do servidor logado
 
 # Configura?o
 include ("../sistema/_config.php");
@@ -57,9 +57,9 @@ if($acesso)
     $relatorio->set_align(array("center","left"));
     $relatorio->set_conteudo($result);
     $relatorio->set_numGrupo(0);
-    $relatorio->set_totalRegistro(false);
-    $relatorio->set_dataImpressao(false);
-    $relatorio->set_subTotal(false);
+    $relatorio->set_totalRegistro(FALSE);
+    $relatorio->set_dataImpressao(FALSE);
+    $relatorio->set_subTotal(FALSE);
     $relatorio->set_objetoAntesTitulo($box);
     $relatorio->show();
 
@@ -88,11 +88,11 @@ if($acesso)
     $relatorio->set_align(array("center","left"));
     $relatorio->set_conteudo($result);
     $relatorio->set_numGrupo(0);
-    $relatorio->set_cabecalhoRelatorio(false);
-    $relatorio->set_menuRelatorio(false);
-    $relatorio->set_subTotal(false);
-    $relatorio->set_totalRegistro(false);
-    $relatorio->set_log(false);
+    $relatorio->set_cabecalhoRelatorio(FALSE);
+    $relatorio->set_menuRelatorio(FALSE);
+    $relatorio->set_subTotal(FALSE);
+    $relatorio->set_totalRegistro(FALSE);
+    $relatorio->set_log(FALSE);
     $relatorio->show();
 
     $page->terminaPagina();

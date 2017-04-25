@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -90,7 +90,7 @@ if($acesso){
         # Inicia a Importação
         $select = "SELECT * FROM fen004 ORDER BY DT_INI";
 
-        $conteudo = $uenf->select($select,true);
+        $conteudo = $uenf->select($select,TRUE);
 
         echo "<table class='tabelaPadrao'>";
         echo "<tr>";

@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -55,7 +55,7 @@ if($acesso)
     $objeto->set_nome('Mensagem');
 
     # botão salvar
-    $objeto->set_botaoSalvarGrafico(false);
+    $objeto->set_botaoSalvarGrafico(FALSE);
 
     # botão de voltar da lista
     $objeto->set_voltarLista('administracao.php');
@@ -115,7 +115,7 @@ if($acesso)
     $objeto->set_campos(array( 
                         array ( 'nome' => 'mensagem',
                                 'label' => 'Mensagem:',
-                                'autofocus' => true,
+                                'autofocus' => TRUE,
                                 'tipo' => 'textarea',
                                 'size' => array(90,5),
                                 'title' => 'Mensagem a ser exibida.',

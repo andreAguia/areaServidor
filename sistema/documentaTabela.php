@@ -1,7 +1,7 @@
 <?php
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -71,7 +71,7 @@ if($acesso)
 
     $label = array("#","Nome","Chave","Extra","Descrição","Tipo","Tamanho","Padrão","Nulo");
     $width = array(5,15,5,5,25,15,5,5,5,5);
-    #$function = array("datetime_to_php",null,null,null,"get_nome");
+    #$function = array("datetime_to_php",NULL,NULL,NULL,"get_nome");
     $align = array("center","left","center","center","left");
 
     # Monta a tabela

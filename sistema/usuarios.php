@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -58,7 +58,7 @@ if($acesso)
     $objeto->set_nome('Usuários');	
 
     # botão salvar
-    $objeto->set_botaoSalvarGrafico(false);
+    $objeto->set_botaoSalvarGrafico(FALSE);
 
     # botão de voltar da lista
     $objeto->set_voltarLista('administracao.php');
@@ -114,9 +114,9 @@ if($acesso)
     #$objeto->set_width(array(5,4,10,5,15,10,15,11,5,5,5));
     $objeto->set_align(array("center","center","center","left","center","center","left"));
 
-    $objeto->set_classe(array(null,null,null,"pessoal",null,"pessoal","pessoal"));
-    $objeto->set_metodo(array(null,null,null,"get_nome",null,"get_lotacao","get_cargo"));
-    $objeto->set_funcao(array("statusUsuario",null,null,null,"datetime_to_php"));
+    $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,"pessoal","pessoal"));
+    $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,"get_lotacao","get_cargo"));
+    $objeto->set_funcao(array("statusUsuario",NULL,NULL,NULL,"datetime_to_php"));
     
     # Imagem Condicional 
     $imageSenhaPadrao = new Imagem(PASTA_FIGURAS.'exclamation.png','Usuário com senha padrão.');
@@ -149,7 +149,7 @@ if($acesso)
     
     # Bloquear usuário    
     $botao2 = new BotaoGrafico();
-    $botao2->set_title('Bloqueia o acesso desse servidor a área do servidor. (passa a senha para null)');
+    $botao2->set_title('Bloqueia o acesso desse servidor a área do servidor. (passa a senha para NULL)');
     $botao2->set_label('');
     $botao2->set_url('?fase=bloquear&idUsuarioBloqueado=');
     #$botao1->set_confirma('Você deseja realmente bloquear o acesso desse servidor a área do servidor?');
@@ -163,7 +163,7 @@ if($acesso)
     $botao3->set_image(PASTA_FIGURAS.'group_edit.png',20,20);
     
     # Coloca o objeto link na tabela			
-    #$objeto->set_link(array(null,null,null,null,null,null,null,$botao1,$botao2,$botao3));	
+    #$objeto->set_link(array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,$botao1,$botao2,$botao3));	
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -180,7 +180,7 @@ if($acesso)
                                 FROM tbservidor JOIN tbpessoa ON(tbservidor.idPessoa = tbPessoa.idPessoa)
                                 WHERE tbservidor.situacao = 1
                             ORDER BY tbpessoa.nome');
-    array_unshift($result, array(0,null)); # Adiciona o valor de nulo
+    array_unshift($result, array(0,NULL)); # Adiciona o valor de nulo
 
     # Campos para o formulario
     $objeto->set_campos(array(
@@ -189,9 +189,9 @@ if($acesso)
                'nome' => 'usuario',
                'label' => 'Usuário:',
                'tipo' => 'texto',
-               'autofocus' => true,
-               'required' => true,
-               'unique' => true,
+               'autofocus' => TRUE,
+               'required' => TRUE,
+               'unique' => TRUE,
                'size' => 15),
         array ('linha' => 1,
                'col' => 5, 
@@ -218,7 +218,7 @@ if($acesso)
     
     # Bloquear
     $botaoBloquear = new Button("Bloquear");
-    $botaoBloquear->set_title("Bloqueia o acesso desse servidor a área do servidor. (passa a senha para null)");
+    $botaoBloquear->set_title("Bloqueia o acesso desse servidor a área do servidor. (passa a senha para NULL)");
     $botaoBloquear->set_class('alert button');
     $botaoBloquear->set_url('?fase=bloquear&idUsuarioBloqueado='.$id);
     
@@ -254,7 +254,7 @@ if($acesso)
                             WHERE tbpermissao.idUsuario = '.$id.'
                          ORDER BY tbregra.nome';
 
-                $conteudo = $intra->select($select,true);
+                $conteudo = $intra->select($select,TRUE);
 
                 $tabela = new Tabela();
                 $tabela->set_conteudo($conteudo);
@@ -275,7 +275,7 @@ if($acesso)
                                 WHERE idUsuario = '.$id.'
                              ORDER BY grh.tblotacao.nome';
 
-                    $conteudo = $intra->select($select,true);
+                    $conteudo = $intra->select($select,TRUE);
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);

@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -53,8 +53,8 @@ switch ($fase)
             $controle = new Input('usuario','texto','Usuário:',1);
             $controle->set_size(20);
             $controle->set_linha(1);
-            $controle->set_required(true);
-            $controle->set_autofocus(true);       
+            $controle->set_required(TRUE);
+            $controle->set_autofocus(TRUE);       
             $controle->set_tabIndex(1);
             $controle->set_placeholder('usuário');
             $controle->set_title('O nome do usuário');
@@ -64,7 +64,7 @@ switch ($fase)
             $controle = new Input('senha','password','Senha:',1);
             $controle->set_size(20);
             $controle->set_linha(2);
-            $controle->set_required(true);
+            $controle->set_required(TRUE);
             $controle->set_tabIndex(2);
             $controle->set_title('A senha da intranet');
             $controle->set_placeholder('senha');
@@ -125,7 +125,7 @@ switch ($fase)
                 alert('Login Incorreto!');
                 
                 # Grava no log a atividade
-                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') inexistente ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') inexistente ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
                 
                 loadPage('login.php');
                 break;
@@ -135,7 +135,7 @@ switch ($fase)
                 alert('Login Incorreto!');
                 
                 # Grava no log a atividade
-                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') bloqueado (com senha nula) no servidor ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') bloqueado (com senha nula) no servidor ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
                 
                 loadPage('login.php');
                 break;
@@ -145,7 +145,7 @@ switch ($fase)
                 alert('Login Incorreto!');
                 
                 # Grava no log a atividade
-                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') e com senha errada. ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') e com senha errada. ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
                 
                 loadPage('login.php');
                 break;
@@ -158,7 +158,7 @@ switch ($fase)
                 $idServidor = $intra->get_idServidor($idUsuario);
                 
                 # Grava o último acesso
-                $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
+                $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',FALSE);
 
                 # Grava no log a atividade
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
@@ -217,7 +217,7 @@ switch ($fase)
                 $idServidor = $intra->get_idServidor($idUsuario);
                 
                 # Grava o último acesso
-                $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',false);
+                $intra->gravar('ultimoAcesso',date("Y-m-d H:i:s"),$idUsuario,'tbusuario','idUsuario',FALSE);
 
                 # Grava no log a atividade        
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login com senha padrão ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
@@ -230,7 +230,7 @@ switch ($fase)
                 alert('Login Incorreto!');
                 
                 # Grava no log a atividade
-                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') em Computador não autorizado ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',null,null,5);
+                $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') em Computador não autorizado ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
                 
                 loadPage('login.php');
                 break;

@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -84,7 +84,7 @@ if($acesso){
         # Inicia a Importação
         $select = "SELECT matr,dt,obs FROM `fen019` where dt > '1993-01-01 00:00:00' order by dt";
 
-        $conteudo = $uenf->select($select,true);
+        $conteudo = $uenf->select($select,TRUE);
 
         echo "<table class='tabelaPadrao'>";
         echo "<tr>";

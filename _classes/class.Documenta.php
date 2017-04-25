@@ -53,9 +53,9 @@ class Documenta
         $this->tipo = $tipo;
         $linhaComentarioClasse = NULL;  // Determina a linha do início do comentário da classe        
         $linhaComentarioMetodo = NULL;  // Determina a linha do início do comentário do método
-        $linhaMetodo = null;            // Determina a linha da declaração do método
+        $linhaMetodo = NULL;            // Determina a linha da declaração do método
         $numParMetodo = 0;              // Determina o número de parâmetros de um método
-        $metodoNome = null;             // Nome do método que está sendo exibido
+        $metodoNome = NULL;             // Nome do método que está sendo exibido
         $temTabelaAberta = FALSE;       // Flag que informa que existe uma tabela da lista de parâmetros aberta se a tag não for @param terá que fechá-la
         $temClasseAberta = FALSE;       // Informa se é de uma classe ou de um método a tag
         
@@ -113,7 +113,7 @@ class Documenta
                 if ((stristr($line, "@var")) AND ($this->numMetodo == 0)){
 
                     # inicia a variável que será guardada a descrição 
-                    $descricao = null;
+                    $descricao = NULL;
                     
                     $posicao = stripos($line,'@');
 
@@ -246,7 +246,7 @@ class Documenta
             # Parâmetros de um método
             if (stristr($line, "@param")){
 
-                $descParam = null;
+                $descParam = NULL;
 
                 # Pega a linha de parâmetros
                 $piecesParam = str_word_count($line,1,$caracteresAceitos);

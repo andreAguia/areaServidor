@@ -13,12 +13,12 @@ function exibeNomeTitle($idServidor){
  * 
  * @syntax exibeNomeTitle($idServidor);
  * 
- * @param $idServidor integer null id do servidor.
+ * @param $idServidor integer NULL id do servidor.
  */
     
     $pessoal = new Pessoal();
     $nomeServidor = $pessoal->get_nome($idServidor);
-    p($idServidor,null,null,$nomeServidor);
+    p($idServidor,NULL,NULL,$nomeServidor);
 }
 
 ##################################################################
@@ -31,7 +31,7 @@ function exibeNomeTitle($idServidor){
      * 
      * @syntax badgeTipoUsuario($tipoUsuario);
      * 
-     * @param $tipoUsuario string null o tipo de usuario
+     * @param $tipoUsuario string NULL o tipo de usuario
      */
 
         $intra = new Intra();

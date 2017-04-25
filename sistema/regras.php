@@ -6,7 +6,7 @@
  */
 
 # Servidor logado 
-$idUsuario = null;
+$idUsuario = NULL;
 
 # Configuração
 include ("_config.php");
@@ -53,7 +53,7 @@ if($acesso)
     $objeto->set_nome('Regras');
 
     # botão salvar
-    $objeto->set_botaoSalvarGrafico(false);
+    $objeto->set_botaoSalvarGrafico(FALSE);
 
     # botão de voltar da lista   
     $objeto->set_voltarLista('administracao.php');
@@ -84,8 +84,8 @@ if($acesso)
                                 FROM tbregra
                             ORDER BY '.$orderCampo.' '.$orderTipo);	
 
-    $objeto->set_botaoExcluir(true);
-    $objeto->set_botaoIncluir(true);
+    $objeto->set_botaoExcluir(TRUE);
+    $objeto->set_botaoIncluir(TRUE);
 
     # select do edita
     $objeto->set_selectEdita('SELECT nome,
@@ -99,8 +99,8 @@ if($acesso)
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');    
 
-    $objeto->set_classe(array(null,null,null,"Intra"));
-    $objeto->set_metodo(array(null,null,null,"get_numeroUsuariosPermissao")); 
+    $objeto->set_classe(array(NULL,NULL,NULL,"Intra"));
+    $objeto->set_metodo(array(NULL,NULL,NULL,"get_numeroUsuariosPermissao")); 
 
     # Botão de exibição dos servidores com permissão a essa regra
     $botao = new BotaoGrafico();
@@ -131,7 +131,7 @@ if($acesso)
                             'tipo' => 'texto',
                             'size' => 90,
                             'maxlength' => 45,
-                            'required' => true,
+                            'required' => TRUE,
                             'title' => 'Nome da Regra.',                            
                             'col' => 12,
                             'linha' => 1),     
@@ -139,7 +139,7 @@ if($acesso)
                             'label' => 'Descrição:',
                             'tipo' => 'textarea',
                             'size' => array(90,5),
-                            'required' => true,
+                            'required' => TRUE,
                             'title' => 'Descrição resumida da regra.',                            
                             'col' => 12,
                             'linha' => 2));
@@ -188,7 +188,7 @@ if($acesso)
                              FROM tbpermissao JOIN tbusuario ON(tbpermissao.idUsuario = tbusuario.idUsuario)
                             WHERE tbpermissao.idregra = '.$id.'
                          ORDER BY tbusuario.usuario';
-                $result = $intra->select($select,true);
+                $result = $intra->select($select,TRUE);
                 $tabela = new tabela();
                 $tabela->set_conteudo($result);
                 $tabela->set_label(array("Usuário","Nome","Cargo","Lotação"));
@@ -196,8 +196,8 @@ if($acesso)
                 $tabela->set_align(array("center"));
                 
                 #$tabela->set_funcao(array('dv'));
-                $tabela->set_classe(array(null,"Pessoal","Pessoal","Pessoal"));
-                $tabela->set_metodo(array(null,'get_nome','get_cargo','get_lotacao')); 
+                $tabela->set_classe(array(NULL,"Pessoal","Pessoal","Pessoal"));
+                $tabela->set_metodo(array(NULL,'get_nome','get_cargo','get_lotacao')); 
     
                 $tabela->set_excluir('?fase=excluirPermissao');
                 $tabela->set_idCampo('idPermissao');
