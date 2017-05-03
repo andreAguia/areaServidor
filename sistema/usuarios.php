@@ -86,9 +86,7 @@ if($acesso)
                                       ultimoAcesso,
                                       idServidor,
                                       idServidor,
-                                      idUsuario,
-                                      idUsuario,
-                                      idUsuario,
+                                      idServidor,
                                       idUsuario
                                  FROM tbusuario
                                 WHERE usuario LIKE "%'.$parametro.'%"
@@ -114,12 +112,12 @@ if($acesso)
 
     # Parametros da tabela
     #$objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
-    $objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo"));
+    $objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Email"));
     #$objeto->set_width(array(5,4,10,5,15,10,15,11,5,5,5));
-    $objeto->set_align(array("center","center","center","left","center","center","left"));
+    $objeto->set_align(array("center","center","center","left","center","center","left","left"));
 
-    $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,"pessoal","pessoal"));
-    $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,"get_lotacao","get_cargo"));
+    $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,"pessoal","pessoal","pessoal"));
+    $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,"get_lotacao","get_cargo","get_emailPrincipalServidor"));
     $objeto->set_funcao(array("statusUsuario",NULL,NULL,NULL,"datetime_to_php"));
     
     # Imagem Condicional 

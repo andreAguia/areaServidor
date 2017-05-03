@@ -61,7 +61,7 @@ if($acesso)
             $linkBotaoAut->set_accessKey('C');
 
             # Botão Fazer Backup Manual
-            $linkBotaoEditar = new Link("Backup Manual",'?fase=grh&manual=TRUE');
+            $linkBotaoEditar = new Link("Backup Manual",'?fase=aguarde1&manual=TRUE');
             $linkBotaoEditar->set_class('button');
             $linkBotaoEditar->set_title('Executa um backup manual agora');
             $linkBotaoEditar->set_accessKey('B');
@@ -219,6 +219,21 @@ if($acesso)
             $grid2->fechaColuna();
             $grid2->fechaGrid();
             break;
+            
+        case "aguarde1" :
+            br(10);
+            aguarde();
+            br();
+            
+            # Limita a tela
+            $grid1 = new Grid("center");
+            $grid1->abreColuna(5);
+                p("Efetuando backup do banco do GRH","center");
+            $grid1->fechaColuna();
+            $grid1->fechaGrid();
+            
+            loadPage('?fase=grh&manual=TRUE');
+            break;    
         
         case "grh":
             $db = new Backup('grh',$manual,$intra->get_usuario($idUsuario));
@@ -239,8 +254,28 @@ if($acesso)
             $atividade = "Efetuou o Backup Manual do Banco grh";
             $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
             
-            loadPage('?fase=areaservidor&manual='.$manual);
+            # Emite email se for manual
+            if($manual){
+                $db->emiteEmail();
+            }
+            
+            loadPage('?fase=aguarde2&manual='.$manual);
             break;
+            
+        case "aguarde2" :
+            br(10);
+            aguarde();
+            br();
+            
+            # Limita a tela
+            $grid1 = new Grid("center");
+            $grid1->abreColuna(5);
+                p("Efetuando backup do banco da Área do Servidor","center");
+            $grid1->fechaColuna();
+            $grid1->fechaGrid();
+            
+            loadPage('?fase=areaservidor&manual=TRUE');
+            break;        
             
         case "areaservidor":
             $db = new Backup('areaservidor',$manual,$intra->get_usuario($idUsuario));
@@ -261,9 +296,19 @@ if($acesso)
             $atividade = "Efetuou o Backup Manual do Banco areaservidor";
             $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
             
+            # Emite email se for manual
+            if($manual){
+                $db->emiteEmail();
+            }
+            
+            # Emite 
             loadPage('?');
             break;
         case "ver":
+            break;
+        
+        case "email":
+            
             break;
     }
     
