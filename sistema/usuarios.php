@@ -27,16 +27,20 @@ if($acesso)
     $fase = get('fase','listar');
 
     # pega o id (se tiver)
-    $id = soNumeros(get('id'));    
+    $id = soNumeros(get('id'));
+    $idPermissao = soNumeros(get('idPermissao')); 
     
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro')))					# Se o parametro n?o vier por post (for nulo)
+    if (is_null(post('parametro')))									# Se o parametro não vier por post (for nulo)
         $parametro = retiraAspas(get_session('sessionParametro'));	# passa o parametro da session para a variavel parametro retirando as aspas
     else
     { 
-        $parametro = post('parametro');                # Se vier por post, retira as aspas e passa para a variavel parametro
-        set_session('sessionParametro',$parametro);    # transfere para a session para poder recuperá-lo depois
+        $parametro = post('parametro');								# Se vier por post, retira as aspas e passa para a variavel parametro			
+        set_session('sessionParametro',$parametro);			 		# transfere para a session para poder recuperá-lo depois
     }
+    
+    # Pega o parametro de pesquisa (se tiver)
+    $parametroHistorico = post('historico');
 
     # Ordem da tabela
     $orderCampo = get('orderCampo');
@@ -236,14 +240,34 @@ if($acesso)
 
         case "editar" :
             $objeto->$fase($id);
-            br();
             
-            ### Lista Permissões
-            if(!is_null($id)){
-                $grid = new Grid();
-                $grid->abreColuna(6);
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+            $field = new Fieldset('Permissões');
+            $field->abre(); 
+            
+            # Exibe botão de inclusão de permissão
+            $linkBotao2 = new Link("Nova Permissão","?fase=incluirPermissao&id=".$id);
+            $linkBotao2->set_class('button');
+            $linkBotao2->set_title('Inclui uma Nova Permissão');
+            #$linkBotao2->set_accessKey('C');
 
-                titulo("Permissões");
+            # Cria um menu
+            $menu = new MenuBar("tiny button-group");
+            #$menu->add_link($linkBotao1,"left");
+            $menu->add_link($linkBotao2,"right");
+            $menu->show();
+            
+            if(!is_null($id)){
+                
+                if($intra->verificaPermissao($id,3)){
+                    $grid = new Grid();
+                    $grid->abreColuna(6);
+                }else{
+                    $grid = new Grid();
+                    $grid->abreColuna(12);
+                }
 
                 # select
                 $select = 'SELECT tbregra.idRegra,
@@ -258,15 +282,26 @@ if($acesso)
 
                 $tabela = new Tabela();
                 $tabela->set_conteudo($conteudo);
+                $tabela->set_titulo("Permissões Gerais");
                 $tabela->set_label(array("Num","Regra","Descrição"));
                 $tabela->set_align(array("center","left","left"));
-                $tabela->show();
+                
+                $tabela->set_excluir('?fase=excluirPermissao&id='.$id);
+                $tabela->set_idCampo('idPermissao');
+                $tabela->set_nomeGetId("idPermissao");
+                
+                if(count($conteudo) > 0){
+                    $tabela->show();
+                }else{
+                    callout('Parece que esse usuário não tem nenhuma permissão no sistema !!','secondary');
+                }
 
                 ### Lista de lotações do sistema de férias
 
                 # Verifica se tem permissão ao sistema de férias
                 if($intra->verificaPermissao($id,3)){
-                    titulo("Lotações do Sistema de Férias");
+                    $grid->fechaColuna();
+                    $grid->abreColuna(6);
 
                     # select
                     $select = 'SELECT idLotacao,
@@ -279,14 +314,192 @@ if($acesso)
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
+                    $tabela->set_titulo("Lotações do Sistema de Férias");
                     $tabela->set_label(array("Num","Regra","Descrição"));
                     $tabela->set_align(array("center","left","left"));
                     $tabela->show();
                 }
-            
+                
                 $grid->fechaColuna();
-                $grid->abreColuna(6);
+                $grid->fechaGrid();
+                
+                $field->fecha(); 
+                
+                #############################################
+                ### Histórico
+                    
+                $field = new Fieldset('Histórico');
+                $field->abre(); 
+                
+                # Pega os dados da combo
+                $parametroMulti = $intra->select('SELECT DISTINCT CONCAT(MONTH(data),"/",YEAR(data))
+                                                 FROM tblog
+                                                WHERE idusuario = '.$id.' ORDER BY YEAR(data) DESC,MONTH(data) DESC');
+                
+                $parametro = array();
+                
+                # Transforma $parametroMulti (array multi) em array simples
+                for ($i = 0; $i < count($parametroMulti); $i++){
+                    $parametro[$i] = $parametroMulti[$i][0];
+                }
+                
+                if(count($parametro) > 0){
+                    $grid = new Grid();
+                    $grid->abreColuna(3);
+                    
+                    # Controle do mês
+                    $form = new Form('?fase=editar&id='.$id);
+                    $form->set_class('formHistorico');
+                                
+                    $controle = new Input('historico','combo');
+                    $controle->set_size(30);
+                    $controle->set_title('Informe o mês do histórico');
+                    $controle->set_array($parametro);
+                    if(!is_null($parametroHistorico)){
+                        $controle->set_valor($parametroHistorico);
+                    }
+                    $controle->set_autofocus(TRUE);
+                    $controle->set_onChange('formHistorico.submit();');
+                    $controle->set_linha(1);
+                    $controle->set_col(12);
+                    $form->add_item($controle);
 
+                    $form->show();
+               
+                    if(is_null($parametroHistorico)){
+                        $parametroHistorico = $parametro[0];
+                    }
+                
+                    # Trata o parâmetro                
+                    $parametroTratado = explode("/", $parametroHistorico);
+                    $mes = $parametroTratado[0];
+                    $ano = $parametroTratado[1];
+
+                    # Browsers Preferidos
+                    $select = 'SELECT browser,
+                               count(*)
+                          FROM tblog
+                         WHERE idUsuario = '.$id.' 
+                           AND tipo = 0 
+                           AND YEAR(data) = '.$ano.'
+                           AND MONTH(data) = '.$mes.'      
+                      GROUP BY browser ORDER BY 2 desc';
+                    $conteudo = $intra->select($select,TRUE);
+
+                    $tabela = new Tabela();
+                    $tabela->set_conteudo($conteudo);
+                    $tabela->set_titulo("Browsers Preferidos");
+                    $tabela->set_label(array("Browser","Logins"));
+                    $tabela->set_align(array("center"));
+                    $tabela->show();
+
+                    # iPs 
+                    $select = 'SELECT ip,
+                               count(*)
+                          FROM tblog
+                         WHERE idUsuario = '.$id.'
+                           AND tipo = 0                         
+                           AND YEAR(data) = '.$ano.'
+                           AND MONTH(data) = '.$mes.'      
+                      GROUP BY ip ORDER BY 2 desc';
+
+                    $conteudo = $intra->select($select,TRUE);
+
+                    $tabela = new Tabela();
+                    $tabela->set_conteudo($conteudo);
+                    $tabela->set_titulo("IPs Acessados");
+                    $tabela->set_label(array("ip","Logins"));
+                    $tabela->set_align(array("center"));
+                    $tabela->show();
+
+                    $grid->fechaColuna();
+                    $grid->abreColuna(9);
+
+                    # select
+                    $select = 'SELECT tipo,
+                               data,
+                               ip,
+                               tabela,
+                               idValor,
+                               idServidor,
+                               atividade,                                      
+                               idlog
+                          FROM tblog
+                         WHERE idUsuario = '.$id.'   
+                           AND YEAR(data) = '.$ano.'
+                           AND MONTH(data) = '.$mes;
+
+                    $conteudo = $intra->select($select,TRUE);
+
+                    $tabela = new Tabela();
+                    $tabela->set_conteudo($conteudo);
+                    $tabela->set_titulo("Histórico Mensal Detalhado");
+                    $tabela->set_width(array(5,20,10,10,5,5,45));
+                    $tabela->set_label(array("","Data","IP","Tabela","Id","IdServidor","Atividade"));
+                    $tabela->set_align(array("center","center","center","center","center","center","left"));
+                    $tabela->set_funcao(array(NULL,"datetime_to_php",NULL,NULL,NULL,"exibeNomeTitle"));
+
+                    $tabela->set_formatacaoCondicional(array( array('coluna' => 0,
+                                                        'valor' => 0,
+                                                        'operador' => '=',
+                                                        'id' => 'logLogin'),                                              
+                                                  array('coluna' => 0,
+                                                        'valor' => 3,
+                                                        'operador' => '=',
+                                                        'id' => 'logExclusao'),
+                                                  array('coluna' => 0,
+                                                        'valor' => 5,
+                                                        'operador' => '=',
+                                                        'id' => 'logLoginIncorreto')                                              
+                                                        ));
+
+                    # Imagem Condicional
+                    $imagemLogin = new Imagem(PASTA_FIGURAS.'login.png','Usuário efetuou o login',15,15);
+                    $imagemInclusao = new Imagem(PASTA_FIGURAS.'logInclusao.png','Inclusão de Registro',15,15);
+                    $imagemAlterar = new Imagem(PASTA_FIGURAS.'logAlterar.png','Alteração de Registro',15,15);
+                    $imagemExclusao = new Imagem(PASTA_FIGURAS.'logExclusao.png','Exclusão de Registro',15,15);
+                    $imagemRelatorio = new Imagem(PASTA_FIGURAS.'logRelatorio.png','Visualizou Relatório',15,15);
+                    $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS.'loginIncorreto.png','Login Incorreto',15,15);
+                    $imagemBackup = new Imagem(PASTA_FIGURAS.'backup2.png','Backup',15,15);
+
+                    $tabela->set_imagemCondicional(array(array('coluna' => 0,
+                                                               'valor' => 0,
+                                                               'operador' => '=',
+                                                               'imagem' => $imagemLogin),
+                                                         array('coluna' => 0,
+                                                               'valor' => 1,
+                                                               'operador' => '=',
+                                                               'imagem' => $imagemInclusao),
+                                                         array('coluna' => 0,
+                                                               'valor' => 2,
+                                                               'operador' => '=',
+                                                               'imagem' => $imagemAlterar),
+                                                         array('coluna' => 0,
+                                                               'valor' => 3,
+                                                               'operador' => '=',
+                                                               'imagem' => $imagemExclusao),
+                                                         array('coluna' => 0,
+                                                               'valor' => 4,
+                                                               'operador' => '=',
+                                                               'imagem' => $imagemRelatorio),
+                                                         array('coluna' => 0,
+                                                               'valor' => 5,
+                                                               'operador' => '=',
+                                                               'imagem' => $imagemLoginIncorreto),
+                                                         array('coluna' => 0,
+                                                               'valor' => 6,
+                                                               'operador' => '=',
+                                                               'imagem' => $imagemBackup)
+                                                        ));
+                    $tabela->show();
+                }else{
+                    callout('Parece que esse usuário nunca logou no sistema !!','secondary');
+                }
+                $grid->fechaColuna();
+                $grid->fechaGrid();
+                
+                $field ->fecha();
+                
                 $grid->fechaColuna();
                 $grid->fechaGrid();
             }
@@ -341,7 +554,79 @@ if($acesso)
 
             break;
 
-        ###################################################################	
+         ##################################################################	
+
+        case "excluirPermissao" :
+            # Pega os dados caso seja tbpermissao
+            $permissao = $intra->get_permissao($idPermissao);
+            $atividade = 'Excluiu a permissao de: '.$permissao[1].' da matrícula '.$permissao[0].' ('.$pessoal->get_nome($permissao[0]).')';
+            
+            # Conecta com o banco de dados
+            $objeto = new Intra();
+            $objeto->set_tabela('tbpermissao');	# a tabela
+            $objeto->set_idCampo('idPermissao');	# o nome do campo id
+            $objeto->excluir($idPermissao);			# executa a exclusão
+
+            # Grava no log a atividade
+            $Objetolog = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $Objetolog->registraLog($matricula,$data,$atividade,'tbpermissao',$idPermissao);	
+            
+            loadPage ('?fase=editar&id='.$id);
+            break;
+
+        ##################################################################	
+
+        case "incluirPermissao" :
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+            botaoVoltar("?fase=editar&id=".$id);
+            
+            # select
+            $select = 'SELECT idRegra,
+                              nome,
+                              descricao,
+                              idRegra
+                         FROM tbregra
+                         WHERE idRegra <> 1
+                     ORDER BY nome';
+
+            $conteudo = $intra->select($select,TRUE);
+
+            $tabela = new Tabela();
+            $tabela->set_conteudo($conteudo);
+            $tabela->set_titulo("Incluir Permissões");
+            $tabela->set_label(array("Num","Regra","Descrição","Incluir"));
+            $tabela->set_align(array("center","left","left"));
+
+            #$tabela->set_excluir('?fase=gravarPermissao&id='.$id);
+            $tabela->set_idCampo('idRegra');
+            $tabela->set_nomeGetId("idRegra");
+            
+            # Botão de inclusao
+            $botao = new BotaoGrafico();
+            $botao->set_label('');
+            $botao->set_title('Servidores com permissão a essa regra');
+            $botao->set_onClick("abreDivId('divPermissao'); ajaxLoadPage('?fase=servidoresPermissao&id=','divPermissao',");       
+            $botao->set_image(PASTA_FIGURAS.'adicionar.png',20,20);
+
+
+            # Coloca o objeto link na tabela			
+            $tabela->set_link(array("","","",$botao));
+
+
+            if(count($conteudo) > 0){
+                $tabela->show();
+            }else{
+                callout('Parece que esse usuário não tem nenhuma permissão no sistema !!','secondary');
+            }
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            break;
+
+        ##################################################################		
     }									 	 		
 
     $page->terminaPagina();

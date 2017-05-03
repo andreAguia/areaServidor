@@ -118,7 +118,7 @@ if($acesso)
     $objeto->set_label(array("","Usuário","Data","IP","Tabela","Id","IdServidor","Atividade"));
     $objeto->set_width(array(5,8,13,7,10,5,5,38));		
     $objeto->set_align(array("center","center","center","center","center","center","center","left"));
-    $objeto->set_funcao(array (NULL,NULL,"datetime_to_php",NULL,NULL,NULL,"exibeNomeTitle"));
+    $objeto->set_funcao(array(NULL,NULL,"datetime_to_php",NULL,NULL,NULL,"exibeNomeTitle"));
     $objeto->set_classe(array(NULL,"intra"));
     $objeto->set_metodo(array(NULL,"get_usuario"));
     

@@ -18,7 +18,8 @@ function exibeNomeTitle($idServidor){
     
     $pessoal = new Pessoal();
     $nomeServidor = $pessoal->get_nome($idServidor);
-    p($idServidor,NULL,NULL,$nomeServidor);
+    echo "<abbr title='$nomeServidor'>$idServidor</abbr>";
+    #p($idServidor,NULL,NULL,$nomeServidor);
 }
 
 ##################################################################
