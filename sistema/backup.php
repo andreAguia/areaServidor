@@ -304,12 +304,6 @@ if($acesso)
             # Emite 
             loadPage('?');
             break;
-        case "ver":
-            break;
-        
-        case "email":
-            
-            break;
     }
     
     $page->terminaPagina();

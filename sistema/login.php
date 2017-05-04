@@ -128,66 +128,31 @@ switch ($fase)
                 $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') inexistente ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
                 
                 # Envia um email informando
-                $mail = new PHPMailer();    // Inicia a classe PHPMailer
-                
-                # Servidor de email
-                $mail->IsSMTP();                        // Define que a mensagem será SMTP
-                $mail->SMTPAuth = true;                 // Usa autenticação SMTP? (opcional)
-                $mail->SMTPSecure = 'ssl';              // SSL REQUERIDO pelo GMail
-                $mail->Host = 'smtp.gmail.com';         // SMTP utilizado
-                $mail->Port = 465;                      // A porta 587 deverá estar aberta em seu servidor
-                $mail->Username = 'alataguia@gmail.com';// Usuário do servidor SMTP
-                $mail->Password = '281298';             // Senha do servidor SMTP
-                
-                # Remetente
-                $mail->From = "alataguia@gmail.com"; // Seu e-mail
-                $mail->FromName = "Sistema de Pessoal"; // Seu nome
-                
-                # Destinatários
-                $mail->AddAddress('alataguia@gmail.com', 'Administrador do Sistema');
-                //$mail->AddAddress('ciclano@site.net');
-                //$mail->AddCC('ciclano@site.net', 'Ciclano'); // Copia
-                //$mail->AddBCC('fulano@dominio.com.br', 'Fulano da Silva'); // Cópia Oculta
-                
-                # Mensagem
-                $mensagem = date("d-m-Y H:i:s");
-                $mensagem .= "<br/>";
-                $mensagem .= "Tentativa de Login com usuário ($usuario) inexistente.";
-                $mensagem .= "<br/>";
-                $mensagem .= str_repeat("-", 80)."<br/>";
-                $mensagem .= "Porque estou recebendo esste email?";
-                $mensagem .= "<br/><br/>";
-                $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
-                $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
-                $mensagem .= str_repeat("-", 80)."<br/>";
-                $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
-                $mensagem .= "<br/>";
-                $mensagem .= str_repeat("-", 80)."<br/>";
-                $mensagem .= "Não responda esse email.";
-                $mail->IsHTML(true); // Define que o e-mail será enviado como HTML
-                //$mail->CharSet = 'iso-8859-1'; // Charset da mensagem (opcional)
-                $mail->Subject  = "Alerta de Acesso"; // Assunto da mensagem
-                $mail->Body = $mensagem;
-                $mail->AltBody = "Este é o corpo da mensagem de teste, em Texto Plano! \r\n :)";
-                
-                # Anexo
-                //$mail->AddAttachment("c:/temp/documento.pdf", "novo_nome.pdf");  // Insere um anexo
-                
-                # Envia
-                $enviado = $mail->Send();
-                
-                # Limpa os destinatários e os anexos
-                $mail->ClearAllRecipients();
-                $mail->ClearAttachments();
-                
-                # Exibe uma mensagem de resultado
-                #if ($enviado) {
-                #     echo "E-mail enviado com sucesso!";
-                #}else{
-                #    echo "Não foi possível enviar o e-mail.";
-                #    echo "<b>Informações do erro:</b> " . $mail->ErrorInfo;
-                #}
-                
+                if($intra->get_variavel("emiteEmailAlerta")){
+                    
+                    $assunto = "Alerta de Acesso ao Sistema de Pessoal";
+                    
+                    $mensagem = date("d-m-Y H:i:s");
+                    $mensagem .= "<br/>";
+                    $mensagem .= "Tentativa de Login com usuário ($usuario) inexistente.";
+                    $mensagem .= "<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Porque estou recebendo esste email?";
+                    $mensagem .= "<br/><br/>";
+                    $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
+                    $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
+                    $mensagem .= "<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Não responda esse email.";
+                    
+                    $mail = new EnviaEmail($assunto, $mensagem);
+                    $mail->set_para("alat@uenf.br");
+                    $mail->set_deNome("Sistema de Pessoa - Alerta");
+                    $mail->envia();
+                }
+                    
                 loadPage('login.php');
                 break;
             
@@ -199,65 +164,30 @@ switch ($fase)
                 $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') bloqueado (com senha nula) no servidor ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
                 
                 # Envia um email informando
-                $mail = new PHPMailer();    // Inicia a classe PHPMailer
-                
-                # Servidor de email
-                $mail->IsSMTP();                        // Define que a mensagem será SMTP
-                $mail->SMTPAuth = true;                 // Usa autenticação SMTP? (opcional)
-                $mail->SMTPSecure = 'ssl';              // SSL REQUERIDO pelo GMail
-                $mail->Host = 'smtp.gmail.com';         // SMTP utilizado
-                $mail->Port = 465;                      // A porta 587 deverá estar aberta em seu servidor
-                $mail->Username = 'alataguia@gmail.com';// Usuário do servidor SMTP
-                $mail->Password = '281298';             // Senha do servidor SMTP
-                
-                # Remetente
-                $mail->From = "alataguia@gmail.com"; // Seu e-mail
-                $mail->FromName = "Sistema de Pessoal"; // Seu nome
-                
-                # Destinatários
-                $mail->AddAddress('alataguia@gmail.com', 'Administrador do Sistema');
-                //$mail->AddAddress('ciclano@site.net');
-                //$mail->AddCC('ciclano@site.net', 'Ciclano'); // Copia
-                //$mail->AddBCC('fulano@dominio.com.br', 'Fulano da Silva'); // Cópia Oculta
-                
-                # Mensagem
-                $mensagem = date("d-m-Y H:i:s");
-                $mensagem .= "<br/>";
-                $mensagem .= "Tentativa de Login com usuário ($usuario) bloqueado (com senha nula) no servidor.";
-                $mensagem .= "<br/>";
-                $mensagem .= str_repeat("-", 80)."<br/>";
-                $mensagem .= "Porque estou recebendo esste email?";
-                $mensagem .= "<br/><br/>";
-                $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
-                $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
-                $mensagem .= str_repeat("-", 80)."<br/>";
-                $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
-                $mensagem .= "<br/>";
-                $mensagem .= str_repeat("-", 80)."<br/>";
-                $mensagem .= "Não responda esse email.";
-                $mail->IsHTML(true); // Define que o e-mail será enviado como HTML
-                //$mail->CharSet = 'iso-8859-1'; // Charset da mensagem (opcional)
-                $mail->Subject  = "Alerta de Acesso"; // Assunto da mensagem
-                $mail->Body = $mensagem;
-                $mail->AltBody = "Este é o corpo da mensagem de teste, em Texto Plano! \r\n :)";
-                
-                # Anexo
-                //$mail->AddAttachment("c:/temp/documento.pdf", "novo_nome.pdf");  // Insere um anexo
-                
-                # Envia
-                $enviado = $mail->Send();
-                
-                # Limpa os destinatários e os anexos
-                $mail->ClearAllRecipients();
-                $mail->ClearAttachments();
-                
-                # Exibe uma mensagem de resultado
-                #if ($enviado) {
-                #     echo "E-mail enviado com sucesso!";
-                #}else{
-                #    echo "Não foi possível enviar o e-mail.";
-                #    echo "<b>Informações do erro:</b> " . $mail->ErrorInfo;
-                #}
+                if($intra->get_variavel("emiteEmailAlerta")){
+                    
+                    $assunto = "Alerta de Acesso ao Sistema de Pessoal";
+                    
+                    $mensagem = date("d-m-Y H:i:s");
+                    $mensagem .= "<br/>";
+                    $mensagem .= "Tentativa de Login com usuário ($usuario) bloqueado (com senha nula) no servidor.";
+                    $mensagem .= "<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Porque estou recebendo esste email?";
+                    $mensagem .= "<br/><br/>";
+                    $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
+                    $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
+                    $mensagem .= "<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Não responda esse email.";
+                    
+                    $mail = new EnviaEmail($assunto, $mensagem);
+                    $mail->set_para("alat@uenf.br");
+                    $mail->set_deNome("Sistema de Pessoa - Alerta");
+                    $mail->envia();
+                }
                 
                 loadPage('login.php');
                 break;
@@ -270,65 +200,30 @@ switch ($fase)
                 $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') e com senha errada. ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
                 
                 # Envia um email informando
-                $mail = new PHPMailer();    // Inicia a classe PHPMailer
-                
-                # Servidor de email
-                $mail->IsSMTP();                        // Define que a mensagem será SMTP
-                $mail->SMTPAuth = true;                 // Usa autenticação SMTP? (opcional)
-                $mail->SMTPSecure = 'ssl';              // SSL REQUERIDO pelo GMail
-                $mail->Host = 'smtp.gmail.com';         // SMTP utilizado
-                $mail->Port = 465;                      // A porta 587 deverá estar aberta em seu servidor
-                $mail->Username = 'alataguia@gmail.com';// Usuário do servidor SMTP
-                $mail->Password = '281298';             // Senha do servidor SMTP
-                
-                # Remetente
-                $mail->From = "alataguia@gmail.com"; // Seu e-mail
-                $mail->FromName = "Sistema de Pessoal"; // Seu nome
-                
-                # Destinatários
-                $mail->AddAddress('alataguia@gmail.com', 'Administrador do Sistema');
-                //$mail->AddAddress('ciclano@site.net');
-                //$mail->AddCC('ciclano@site.net', 'Ciclano'); // Copia
-                //$mail->AddBCC('fulano@dominio.com.br', 'Fulano da Silva'); // Cópia Oculta
-                
-                # Mensagem
-                $mensagem = date("d-m-Y H:i:s");
-                $mensagem .= "<br/>";
-                $mensagem .="Tentativa de Login com usuário ($usuario) e com senha errada.";
-                $mensagem .= "<br/>";
-                $mensagem .= str_repeat("-", 80)."<br/>";
-                $mensagem .= "Porque estou recebendo esste email?";
-                $mensagem .= "<br/><br/>";
-                $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
-                $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
-                $mensagem .= str_repeat("-", 80)."<br/>";
-                $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
-                $mensagem .= "<br/>";
-                $mensagem .= str_repeat("-", 80)."<br/>";
-                $mensagem .= "Não responda esse email.";
-                $mail->IsHTML(true); // Define que o e-mail será enviado como HTML
-                //$mail->CharSet = 'iso-8859-1'; // Charset da mensagem (opcional)
-                $mail->Subject  = "Alerta de Acesso"; // Assunto da mensagem
-                $mail->Body = $mensagem;
-                $mail->AltBody = "Este é o corpo da mensagem de teste, em Texto Plano! \r\n :)";
-                
-                # Anexo
-                //$mail->AddAttachment("c:/temp/documento.pdf", "novo_nome.pdf");  // Insere um anexo
-                
-                # Envia
-                $enviado = $mail->Send();
-                
-                # Limpa os destinatários e os anexos
-                $mail->ClearAllRecipients();
-                $mail->ClearAttachments();
-                
-                # Exibe uma mensagem de resultado
-                #if ($enviado) {
-                #     echo "E-mail enviado com sucesso!";
-                #}else{
-                #    echo "Não foi possível enviar o e-mail.";
-                #    echo "<b>Informações do erro:</b> " . $mail->ErrorInfo;
-                #}
+                if($intra->get_variavel("emiteEmailAlerta")){
+                    
+                    $assunto = "Alerta de Acesso ao Sistema de Pessoal";
+                    
+                    $mensagem = date("d-m-Y H:i:s");
+                    $mensagem .= "<br/>";
+                    $mensagem .="Tentativa de Login com usuário ($usuario) e com senha errada.";
+                    $mensagem .= "<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Porque estou recebendo esste email?";
+                    $mensagem .= "<br/><br/>";
+                    $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
+                    $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
+                    $mensagem .= "<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Não responda esse email.";
+                    
+                    $mail = new EnviaEmail($assunto, $mensagem);
+                    $mail->set_para("alat@uenf.br");
+                    $mail->set_deNome("Sistema de Pessoa - Alerta");
+                    $mail->envia();
+                }
                 
                 loadPage('login.php');
                 break;
@@ -347,38 +242,40 @@ switch ($fase)
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
 
                 # Faz backup automático (1 por dia ao menos)
-                # Abre o diretório
-                $pasta = "../$pastaBackup/".date("Y.m.d");
-                
-                if(!file_exists($pasta)){
-                    # Grh
-                    $db = new Backup('grh',FALSE);
-                    $backup = $db->backup();
+                if($intra->get_variavel("backupAutomatico")){
+                    # Abre o diretório
+                    $pasta = "../$pastaBackup/".date("Y.m.d");
 
-                    if(!$backup['error']){
-                        echo nl2br($backup['msg']);
-                    } else {
-                        echo 'An error has ocurred.';
-                    }
-                    
-                    # Escreve o log
-                    $data = date("Y-m-d H:i:s");
-                    $atividade = "Login disparou o backup automático do banco grh";
-                    $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
-                    
-                    # Areaservidor
-                    $db = new Backup('areaservidor',FALSE);
-                    $backup = $db->backup();
+                    if(!file_exists($pasta)){
+                        # Grh
+                        $db = new Backup('grh',FALSE);
+                        $backup = $db->backup();
 
-                    if(!$backup['error']){
-                    } else {
-                        echo 'An error has ocurred.';
+                        if(!$backup['error']){
+                            echo nl2br($backup['msg']);
+                        } else {
+                            echo 'An error has ocurred.';
+                        }
+
+                        # Escreve o log
+                        $data = date("Y-m-d H:i:s");
+                        $atividade = "Login disparou o backup automático do banco grh";
+                        $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
+
+                        # Areaservidor
+                        $db = new Backup('areaservidor',FALSE);
+                        $backup = $db->backup();
+
+                        if(!$backup['error']){
+                        } else {
+                            echo 'An error has ocurred.';
+                        }
+
+                        # Escreve o log
+                        $data = date("Y-m-d H:i:s");
+                        $atividade = "Login disparou o backup automático do banco areaservidor";
+                        $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
                     }
-                    
-                    # Escreve o log
-                    $data = date("Y-m-d H:i:s");
-                    $atividade = "Login disparou o backup automático do banco areaservidor";
-                    $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
                 }
                                 
                 # Verifica se o servidor está aniversariando hoje
@@ -414,6 +311,32 @@ switch ($fase)
                 
                 # Grava no log a atividade
                 $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') em Computador não autorizado ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
+                
+                # Envia um email informando
+                if($intra->get_variavel("emiteEmailAlerta")){
+                    
+                    $assunto = "Alerta de Acesso ao Sistema de Pessoal";
+                    
+                    $mensagem = date("d-m-Y H:i:s");
+                    $mensagem .= "<br/>";
+                    $mensagem .="Tentativa de Login com usuário ($usuario) em computador não autorizado.";
+                    $mensagem .= "<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Porque estou recebendo esste email?";
+                    $mensagem .= "<br/><br/>";
+                    $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
+                    $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
+                    $mensagem .= "<br/>";
+                    $mensagem .= str_repeat("-", 80)."<br/>";
+                    $mensagem .= "Não responda esse email.";
+                    
+                    $mail = new EnviaEmail($assunto, $mensagem);
+                    $mail->set_para("alat@uenf.br");
+                    $mail->set_deNome("Sistema de Pessoa - Alerta");
+                    $mail->envia();
+                }
                 
                 loadPage('login.php');
                 break;
