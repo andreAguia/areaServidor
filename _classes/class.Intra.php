@@ -535,6 +535,25 @@ class Intra extends Bd
     }
 
     ###########################################################
+
+    /**
+    * Método get_regraNome
+    * 
+    * Retorna o nome da regra
+    * 
+    * @param	integer	$idRegra	-> o id da regra
+    */
+
+    public function get_regraNome($idRegra)
+    {
+        $select = 'SELECT tbregra.nome
+                     FROM tbregra
+                    WHERE idRegra = '.$idRegra;
+        $row = parent::select($select,FALSE);
+        return $row[0];
+    }
+
+    ###########################################################
   
 	
 	public function get_nomeUsuario($idUsuario){ 
@@ -542,6 +561,25 @@ class Intra extends Bd
             $select = 'SELECT grh.tbpessoa.nome
                          FROM tbusuario LEFT JOIN grh.tbservidor USING (idServidor)
                                         LEFT JOIN grh.tbpessoa USING (idPessoa)
+                         WHERE idusuario = '.$idUsuario;
+            
+            # verifica se o id foi informado
+            if(is_null($idUsuario))
+                return 0;
+            else
+            {
+                $result = parent::select($select,FALSE);
+                return $result[0]; 
+            }
+        }
+			
+	###########################################################
+  
+	
+	public function get_nickUsuario($idUsuario){ 
+            
+            $select = 'SELECT usuario
+                         FROM tbusuario
                          WHERE idusuario = '.$idUsuario;
             
             # verifica se o id foi informado
