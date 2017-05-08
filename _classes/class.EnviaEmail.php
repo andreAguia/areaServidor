@@ -9,10 +9,10 @@
 class EnviaEmail
 {   
     # Do email institucional
-    #private $nomeUsuario = 'sistemagrh@uenf.br'; // Usuário do servidor SMTP
-    #private $senha = '';                         // Senha do servidor SMTP
-    private $nomeUsuario = 'alataguia@gmail.com'; // Usuário do servidor SMTP
-    private $senha = '281298';                         // Senha do servidor SMTP
+    #private $nomeUsuario = 'sistemagrh@uenf.br';   // Usuário do servidor SMTP
+    #private $senha = '';                           // Senha do servidor SMTP
+    private $nomeUsuario = '';                      // Usuário do servidor SMTP
+    private $senha = '';                            // Senha do servidor SMTP
     
     # Do remetente
     private $de = "alataguia@gmail.com";     // Email do sistema 
