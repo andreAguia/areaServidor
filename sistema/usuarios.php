@@ -63,10 +63,7 @@ if($acesso)
     $objeto->set_rotinaExtraEditarParametro($intra->get_idServidor($id)); 
 
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome('Usuários');	
-
-    # botão salvar
-    $objeto->set_botaoSalvarGrafico(FALSE);
+    $objeto->set_nome('Usuários');
 
     # botão de voltar da lista
     $objeto->set_voltarLista('administracao.php');
@@ -320,7 +317,6 @@ if($acesso)
                 if(count($conteudo) > 0){
                     $tabela->show();
                 }
-            
 
                 ### Lista de lotações do sistema de férias
 

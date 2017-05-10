@@ -53,7 +53,7 @@ class Intra extends Bd
     /**
     * Método Gravar
     */
-    public function gravar($campos = NULL,$valor = NULL,$idValor = NULL,$tabela = NULL,$idCampo = NULL,$alerta = TRUE){
+    public function gravar($campos = NULL,$valor = NULL,$idValor = NULL,$tabela = NULL,$idCampo = NULL,$alerta = FALSE){
         
         if(is_null($tabela))
                 $tabela = $this->tabela;

@@ -52,9 +52,6 @@ if($acesso)
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
     $objeto->set_nome('Regras');
 
-    # botão salvar
-    $objeto->set_botaoSalvarGrafico(FALSE);
-
     # botão de voltar da lista   
     $objeto->set_voltarLista('administracao.php');
 
