@@ -15,7 +15,7 @@ class EnviaEmail
     private $senha = 'syncmaster940bplus';          // Senha do servidor SMTP
     
     # Do remetente
-    private $de = "sistemagrh@uenf";                // Email do sistema 
+    private $de = "sistemagrh@uenf.br";                // Email do sistema 
     private $deNome = "Sistema de Pessoal";         // Nome
     
     # Do destinatário
