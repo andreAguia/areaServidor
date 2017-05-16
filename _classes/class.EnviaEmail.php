@@ -173,11 +173,8 @@ class EnviaEmail
         $mail->ClearAttachments();
 
         # Exibe uma mensagem de resultado
-        if ($enviado) {
-             echo "E-mail enviado com sucesso!";
-        }else{
-            echo "Não foi possível enviar o e-mail.";
-            echo "<b>Informações do erro:</b> " . $mail->ErrorInfo;
+        if (!$enviado) {
+            alert("Não foi possível enviar o e-mail. $mail->ErrorInfo");
         }
     }
 }
