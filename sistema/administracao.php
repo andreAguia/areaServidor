@@ -272,7 +272,15 @@ if($acesso)
             $fieldset = new Fieldset('Importação');
             $fieldset->abre();
 
-            $menu = new MenuGrafico(3);
+            $menu = new MenuGrafico(4);
+            
+            # Férias
+            $botao = new BotaoGrafico();
+            $botao->set_label('Férias');
+            $botao->set_url('importacaoFerias.php');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Importação da Tabela de Férias do SigRH');
+            $menu->add_item($botao);
 
             # FEN001
             $botao = new BotaoGrafico();
