@@ -55,7 +55,7 @@ if($acesso)
             $linkBotaoAut->set_accessKey('C');
 
             # Botão Fazer Backup Manual
-            $linkBotaoEditar = new Link("Backup Manual",'?fase=aguarde&manual=TRUE');
+            $linkBotaoEditar = new Link("Backup Manual",'?fase=aguarde');
             $linkBotaoEditar->set_class('button');
             $linkBotaoEditar->set_title('Executa um backup manual agora');
             $linkBotaoEditar->set_accessKey('B');
@@ -121,10 +121,9 @@ if($acesso)
                     $banco = $partesArquivo[6];
                     
                     $extensao = $partesArquivo[7];
-                    $arquivoRelatorio = substr($arquivo,0, -3)."sql";
 
-                    if($extensao == 'sql'){
-                        $dadosArquivo[] = array($dia,$hora,$tipo,$banco,$arquivoRelatorio);
+                    if($extensao == 'zip'){
+                        $dadosArquivo[] = array($dia,$hora,$tipo,$banco);
                     }
                 }
             }
@@ -140,7 +139,7 @@ if($acesso)
 
             $tabela->set_conteudo($dadosArquivo);
             $tabela->set_label($label);
-             $tabela->set_align($align);
+            $tabela->set_align($align);
             $tabela->set_titulo($titulo);
             
             if(count($dadosArquivo) == 0){
@@ -168,20 +167,42 @@ if($acesso)
             $grid1->fechaColuna();
             $grid1->fechaGrid();
             
-            loadPage('?fase=backup&manual=TRUE');
+            loadPage('?fase=backup');
             break;    
         
         case "backup":
             $pastaBackup = $intra->get_variavel('pastaBackup');
-            $pasta = "../$pastaBackup/".date('Y.m.d');
-            if(!file_exists($pasta)){
-                    mkdir($pasta);
+            $pasta = $pastaBackup."/".date('Y.m.d');
+            if(!file_exists("../$pasta")){
+                mkdir("../$pasta");
             }
                        
-            $nomeArquivo = date('Y.m.d.H.i');
-            exec("backupGrh.bat ".date('Y.m.d')."/$nomeArquivo.M.grh");
-            exec("backupAreaServidor.bat ".date('Y.m.d')."/$nomeArquivo.M.areaServidor");
+            # Define o nome do arquivo
+            $nomeArquivo = $pasta."/".date('Y.m.d.H.i').".M";
             
+            # Executa o backup acessando rotina externa
+            exec("backup.bat $nomeArquivo");
+            
+            # troca as / por \ pois rotina de zipar usa barra invertida
+            $nomeArquivo = str_replace("/","\\",$nomeArquivo);
+            
+            # Acrescenta ..\ para o endereço relativo
+            $nomeArquivo = '..\\'.$nomeArquivo;
+            
+            # Faz o zip para o banco grh
+            $arquivo = array($nomeArquivo.".grh.sql");
+            $arquivoZipado = $nomeArquivo.".grh.zip";
+            createZip($arquivoZipado,$arquivo);
+            
+            # Faz o zip para o banco areaServidor
+            $arquivo = array($nomeArquivo.".areaServidor.sql");
+            $arquivoZipado = $nomeArquivo.".areaServidor.zip";
+            createZip($arquivoZipado,$arquivo);
+            
+            # Apaga os arquivos sql criados deixando somente os zipados
+            unlink($nomeArquivo.".areaServidor.sql");
+            unlink($nomeArquivo.".grh.sql");
+                                    
             # Escreve o log
             $data = date("Y-m-d H:i:s");
             $atividade = "Efetuou o Backup Manual";
