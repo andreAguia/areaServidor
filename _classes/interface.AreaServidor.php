@@ -78,7 +78,7 @@
             }
         $grid->fechaColuna();
         $grid->abreColuna(4);
-            p(BROWSER_NAME." - ".IP." (".MAC.")",'ip');
+            p(BROWSER_NAME." - ".IP." (".MAC.") - ".HOST,'ip');
         $grid->fechaColuna();
         $grid->fechaGrid();
     }
