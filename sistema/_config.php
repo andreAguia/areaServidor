@@ -66,8 +66,9 @@ define("BROWSER_NAME",$browser['browser']);	# Nome do browser
 define("BROWSER_VERSION",$browser['version']);	# Versão do browser
 
 # Pega o ip e nome da máquina
-define("IP",getenv("REMOTE_ADDR"));     # Ip da máquina
-define("HOST",gethostbyaddr(IP));       # O nome da máquina
+define("IP",getenv("REMOTE_ADDR"));        # Ip da máquina
+#define("MAQUINA",getenv("REMOTE_HOST"));   # O nome da máquina
+#define("SERVER",getenv("SERVER_NAME"));    # O nome do servidor
 
 # Pega o Mac da máquina
 if((IP <> "::1")AND(IP <> "127.0.0.1")){
