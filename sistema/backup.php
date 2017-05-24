@@ -171,6 +171,10 @@ if($acesso)
             break;    
         
         case "backup":
+            # Senha root
+            $senha = "DSvuEtwz6h9HfLCF";
+            
+            # Cria a pasta do backup se não existir
             $pastaBackup = $intra->get_variavel('pastaBackup');
             $pasta = $pastaBackup."/".date('Y.m.d');
             if(!file_exists("../$pasta")){
@@ -181,7 +185,7 @@ if($acesso)
             $nomeArquivo = $pasta."/".date('Y.m.d.H.i').".M";
             
             # Executa o backup acessando rotina externa
-            exec("backup.bat $nomeArquivo");
+            exec("backup.bat $nomeArquivo $senha $pastaMysqlDump");
             
             # troca as / por \ pois rotina de zipar usa barra invertida
             $nomeArquivo = str_replace("/","\\",$nomeArquivo);
