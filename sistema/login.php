@@ -241,43 +241,6 @@ switch ($fase)
                 # Grava no log a atividade
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
 
-                # Faz backup automático (1 por dia ao menos)
-                if($intra->get_variavel("backupAutomatico")){
-                    # Abre o diretório
-                    $pasta = "../$pastaBackup/".date("Y.m.d");
-
-                    if(!file_exists($pasta)){
-                        # Grh
-                        $db = new Backup('grh',FALSE);
-                        $backup = $db->backup();
-
-                        if(!$backup['error']){
-                            echo nl2br($backup['msg']);
-                        } else {
-                            echo 'An error has ocurred.';
-                        }
-
-                        # Escreve o log
-                        $data = date("Y-m-d H:i:s");
-                        $atividade = "Login disparou o backup automático do banco grh";
-                        $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
-
-                        # Areaservidor
-                        $db = new Backup('areaservidor',FALSE);
-                        $backup = $db->backup();
-
-                        if(!$backup['error']){
-                        } else {
-                            echo 'An error has ocurred.';
-                        }
-
-                        # Escreve o log
-                        $data = date("Y-m-d H:i:s");
-                        $atividade = "Login disparou o backup automático do banco areaservidor";
-                        $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,6,NULL);
-                    }
-                }
-                                
                 # Verifica se o servidor está aniversariando hoje
                 if($pessoal->aniversariante($idServidor)){
                     loadPage('?fase=parabens');

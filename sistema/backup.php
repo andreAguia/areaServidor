@@ -47,15 +47,9 @@ if($acesso)
             $linkBotaoVoltar->set_class('button float-left');
             $linkBotaoVoltar->set_title('Volta para a página anterior');
             $linkBotaoVoltar->set_accessKey('V');
-            
-            # Botão Backup Automático
-            $linkBotaoAut = new Link("Configurar Backup Automático",'?fase=config');
-            $linkBotaoAut->set_class('button');
-            $linkBotaoAut->set_title('Configurar Backup Automático');
-            $linkBotaoAut->set_accessKey('C');
 
             # Botão Fazer Backup Manual
-            $linkBotaoEditar = new Link("Backup Manual",'?fase=aguarde');
+            $linkBotaoEditar = new Link("Backup",'?fase=aguarde');
             $linkBotaoEditar->set_class('button');
             $linkBotaoEditar->set_title('Executa um backup manual agora');
             $linkBotaoEditar->set_accessKey('B');
@@ -185,7 +179,7 @@ if($acesso)
             $nomeArquivo = $pasta."/".date('Y.m.d.H.i').".M";
             
             # Executa o backup acessando rotina externa
-            exec("backup.bat $nomeArquivo $senha $pastaMysqlDump");
+            exec("backup.bat $nomeArquivo $senha");
             
             # troca as / por \ pois rotina de zipar usa barra invertida
             $nomeArquivo = str_replace("/","\\",$nomeArquivo);
