@@ -150,18 +150,18 @@ if($acesso)
                'unique' => TRUE,
                'size' => 15),
         array ('linha' => 1,
-               'col' => 5, 
+               'col' => 9, 
                'nome' => 'idServidor',
                'label' => 'Nome (servidor):',
                'tipo' => 'combo',
                'array' => $result,
                'size' => 20),
-        array ('linha' => 1,
-               'col' => 4,
+        array ('linha' => 2,
+               'col' => 12,
                'nome' => 'obs',
                'label' => 'Observação:',
                'tipo' => 'texto',
-               'size' => 20)
+               'size' => 30)
         ));
 
     # Log

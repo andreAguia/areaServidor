@@ -270,7 +270,7 @@ switch ($fase)
             
             case 5: // Computador Não Autorizado
                 # Informa o Erro
-                alert('Login Incorreto!');
+                alert('Este Computador não está autorizado a acessar o sistema! Entre em contato com o administrador do sistema.');
                 
                 # Grava no log a atividade
                 $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') em Computador não autorizado ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
