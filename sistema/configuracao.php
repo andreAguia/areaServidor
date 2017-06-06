@@ -22,18 +22,12 @@ if($acesso)
 	
     # Verifica a fase do programa
     $fase = get('fase','listar');
+    
+    # Varifica a Categoria
+    $categoria = get("categoria");
 
     # pega o id se tiver)
     $id = soNumeros(get('id'));
-
-    # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro')))									# Se o parametro não vier por post (for nulo)
-        $parametro = retiraAspas(get_session('sessionParametro'));	# passa o parametro da session para a variavel parametro retirando as aspas
-    else
-    { 
-        $parametro = post('parametro');								# Se vier por post, retira as aspas e passa para a variavel parametro			
-        set_session('sessionParametro',$parametro);			 		# transfere para a session para poder recuperá-lo depois
-    }
 
     # Ordem da tabela
     $orderCampo = get('orderCampo');
@@ -52,14 +46,14 @@ if($acesso)
     ################################################################
 
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome('Configurações do Sistema');
+    if(is_null($categoria)){
+        $objeto->set_nome('Configurações do Sistema');
+    }else{
+        $objeto->set_nome('Configurações do Sistema - '.$categoria);
+    }
 
     # botão de voltar da lista
     $objeto->set_voltarLista('administracao.php');
-
-    # controle de pesquisa
-    $objeto->set_parametroLabel('Pesquisar nos campos Nome e/ou Comentário:');
-    $objeto->set_parametroValue($parametro);
 
     # ordenação
     if(is_null($orderCampo))
@@ -69,17 +63,23 @@ if($acesso)
             $orderTipo = 'asc';
 
     # select da lista
-    $objeto->set_selectLista('SELECT nome,
-                                     valor,
-                                     comentario,
-                                     idVariaveis
-                                FROM tbvariaveis	
-                               WHERE nome LIKE "%'.$parametro.'%"
-                                  OR comentario LIKE "%'.$parametro.'%"		   									   
-                            ORDER BY '.$orderCampo.' '.$orderTipo);	
+    $select = 'SELECT categoria,
+                      nome,
+                      valor,
+                      comentario,
+                      idVariaveis
+                 FROM tbvariaveis';
+    
+    if(!is_null($categoria)){
+        $select .= ' WHERE categoria = "'.$categoria.'" ';
+    }
+    
+    $select .= ' ORDER BY '.$orderCampo.' '.$orderTipo;	
 
+    $objeto->set_selectLista($select);
     # select do edita
-    $objeto->set_selectEdita('SELECT nome,
+    $objeto->set_selectEdita('SELECT categoria,
+                                     nome,                                     
                                      comentario,	
                                      valor							    
                                 FROM tbvariaveis
@@ -97,9 +97,9 @@ if($acesso)
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("Nome","Valor","Comentário"));
-    $objeto->set_width(array(15,10,65));		
-    $objeto->set_align(array("left","center","left"));
+    $objeto->set_label(array("Categoria","Nome","Valor","Comentário"));
+    $objeto->set_width(array(10,10,10,60));		
+    $objeto->set_align(array("center","left","center","left"));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -114,15 +114,23 @@ if($acesso)
     $objeto->set_formlabelTipo(1);
 
     # Campos para o formulario
-    $objeto->set_campos(array( 
+    $objeto->set_campos(array(
+                        array ( 'nome' => 'categoria',
+                                'label' => 'Categoria:',
+                                'tipo' => 'texto',
+                                'required' => TRUE,
+                                'size' => 50,
+                                'title' => 'Categoria da Variável.',
+                                'col' => 4,
+                                'linha' => 1),
                         array ( 'nome' => 'nome',
                                 'label' => 'Nome:',
                                 'tipo' => 'texto',
                                 'size' => 90,
                                 'title' => 'Nome da Variável.',
                                 'required' => TRUE,
-                                'col' => 12,
-                                'linha' => 1),					
+                                'col' => 8,
+                                'linha' => 1),
                         array ( 'nome' => 'comentario',
                                 'label' => 'Comentário:',
                                 'tipo' => 'textarea',
@@ -149,11 +157,37 @@ if($acesso)
     {
         case "" :
         case "listar" :
-            # Rotina de listar
-            $divListar = new Div('divListar');
-            $divListar->abre();
-                    $objeto->listar();
-            $divListar->fecha();
+            # Filtra por cateforia
+                # Por controle
+                $form = new Form('?');
+                # Situação
+                $result = $intra->select('SELECT distinct categoria, categoria
+                                              FROM tbvariaveis                                
+                                          ORDER BY 1');
+
+                $controle = new Input('categoria','combo','Categoria:',1);
+                $controle->set_size(30);
+                $controle->set_title('Filtra por Situação');
+                $controle->set_array($result);
+                $controle->set_valor($categoria);
+                $controle->set_onChange('formPadrao.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(4);
+                $form->add_item($controle);
+
+                #$form->show();
+                
+                # Por Botòes
+                $menu = array();
+                foreach ($result as $value) {
+                    $botao = new Link($value[0],"?categoria=".$value[0]);
+                    $botao->set_class('button success');
+                    $botao->set_title('Filtra para categoria: '.$value[0]);
+                    $menu[] = $botao;
+                }
+                $objeto->set_botaoListarExtra($menu);
+            br();    
+            $objeto->listar();
             break;
 
         case "editar" :	
