@@ -186,14 +186,6 @@ if($acesso)
             $fieldset->abre();
 
                 $menu = new MenuGrafico(4);
-
-                # Backup
-                $botao = new BotaoGrafico();
-                $botao->set_label('Backup');
-                $botao->set_title('Executa o backup do banco de dados');
-                $botao->set_image(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('backup.php');
-                $menu->add_item($botao);
                                 
                 # Importação
                 $botao = new BotaoGrafico();
