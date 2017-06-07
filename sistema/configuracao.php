@@ -121,6 +121,7 @@ if($acesso)
                                 'required' => TRUE,
                                 'size' => 50,
                                 'title' => 'Categoria da Variável.',
+                                'autofocus' => TRUE,
                                 'col' => 4,
                                 'linha' => 1),
                         array ( 'nome' => 'nome',

@@ -132,6 +132,31 @@ class Intra extends Bd
     }
 
     ###########################################################
+    
+    /**
+     * Método get_idVariavel
+     * Informa o id de uma variável
+     * 
+     * @param string $usuario	matricula do servidor
+     */
+    public function get_idVariavel($nome){ 
+
+        $select = "SELECT idVariaveis		  
+                     FROM tbvariaveis
+                    WHERE nome = '".$nome."'";
+
+        # verifica se foi informado o $nome
+        if(is_null($nome))
+            return 0;
+        else
+        {
+            $result = parent::select($select,FALSE);
+            return $result[0]; 
+        }
+    }
+
+    ###########################################################
+  
 
     /**
     * Método set_variavel
@@ -144,9 +169,11 @@ class Intra extends Bd
     public function set_variavel($variavel,$valor)
     {
         $valor = retiraAspas($valor);
-        $this->set_tabela('tbvariaveis');
-        $this->set_idCampo('idVariaveis');
-        $this->gravar(array('valor'),array($valor),$variavel,NULL,NULL,FALSE);
+        $this->set_tabela('tbvariaveis');   // Imforma a tabela
+        $this->set_idCampo('idVariaveis');  // informa o campo id
+        $idVariaveis = $this->get_idVariavel($variavel); // Pega o idvariavel
+        
+        $this->gravar(array('valor'),array("$valor"),$idVariaveis);
     }
 
     ###########################################################

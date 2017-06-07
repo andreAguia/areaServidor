@@ -113,9 +113,6 @@ switch ($fase)
                 
         # Pega o ip da máquina que fez login
         $ip = getenv("REMOTE_ADDR");
-        
-        # Pega a pasta de backup
-        $pastaBackup = $intra->get_variavel('pastaBackup');
 
         # Verifica a senha
         switch ($verifica)
@@ -241,6 +238,23 @@ switch ($fase)
                 # Grava no log a atividade
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
 
+                # Executa o backup
+                if($intra->get_variavel("backupAutomatico")){
+                    $backupData = $intra->get_variavel("backupData");   // Verifica a data do último backup
+                    $backupPasta = $intra->get_variavel("backupPasta"); // Pega a pasta do mysql
+                    $backupPasta = str_replace("/","\\",$backupPasta);
+                    $hoje = date("d/m/Y");                              // Pega a data de hoje
+
+                    # Verifica se foi feito backup hoje
+                    if($hoje <> $backupData){
+                        exec("C:\\".$backupPasta."\\backup.bat");   // Executa o backup
+                        $intra->set_variavel("backupData",$hoje);   // Atualiza a data do último backup
+
+                        # Grava no log a atividade
+                        $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup automático realizado');
+                    }
+                }
+                
                 # Verifica se o servidor está aniversariando hoje
                 if($pessoal->aniversariante($idServidor)){
                     loadPage('?fase=parabens');
