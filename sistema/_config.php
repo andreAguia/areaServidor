@@ -5,14 +5,6 @@
  * By Alat
  */
 
-# Sobre o Sistema
-define("VERSAO","1.2");                                     # Versão do Sistema 								
-define("ATUALIZACAO","07/06/2017");                            # Última Atualização
-define("SISTEMA","Sistema de Administração de Sistemas");      # Nome do sistema
-define("DESCRICAO","Sistema Gestão dos Sistemas");             # Descrição do sistema
-define("PALAVRAS_CHAVE","Uenf");                               # Palavras chave para sites de busca
-define("AUTOR","Alat");                                        # Autor do sistema
-
 # Classes
 define("PASTA_CLASSES_GERAIS","../../_framework/_classesGerais/"); # Classes Gerais
 define("PASTA_CLASSES_GRH","../../grh/_classes/");                 # Classes do sistema de Pessoal 
@@ -152,3 +144,14 @@ function __autoload($classe)
     if (file_exists(PASTA_CLASSES_GRH."/interface.{$classe}.php"))
         include_once PASTA_CLASSES_GRH."/interface.{$classe}.php";
 }
+
+# Sobre o Sistema
+$intra = new Intra();
+define("SISTEMA",$intra->get_variavel("sistemaIntra"));             # Nome do sistema
+define("DESCRICAO",$intra->get_variavel("sistemaIntraDescricao"));  # Descrição do sistema
+define("AUTOR",$intra->get_variavel("sistemaAutor"));               # Autor do sistema
+
+# Versão do sistema
+$versao = $intra->get_versaoAtual();
+define("VERSAO",$versao[0]);                    # Versão do Sistema 								
+define("ATUALIZACAO",date_to_php($versao[1]));  # Última Atualização

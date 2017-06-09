@@ -97,9 +97,9 @@ if($acesso)
             $fieldset->fecha();
             $grid2->fechaColuna();
 
-            # Área de Configuração
+            # Área do Sistema
             $grid2->abreColuna(12,6);
-            $fieldset = new Fieldset('Configuração');
+            $fieldset = new Fieldset('Sistema');
             $fieldset->abre();
 
                 $menu = new MenuGrafico(4);
@@ -110,6 +110,14 @@ if($acesso)
                 $botao->set_url('configuracao.php');
                 $botao->set_image(PASTA_FIGURAS.'configuracao.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
+                $menu->add_item($botao);
+                
+                # Cadastro de Atualizações
+                $botao = new BotaoGrafico();
+                $botao->set_label('Atualizações');
+                $botao->set_url('atualizacao.php');
+                $botao->set_image(PASTA_FIGURAS.'atualizacao.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_title('Gerencia o cadastro de atualizações');
                 $menu->add_item($botao);
 
                 $menu->show();
@@ -202,6 +210,14 @@ if($acesso)
                 $botao->set_target('_blank');
                 $botao->set_image(PASTA_FIGURAS.'mysql.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_url('http://localhost/phpmyadmin');
+                $menu->add_item($botao);
+                
+                # Backup Manual
+                $botao = new BotaoGrafico();
+                $botao->set_label('Backup Manual');
+                $botao->set_title('Executa um backup manual a qualquer tempo');
+                $botao->set_image(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_url('?fase=backup');
                 $menu->add_item($botao);
 
                 $menu->show();
@@ -299,6 +315,20 @@ if($acesso)
             $menu->add_item($botao);
             $menu->show();  
             $fieldset->fecha();  
+            break;
+        
+        case "backup" :
+                $backupData = $intra->get_variavel("backupData");   // Verifica a data do último backup
+                $backupPasta = $intra->get_variavel("backupPasta"); // Pega a pasta do mysql
+                $backupPasta = str_replace("/","\\",$backupPasta);
+                $hoje = date("d/m/Y");                              // Pega a data de hoje
+
+                exec("C:\\".$backupPasta."\\backup.bat");   // Executa o backup
+                
+                # Grava no log a atividade
+                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);
+
+                loadPage("?");
             break;
         
         

@@ -661,5 +661,42 @@ class Intra extends Bd
         return $result[0];
     }
 
-###########################################################
+    ###########################################################
+    
+    /**
+     * Método get_versaoAtual
+     * 
+     * retorna um array com a versão e a data da atualização
+     */
+    public function get_versaoAtual(){ 
+
+        $select = "SELECT versao,data		  
+                     FROM tbatualizacao
+                 ORDER BY data desc
+                 LIMIT 1";
+        
+        $result = parent::select($select,FALSE);
+        return $result;
+    }
+
+    ###########################################################
+    
+    /**
+     * Método get_atualizacoes
+     * 
+     * retorna um array com todas as atualizações
+     */
+    public function get_atualizacoes(){ 
+
+        $select = "SELECT versao,data,alteracoes		  
+                     FROM tbatualizacao
+                 ORDER BY data desc";
+        
+        $result = parent::select($select);
+        return $result;
+    }
+
+    ###########################################################
+  
+  
 }

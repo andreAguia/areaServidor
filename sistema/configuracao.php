@@ -24,14 +24,14 @@ if($acesso)
     $fase = get('fase','listar');
     
     # Varifica a Categoria
-    $categoria = get("categoria");
+    $categoria = get("categoria","Sistema");
 
     # pega o id se tiver)
     $id = soNumeros(get('id'));
 
     # Ordem da tabela
-    $orderCampo = get('orderCampo');
-    $orderTipo = get('order_tipo');
+    $orderCampo = get('orderCampo',2);
+    $orderTipo = get('order_tipo','asc');
 
     # Começa uma nova página
     $page = new Page();			
@@ -64,9 +64,9 @@ if($acesso)
 
     # select da lista
     $select = 'SELECT categoria,
-                      nome,
-                      valor,
+                      nome,                      
                       comentario,
+                      valor,
                       idVariaveis
                  FROM tbvariaveis';
     
@@ -97,9 +97,9 @@ if($acesso)
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("Categoria","Nome","Valor","Comentário"));
-    $objeto->set_width(array(10,10,10,60));		
-    $objeto->set_align(array("center","left","center","left"));
+    $objeto->set_label(array("Categoria","Nome","Comentário","Valor"));
+    #$objeto->set_width(array(10,10,10,60));		
+    $objeto->set_align(array("center","left","left","left"));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
