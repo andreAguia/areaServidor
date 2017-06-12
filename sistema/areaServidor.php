@@ -46,8 +46,22 @@ if($acesso)
         $linkVoltar->set_class('button');
         $linkVoltar->set_title('Sair do Sistema');
         $linkVoltar->set_confirma('Tem certeza que deseja sair do sistema?');
-        $linkVoltar->set_accessKey('i');
         $menu1->add_link($linkVoltar,"left");
+        
+        # Administração do Sistema
+        if(Verifica::acesso($idUsuario,1)){   // Somente Administradores
+            $linkAdm = new Link("Administração","administracao.php");
+            $linkAdm->set_class('button success');
+            $linkAdm->set_title('Administração dos Sistemas');
+            $menu1->add_link($linkAdm,"right");
+        }
+        
+        # Alterar Senha
+        $linkSenha = new Link("Alterar Senha","trocarSenha.php");
+        $linkSenha->set_class('button');
+        $linkSenha->set_title('Altera a senha do usuário logado');
+        $menu1->add_link($linkSenha,"right");
+        
         $menu1->show();
 
         titulo('Área do Servidor');
@@ -60,14 +74,6 @@ if($acesso)
         $fieldset->abre();
 
         $menu = new MenuGrafico();
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('Alterar Senha');
-        $botao->set_url('trocarSenha.php');
-        $botao->set_image(PASTA_FIGURAS.'alteraSenha.png',$tamanhoImage,$tamanhoImage);
-        $botao->set_title('Alterar Senha');
-        $botao->set_accesskey('S');
-        $menu->add_item($botao);
         
         if(Verifica::acesso($idUsuario,2)){   // Verifica acesso ao sistema
             $botao = new BotaoGrafico();
@@ -79,13 +85,13 @@ if($acesso)
             $menu->add_item($botao);
         }
         
-        if(Verifica::acesso($idUsuario,1)){   // Somente Administradores
+        if(Verifica::acesso($idUsuario,3)){   // Acesso ao sistema de férias
             $botao = new BotaoGrafico();
-            $botao->set_label('Administração');
-            $botao->set_url('administracao.php');
-            $botao->set_image(PASTA_FIGURAS.'framework.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Administração dos Sistemas');
-            $botao->set_accesskey('A');
+            $botao->set_label('Sistema de Férias');
+            $botao->set_url('sistemaFerias.php');
+            $botao->set_image(PASTA_FIGURAS.'sunsetbeach.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Sistema de Controle da Solicitação de Férias');
+            $botao->set_accesskey('F');
             $menu->add_item($botao);
         }
         

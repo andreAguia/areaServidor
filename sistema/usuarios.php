@@ -30,7 +30,9 @@ if($acesso)
     $id = soNumeros(get('id'));
     $idPermissao = soNumeros(get('idPermissao')); 
     $idRegra = soNumeros(get('idRegra'));
-    
+    $ldLotacao = soNumeros(get('idLotacao'));
+    $idLotacaoFerias = soNumeros(get('idLotacaoFerias'));
+
     # Pega o parametro de pesquisa (se tiver)
     if (is_null(post('parametro')))									# Se o parametro não vier por post (for nulo)
         $parametro = retiraAspas(get_session('sessionParametro'));	# passa o parametro da session para a variavel parametro retirando as aspas
@@ -233,7 +235,7 @@ if($acesso)
             
             if(!is_null($id)){
                 $grid = new Grid();
-                $grid->abreColuna(12);
+                $grid->abreColuna(6);
 
                 # select
                 $select = 'SELECT tbregra.idRegra,
@@ -250,7 +252,7 @@ if($acesso)
                 $tabela->set_conteudo($conteudo);
                 $tabela->set_titulo("Permissões Incluídas");
                 $tabela->set_label(array("Num","Regra","Descrição","Excluir"));
-                $tabela->set_width(array(7,20,66));
+                #$tabela->set_width(array(7,20,66));
                 $tabela->set_align(array("center","left","left"));
                 
                 #$tabela->set_excluir('?fase=excluirPermissao&id='.$id);
@@ -271,10 +273,15 @@ if($acesso)
                 if(count($conteudo) > 0){
                     $tabela->show();
                 }else{
-                    callout('Parece que esse usuário não tem nenhuma permissão incluída no sistema !!','secondary');
+                    tituloTable("Permissões Incluídas");
+                    br();
+                    callout('Usuário sem permissão incluída no sistema !!','secondary');
                 }
                 
                 ###
+                
+                $grid->fechaColuna();
+                $grid->abreColuna(6);
                 
                 # select
                 $select = "SELECT distinct idRegra,
@@ -295,7 +302,7 @@ if($acesso)
                 $tabela->set_conteudo($conteudo);
                 $tabela->set_titulo("Permissões Disponíveis");
                 $tabela->set_label(array("Num","Regra","Descrição","Incluir"));
-                $tabela->set_width(array(7,20,66));
+                #$tabela->set_width(array(7,20,66));
                 $tabela->set_align(array("center","left","left"));
 
                 #$tabela->set_excluir('?fase=gravarPermissao&id='.$id);
@@ -309,7 +316,6 @@ if($acesso)
                 $botao->set_url("?fase=incluirPermissao&id=$id&idRegra=");
                 $botao->set_image(PASTA_FIGURAS.'adicionar.png',20,20);
 
-
                 # Coloca o objeto link na tabela			
                 $tabela->set_link(array("","","",$botao));
 
@@ -318,31 +324,114 @@ if($acesso)
                     $tabela->show();
                 }
 
+                $grid->fechaColuna();
+                $grid->fechaGrid();
+                
+                hr();
+                
+                ####################################################################
+                
                 ### Lista de lotações do sistema de férias
 
                 # Verifica se tem permissão ao sistema de férias
                 if($intra->verificaPermissao($id,3)){
+                    
+                    tituloTable("Configurações da Regra do Sistema de Férias");
+                    br();
+                    
+                    $grid = new Grid();
+                    $grid->abreColuna(6);
 
                     # select
-                    $select = 'SELECT idLotacao,
-                                      grh.tblotacao.nome
-                                 FROM tblotacaoFerias LEFT JOIN grh.tblotacao USING (idLotacao)
-                                WHERE idUsuario = '.$id.'
-                             ORDER BY grh.tblotacao.nome';
+                    $select = 'SELECT grh.tblotacao.DIR,
+                                      grh.tblotacao.GER,
+                                      grh.tblotacao.nome,
+                                      idLotacaoFerias
+                                 FROM areaServidor.tblotacaoFerias JOIN grh.tblotacao USING (idLotacao)
+                                 WHERE idUsuario = '.$id.'
+                             ORDER BY DIR,GER';
 
                     $conteudo = $intra->select($select,TRUE);
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
                     $tabela->set_titulo("Lotações do Sistema de Férias");
-                    $tabela->set_label(array("Num","Regra","Descrição"));
+                    $tabela->set_label(array("Num","Regra","Descrição","Excluir"));
                     $tabela->set_align(array("center","left","left"));
-                    $tabela->show();
+                    
+                    $tabela->set_idCampo('idLotacaoFerias');
+                    $tabela->set_nomeGetId("idLotacaoFerias");
+
+                    # Botão de exclusao
+                    $botao1 = new BotaoGrafico();
+                    $botao1->set_label('');
+                    $botao1->set_title('Excluir essa Lotacao');
+                    $botao1->set_url("?fase=excluirLotacao&id=$id&idLotacaoFerias=");
+                    $botao1->set_image(PASTA_FIGURAS.'bullet_cross.png',20,20);
+
+
+                # Coloca o objeto link na tabela			
+                $tabela->set_link(array("","","",$botao1));
+                    
+                    if(count($conteudo) > 0){
+                        $tabela->show();
+                    }else{
+                        tituloTable("Lotações Incluídas");
+                        br();
+                        callout('Nenhuma lotação incluída !!','secondary');
+                    }
+                    
+                    $grid->fechaColuna();
+                    $grid->abreColuna(6);
+                    
+                    ## Exibe as lotações Existentes disponíveis
+                    # select
+                    $select = 'SELECT DIR,
+                                      GER,
+                                      nome,
+                                      idLotacao
+                                 FROM grh.tblotacao
+                                 WHERE ativo
+                                 AND idLotacao NOT IN (SELECT idLotacao 
+                                         FROM tblotacaoFerias
+                                        WHERE idUsuario = '.$id.') 
+                             ORDER BY DIR,GER';
+
+                    $conteudo = $intra->select($select,TRUE);
+
+                    $tabela = new Tabela();
+                    $tabela->set_conteudo($conteudo);
+                    $tabela->set_titulo("Lotações Disponíveis");
+                    $tabela->set_label(array("Dir","Gerência","Nome","Incluir"));
+                    $tabela->set_align(array("left","left","left"));
+                    $tabela->set_idCampo('idLotacao');
+                    
+                    # Botão de inclusao
+                    $botao = new BotaoGrafico();
+                    $botao->set_label('');
+                    $botao->set_title('Inclui essa lotação');
+                    $botao->set_url("?fase=incluirLotacao&id=$id&idLotacao=");
+                    $botao->set_image(PASTA_FIGURAS.'adicionar.png',20,20);
+
+                    # Coloca o objeto link na tabela			
+                    $tabela->set_link(array("","","",$botao));
+
+                    
+                    if(count($conteudo) > 0){
+                        $tabela->show();
+                    }else{
+                        tituloTable("Lotações Disponíveis");
+                        br();
+                        callout('Nenhuma lotação incluída !!','secondary');
+                    }
+                    
+                    $grid->fechaColuna();
+                    $grid->fechaGrid();
                 }
-                
-                $grid->fechaColuna();
-                $grid->fechaGrid();
             }
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();
             break;
             
         ##########################################################################################
@@ -617,6 +706,52 @@ if($acesso)
             # Grava no log a atividade
             $data = date("Y-m-d H:i:s");
             $intra->registraLog($idUsuario,$data,$atividade,'tbpermissao',$idPermissao,1,$servidor);	
+            
+            loadPage ('?fase=exibePermissao&id='.$id);
+            break;
+
+        ##########################################################################################	
+
+        case "incluirLotacao" :
+            $lotacao = $pessoal->get_nomeLotacao($ldLotacao);
+            $nomeUsuario = $intra->get_nickUsuario($id);
+            $atividade = "Incluiu a lotacao ao ($lotacao) do usuário $nomeUsuario";
+            $servidor = $intra->get_idServidor($id);
+            
+            # Inclui a nova permissao
+            $intra->set_tabela('tblotacaoFerias');     # a tabela
+            $intra->set_idCampo('idLotacaoFerias');    # o nome do campo id
+            $campos = array("idLotacao","idUsuario");
+            $valor = array($ldLotacao,$id);
+            $intra->gravar($campos,$valor,NULL,NULL,NULL,FALSE);
+            
+            $idLotacaoFerias = $intra->get_lastId();
+            
+            # Grava no log a atividade
+            $data = date("Y-m-d H:i:s");
+            $intra->registraLog($idUsuario,$data,$atividade,'tblotacaoFerias',$idLotacaoFerias,1,$servidor);	
+            
+            loadPage ('?fase=exibePermissao&id='.$id);
+            break;
+
+        ##########################################################################################	
+
+        case "excluirLotacao" :
+            # Pega os dados para o log
+            $ldLotacao = $intra->get_idLotacaoLotacaoFerias($idLotacaoFerias);
+            $lotacao = $pessoal->get_nomeLotacao($ldLotacao);
+            $nomeUsuario = $intra->get_nickUsuario($id);
+            $atividade = "Excluiu a Lotação ($lotacao) do usuário $nomeUsuario";
+            $servidor = $intra->get_idServidor($id);
+            
+            # Exclui a permissão
+            $intra->set_tabela('tblotacaoFerias');    # a tabela
+            $intra->set_idCampo('idLotacaoFerias');   # o nome do campo id
+            $intra->excluir($idLotacaoFerias);         # executa a exclusão
+
+            # Grava no log a atividade
+            $data = date("Y-m-d H:i:s");
+            $intra->registraLog($idUsuario,$data,$atividade,'tblotacaoFerias',$idLotacaoFerias,3,$servidor);	
             
             loadPage ('?fase=exibePermissao&id='.$id);
             break;

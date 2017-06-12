@@ -70,7 +70,8 @@ if($acesso)
 
     # select da lista
     $objeto->set_selectLista('SELECT data,
-                                     versao,                                     
+                                     versao,
+                                     alteracoes,
                                      idatualizacao
                                 FROM tbatualizacao
                                WHERE versao LIKE "%'.$parametro.'%"
@@ -96,9 +97,9 @@ if($acesso)
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("Data","Versão"));
-    $objeto->set_width(array(30,60));		
-    $objeto->set_align(array("center"));
+    $objeto->set_label(array("Data","Versão","Alterações"));
+    $objeto->set_width(array(10,10,70));		
+    $objeto->set_align(array("center","center","left"));
     $objeto->set_funcao(array("date_to_php"));
 
     # Classe do banco de dados

@@ -189,8 +189,8 @@ if($acesso)
                 $tabela = new tabela();
                 $tabela->set_conteudo($result);
                 $tabela->set_label(array("Usuário","Nome","Cargo","Lotação"));
-                $tabela->set_width(array(10,30,30,20));
-                $tabela->set_align(array("center"));
+                #$tabela->set_width(array(10,30,30,20));
+                $tabela->set_align(array("center","left","left"));
                 
                 #$tabela->set_funcao(array('dv'));
                 $tabela->set_classe(array(NULL,"Pessoal","Pessoal","Pessoal"));

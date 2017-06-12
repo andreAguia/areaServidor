@@ -467,8 +467,10 @@ class Intra extends Bd
     
     {
         $select = 'SELECT idUsuario
-                     FROM tbpermissao
-                    WHERE idRegra = '.$idRegra;		
+                     FROM tbpermissao JOIN tbusuario USING (idusuario)
+                                      JOIN grh.tbservidor USING (idservidor)
+                    WHERE tbservidor.situacao = 1
+                      AND idRegra = '.$idRegra;		
 
         $count = parent::count($select);
         return $count;
@@ -697,6 +699,28 @@ class Intra extends Bd
     }
 
     ###########################################################
-  
-  
+    
+    /**
+     * Método get_idLotacaoLotacaoFerias
+     * Informa o id de uma lotação da tabela tbLotacaoFerias
+     * 
+     * @param integer $idLotacaoFerias	o id da tabela
+     */
+    public function get_idLotacaoLotacaoFerias($idLotacaoFerias){ 
+
+        $select = "SELECT idLotacao		  
+                     FROM tbLotacaoFerias
+                    WHERE $idLotacaoFerias = $idLotacaoFerias";
+
+        # verifica se foi informado o $nome
+        if(is_null($idLotacaoFerias))
+            return 0;
+        else
+        {
+            $result = parent::select($select,FALSE);
+            return $result[0]; 
+        }
+    }
+
+    ###########################################################
 }
