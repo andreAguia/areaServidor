@@ -151,3 +151,47 @@ span#mensagemLabel{
     font-size: 10px;
     color: #000;
 }
+
+/*******************************************
+ * Div Sobre
+ *******************************************/
+
+div#divSobre{
+    display: none;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    width: 40%;
+}
+
+p#grhAutor{
+    font-size: 14px;
+    text-align: center;
+    font-family: tahoma;
+    color: #02548b;
+}
+
+p#grhSetor{
+    font-size: 16px;
+    text-align: center;
+    font-family: tahoma;
+    color: #02548b;
+}
+
+p#grhTitulo{
+    font-size: 25px;
+    text-align: center;
+    font-family: tahoma;
+    color: #02548b;
+    padding: 0px;
+    margin: 0px;
+    
+}
+
+p#versao{
+    font-size: 11px;
+    text-align: center;
+    color: #02548b;
+    padding: 0px;
+    margin: 0px;
+}

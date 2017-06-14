@@ -355,7 +355,7 @@ if($acesso)
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
-                    $tabela->set_titulo("Lotações do Sistema de Férias");
+                    $tabela->set_titulo("Lotações Incluídas");
                     $tabela->set_label(array("Num","Regra","Descrição","Excluir"));
                     $tabela->set_align(array("center","left","left"));
                     

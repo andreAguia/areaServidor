@@ -1,6 +1,6 @@
 <?php
 /**
- * Cadastro deComputador
+ * Cadastro de Computador
  *  
  * By Alat
  */
@@ -14,8 +14,7 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){    
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
