@@ -3,14 +3,15 @@ REM Rotina de Backup do Mysql
 REM Desenvolvidor: Alat
 REM Atualizado em 18/06/2015
 
-REM está rotina deverá ser chamada pelo agendador de tarefas do Windows
-
-echo Backup de banco de dados
+REM Indo para o diretório do Mysql fornecido pelo sistema (%1)
+cd %1
 
 REM formata hora
 set ftime=%time:~0,2%
 set ftime=0%ftime: =%
 set ftime=%ftime:~-2%
+
+SET path=%path%;c:\Program Files\Java\jdk1.X.X.X_XX\bin 
 
 REM Executa o mysqldump para os bancos de dados grh e areaServidor
 mysqldump -h localhost -u root -pDSvuEtwz6h9HfLCF grh > C:/_backup/%date:~6,10%.%date:~3,2%.%date:~0,2%_%ftime%.%time:~3,2%.grh.sql

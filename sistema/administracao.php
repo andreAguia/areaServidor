@@ -318,20 +318,31 @@ if($acesso)
             break;
         
         case "backup" :
-                $backupData = $intra->get_variavel("backupData");   // Verifica a data do último backup
-                $backupPasta = $intra->get_variavel("backupPasta"); // Pega a pasta do mysql
-                $backupPasta = str_replace("/","\\",$backupPasta);
-                $hoje = date("d/m/Y");                              // Pega a data de hoje
+            br(4);
+            aguarde();
+            br();
+            
+            # Limita a tela
+            $grid1 = new Grid("center");
+            $grid1->abreColuna(5);
+                p("Fazendo o backup ...","center");
+            $grid1->fechaColuna();
+            $grid1->fechaGrid();
 
-                exec("C:\\".$backupPasta."\\backup.bat");   // Executa o backup
-                
-                # Grava no log a atividade
-                $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);
-
-                loadPage("?");
+            loadPage('?fase=backup2');
             break;
-        
-        
+
+        case "backup2" :
+            $backupData = $intra->get_variavel("backupData");   // Verifica a data do último backup
+            $backupPasta = str_replace("/","\\",$intra->get_variavel("backupPasta"));   // Pega o caminho do banco de dados invertendo a barra.
+
+            exec("backup.bat C:\\".$backupPasta);   // Executa o backup
+
+            # Grava no log a atividade
+            $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);
+
+            loadPage("?");
+            break;
     }
     $grid1->fechaColuna();
     $grid1->fechaGrid();    
