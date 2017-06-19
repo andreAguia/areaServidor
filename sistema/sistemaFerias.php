@@ -28,12 +28,12 @@ if($acesso){
     $id = soNumeros(get('id'));
     
     # Pega os parâmetros
-    $parametroAnoExercicio = post('parametroAnoExercicio',get_session('parametroAnoExercicio',date("Y")));
-    $parametroLotacao = post('parametroLotacao',get_session('parametroLotacao'));
+    $parametroAnoExercicio = post('parametroAnoExercicio',get_session('feriasAnoExercicio',date("Y")));
+    $parametroLotacao = post('parametroLotacao',get_session('feriasLotacao'));
     
     # Joga os parâmetros par as sessions    
-    set_session('parametroAnoExercicio',$parametroAnoExercicio);
-    set_session('parametroLotacao',$parametroLotacao);
+    set_session('feriasAnoExercicio',$parametroAnoExercicio);
+    set_session('feriasLotacao',$parametroLotacao);
     
     # Começa uma nova página
     $page = new Page();

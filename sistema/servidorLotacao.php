@@ -33,7 +33,7 @@ if($acesso)
     $id = soNumeros(get('id'));
     
     # Pega os parâmetros
-    $parametroLotacao = post('parametroLotacao',get_session('parametroLotacao',$idLotacao));
+    $parametroLotacao = post('parametroLotacao',get_session('servidorLotacao',$idLotacao));
     
     # Agrupamento do Relatório
     $agrupamentoEscolhido = post('agrupamento',0);
@@ -44,7 +44,7 @@ if($acesso)
     $subTitulo = get_session('sessionSubTitulo');
         
     # Joga os parâmetros par as sessions
-    set_session('parametroLotacao',$parametroLotacao);
+    set_session('servidorLotacao',$parametroLotacao);
 
     # Ordem da tabela
     $orderCampo = get('orderCampo');

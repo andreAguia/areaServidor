@@ -30,6 +30,12 @@ if($acesso)
     # Cabeçalho
     AreaServidor::cabecalho();
     
+    # Limpa as sessions usadas nos sistemas e módulos
+    set_session('servidorCargo');
+    set_session('feriasAnoExercicio');
+    set_session('feriasLotacao');
+    set_session('servidorLotacao');
+    
     $grid = new Grid();
     $grid->abreColuna(12);
     

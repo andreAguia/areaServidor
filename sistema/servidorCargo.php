@@ -19,6 +19,12 @@ if($acesso)
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $pessoal = new Pessoal();
+    
+    # Pega o idServidor desse usuário
+    $idServidor = $intra->get_idServidor($idUsuario);
+    
+    # Pega a Lotação atual do usuário
+    $idCargo = $pessoal->get_idCargo($idServidor);
 	
     # Verifica a fase do programa
     $fase = get('fase');
@@ -27,7 +33,7 @@ if($acesso)
     $id = soNumeros(get('id'));
     
     # Pega os parâmetros
-    $parametroCargo = post('parametroCargo',get_session('parametroCargo','*'));
+    $parametroCargo = post('parametroCargo',get_session('servidorCargo',$idCargo));
     
     # Agrupamento do Relatório
     $agrupamentoEscolhido = post('agrupamento',0);
@@ -38,7 +44,7 @@ if($acesso)
     $subTitulo = get_session('sessionSubTitulo');
         
     # Joga os parâmetros par as sessions
-    set_session('parametroCargo',$parametroCargo);
+    set_session('servidorCargo',$parametroCargo);
 
     # Ordem da tabela
     $orderCampo = get('orderCampo');
@@ -96,7 +102,7 @@ if($acesso)
             $result = $pessoal->select('SELECT tbcargo.idCargo,
                                                concat(tbtipocargo.cargo," - ",tbarea.area," - ",tbcargo.nome)
                                           FROM tbcargo LEFT JOIN tbtipocargo USING (idTipoCargo)
-                                                       LEFT JOIN tbarea USING (idTipoCargo)
+                                                       LEFT JOIN tbarea USING (idarea)
                                       ORDER BY 2');
 
             $controle = new Input('parametroCargo','combo','Cargo - Área - Função:',1);

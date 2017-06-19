@@ -41,6 +41,10 @@ br(2);
 switch ($fase)
 {
     case "":
+        # Limpando todas as sessions
+        session_destroy();
+        unset( $_SESSION );
+        
         # Login 
         $grid = new Grid("center");
         $grid->abreColuna(10,5);
