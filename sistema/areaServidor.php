@@ -179,7 +179,9 @@ if($acesso)
             br();
             AreaServidor::rodape($idUsuario);
             break;
-        
+
+##################################################################
+            
         case "organograma" :
             botaoVoltar('?');
             titulo("Organograma da UENF");
@@ -187,6 +189,8 @@ if($acesso)
             $figura = new Imagem(PASTA_FIGURAS_GRH.'organograma.png','Organograma da UENF','100%','100%');
             $figura->show();
             break;
+
+##################################################################
         
         case "cargoComissao" :
             botaoVoltar('?');
@@ -215,6 +219,8 @@ if($acesso)
             $tabela->set_metodo(array(NULL,NULL,NULL,NULL,'get_servidoresCargoComissao','get_cargoComissaoVagasDisponiveis'));
             $tabela->show();
             break;
+
+##################################################################
         
         case "sobre" :
 
@@ -243,7 +249,7 @@ if($acesso)
             $linkFecha = new Link("Detalhes","?fase=atualizacoes");
             $linkFecha->set_class('button');
             $linkFecha->set_title('Exibe os detalhes das atualizações');
-            #$menu2->add_link($linkFecha,"left");
+            $menu2->add_link($linkFecha,"left");
             
             # ok
             $linkFecha = new Link("Ok","?");
@@ -256,9 +262,52 @@ if($acesso)
 
             $grid->fechaColuna();
             $grid->fechaGrid();
-
+            break;
+            
+##################################################################
+        
+        case "atualizacoes" :
+            
+            # Limita a tela
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+            # botão voltar
+            botaoVoltar("?","Voltar","Volta ao Menu principal");
+            
+            # Título
+            titulo("Detalhes das Atualizações");
+            #p("Detalhes das Atualizações","center","f16");
+            br();
+            
+            # Limita a tela
+            $grid = new Grid("center");
+            $grid->abreColuna(10);
+            
+            # Pega os dados 
+            $atualizacoes = $intra->get_atualizacoes();
+            
+            # Percorre os dados
+            foreach ($atualizacoes as $valor) {
+                
+                p("Versão:".$valor[0],"f16");
+                p(date_to_php($valor[1]),"right","f10");
+                
+                $painel3 = new Callout();
+                $painel3->set_title('Alterações');
+                $painel3->abre();
+                    p("<pre>".$valor[2]."</pre>");
+                $painel3 ->fecha();
+                hr();
+            }
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();
             break;
         
+##################################################################
     }
     
     $grid->fechaColuna();
