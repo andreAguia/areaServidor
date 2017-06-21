@@ -19,7 +19,7 @@ mysqldump -h localhost -u root -pDSvuEtwz6h9HfLCF areaServidor > C:/_backup/%dat
 
 REM compacta arquivos
 SET PATH=%PATH%;C:\Program Files\7-Zip
-7z a C:\_backup\%date:~6,10%.%date:~3,2%.%date:~0,2%_%ftime%.%time:~3,2%.7z C:\_backup\*.sql
+7z a -tzip C:\_backup\%date:~6,10%.%date:~3,2%.%date:~0,2%_%ftime%.%time:~3,2%.zip C:\_backup\*.sql
 
 REM Apaga os arquivos de origem
 del C:\_backup\*.sql
