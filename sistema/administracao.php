@@ -240,15 +240,6 @@ if($acesso)
                 $botao->set_url('mensagem.php');
                 $menu->add_item($botao);
                 
-                # Google Task
-                $botao = new BotaoGrafico();
-                $botao->set_label('Tarefas');
-                $botao->set_title('Acesso o Google Task');
-                $botao->set_image(PASTA_FIGURAS.'tarefas.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_onClick("window.open('https://mail.google.com/tasks/ig','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=460,height=500');");
-                #$botao->set_url('https://mail.google.com/tasks/ig');
-                $menu->add_item($botao);
-                
                 # Administração do Site da GRH
                 $botao = new BotaoGrafico();
                 $botao->set_label('Administração do Site da GRH');
@@ -280,7 +271,7 @@ if($acesso)
             $fieldset = new Fieldset('Importação');
             $fieldset->abre();
 
-            $menu = new MenuGrafico(4);
+            $menu = new MenuGrafico(5);
             
             # Férias
             $botao = new BotaoGrafico();
@@ -288,6 +279,14 @@ if($acesso)
             $botao->set_url('importacaoFerias.php');
             $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Férias do SigRH');
+            $menu->add_item($botao);
+            
+            # Identidade
+            $botao = new BotaoGrafico();
+            $botao->set_label('Identidade');
+            $botao->set_url('importacaoIdentidade.php');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Problemas com a identidade truncada na importação anterior');
             $menu->add_item($botao);
 
             # FEN001
