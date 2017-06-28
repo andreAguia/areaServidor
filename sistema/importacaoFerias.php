@@ -152,9 +152,9 @@ if($acesso){
                 }
 
                
-                echo "Registros analisados:".$tt;
+                echo "Registros analisados: ".$tt;
                 br();
-                echo "Problemas encontrados:".$problemas;
+                echo "Problemas encontrados: ".$problemas;
                 br();
                 $contador = 1;
                 
@@ -208,7 +208,7 @@ if($acesso){
                 }
 
             }else{
-                echo "Arquivo de exemplo não encontrado";
+                echo "Arquivo de Férias não encontrado";
             }
             
             if($problemas == 0){
@@ -236,51 +236,53 @@ if($acesso){
             # Limita a tela
             $grid1 = new Grid("center");
             $grid1->abreColuna(5);
-                p("Importando o arquivo do ano ".$fase,"center");
+                p("Importando o arquivo do ano ".$ano,"center");
             $grid1->fechaColuna();
             $grid1->fechaGrid();
 
-            loadPage('?fase=importa2&ano='.$fase);
+            loadPage('?fase=importa2&ano='.$ano);
             break;
         
-            case "importa2" :
-                # Define o arquivo a ser importado
-                $arquivo = "../importacao/ferias".$ano.".csv"; 
-                
-                # Verifica a existência do arquivo
-                if(file_exists($arquivo)){
-                    $lines = file($arquivo);
+        case "importa2" :
+            # Define o arquivo a ser importado
+            $arquivo = "../importacao/ferias".$ano.".csv"; 
 
-                    # Array para inserir os dados
-                    $conteúdo = array();
-                    
-                    # Abre o banco de dados
-                    $pessoal = new Pessoal();
+            # Verifica a existência do arquivo
+            if(file_exists($arquivo)){
+                $lines = file($arquivo);
 
-                    # Percorre o arquivo e guarda os dados em um array
-                    foreach ($lines as $linha) {
-                        $linha = htmlspecialchars($linha);
+                # Array para inserir os dados
+                $conteúdo = array();
 
-                        $parte = explode(";",$linha);
-                        $idServidor = $pessoal->get_idServidoridFuncional($parte[0]);
-                        $nome = $pessoal->get_nome($idServidor);
+                # Abre o banco de dados
+                $pessoal = new Pessoal();
 
-                        $conteudo[] = array($contador,$parte[0],$parte[1],$parte[2],$parte[3],$parte[4],$parte[5]);
+                # Percorre o arquivo e guarda os dados em um array
+                foreach ($lines as $linha) {
+                    $linha = htmlspecialchars($linha);
 
-                        $diferenca = dataDif($parte[2], $parte[3]) + 1;
+                    $parte = explode(";",$linha);
+                    $idServidor = $pessoal->get_idServidoridFuncional($parte[0]);
+                    $nome = $pessoal->get_nome($idServidor);
 
-                        $conteudo[] = array($contador,$idServidor,$nome,$parte[2],$diferenca,year($parte[4]),"");
-                        $tt++;
-                        $contador++;
-                        
-                        # Grava na tabela
-                        $campos = array("idServidor","dtInicial","anoExercicio","numDias");
-                        $valor = array($idServidor,date_to_mysql($parte[2]),$ano,$diferenca);                    
-                        $pessoal->gravar($campos,$valor,NULL,"tbferias","idFerias",FALSE);
-                    }
+                    $conteudo[] = array($contador,$parte[0],$parte[1],$parte[2],$parte[3],$parte[4],$parte[5]);
+
+                    $diferenca = dataDif($parte[2], $parte[3]) + 1;
+
+                    $conteudo[] = array($contador,$idServidor,$nome,$parte[2],$diferenca,year($parte[4]),"");
+                    $tt++;
+                    $contador++;
+
+                    # Grava na tabela
+                    $campos = array("idServidor","dtInicial","anoExercicio","numDias","status");
+                    $valor = array($idServidor,date_to_bd($parte[2]),$ano,$diferenca,"fruída");                    
+                    $pessoal->gravar($campos,$valor,NULL,"tbferias","idFerias",FALSE);
                 }
-                loadPage("?");
-                break;
+            }else{
+                echo "Arquivo de Férias não encontrado";
+            }
+            loadPage("?");
+            break;
     }
     
     $grid->fechaColuna();
