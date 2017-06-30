@@ -116,8 +116,8 @@ if($acesso)
                 $form->show();
 
                 # Lista de Servidores Ativos
-                $lista = new listaServidores('Servidores por Lotação');
-                
+                $lista = new ListaServidores('Servidores por Lotação');
+
                 # Somente servidores ativos
                 $lista->set_situacao(1);
                 
