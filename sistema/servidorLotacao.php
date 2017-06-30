@@ -34,7 +34,7 @@ if($acesso)
     
     # Pega os parâmetros
     $parametroLotacao = post('parametroLotacao',get_session('servidorLotacao',$idLotacao));
-    
+    echo $parametroLotacao;
     # Agrupamento do Relatório
     $agrupamentoEscolhido = post('agrupamento',0);
     
@@ -96,7 +96,7 @@ if($acesso)
             $menu1->show();
 
             # Parâmetros
-            $form = new Form('?');
+            $form = new Form('servidorLotacao.php');
             
                 # Lotação
                 $result = $pessoal->select('SELECT idlotacao, concat(IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")," - ",IFNULL(tblotacao.nome,"")) lotacao
@@ -127,7 +127,6 @@ if($acesso)
                 
                 # Edição
                 $lista->set_permiteEditar(FALSE);
-                
                 $lista->showTabela();
 
             $grid->fechaColuna();
