@@ -34,7 +34,7 @@ if($acesso)
     
     # Pega os parâmetros
     $parametroLotacao = post('parametroLotacao',get_session('servidorLotacao',$idLotacao));
-    echo $parametroLotacao;
+    
     # Agrupamento do Relatório
     $agrupamentoEscolhido = post('agrupamento',0);
     
