@@ -138,7 +138,7 @@ if($acesso)
         # Cria um relatório com a seleção atual
         case "relatorio" :
             # Lista de Servidores Ativos
-            $lista = new listaServidores('Servidores');
+            $lista = new ListaServidores('Servidores');
 
             if($parametroLotacao <> "*"){
                 $lista->set_lotacao($parametroLotacao);

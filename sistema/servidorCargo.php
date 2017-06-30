@@ -117,7 +117,7 @@ if($acesso)
             $form->show();
 
             # Lista de Servidores Ativos
-            $lista = new listaServidores('Servidores por Cargo');
+            $lista = new ListaServidores('Servidores por Cargo');
 
             # Somente servidores ativos
             $lista->set_situacao(1);
@@ -140,7 +140,7 @@ if($acesso)
         # Cria um relatório com a seleção atual
         case "relatorio" :
             # Lista de Servidores Ativos
-            $lista = new listaServidores('Servidores');
+            $lista = new ListaServidores('Servidores');
 
             if($parametroCargo <> "*"){
                 $lista->set_cargo($parametroCargo);
