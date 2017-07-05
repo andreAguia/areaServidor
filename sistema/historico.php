@@ -144,6 +144,7 @@ if($acesso)
     $imagemRelatorio = new Imagem(PASTA_FIGURAS.'logRelatorio.png','Visualizou Relatório',15,15);
     $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS.'loginIncorreto.png','Login Incorreto',15,15);
     $imagemBackup = new Imagem(PASTA_FIGURAS.'backup2.png','Backup',15,15);
+    $imagemVer = new Imagem(PASTA_FIGURAS.'visualizar.png','Visualizou',15,15);
     
     $objeto->set_imagemCondicional(array(array('coluna' => 0,
                                                'valor' => 0,
@@ -172,7 +173,11 @@ if($acesso)
                                          array('coluna' => 0,
                                                'valor' => 6,
                                                'operador' => '=',
-                                               'imagem' => $imagemBackup)
+                                               'imagem' => $imagemBackup),
+                                         array('coluna' => 0,
+                                               'valor' => 7,
+                                               'operador' => '=',
+                                               'imagem' => $imagemVer)
                                         ));
 
     # Classe do banco de dados

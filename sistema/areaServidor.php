@@ -188,6 +188,12 @@ if($acesso)
             br();
             $figura = new Imagem(PASTA_FIGURAS_GRH.'organograma.png','Organograma da UENF','100%','100%');
             $figura->show();
+
+            # Grava no log a atividade
+            $atividade = 'Visualizou o organograma da Uenf na área do servidor';
+            $Objetolog = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
             break;
 
 ##################################################################
@@ -218,6 +224,12 @@ if($acesso)
             $tabela->set_classe(array(NULL,NULL,NULL,NULL,'pessoal','pessoal'));
             $tabela->set_metodo(array(NULL,NULL,NULL,NULL,'get_servidoresCargoComissao','get_cargoComissaoVagasDisponiveis'));
             $tabela->show();
+            
+            # Grava no log a atividade
+            $atividade = 'Visualizou os cargos em comissão na área do servidor';
+            $Objetolog = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
             break;
 
 ##################################################################
