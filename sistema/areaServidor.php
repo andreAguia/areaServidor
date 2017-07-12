@@ -292,26 +292,28 @@ if($acesso)
             #p("Detalhes das Atualizações","center","f16");
             br();
             
-            # Limita a tela
+            # Limita ainda mais a tela paara o painel
             $grid = new Grid("center");
-            $grid->abreColuna(10);
+            $grid->abreColuna(11);
             
             # Pega os dados 
             $atualizacoes = $intra->get_atualizacoes();
             
             # Percorre os dados
             foreach ($atualizacoes as $valor) {
-                
-                p("Versão:".$valor[0],"f16");
-                p(date_to_php($valor[1]),"right","f10");
-                
                 $painel3 = new Callout();
                 $painel3->set_title('Alterações');
                 $painel3->abre();
-                    p("<pre>".$valor[2]."</pre>");
+                
+                p("Versão:".$valor[0],"f16");
+                p(date_to_php($valor[1]),"right","f10");                
+                p("<pre>".$valor[2]."</pre>");
+                #hr();
+                
                 $painel3 ->fecha();
-                hr();
             }
+            
+            
             $grid->fechaColuna();
             $grid->fechaGrid();
             
