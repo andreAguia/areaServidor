@@ -30,7 +30,7 @@ function exibeNomeTitle($idServidor){
      * 
      * @note Usado na rotina de cadastro de usuários 
      * 
-     * @syntax badgeTipoUsuario($tipoUsuario);
+     * @syntax statusUsuario($idUsuario);
      * 
      * @param $tipoUsuario string NULL o tipo de usuario
      */
@@ -57,4 +57,4 @@ function exibeNomeTitle($idServidor){
         if($intra->verificaPermissao($idUsuario,1)){
             badge("A","warning",NULL,"Usuário Administrador.");
         }
-    } 
+    }
