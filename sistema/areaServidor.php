@@ -300,20 +300,27 @@ if($acesso)
             $atualizacoes = $intra->get_atualizacoes();
             
             # Percorre os dados
+            $painel3 = new Callout();
+            $painel3->set_title('Alterações');
+            $painel3->abre();
+            
+            # Percorre os dados
             foreach ($atualizacoes as $valor) {
-                $painel3 = new Callout();
-                $painel3->set_title('Alterações');
-                $painel3->abre();
+                $grid2 = new Grid("center");
+                $grid2->abreColuna(6);
+                    p("Versão:".$valor[0],"f14");
+                $grid2->fechaColuna();
+                $grid2->abreColuna(6);
+                    p(date_to_php($valor[1]),"right","f10"); 
+                $grid2->fechaColuna();
+                $grid2->fechaGrid();
                 
-                p("Versão:".$valor[0],"f16");
-                p(date_to_php($valor[1]),"right","f10");                
                 p("<pre>".$valor[2]."</pre>");
                 #hr();
+             }
                 
-                $painel3 ->fecha();
-            }
-            
-            
+            $painel3 ->fecha();
+           
             $grid->fechaColuna();
             $grid->fechaGrid();
             
