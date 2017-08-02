@@ -256,7 +256,6 @@ if($acesso)
             $grid2->fechaGrid();    
             
             # Exibe o rodapé da página
-            br();
             AreaServidor::rodape($idUsuario);
             break;
         

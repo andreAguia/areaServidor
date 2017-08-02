@@ -176,7 +176,6 @@ if($acesso)
             ################################################################
 
             # Exibe o rodapé da página
-            br();
             AreaServidor::rodape($idUsuario);
             break;
 

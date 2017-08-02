@@ -77,6 +77,7 @@ if($acesso){
         case "2014" : 
         case "2015" :
         case "2016" : 
+            titulo('Analisando ...');
             br(4);
             aguarde();
             br();
@@ -229,6 +230,7 @@ if($acesso){
             break;
             
         case "importa" :
+            titulo('Importando ...');
             br(4);
             aguarde();
             br();
