@@ -92,7 +92,8 @@ if($acesso)
 
             $menu = new MenuGrafico();
 
-            if(Verifica::acesso($idUsuario,2)){   // Verifica acesso ao sistema
+            # Sistema de Pessoal
+            if(Verifica::acesso($idUsuario,2)){
                 $botao = new BotaoGrafico();
                 $botao->set_label('Sistema de Pessoal');
                 $botao->set_url('../../grh/grhSistema/grh.php');
@@ -102,13 +103,25 @@ if($acesso)
                 $menu->add_item($botao);
             }
 
-            if(Verifica::acesso($idUsuario,3)){   // Acesso ao sistema de férias
+            # Sistema de Férias
+            if(Verifica::acesso($idUsuario,3)){
                 $botao = new BotaoGrafico();
                 $botao->set_label('Sistema de Férias');
                 $botao->set_url('sistemaFerias.php');
                 $botao->set_image(PASTA_FIGURAS.'ferias.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_title('Sistema de Controle da Solicitação de Férias');
                 $botao->set_accesskey('F');
+                $menu->add_item($botao);
+            }
+            
+            # Sistema de Contratos
+            if(Verifica::acesso($idUsuario,1)){
+                $botao = new BotaoGrafico();
+                $botao->set_label('Sistema de Contratos');
+                $botao->set_url('sistemaContratos.php');
+                $botao->set_image(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_title('Sistema de Gestão de Contratos');
+                $botao->set_accesskey('C');
                 $menu->add_item($botao);
             }
 
@@ -234,7 +247,6 @@ if($acesso)
 ##################################################################
         
         case "sobre" :
-
             # Limita o tamanho da tela
             br(3);
             $grid = new Grid("center");
