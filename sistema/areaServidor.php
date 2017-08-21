@@ -80,12 +80,13 @@ if($acesso)
             $tamanhoImage = 64;
 
             # Exibe os dados do Servidor
-            Grh::listaDadosServidor($intra->get_idServidor($idUsuario));
+            $idServidor = $intra->get_idServidor($idUsuario);
+            Grh::listaDadosServidor($idServidor);
 
             ################################################################
 
             $grid = new Grid();
-            $grid->abreColuna(6);
+            $grid->abreColuna(4);
 
             $fieldset = new Fieldset('Sistemas');
             $fieldset->abre();
@@ -100,17 +101,6 @@ if($acesso)
                 $botao->set_image(PASTA_FIGURAS.'sistemaPessoal.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_title('Acessa o Sistema de Pessoal');
                 $botao->set_accesskey('P');
-                $menu->add_item($botao);
-            }
-
-            # Sistema de Férias
-            if(Verifica::acesso($idUsuario,3)){
-                $botao = new BotaoGrafico();
-                $botao->set_label('Sistema de Férias');
-                $botao->set_url('sistemaFerias.php');
-                $botao->set_image(PASTA_FIGURAS.'ferias.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Sistema de Controle da Solicitação de Férias');
-                $botao->set_accesskey('F');
                 $menu->add_item($botao);
             }
             
@@ -132,8 +122,37 @@ if($acesso)
 
             ################################################################
 
-            $grid->abreColuna(6);
-            $fieldset = new Fieldset('Listagem de Servidores');
+            $grid->abreColuna(4);
+
+            $fieldset = new Fieldset('Serviços');
+            $fieldset->abre();
+
+            $menu = new MenuGrafico();
+
+            # Solicitação de Férias
+            $botao = new BotaoGrafico();
+            $botao->set_label('Solicitação de Férias');
+            $botao->set_url('solicitaFerias.php');
+            $botao->set_image(PASTA_FIGURAS.'ferias.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Rotina de Solicitação de Férias');
+            $botao->set_accesskey('F');
+            $menu->add_item($botao);
+
+            if(Verifica::acesso($idUsuario,1)){
+                $menu->show();
+            }else{
+                br();
+                p("Área em contrução. Aguarde.","center");
+                br(); 
+            }
+
+            $fieldset->fecha();
+            $grid->fechaColuna();
+            
+        ##########################################################
+
+            $grid->abreColuna(4);
+            $fieldset = new Fieldset('Sobre o Servidor');
             $fieldset->abre();
 
             $menu = new MenuGrafico();
@@ -152,18 +171,35 @@ if($acesso)
             $botao->set_title('Lista de Servidores por Lotação');
             $menu->add_item($botao);
 
-            $menu->show();
+            #$menu->show();
+            br();
+            p("Área em contrução. Aguarde.","center");
+            br();
 
             $fieldset->fecha();
             $grid->fechaColuna();
+            
+        ################################################################
 
-            ################################################################
-
-            $grid->abreColuna(6);
-            $fieldset = new Fieldset('Informações Gerais');
+            $grid->abreColuna(12);
+            $fieldset = new Fieldset('Sobre a Universidade');
             $fieldset->abre();
 
-            $menu = new MenuGrafico();
+            $menu = new MenuGrafico(4);
+
+            $botao = new BotaoGrafico();
+            $botao->set_label('Servidores por Lotação');
+            $botao->set_url('servidorLotacao.php');
+            $botao->set_image(PASTA_FIGURAS.'servidores.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Lista de Servidores por Lotação');
+            $menu->add_item($botao);
+
+            $botao = new BotaoGrafico();
+            $botao->set_label('Servidores por Cargo');
+            $botao->set_url('servidorCargo.php');
+            $botao->set_image(PASTA_FIGURAS.'cracha.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Lista de Servidores por Lotação');
+            $menu->add_item($botao);
 
             $botao = new BotaoGrafico();
             $botao->set_label('Cargos em Comissão');
@@ -186,13 +222,65 @@ if($acesso)
 
             $grid->fechaGrid();
 
-            ################################################################
+        ##########################################################
+        
+            # links externos
+            $grid->abreColuna(12);
+            
+            $fieldset = new Fieldset('Links Externos');
+            $fieldset->abre();
+            
+            $menu = new MenuGrafico(4);
+            $largura = 120;
+            $altura = 50;
+
+            $botao = new BotaoGrafico();
+            #$botao->set_label(SISTEMA_GRH);
+            $botao->set_title('Portal do Sistema Integrado de Gestao de Recursos Humanos do Estado do Rio de Janeiro');
+            $botao->set_image(PASTA_FIGURAS."sigrh.png",$largura,$altura);      
+            $botao->set_url("http://www.entradasigrhn.rj.gov.br/");
+            #$menu->add_item($botao);
+
+            $botao = new BotaoGrafico();
+            $botao->set_label("");
+            $botao->set_image(PASTA_FIGURAS."do.png",$largura,$altura);  
+            $botao->set_url("http://www.imprensaoficial.rj.gov.br/portal/modules/profile/user.php?xoops_redirect=/portal/modules/content/index.php?id=21");
+            $botao->set_title("Imprensa Oficial do Estado do Rio de Janeiro");
+            $menu->add_item($botao);
+            
+            $botao = new BotaoGrafico();
+            #$botao->set_label(SISTEMA_GRH);
+            $botao->set_title('Portal do Processo Digital');
+            $botao->set_image(PASTA_FIGURAS."processoDigital.png",$largura,$altura);     
+            $botao->set_url("https://www.processodigital.rj.gov.br/");
+            $menu->add_item($botao);
+            
+            $botao = new BotaoGrafico();
+            #$botao->set_label(SISTEMA_GRH);
+            $botao->set_title('Site da UENF');
+            $botao->set_image(PASTA_FIGURAS."uenf.jpg",$largura,$altura);       
+            $botao->set_url("http://www.uenf.br/portal/index.php/br/");
+            $menu->add_item($botao);
+            
+            $botao = new BotaoGrafico();
+            #$botao->set_label(SISTEMA_GRH);
+            $botao->set_title('Site da GRH');
+            $botao->set_image(PASTA_FIGURAS."GRH.png",$largura,$altura);  
+            $botao->set_url("http://uenf.br/dga/grh/");
+            $menu->add_item($botao);
+
+            $menu->show();
+        
+            $fieldset->fecha();
+            $grid->fechaColuna();
+        
+        ################################################################
 
             # Exibe o rodapé da página
             AreaServidor::rodape($idUsuario);
             break;
 
-##################################################################
+        ##################################################################
             
         case "organograma" :
             botaoVoltar('?');
