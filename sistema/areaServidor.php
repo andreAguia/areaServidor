@@ -19,6 +19,9 @@ if($acesso)
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
+    
+    # Pega o idServidor do usuário logado
+    $idServidor = $intra->get_idServidor($idUsuario);
 
     # Verifica a fase do programa
     $fase = get('fase','menu'); # Qual a fase
@@ -79,8 +82,7 @@ if($acesso)
             titulo('Área do Servidor');
             $tamanhoImage = 64;
 
-            # Exibe os dados do Servidor
-            $idServidor = $intra->get_idServidor($idUsuario);
+            # Exibe os dados do Servidor            
             Grh::listaDadosServidor($idServidor);
 
             ################################################################
@@ -122,7 +124,7 @@ if($acesso)
 
             ################################################################
 
-            $grid->abreColuna(4);
+            $grid->abreColuna(3);
 
             $fieldset = new Fieldset('Serviços');
             $fieldset->abre();
@@ -151,30 +153,34 @@ if($acesso)
             
         ##########################################################
 
-            $grid->abreColuna(4);
+            $grid->abreColuna(5);
             $fieldset = new Fieldset('Sobre o Servidor');
             $fieldset->abre();
 
             $menu = new MenuGrafico();
 
             $botao = new BotaoGrafico();
-            $botao->set_label('Servidores por Lotação');
-            $botao->set_url('servidorLotacao.php');
-            $botao->set_image(PASTA_FIGURAS.'servidores.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Lista de Servidores por Lotação');
+            $botao->set_label('Histórico de Licença');
+            $botao->set_url('?fase=historicoLicenca');
+            $botao->set_image(PASTA_FIGURAS.'licenca.jpg',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Exibe o seu histórico de licenças e afastamentos');
             $menu->add_item($botao);
 
             $botao = new BotaoGrafico();
-            $botao->set_label('Servidores por Cargo');
-            $botao->set_url('servidorCargo.php');
-            $botao->set_image(PASTA_FIGURAS.'cracha.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Lista de Servidores por Lotação');
+            $botao->set_label('Histórico de Férias');
+            $botao->set_url('?fase=historicoFerias');
+            $botao->set_image(PASTA_FIGURAS.'ferias.jpg',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Exibe o seu histórico de férias');
+            $menu->add_item($botao);
+            
+            $botao = new BotaoGrafico();
+            $botao->set_label('Férias do seu Setor');
+            $botao->set_url('?fase=feriasSetor');
+            $botao->set_image(PASTA_FIGURAS.'feriasSetor.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Exibe as férias dos servidores do seu setor');
             $menu->add_item($botao);
 
-            #$menu->show();
-            br();
-            p("Área em contrução. Aguarde.","center");
-            br();
+            $menu->show();
 
             $fieldset->fecha();
             $grid->fechaColuna();
@@ -280,7 +286,7 @@ if($acesso)
             AreaServidor::rodape($idUsuario);
             break;
 
-        ##################################################################
+##################################################################
             
         case "organograma" :
             botaoVoltar('?');
@@ -332,6 +338,106 @@ if($acesso)
             $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
             break;
 
+##################################################################
+        
+        case "historicoFerias" :
+            botaoVoltar('?');
+            
+            # Exibe os dados do Servidor            
+            Grh::listaDadosServidor($idServidor);
+            
+            # Pega os dados
+            $select ='SELECT anoExercicio,
+                             status,
+                             dtInicial,
+                             numDias,
+                             idFerias,
+                             ADDDATE(dtInicial,numDias-1)
+                        FROM tbferias
+                       WHERE idServidor = '.$idServidor.'
+                    ORDER BY dtInicial desc';
+
+            $result = $servidor->select($select);
+            
+            $tabela = new Tabela();
+            $tabela->set_titulo("Histórico de Férias");
+            $tabela->set_conteudo($result);
+            $tabela->set_label(array("Exercicio","Status","Data Inicial","Dias","P","Data Final"));
+            $tabela->set_align(array("center"));
+            $tabela->set_funcao(array (NULL,NULL,'date_to_php',NULL,NULL,'date_to_php'));
+            $tabela->set_classe(array(NULL,NULL,NULL,NULL,'pessoal'));
+            $tabela->set_metodo(array(NULL,NULL,NULL,NULL,"get_feriasPeriodo"));
+            $tabela->show();
+            
+            # Grava no log a atividade
+            $atividade = 'Visualizou o próprio histórico de férias na área do servidor';
+            $Objetolog = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
+            break;
+
+##################################################################
+        
+        case "historicoLicenca" :
+            botaoVoltar('?');
+            
+            # Exibe os dados do Servidor            
+            Grh::listaDadosServidor($idServidor);
+            
+            # Pega os dados
+            $select ='SELECT CONCAT(tbtipolicenca.nome,"@",IFNULL(lei,"")),
+                            CASE tipo
+                               WHEN 1 THEN "Inicial"
+                               WHEN 2 THEN "Prorrogação"
+                               end,
+                            IF(alta = 1,"Alta",NULL),
+                            dtInicial,
+                            numdias,
+                            ADDDATE(dtInicial,numDias-1),
+                            tblicenca.processo,
+                            dtInicioPeriodo,
+                            dtFimPeriodo,
+                            dtPublicacao
+                       FROM tblicenca LEFT JOIN tbtipolicenca ON tblicenca.idTpLicenca = tbtipolicenca.idTpLicenca
+                      WHERE idServidor='.$idServidor.'
+                   ORDER BY tblicenca.dtInicial desc';
+
+            $result = $servidor->select($select);
+            
+            $tabela = new Tabela();
+            $tabela->set_titulo("Histórico de Licenças");
+            $tabela->set_conteudo($result);
+            $tabela->set_label(array("Licença ou Afastamento","Tipo","Alta","Inicio","Dias","Término","Processo","P.Aq. Início","P.Aq. Término","Publicação"));
+            $tabela->set_align(array("left"));
+            $tabela->set_funcao(array("exibeLeiLicenca",NULL,NULL,'date_to_php',NULL,'date_to_php',NULL,'date_to_php','date_to_php','date_to_php'));
+            $tabela->show();
+            
+            # Grava no log a atividade
+            $atividade = 'Visualizou o próprio histórico de férias na área do servidor';
+            $Objetolog = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
+            break;
+
+##################################################################
+        
+        case "feriasSetor" :
+            botaoVoltar('?');
+            
+            # Exibe os dados do Servidor            
+            Grh::listaDadosServidor($idServidor);
+            
+            # Pega o ano
+            $ano = date("Y")-1;
+            
+            # Pega a Lotação atual do usuário
+            $idLotacao = $servidor->get_idlotacao($idServidor);
+            
+            $lista1 = new listaFerias($ano);
+            $lista1->set_lotacao($idLotacao);
+            $lista1->showPorSolicitacao("Férias de $ano dos Servidores da ".$servidor->get_nomeLotacao($idLotacao));
+            break;
+        
 ##################################################################
         
         case "sobre" :
