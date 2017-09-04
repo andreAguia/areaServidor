@@ -491,25 +491,34 @@ if($acesso)
 
                     # Browsers Preferidos
                     $select = 'SELECT browser,
-                               count(*)
+                               count(*) as tot
                           FROM tblog
                          WHERE idUsuario = '.$id.' 
                            AND tipo = 0 
                            AND YEAR(data) = '.$ano.'
                            AND MONTH(data) = '.$mes.'      
                       GROUP BY browser ORDER BY 2 desc';
+                    
                     $conteudo = $intra->select($select,TRUE);
+                    
+                    # Pega a soma dos campos
+                    $soma = 0;
+                    foreach ($conteudo as $value){
+                        $soma += $value['tot'];
+                    }
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
                     $tabela->set_titulo("Browsers Preferidos");
                     $tabela->set_label(array("Browser","Logins"));
                     $tabela->set_align(array("center"));
+                    $tabela->set_totalRegistro(FALSE);
+                    $tabela->set_rodape("Total de Logins: ".$soma);
                     $tabela->show();
 
                     # iPs 
                     $select = 'SELECT ip,
-                               count(*)
+                               count(*) as tot
                           FROM tblog
                          WHERE idUsuario = '.$id.'
                            AND tipo = 0                         
@@ -518,12 +527,20 @@ if($acesso)
                       GROUP BY ip ORDER BY 2 desc';
 
                     $conteudo = $intra->select($select,TRUE);
+                    
+                    # Pega a soma dos campos
+                    $soma = 0;
+                    foreach ($conteudo as $value){
+                        $soma += $value['tot'];
+                    }
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
                     $tabela->set_titulo("IPs Acessados");
                     $tabela->set_label(array("ip","Logins"));
                     $tabela->set_align(array("center"));
+                    $tabela->set_totalRegistro(FALSE);
+                    $tabela->set_rodape("Total de Logins: ".$soma);
                     $tabela->show();
 
                     $grid->fechaColuna();
