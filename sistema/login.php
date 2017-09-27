@@ -49,7 +49,7 @@ switch ($fase)
         $grid = new Grid("center");
         $grid->abreColuna(10,5);
         
-        $callout = new Callout();
+        $callout = new Callout("secondary");
         $callout->abre();
         $form = new Form('?fase=valida','login');        
         
