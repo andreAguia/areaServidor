@@ -7,10 +7,10 @@
 
 # Servidor logado 
 $idUsuario = NULL;
-echo "oi1";
+
 # Configuração
 include ("_config.php");
-echo "oi2s";
+
 # Conecta ao Banco de Dados
 $intra = new Intra();
 $pessoal = new Pessoal();
