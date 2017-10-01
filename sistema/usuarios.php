@@ -347,7 +347,7 @@ if($acesso)
                                       grh.tblotacao.GER,
                                       grh.tblotacao.nome,
                                       idLotacaoFerias
-                                 FROM areaServidor.tblotacaoFerias JOIN grh.tblotacao USING (idLotacao)
+                                 FROM areaServidor.tblotacaoferias JOIN grh.tblotacao USING (idLotacao)
                                  WHERE idUsuario = '.$id.'
                              ORDER BY DIR,GER';
 
@@ -393,7 +393,7 @@ if($acesso)
                                  FROM grh.tblotacao
                                  WHERE ativo
                                  AND idLotacao NOT IN (SELECT idLotacao 
-                                         FROM tblotacaoFerias
+                                         FROM tblotacaoferias
                                         WHERE idUsuario = '.$id.') 
                              ORDER BY DIR,GER';
 
@@ -736,7 +736,7 @@ if($acesso)
             $servidor = $intra->get_idServidor($id);
             
             # Inclui a nova permissao
-            $intra->set_tabela('tblotacaoFerias');     # a tabela
+            $intra->set_tabela('tblotacaoferias');     # a tabela
             $intra->set_idCampo('idLotacaoFerias');    # o nome do campo id
             $campos = array("idLotacao","idUsuario");
             $valor = array($ldLotacao,$id);
@@ -746,7 +746,7 @@ if($acesso)
             
             # Grava no log a atividade
             $data = date("Y-m-d H:i:s");
-            $intra->registraLog($idUsuario,$data,$atividade,'tblotacaoFerias',$idLotacaoFerias,1,$servidor);	
+            $intra->registraLog($idUsuario,$data,$atividade,'tblotacaoferias',$idLotacaoFerias,1,$servidor);	
             
             loadPage ('?fase=exibePermissao&id='.$id);
             break;
@@ -762,13 +762,13 @@ if($acesso)
             $servidor = $intra->get_idServidor($id);
             
             # Exclui a permissão
-            $intra->set_tabela('tblotacaoFerias');    # a tabela
+            $intra->set_tabela('tblotacaoferias');    # a tabela
             $intra->set_idCampo('idLotacaoFerias');   # o nome do campo id
             $intra->excluir($idLotacaoFerias);         # executa a exclusão
 
             # Grava no log a atividade
             $data = date("Y-m-d H:i:s");
-            $intra->registraLog($idUsuario,$data,$atividade,'tblotacaoFerias',$idLotacaoFerias,3,$servidor);	
+            $intra->registraLog($idUsuario,$data,$atividade,'tblotacaoferias',$idLotacaoFerias,3,$servidor);	
             
             loadPage ('?fase=exibePermissao&id='.$id);
             break;
