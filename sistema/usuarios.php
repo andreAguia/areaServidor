@@ -135,7 +135,7 @@ if($acesso)
     # Pega os dados da combo nome
     $result = $pessoal->select('SELECT idServidor, 
                                      tbpessoa.nome
-                                FROM tbservidor JOIN tbpessoa ON(tbservidor.idPessoa = tbPessoa.idPessoa)
+                                FROM tbservidor JOIN tbpessoa USING(idPessoa)
                                 WHERE tbservidor.situacao = 1
                             ORDER BY tbpessoa.nome');
     array_unshift($result, array(0,NULL)); # Adiciona o valor de nulo

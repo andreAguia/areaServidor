@@ -209,7 +209,7 @@ if($acesso)
                 $botao->set_title('Executa o PhpMyAdmin');
                 $botao->set_target('_blank');
                 $botao->set_image(PASTA_FIGURAS.'mysql.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('http://localhost/phpmyadmin');
+                $botao->set_url('http://127.0.0.1/phpmyadmin');
                 $menu->add_item($botao);
                 
                 # Backup Manual
