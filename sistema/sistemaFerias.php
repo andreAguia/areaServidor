@@ -86,10 +86,10 @@ if($acesso){
     $form->add_item($controle);
 
     # Lotação
-    $result = $pessoal->select('SELECT areaServidor.tblotacaoFerias.idlotacao, 
+    $result = $pessoal->select('SELECT areaServidor.tblotacaoferias.idlotacao, 
                                        concat(IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")," - ",IFNULL(tblotacao.nome,"")) lotacao
-                                  FROM areaServidor.tblotacaoFerias LEFT JOIN grh.tblotacao USING (idlotacao)
-                                 WHERE areaServidor.tblotacaoFerias.idUsuario = '.$idUsuario.' 
+                                  FROM areaServidor.tblotacaoferias LEFT JOIN grh.tblotacao USING (idlotacao)
+                                 WHERE areaServidor.tblotacaoferias.idUsuario = '.$idUsuario.' 
                               ORDER BY ativo desc,lotacao');
     
     $controle = new Input('parametroLotacao','combo','Lotação:',1);
