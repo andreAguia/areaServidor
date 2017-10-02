@@ -433,7 +433,7 @@ if($acesso)
             # Pega a Lotação atual do usuário
             $idLotacao = $servidor->get_idlotacao($idServidor);
             
-            $lista1 = new listaFerias($ano);
+            $lista1 = new ListaFerias($ano);
             $lista1->set_lotacao($idLotacao);
             $lista1->showPorSolicitacao("Férias de $ano dos Servidores da ".$servidor->get_nomeLotacao($idLotacao));
             break;
