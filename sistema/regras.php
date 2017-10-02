@@ -183,7 +183,7 @@ if($acesso)
                                   tbusuario.idServidor,
                                   idPermissao
                              FROM tbpermissao JOIN tbusuario ON(tbpermissao.idUsuario = tbusuario.idUsuario)
-                            WHERE tbpermissao.idregra = '.$id.'
+                            WHERE tbpermissao.idRegra = '.$id.'
                          ORDER BY tbusuario.usuario';
                 $result = $intra->select($select,TRUE);
                 $tabela = new tabela();
