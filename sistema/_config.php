@@ -143,7 +143,7 @@ $intra = new Intra();
 define("SISTEMA",$intra->get_variavel("sistemaIntra"));             # Nome do sistema
 define("DESCRICAO",$intra->get_variavel("sistemaIntraDescricao"));  # Descrição do sistema
 define("AUTOR",$intra->get_variavel("sistemaAutor"));               # Autor do sistema
-define("EMAILAUTOR",$intra->get_variavel("sistemaAutorEmail"));   # Autor do sistema
+define("EMAILAUTOR",$intra->get_variavel("sistemaAutorEmail"));     # Autor do sistema
 
 # Versão do sistema
 $versao = $intra->get_versaoAtual();
