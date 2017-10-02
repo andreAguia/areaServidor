@@ -182,11 +182,11 @@ if($acesso)
                                   tbusuario.idServidor,
                                   tbusuario.idServidor,
                                   idPermissao
-                             FROM tbpermissao JOIN tbusuario ON(tbpermissao.idUsuario = tbusuario.idUsuario)
+                             FROM tbpermissao JOIN tbusuario USING (idUsuario)
                             WHERE tbpermissao.idRegra = '.$id.'
                          ORDER BY tbusuario.usuario';
                 $result = $intra->select($select,TRUE);
-                $tabela = new tabela();
+                $tabela = new Tabela();
                 $tabela->set_conteudo($result);
                 $tabela->set_label(array("Usuário","Nome","Cargo","Lotação"));
                 #$tabela->set_width(array(10,30,30,20));
