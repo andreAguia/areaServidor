@@ -114,7 +114,7 @@ if($acesso)
                 $botao->set_image(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_title('Sistema de Gestão de Contratos');
                 $botao->set_accesskey('C');
-                $menu->add_item($botao);
+                #$menu->add_item($botao);
             }
 
             $menu->show();
@@ -413,7 +413,7 @@ if($acesso)
             $tabela->show();
             
             # Grava no log a atividade
-            $atividade = 'Visualizou o próprio histórico de férias na área do servidor';
+            $atividade = 'Visualizou o próprio histórico de Licença na área do servidor';
             $Objetolog = new Intra();
             $data = date("Y-m-d H:i:s");
             $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
@@ -428,7 +428,7 @@ if($acesso)
             Grh::listaDadosServidor($idServidor);
             
             # Pega o ano
-            $ano = date("Y")-1;
+            $ano = date("Y");
             
             # Pega a Lotação atual do usuário
             $idLotacao = $servidor->get_idlotacao($idServidor);
@@ -436,6 +436,12 @@ if($acesso)
             $lista1 = new ListaFerias($ano);
             $lista1->set_lotacao($idLotacao);
             $lista1->showPorSolicitacao("Férias de $ano dos Servidores da ".$servidor->get_nomeLotacao($idLotacao));
+            
+            # Grava no log a atividade
+            $atividade = 'Visualizou os servidores em férias do próprio setor na área do servidor';
+            $Objetolog = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
             break;
         
 ##################################################################

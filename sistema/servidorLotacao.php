@@ -133,10 +133,9 @@ if($acesso)
             $grid->fechaGrid();
             
             # Grava no log a atividade
-            $atividade = "Visualizou os servidores da lotação: $parametroLotacao na área do servidor";
-            $Objetolog = new Intra();
+            $atividade = "Visualizou os servidores da lotação: ".$pessoal->get_nomeLotacao($parametroLotacao)." na área do servidor";
             $data = date("Y-m-d H:i:s");
-            $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
+            $intra->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
             break;
         
         ###############################
