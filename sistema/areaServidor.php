@@ -38,6 +38,8 @@ if($acesso)
     set_session('feriasAnoExercicio');
     set_session('feriasLotacao');
     set_session('servidorLotacao');
+    set_session('servidorCargoComissao');
+    
     
     $grid = new Grid();
     $grid->abreColuna(12);
@@ -88,10 +90,10 @@ if($acesso)
             ################################################################
 
             $grid = new Grid();
-            $grid->abreColuna(4);
+            $grid->abreColuna(3);
 
-            $fieldset = new Fieldset('Sistemas');
-            $fieldset->abre();
+            tituloTable('Sistemas');
+            br(); 
 
             $menu = new MenuGrafico();
 
@@ -115,47 +117,26 @@ if($acesso)
                 $botao->set_title('Sistema de Gestão de Contratos');
                 $botao->set_accesskey('C');
                 #$menu->add_item($botao);
+                
+                # Solicitação de Férias
+                $botao = new BotaoGrafico();
+                $botao->set_label('Solicitação de Férias');
+                $botao->set_url('solicitaFerias.php');
+                $botao->set_image(PASTA_FIGURAS.'ferias.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_title('Rotina de Solicitação de Férias');
+                $botao->set_accesskey('F');
+                #$menu->add_item($botao);
             }
 
             $menu->show();
-
-            $fieldset->fecha();
+            br();            
             $grid->fechaColuna();
-
-            ################################################################
-
-            $grid->abreColuna(3);
-
-            $fieldset = new Fieldset('Serviços');
-            $fieldset->abre();
-
-            $menu = new MenuGrafico();
-
-            # Solicitação de Férias
-            $botao = new BotaoGrafico();
-            $botao->set_label('Solicitação de Férias');
-            $botao->set_url('solicitaFerias.php');
-            $botao->set_image(PASTA_FIGURAS.'ferias.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Rotina de Solicitação de Férias');
-            $botao->set_accesskey('F');
-            $menu->add_item($botao);
-
-            if(Verifica::acesso($idUsuario,1)){
-                $menu->show();
-            }else{
-                br();
-                p("Área em contrução. Aguarde.","center");
-                br(); 
-            }
-
-            $fieldset->fecha();
-            $grid->fechaColuna();
-            
-        ##########################################################
-
-            $grid->abreColuna(5);
-            $fieldset = new Fieldset('Sobre o Servidor');
-            $fieldset->abre();
+        
+        ################################################################
+           
+            $grid->abreColuna(9);
+            tituloTable('Sobre o Servidor');
+            br(); 
 
             $menu = new MenuGrafico();
 
@@ -181,51 +162,40 @@ if($acesso)
             $menu->add_item($botao);
 
             $menu->show();
-
-            $fieldset->fecha();
+            br();
             $grid->fechaColuna();
             
         ################################################################
 
             $grid->abreColuna(12);
-            $fieldset = new Fieldset('Sobre a Universidade');
-            $fieldset->abre();
+            tituloTable('Servidores da Universidade');
+            br(); 
 
-            $menu = new MenuGrafico(4);
+            $menu = new MenuGrafico(3);
 
             $botao = new BotaoGrafico();
-            $botao->set_label('Servidores por Lotação');
+            $botao->set_label('por Lotação');
             $botao->set_url('servidorLotacao.php');
             $botao->set_image(PASTA_FIGURAS.'servidores.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Lista de Servidores por Lotação');
+            $botao->set_title('Lista de servidores por lotação');
             $menu->add_item($botao);
 
             $botao = new BotaoGrafico();
-            $botao->set_label('Servidores por Cargo');
+            $botao->set_label('por Cargo Efetivo');
             $botao->set_url('servidorCargo.php');
             $botao->set_image(PASTA_FIGURAS.'cracha.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Lista de Servidores por Lotação');
+            $botao->set_title('Lista de servidores por cargo efetivo');
             $menu->add_item($botao);
-
+            
             $botao = new BotaoGrafico();
-            $botao->set_label('Cargos em Comissão');
-            $botao->set_url('?fase=cargoComissao');
+            $botao->set_label('por Cargo em Comissão');
+            $botao->set_url('servidorCargoComissao.php');
             $botao->set_image(PASTA_FIGURAS.'comissao.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Lista de Servidores por Lotação');
+            $botao->set_title('Lista de servidores por cargo em comissão');
             $menu->add_item($botao);
-
-            $botao = new BotaoGrafico();
-            $botao->set_label('Organograma da UENF');
-            $botao->set_url('?fase=organograma');
-            $botao->set_image(PASTA_FIGURAS.'diagrama.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Lista de Servidores por Lotação');
-            $menu->add_item($botao);
-
             $menu->show();
-
-            $fieldset->fecha();
+            br();
             $grid->fechaColuna();
-
             $grid->fechaGrid();
 
         ##########################################################
@@ -233,11 +203,11 @@ if($acesso)
             # links externos
             $grid->abreColuna(12);
             
-            $fieldset = new Fieldset('Links Externos');
-            $fieldset->abre();
+            tituloTable('Links Externos');
+            br(); 
             
             $menu = new MenuGrafico(4);
-            $largura = 120;
+            $largura = 100;
             $altura = 50;
 
             $botao = new BotaoGrafico();
@@ -276,11 +246,10 @@ if($acesso)
             $menu->add_item($botao);
 
             $menu->show();
-        
-            $fieldset->fecha();
+            br();
             $grid->fechaColuna();
         
-        ################################################################
+        #########################################################
 
             # Exibe o rodapé da página
             AreaServidor::rodape($idUsuario);
@@ -303,43 +272,7 @@ if($acesso)
             break;
 
 ##################################################################
-        
-        case "cargoComissao" :
-            botaoVoltar('?');
-            
-            # Pega os dados
-            $select ='SELECT descricao,
-                             simbolo,
-                             valsal,
-                             vagas,
-                             idTipoComissao,
-                             idTipoComissao
-                        FROM tbtipocomissao
-                       WHERE ativo
-                    ORDER BY simbolo asc';
-
-            $result = $servidor->select($select);
-            
-            $tabela = new Tabela();
-            $tabela->set_titulo("Cargos em Comissão");
-            $tabela->set_conteudo($result);
-            $tabela->set_label(array("Cargo","Simbolo","Valor (R$)","Vagas","Servidores Nomeados","Vagas Disponíveis"));
-            #$tabela->set_width(array(80,10,10));
-            $tabela->set_align(array("left","center","center"));
-            $tabela->set_funcao(array(NULL,NULL,"formataMoeda"));
-            $tabela->set_classe(array(NULL,NULL,NULL,NULL,'pessoal','pessoal'));
-            $tabela->set_metodo(array(NULL,NULL,NULL,NULL,'get_servidoresCargoComissao','get_cargoComissaoVagasDisponiveis'));
-            $tabela->show();
-            
-            # Grava no log a atividade
-            $atividade = 'Visualizou os cargos em comissão na área do servidor';
-            $Objetolog = new Intra();
-            $data = date("Y-m-d H:i:s");
-            $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
-            break;
-
-##################################################################
-        
+                      
         case "historicoFerias" :
             botaoVoltar('?');
             

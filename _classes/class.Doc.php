@@ -9,8 +9,7 @@ class Doc extends Bd
 {
     private $servidor = "localhost";        // servidor
     private $usuario = "root";              // usuário
-    #private $senha = "DSvuEtwz6h9HfLCF";   // senha
-    private $senha = "";                    // senha
+    private $senha = NULL;   // senha
     private $banco = "information_schema";  // nome do banco
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela
@@ -47,6 +46,18 @@ class Doc extends Bd
     public function set_idCampo($idCampo)
     {
         $this->idCampo = $idCampo;
+    }
+
+    ###########################################################
+
+    /**
+    * Método set_senha
+    * 
+    * @param  	$senha	-> senha  no nbanco do usuario root
+    */
+    public function set_senha($senha)
+    {
+        $this->senha = $senha;
     }
 
     ###########################################################

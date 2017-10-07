@@ -86,6 +86,22 @@ if($acesso)
             $linkBotao1->set_accessKey('V');
             $menu1->add_link($linkBotao1,"left");
             
+            # Lotação Ativas
+            $imagem = new Imagem(PASTA_FIGURAS.'lista.png',NULL,15,15);
+            $botaoLot = new Button();
+            $botaoLot->set_title("Listagem de lotações ativas");
+            $botaoLot->set_onClick("window.open('../../grh/grhRelatorios/lotacao.php','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
+            $botaoLot->set_imagem($imagem);
+            $menu1->add_link($botaoLot,"right");
+            
+            # Organograma
+            $imagem3 = new Imagem(PASTA_FIGURAS.'organograma2.png',NULL,15,15);
+            $botaoOrg = new Button();
+            $botaoOrg->set_title("Exibe o Organograma da UENF");
+            $botaoOrg->set_imagem($imagem3);
+            $botaoOrg->set_onClick("window.open('../../grh/_img/organograma.png','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=1000,height=700');");
+            $menu1->add_link($botaoOrg,"right");
+            
             # Relatórios
             $imagem = new Imagem(PASTA_FIGURAS.'print.png',NULL,15,15);
             $botaoRel = new Button();
@@ -154,6 +170,8 @@ if($acesso)
             
             $lista->showRelatorio();
             break; 
+            
+        ###############################
     }
     $page->terminaPagina();
 }else{
