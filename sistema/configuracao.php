@@ -158,37 +158,37 @@ if($acesso)
     {
         case "" :
         case "listar" :
-            # Filtra por cateforia
-                # Por controle
-                $form = new Form('?');
-                # Situação
+            # Divide a página em 2 colunas
+            $grid = new Grid();
+            $grid->abreColuna(2);
+                
+                $menu = new Menu();
                 $result = $intra->select('SELECT distinct categoria, categoria
                                               FROM tbvariaveis                                
                                           ORDER BY 1');
-
-                $controle = new Input('categoria','combo','Categoria:',1);
-                $controle->set_size(30);
-                $controle->set_title('Filtra por Situação');
-                $controle->set_array($result);
-                $controle->set_valor($categoria);
-                $controle->set_onChange('formPadrao.submit();');
-                $controle->set_linha(1);
-                $controle->set_col(4);
-                $form->add_item($controle);
-
-                #$form->show();
                 
-                # Por Botòes
-                $menu = array();
+                $menu->add_item('titulo',"Categoria","#");
                 foreach ($result as $value) {
-                    $botao = new Link($value[0],"?categoria=".$value[0]);
-                    $botao->set_class('button success');
-                    $botao->set_title('Filtra para categoria: '.$value[0]);
-                    $menu[] = $botao;
+                    $menu->add_item('link',$value[0],"?categoria=".$value[0]);
+                    #$botao = new Link($value[0],"?categoria=".$value[0]);
+                    #$botao->set_class('button success');
+                    #$botao->set_title('Filtra para categoria: '.$value[0]);
+                    #$menu[] = $botao;
                 }
+                $menu->show();
                 $objeto->set_botaoListarExtra($menu);
             br();    
+            
+             $grid->fechaColuna();
+            
+            ############################################
+
+            # Área do Sistema
+            $grid->abreColuna(10);
+            
             $objeto->listar();
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
             break;
 
         case "editar" :	

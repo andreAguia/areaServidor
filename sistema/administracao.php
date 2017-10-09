@@ -45,6 +45,7 @@ if($acesso)
         case "menu" :
             botaoVoltar('areaServidor.php');
             titulo('Administração');
+            br();
 
             # Define o tamanho do ícone
             $tamanhoImage = 60;
@@ -55,203 +56,202 @@ if($acesso)
 
             # Gestão de Usuários
             $grid2->abreColuna(12,6);
-            $fieldset = new Fieldset('Gestão de Usuários');
-            $fieldset->abre();
+            tituloTable('Gestão de Usuários');
+            br(); 
 
-                $menu = new MenuGrafico(4);
+            $menu = new MenuGrafico(4);
 
-                # Administração de Usuários
-                $botao = new BotaoGrafico();
-                $botao->set_label('Usuários');
-                $botao->set_url('usuarios.php');
-                $botao->set_image(PASTA_FIGURAS.'usuarios.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Gerencia os Usuários');
-                $menu->add_item($botao);
+            # Administração de Usuários
+            $botao = new BotaoGrafico();
+            $botao->set_label('Usuários');
+            $botao->set_url('usuarios.php');
+            $botao->set_image(PASTA_FIGURAS.'usuarios.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Gerencia os Usuários');
+            $menu->add_item($botao);
 
-                # Regras
-                $botao = new BotaoGrafico();
-                $botao->set_label('Regras');
-                $botao->set_url('regras.php');
-                $botao->set_image(PASTA_FIGURAS.'regras.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Cadastro de Regras');
-                $menu->add_item($botao);
+            # Regras
+            $botao = new BotaoGrafico();
+            $botao->set_label('Regras');
+            $botao->set_url('regras.php');
+            $botao->set_image(PASTA_FIGURAS.'regras.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Cadastro de Regras');
+            $menu->add_item($botao);
 
-                # Histórico Geral
-                $botao = new BotaoGrafico();
-                $botao->set_label('Histórico');
-                $botao->set_title('Histórico Geral do Sistema');
-                $botao->set_image(PASTA_FIGURAS.'historico.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('historico.php');
-                $menu->add_item($botao);
-                
-                # Computadores (IPs)
-                $botao = new BotaoGrafico();
-                $botao->set_label('Acesso ao Sistema');
-                $botao->set_title('Cadastro de computadores com acesso ao sistema');
-                $botao->set_image(PASTA_FIGURAS.'computador.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('computador.php');
-                $menu->add_item($botao);
+            # Histórico Geral
+            $botao = new BotaoGrafico();
+            $botao->set_label('Histórico');
+            $botao->set_title('Histórico Geral do Sistema');
+            $botao->set_image(PASTA_FIGURAS.'historico.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('historico.php');
+            $menu->add_item($botao);
 
-                $menu->show();
-
-            $fieldset->fecha();
+            # Computadores (IPs)
+            $botao = new BotaoGrafico();
+            $botao->set_label('Acesso ao Sistema');
+            $botao->set_title('Cadastro de computadores com acesso ao sistema');
+            $botao->set_image(PASTA_FIGURAS.'computador.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('computador.php');
+            $menu->add_item($botao);
+            $menu->show();
+            br();
             $grid2->fechaColuna();
+            
+            ############################################
 
             # Área do Sistema
             $grid2->abreColuna(12,6);
-            $fieldset = new Fieldset('Sistema');
-            $fieldset->abre();
+            tituloTable('Sistema');
+            br(); 
 
-                $menu = new MenuGrafico(4);
+            $menu = new MenuGrafico(4);
 
-                # Variáveis de Configuração
-                $botao = new BotaoGrafico();
-                $botao->set_label('Configurações');
-                $botao->set_url('configuracao.php');
-                $botao->set_image(PASTA_FIGURAS.'configuracao.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
-                $menu->add_item($botao);
-                
-                # Cadastro de Atualizações
-                $botao = new BotaoGrafico();
-                $botao->set_label('Atualizações');
-                $botao->set_url('atualizacao.php');
-                $botao->set_image(PASTA_FIGURAS.'atualizacao.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Gerencia o cadastro de atualizações');
-                $menu->add_item($botao);
+            # Variáveis de Configuração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Configurações');
+            $botao->set_url('configuracao.php');
+            $botao->set_image(PASTA_FIGURAS.'configuracao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
+            $menu->add_item($botao);
 
-                $menu->show();
-
-            $fieldset->fecha();
+            # Cadastro de Atualizações
+            $botao = new BotaoGrafico();
+            $botao->set_label('Atualizações');
+            $botao->set_url('atualizacao.php');
+            $botao->set_image(PASTA_FIGURAS.'atualizacao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Gerencia o cadastro de atualizações');
+            $menu->add_item($botao);
+            $menu->show();
+            br();
             $grid2->fechaColuna();
+            
+            ############################################
 
             # Documentação
-            $grid2->abreColuna(12,6);
-            $fieldset = new Fieldset('Documentação');
-            $fieldset->abre();
+            $grid2->abreColuna(12,6);            
+            tituloTable('Documentação');
+            br();
 
-                $menu = new MenuGrafico(4);
+            $menu = new MenuGrafico(4);
 
-                # Framework
-                $botao = new BotaoGrafico();
-                $botao->set_label('FrameWork');
-                $botao->set_title('Documentação do Framework');
-                $botao->set_image(PASTA_FIGURAS.'framework.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('documentaCodigo.php?fase=Framework');
-                $menu->add_item($botao);
+            # Framework
+            $botao = new BotaoGrafico();
+            $botao->set_label('FrameWork');
+            $botao->set_title('Documentação do Framework');
+            $botao->set_image(PASTA_FIGURAS.'framework.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentaCodigo.php?fase=Framework');
+            $menu->add_item($botao);
 
-                # Administração
-                $botao = new BotaoGrafico();
-                $botao->set_label('Área do Servidor');
-                $botao->set_title('Documentação da Área de Administração');
-                $botao->set_image(PASTA_FIGURAS.'administracao.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('documentaCodigo.php?fase=areaServidor');
-                $menu->add_item($botao);
+            # Administração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Área do Servidor');
+            $botao->set_title('Documentação da Área de Administração');
+            $botao->set_image(PASTA_FIGURAS.'administracao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentaCodigo.php?fase=areaServidor');
+            $menu->add_item($botao);
 
-                # Sistema de Pessoal
-                $botao = new BotaoGrafico();
-                $botao->set_label('Pessoal');
-                $botao->set_title('Documentação do Sistema de Pessoal');
-                $botao->set_image(PASTA_FIGURAS.'servidores.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('documentaCodigo.php?fase=Grh');
-                $menu->add_item($botao);
-
-                $menu->show();
-
-            $fieldset->fecha();
+            # Sistema de Pessoal
+            $botao = new BotaoGrafico();
+            $botao->set_label('Pessoal');
+            $botao->set_title('Documentação do Sistema de Pessoal');
+            $botao->set_image(PASTA_FIGURAS.'servidores.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentaCodigo.php?fase=Grh');
+            $menu->add_item($botao);
+            $menu->show();
+            br();
             $grid2->fechaColuna();
+            
+            ############################################
 
             # Servidor
             $grid2->abreColuna(12,6);
-            $fieldset = new Fieldset('Servidor');
-            $fieldset->abre();
+            tituloTable('Servidor');
+            br();
 
-                $menu = new MenuGrafico(4);
+            $menu = new MenuGrafico(4);
 
-                # Informação do PHP
-                $botao = new BotaoGrafico();
-                $botao->set_label('PHP Info');
-                $botao->set_title('Informações sobre&#10;a versão do PHP');
-                $botao->set_image(PASTA_FIGURAS.'phpInfo.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('phpInfo.php');
-                $menu->add_item($botao);
+            # Informação do PHP
+            $botao = new BotaoGrafico();
+            $botao->set_label('PHP Info');
+            $botao->set_title('Informações sobre&#10;a versão do PHP');
+            $botao->set_image(PASTA_FIGURAS.'phpInfo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('phpInfo.php');
+            $menu->add_item($botao);
 
-                # Informação do Servidor Web
-                $botao = new BotaoGrafico();
-                $botao->set_label('Web Server');
-                $botao->set_title('Informações sobre&#10;o servidor web');
-                $botao->set_image(PASTA_FIGURAS.'webServer.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('infoWebServer.php');
-                $menu->add_item($botao);
-                $menu->show();
-
-            $fieldset->fecha();  
+            # Informação do Servidor Web
+            $botao = new BotaoGrafico();
+            $botao->set_label('Web Server');
+            $botao->set_title('Informações sobre&#10;o servidor web');
+            $botao->set_image(PASTA_FIGURAS.'webServer.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('infoWebServer.php');
+            $menu->add_item($botao);
+            $menu->show();
+            br();
             $grid2->fechaColuna();
+            
+            ############################################
 
             # Banco de dados
             $grid2->abreColuna(12,6);
-            $fieldset = new Fieldset('Banco de Dados');
-            $fieldset->abre();
+            tituloTable('Banco de Dados');
+            br();
 
-                $menu = new MenuGrafico(4);
-                                
-                # Importação
-                $botao = new BotaoGrafico();
-                $botao->set_label('Importação');
-                $botao->set_title('Executa a rotina de importação');
-                $botao->set_image(PASTA_FIGURAS.'importacao.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('?fase=importacao');
-                $menu->add_item($botao);
+            $menu = new MenuGrafico(4);
 
-                # PhpMyAdmin
-                $botao = new BotaoGrafico();
-                $botao->set_label('PhpMyAdmin');
-                $botao->set_title('Executa o PhpMyAdmin');
-                $botao->set_target('_blank');
-                $botao->set_image(PASTA_FIGURAS.'mysql.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('http://127.0.0.1/phpmyadmin');
-                $menu->add_item($botao);
-                
-                # Backup Manual
-                $botao = new BotaoGrafico();
-                $botao->set_label('Backup Manual');
-                $botao->set_title('Executa um backup manual a qualquer tempo');
-                $botao->set_image(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('?fase=backup');
-                $menu->add_item($botao);
+            # Importação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Importação');
+            $botao->set_title('Executa a rotina de importação');
+            $botao->set_image(PASTA_FIGURAS.'importacao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('?fase=importacao');
+            $menu->add_item($botao);
 
-                $menu->show();
+            # PhpMyAdmin
+            $botao = new BotaoGrafico();
+            $botao->set_label('PhpMyAdmin');
+            $botao->set_title('Executa o PhpMyAdmin');
+            $botao->set_target('_blank');
+            $botao->set_image(PASTA_FIGURAS.'mysql.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('http://127.0.0.1/phpmyadmin');
+            $menu->add_item($botao);
 
-            $fieldset->fecha();  
+            # Backup Manual
+            $botao = new BotaoGrafico();
+            $botao->set_label('Backup Manual');
+            $botao->set_title('Executa um backup manual a qualquer tempo');
+            $botao->set_image(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('?fase=backup');
+            $menu->add_item($botao);
+            $menu->show();
+            br();
             $grid2->fechaColuna();
+            
+            ############################################
             
             # Outros
             $grid2->abreColuna(12,6);
-            $fieldset = new Fieldset('Outros');
-            $fieldset->abre();
+            tituloTable('Banco de Dados');
+            br();
 
-                $menu = new MenuGrafico(4);
+            $menu = new MenuGrafico(4);
 
-                # Cadastro de Mensagens
-                $botao = new BotaoGrafico();
-                $botao->set_label('Mensagens');
-                $botao->set_title('Cadastro de Mensagens');
-                $botao->set_image(PASTA_FIGURAS.'mensagem.jpg',$tamanhoImage,$tamanhoImage);
-                $botao->set_url('mensagem.php');
-                $menu->add_item($botao);
-                
-                # Administração do Site da GRH
-                $botao = new BotaoGrafico();
-                $botao->set_label('Administração do Site da GRH');
-                $botao->set_title('Acesso a área de administraçao do site da GRH');
-                $botao->set_image(PASTA_FIGURAS.'admin.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_onClick("window.open('http://uenf.br/dga/grh/admin','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=1024,height=768');");
-                #$botao->set_url('http://uenf.br/dga/grh/admin');
-                $menu->add_item($botao);
-                
-                $menu->show();
+            # Cadastro de Mensagens
+            $botao = new BotaoGrafico();
+            $botao->set_label('Mensagens');
+            $botao->set_title('Cadastro de Mensagens');
+            $botao->set_image(PASTA_FIGURAS.'mensagem.jpg',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('mensagem.php');
+            $menu->add_item($botao);
 
-            $fieldset->fecha(); 
+            # Administração do Site da GRH
+            $botao = new BotaoGrafico();
+            $botao->set_label('Administração do Site da GRH');
+            $botao->set_title('Acesso a área de administraçao do site da GRH');
+            $botao->set_image(PASTA_FIGURAS.'admin.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_onClick("window.open('http://uenf.br/dga/grh/admin','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=1024,height=768');");
+            #$botao->set_url('http://uenf.br/dga/grh/admin');
+            $menu->add_item($botao);
+            $menu->show();
+            br();
             $grid2->fechaColuna();
             $grid2->fechaGrid();    
             
