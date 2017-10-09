@@ -14,8 +14,8 @@ set ftime=%ftime:~-2%
 SET path=%path%;c:\Program Files\Java\jdk1.X.X.X_XX\bin 
 
 REM Executa o mysqldump para os bancos de dados grh e areaServidor
-mysqldump -h localhost -u root -pDSvuEtwz6h9HfLCF grh > C:/_backup/%date:~6,10%.%date:~3,2%.%date:~0,2%_%ftime%.%time:~3,2%.grh.sql
-mysqldump -h localhost -u root -pDSvuEtwz6h9HfLCF areaServidor > C:/_backup/%date:~6,10%.%date:~3,2%.%date:~0,2%_%ftime%.%time:~3,2%.areaServidor.sql
+mysqldump -h localhost -u root -pchewbacca grh > C:/_backup/%date:~6,10%.%date:~3,2%.%date:~0,2%_%ftime%.%time:~3,2%.grh.sql
+mysqldump -h localhost -u root -pchewbacca areaServidor > C:/_backup/%date:~6,10%.%date:~3,2%.%date:~0,2%_%ftime%.%time:~3,2%.areaServidor.sql
 
 REM compacta arquivos
 SET PATH=%PATH%;C:\Program Files\7-Zip
