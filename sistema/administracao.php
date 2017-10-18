@@ -312,6 +312,15 @@ if($acesso)
             $botao->set_title('Importação da Tabela de Férias');
             $menu->add_item($botao);
             $menu->show();  
+            
+            # Cidades
+            $botao = new BotaoGrafico();
+            $botao->set_label('Cidades');
+            $botao->set_url('importacaoCidades.php');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Importação da Tabela de Cidades');
+            $menu->add_item($botao);
+            $menu->show();  
             $fieldset->fecha();  
             break;
         
