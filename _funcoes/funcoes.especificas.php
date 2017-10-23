@@ -58,3 +58,20 @@ function exibeNomeTitle($idServidor){
             badge("A","warning",NULL,"Usuário Administrador.");
         }
     }
+    
+    ##################################################################
+    
+    function encontraCidade($cidade){
+        /**
+         * Informa o idCidade na tabela tbcidade de uma cidade
+         * 
+         * Usada na otina de importação de cidades
+         */
+        
+        $pessoal = new Pessoal();
+        $select = "SELECT idCidade FROM tbcidade WHERE nome = '$cidade'";
+        
+        $escolhida = $pessoal->select($select,FALSE);
+        return $escolhida[0];
+        
+    }

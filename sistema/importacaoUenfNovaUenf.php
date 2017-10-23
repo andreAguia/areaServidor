@@ -765,9 +765,7 @@ if($acesso){
                                         $situacao = 4;          // -- Demitido
                                         $motivoDemissao = 13;   // -- Outros
                                         $tipoAposentadoria = NULL;
-                                        break;
-
-                                    
+                                        break;                                    
 
                                     case 69:                    // Não existe esse tipo de demissão mas existe 15 pessoas com essa causa.Todas sit 38 (APOSENTADORIA INTEGRAL VOLUNTARIA) 
                                         $situacao = 2;          // -- Aposentado (inativo) 
@@ -831,7 +829,6 @@ if($acesso){
                                         $motivoDemissao = 13;   // -- Outros
                                         $tipoAposentadoria = NULL;
                                         break;
-
                                 }                            
                             }
                             break;

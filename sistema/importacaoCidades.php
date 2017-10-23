@@ -64,11 +64,6 @@ if($acesso){
         # Conecta ao banco
         $pessoal = new Pessoal();
 
-        # Pega a quantidade de registros com os bolsistas
-        $select = "select matr,  FROM `fen019` where dt > '1993-01-01 00:00:00' order by dt";
-        $result = $uenf->select($select);
-        $totalRegistros = count($result); 
-
         titulo('Importação da tabela de Férias - '.$totalRegistros." Registros");
 
         # Cria um painel
@@ -80,24 +75,24 @@ if($acesso){
         $numIdInvalido = 0;         // Número de ids inválidos
         $item = 1;
 
-        # Inicia a Importação
-        $select = "SELECT nome,
+        # select
+        $select = "SELECT idPessoa,
                           endereco,
                           complemento,
                           bairro,
                           cidade,
                           tbcidade.nome,
                           uf 
-                    FROM tbpessoa LEF JOIN tbcidade USING (idCidade)
+                    FROM tbpessoa LEFT JOIN tbcidade USING (idCidade)
                 ORDER BY cidade";
         $conteudo = $pessoal->select($select,TRUE);
 
         echo "<table class='tabelaPadrao'>";
         echo "<tr>";
         echo "<th>#</th>";
-        echo "<th>nome</th>";
+        echo "<th>IdPessoa</th>";
         echo "<th>Endereço</th>";
-        echo "<th>Complemento</th>";
+        #echo "<th>Complemento</th>";
         echo "<th>Bairro</th>";
         echo "<th>Cidade</th>";
         echo "<th>IdCidade</th>";
@@ -120,38 +115,19 @@ if($acesso){
             
             echo "<td>".$item."</td>";
             echo "<td>".$campo[0]."</td>";
-            echo "<td>".$campo[1]."</td>";
-            echo "<td>".$campo[2]."</td>";
+            echo "<td>".$campo[1]." ".$campo[2]."</td>";
+            #echo "<td>".$campo[2]."</td>";
             echo "<td>".$campo[3]."</td>";
             echo "<td>".$campo[4]."</td>";
-            echo "<td>".$campo[5]."</td>";
+            #echo "<td>".$campo[5]."</td>";
+            echo "<td>".encontraCidade($campo[4])."</td>";
             echo "<td>".$campo[6]."</td>";
             echo "<td>";
-
-            # Volta a data ao formato de gravação
-            $dt = date_to_bd($dt);
-
-            # Verifica validade do idServidor
-            if(is_null($idServidor)){
-                $numIdInvalido++;
-                label("idInválido. Não é possível importar","alert");
-                echo "</td>";
-                continue;
-            }
-
-            $tipo = 16;
-            echo "Férias Importada.";
-            $numItensImportados++;
-
-            # Grava na tabela
-            $campos = array("idServidor","dtInicial","obs");
-            $valor = array($idServidor,$dt,$obs);                    
-            $pessoal->gravar($campos,$valor,NULL,$tabela,$idCampo,FALSE);
             
             echo "</td>";
             echo "</tr>";
             $item++;
-            }
+        }
 
         echo "</table>";
 
