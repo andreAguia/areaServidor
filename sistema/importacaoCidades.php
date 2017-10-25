@@ -186,12 +186,11 @@ if($acesso){
                          break;
                      
                      default :
-                         $novaCidade = "ERRO";
-                         $classe = "erro";
+                         $novaCidade = NULL;
                     }
                 }
                 
-                echo "<td id='$classe'>".$novaCidade."</td>";                
+                echo "<td>".$novaCidade."</td>";                
                 echo "<td>".$campo[6]."</td>";
                
                 # Grava na tabela
