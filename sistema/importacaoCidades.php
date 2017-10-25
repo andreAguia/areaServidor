@@ -224,7 +224,7 @@ if($acesso){
                               tbcidade.nome,
                               uf
                         FROM tbpessoa LEFT JOIN tbcidade USING (idCidade)
-                        WHERE tbpessoa.idCidade = 'ERRO'
+                        WHERE tbpessoa.idCidade IS NULL
                     ORDER BY cidade";
             $conteudo = $pessoal->select($select,TRUE);
             
