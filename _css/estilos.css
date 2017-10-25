@@ -203,3 +203,11 @@ p#versao{
     padding: 0px;
     margin: 0px;
 }
+
+/*******************************************
+ * Rotina de importacao de cidade
+ *******************************************/
+
+td#erro{
+    background-color:#8FBC8F;
+}

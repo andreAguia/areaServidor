@@ -32,17 +32,8 @@ if($acesso){
     
     br();
 
-    switch ($fase)
-    {
+    switch ($fase){
         case "" :
-            br(4);
-            aguarde();
-            br();    
-           
-            loadPage('?fase=importa');
-            break;
-
-        case "importa" :            
             # Cria um menu
             $menu = new MenuBar();
 
@@ -53,17 +44,34 @@ if($acesso){
             $linkBotao1->set_accessKey('V');
             $menu->add_link($linkBotao1,"left");
 
-            # Refazer
-            $linkBotao2 = new Link("Refazer","?");
+            # Importar
+            $linkBotao2 = new Link("Importar","?fase=inicia");
             $linkBotao2->set_class('button');
             $linkBotao2->set_title('Refazer a Importação');
-            $linkBotao2->set_accessKey('R');
+            $linkBotao2->set_accessKey('I');
             $menu->add_link($linkBotao2,"right");
+            
+            # Analisar
+            $linkBotao3 = new Link("Analisar","?fase=analisa");
+            $linkBotao3->set_class('button');
+            $linkBotao3->set_title('Verifica os registros que não foram importados');
+            $linkBotao3->set_accessKey('A');
+            $menu->add_link($linkBotao3,"right");
             $menu->show();
+            break;
+        
+        case "inicia":
+            br(4);
+            aguarde();
+            br();    
+           
+            loadPage('?fase=importa');
+            break;
 
+        case "importa" :
             # Conecta ao banco
             $pessoal = new Pessoal();
-
+            botaoVoltar("?");
             titulo('Implantação de arquivo externo para cadastro das cidades');
 
             # Cria um painel
@@ -126,7 +134,64 @@ if($acesso){
                 echo "<td>".$campo[4]."</td>";
                 #echo "<td>".$campo[5]."</td>";
                 $novaCidade = encontraCidade($campo[4]);
-                echo "<td>".$novaCidade."</td>";
+                $classe = NULL;
+                if(is_null($novaCidade)){
+                    # Trata para encontrar a cidade
+                    switch ($campo[4]){
+                     case "Atafona - São João da Barra":
+                         $novaCidade = 3664;
+                         break;
+                     
+                     case "B.J. ITABAPOANA":
+                     case "Bom Jesus de Itabapoana":  
+                     case "Bom Jesus do Itababoana":    
+                         $novaCidade = 3601;
+                         break;
+                     
+                     case "BUZIOS":
+                         $novaCidade = 3595;
+                         break;
+                     
+                     case "CACHOEIRO DE MACACU":
+                         $novaCidade = 3603;
+                         break;
+                     
+                     case "CAMPOS":
+                     case "CAMPOS DOS GOITACAZES":
+                     case "CAMPOS DOS GOYTACAAZES": 
+                     case "CAMPOS DOS GOYTACAZE":
+                     case "CAMPOS DOS GOYTACAZE":    
+                     case "Campos dos Goytacazes-RJ":
+                     case "CAMPOS DOS GOYTAVAZES":
+                     case "CAMPOS DOS GOYTAZES":
+                     case "Campos dos Goytazes":
+                     case "CAMPOSD DOS GOYTACAZES":    
+                         $novaCidade = 3605;
+                         break;
+                     
+                     case "MACAE":
+                         $novaCidade = 3627;
+                         break;
+                     
+                     case "ILHA DO GOVERNADOR":
+                         $novaCidade = 3658;
+                         break;
+                     
+                     case "BARRA DE SAO JOAO":
+                         $novaCidade = 3610;
+                         break;
+                     
+                     case "SAO FRANCISCO DO ITABAPOANA":
+                         $novaCidade = 3662;
+                         break;
+                     
+                     default :
+                         $novaCidade = "ERRO";
+                         $classe = "erro";
+                    }
+                }
+                
+                echo "<td id='$classe'>".$novaCidade."</td>";                
                 echo "<td>".$campo[6]."</td>";
                
                 # Grava na tabela
@@ -148,21 +213,19 @@ if($acesso){
             $painel->fecha();
             break;
             
-        case "final" :
+        case "analisa" :
             # Conecta ao banco
             $pessoal = new Pessoal();
-            
+            botaoVoltar("?");
             titulo('Registros não importador (com idCidade NULL)');
             
             # select
             $select = "SELECT tbpessoa.nome,
                               cidade,
                               tbcidade.nome,
-                              uf,
-                              idServidor
+                              uf
                         FROM tbpessoa LEFT JOIN tbcidade USING (idCidade)
-                                      JOIN tbservidor USING (idPessoa)
-                        WHERE tbpessoa.idCidade IS NULL
+                        WHERE tbpessoa.idCidade = 'ERRO'
                     ORDER BY cidade";
             $conteudo = $pessoal->select($select,TRUE);
             
@@ -178,8 +241,8 @@ if($acesso){
             $tabela->set_label($label);
             $tabela->set_align($align);
             #$tabela->set_titulo($titulo);
-            $tabela->set_editar($linkEditar);
-            $tabela->set_idCampo('idServidor');
+            #$tabela->set_editar($linkEditar);
+            #$tabela->set_idCampo('idServidor');
             $tabela->show();
             break;
         
