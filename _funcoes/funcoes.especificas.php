@@ -72,7 +72,7 @@ function exibeNomeTitle($idServidor){
         
         $select = "SELECT idCidade "
                 . "  FROM tbcidade JOIN tbestado USING (idEstado)"
-                . " WHERE LCASE(tbcidade.nome) = '$cidade'"
+                . " WHERE LCASE(tbcidade.nome) = '".trim($cidade)."'"
                 . " ORDER BY proximidade, tbestado.nome, tbcidade.nome";
         
         $escolhida = $pessoal->select($select,FALSE);
