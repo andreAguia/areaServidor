@@ -201,6 +201,10 @@ if($acesso){
                          $novaCidade = 3660;
                          break;
                      
+                     case "ITAOCARA":
+                         $novaCidade = 3622;
+                         break;
+                     
                      default :
                          $novaCidade = NULL;
                     }
@@ -210,8 +214,8 @@ if($acesso){
                 echo "<td>".$campo[6]."</td>";
                
                 # Grava na tabela
-                $campos = array("idCidade","endereco");
-                $valor = array($novaCidade,ltrim($novoEndereco));
+                $campos = array("idCidade");
+                $valor = array($novaCidade);
                 $tabela = "tbpessoa";
                 $idCampo = "idPessoa";
                 
