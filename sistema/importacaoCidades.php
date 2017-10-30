@@ -88,7 +88,7 @@ if($acesso){
                               endereco,
                               complemento,
                               bairro,
-                              cidade,
+                              LCASE(cidade),
                               tbcidade.nome,
                               uf 
                         FROM tbpessoa LEFT JOIN tbcidade USING (idCidade)
@@ -138,51 +138,67 @@ if($acesso){
                 if(is_null($novaCidade)){
                     # Trata para encontrar a cidade
                     switch ($campo[4]){
-                     case "Atafona - São João da Barra":
+                     case "atafona - são joão da barra":
                          $novaCidade = 3664;
                          break;
                      
-                     case "B.J. ITABAPOANA":
-                     case "Bom Jesus de Itabapoana":  
-                     case "Bom Jesus do Itababoana":    
+                     case "b.j. itabapoana":
+                     case "bom jesus de itabapoana":  
+                     case "bom jesus do itababoana":    
                          $novaCidade = 3601;
                          break;
                      
-                     case "BUZIOS":
+                     case "buzios":
                          $novaCidade = 3595;
                          break;
                      
-                     case "CACHOEIRO DE MACACU":
+                     case "cachoeiro de macacu":
                          $novaCidade = 3603;
                          break;
                      
-                     case "CAMPOS":
-                     case "CAMPOS DOS GOITACAZES":
-                     case "CAMPOS DOS GOYTACAAZES": 
-                     case "CAMPOS DOS GOYTACAZE":
-                     case "CAMPOS DOS GOYTACAZE":    
-                     case "Campos dos Goytacazes-RJ":
-                     case "CAMPOS DOS GOYTAVAZES":
-                     case "CAMPOS DOS GOYTAZES":
-                     case "Campos dos Goytazes":
-                     case "CAMPOSD DOS GOYTACAZES":    
+                     case "campos":
+                     case "campos dos goitacazes":
+                     case "campos dos goytacaazes": 
+                     case "campos dos goytacaze":   
+                     case "campos dos goytacazes-rj":
+                     case "campos dos goytavazes":
+                     case "campos dos goytazes":
+                     case "campos dos goytazes":
+                     case "camposd dos goytacazes":    
                          $novaCidade = 3605;
                          break;
                      
-                     case "MACAE":
+                     case "macae":
                          $novaCidade = 3627;
                          break;
                      
-                     case "ILHA DO GOVERNADOR":
+                     case "ilha do governador":
                          $novaCidade = 3658;
                          break;
                      
-                     case "BARRA DE SAO JOAO":
+                     case "barra de sao joao":
                          $novaCidade = 3610;
                          break;
                      
-                     case "SAO FRANCISCO DO ITABAPOANA":
+                     case "sao francisco do itabapoana":
                          $novaCidade = 3662;
+                         break;
+                     
+                     case "itaperuna - rj":
+                         $novaCidade = 3623;
+                         break;
+                     
+                     case "macaé-rj":
+                         $novaCidade = 3627;
+                         break;
+                     
+                     case "saop joao da barra":
+                         $novaCidade = 3664;
+                         break;
+                     
+                      case "sto antonio de padua":
+                      case "sto. antônio de pádua":    
+                         $novaCidade = 3660;
                          break;
                      
                      default :
