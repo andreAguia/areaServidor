@@ -348,7 +348,12 @@ if($acesso)
             # Grava no log a atividade
             $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);
 
-            loadPage("?");
+            loadPage('?fase=backup3');
+            break;
+        
+        case "backup3" :
+            alert("Backup concluído! Acesse a pasta de backup para obter o arquivo.");
+            loadPage('?');
             break;
     }
     $grid1->fechaColuna();
