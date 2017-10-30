@@ -168,10 +168,6 @@ if($acesso){
                          $novaCidade = 3605;
                          break;
                      
-                     case "macae":
-                         $novaCidade = 3627;
-                         break;
-                     
                      case "ilha do governador":
                          $novaCidade = 3658;
                          break;
@@ -189,10 +185,15 @@ if($acesso){
                          break;
                      
                      case "macaé-rj":
+                     case "MACAE":
+                     case "macaé-rj":
+                     case "macae":    
                          $novaCidade = 3627;
                          break;
                      
                      case "saop joao da barra":
+                     case "SAO JOAO DA BARRA":
+                     case "São João da Barra":
                          $novaCidade = 3664;
                          break;
                      
@@ -203,6 +204,11 @@ if($acesso){
                      
                      case "ITAOCARA":
                          $novaCidade = 3622;
+                         break;
+                     
+                     case "RIO DE JANEIRO":
+                     case "Rio de Janeiro":    
+                         $novaCidade = 3658;
                          break;
                      
                      default :
