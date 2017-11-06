@@ -24,10 +24,6 @@ if($acesso)
     $fase = get('fase','menu'); # Qual a fase
     $metodo = get('sistema');	# Qual o sistema. Usado na rotina de Documentação
 
-    # Ordem da tabela
-    $orderCampo = get('orderCampo');
-    $orderTipo = get('orderTipo');
-
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
@@ -221,7 +217,16 @@ if($acesso)
             $botao->set_image(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('?fase=backup');
             $menu->add_item($botao);
+            
+            # Registros órfãos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Registros Órfãos');
+            $botao->set_title('Faz varredura para encontrar registros órfãos');
+            $botao->set_image(PASTA_FIGURAS.'regOrf.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('registroOrfao.php');
+            $menu->add_item($botao);
             $menu->show();
+            
             br();
             $grid2->fechaColuna();
             
