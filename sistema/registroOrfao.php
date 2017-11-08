@@ -38,7 +38,32 @@ if($acesso)
     {	
         # Exibe o Menu Inicial
         case "" :
-            botaoVoltar('administracao.php');
+            
+            br(6);
+            aguarde();
+            
+            loadPage('?fase=fazendo');
+            break;
+        
+        case "fazendo" :
+            # Botão voltar
+            $linkBotao1 = new Link("Voltar",'administracao.php');
+            $linkBotao1->set_class('button');
+            $linkBotao1->set_title('Volta para a página anterior');
+            $linkBotao1->set_accessKey('V');
+
+            # Refazer
+            $linkBotao2 = new Link("Refazer","?");
+            $linkBotao2->set_class('button');
+            $linkBotao2->set_title('Refaz a procura por registro órfãos');
+            $linkBotao2->set_accessKey('R');
+
+            # Cria um menu
+            $menu = new MenuBar();
+            $menu->add_link($linkBotao1,"left");
+            $menu->add_link($linkBotao2,"right");
+            $menu->show();
+            
             titulo('Descobrindo Registros Órfãos');
             br();
             
