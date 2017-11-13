@@ -122,6 +122,16 @@ div#divContagemInterna{
     color: #B00000;
 }
 
+p#diaSemana{
+    position: relative;
+    top: -15px;
+    font-size: 10px;
+    color: #02548b;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+
 /*******************************************
  * Rotina que lista dados do servidor
  *******************************************/

@@ -30,10 +30,11 @@ if($acesso)
     $idServidor = soNumeros(get('idServidor'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if(HTML5)
+    if(HTML5){
         $parametro = retiraAspas(post('parametro',get('parametro',date("Y-m-d"))));
-    else
+    }else{
         $parametro = retiraAspas(post('parametro',get('parametro',date("d/m/Y"))));
+    }
     
     $usuarioLog = post('usuarioLog','*');
     $usuarioIp = post('usuarioIp','*');
@@ -89,12 +90,14 @@ if($acesso)
     }
     
     # usuário
-    if($usuarioLog <> "*")
+    if($usuarioLog <> "*"){
         $selectLista .=' AND idUsuario = '.$usuarioLog;
+    }
     
     # IP
-    if($usuarioIp <> "*")
+    if($usuarioIp <> "*"){
         $selectLista .=' AND ip = "'.$usuarioIp.'"';
+    }
     
     $selectLista .=' ORDER BY 9 desc';
     
@@ -201,8 +204,7 @@ if($acesso)
     #$objeto->set_paginacaoItens(20);
 
     ################################################################
-    switch ($fase)
-    {
+    switch ($fase){
         case "" :
         case "listar" :
             # Toca um som quando carrega a página
@@ -263,11 +265,17 @@ if($acesso)
                 
                 br();
                 $form->show();
+                
+                # Limita o tamanho da tela
+                $grid = new Grid();
+                $grid->abreColuna(3);
+                    p(diaSemana($parametro),"diaSemana");
+                $grid->fechaColuna();
+                $grid->fechaGrid();
             $objeto->listar();
             
             # Div Contagem de refresh
-            if(($parametro == date("Y-m-d")) OR ($parametro == date("d/m/Y")))
-            {
+            if(($parametro == date("Y-m-d")) OR ($parametro == date("d/m/Y"))){
                 $div = new Div('divContagemExterna');
                 $div->set_title('Atualização da página');
                 $div->abre();

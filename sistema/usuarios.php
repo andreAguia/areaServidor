@@ -564,7 +564,7 @@ if($acesso)
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
-                    $tabela->set_titulo("Histórico Mensal Detalhado");
+                    $tabela->set_titulo("Atividade Mensal Detalhada");
                     $tabela->set_width(array(5,20,10,10,5,5,45));
                     $tabela->set_label(array("","Data","IP","Tabela","Id","IdServidor","Atividade"));
                     $tabela->set_align(array("center","center","center","center","center","center","left"));
