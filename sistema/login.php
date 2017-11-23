@@ -365,7 +365,10 @@ switch ($fase)
         $linkBotaoVoltar->set_accessKey('C');
         $menu->add_link($linkBotaoVoltar,"right");
 
-        $menu->show();        
+        $menu->show();
+        
+        # Grava no log a atividade
+        $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Recebeu os parabéns do sistema pelo aniversário.',NULL,NULL,7);
 
         $grid->fechaColuna();
         $grid->fechaGrid();
