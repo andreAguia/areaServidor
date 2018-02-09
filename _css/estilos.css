@@ -45,6 +45,10 @@ pre, code{
     overflow: auto;
 }
 
+dd{
+    margin-left: 20px;
+}
+
 /*******************************************
  * Histórico de cargos em Comissão
  *******************************************/

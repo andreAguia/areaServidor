@@ -89,38 +89,35 @@ if($acesso)
     $grid2->abreColuna(6);
     $callout = new Callout();
     $callout->abre();
-    titulo('Classes');
+        titulo('Classes');
 
-    $grupoarquivo = NULL;
-    br();
-    echo '<dl>';
-    # Abre a pasta das Classes
-    $ponteiro  = opendir($pastaClasses);
-    while ($arquivo = readdir($ponteiro)) {
+        $grupoarquivo = NULL;
+        br();
+        echo '<dl>';
+        # Abre a pasta das Classes
+        $ponteiro  = opendir($pastaClasses);
+        while ($arquivo = readdir($ponteiro)) {
 
-        # Desconsidera os diretorios 
-        if($arquivo == ".." || $arquivo == "." || $arquivo == "exemplos"){
-            continue;
+            # Desconsidera os diretorios 
+            if($arquivo == ".." || $arquivo == "." || $arquivo == "exemplos"){
+                continue;
+            }
+
+            # Divide o nome do arquivos
+            $partesArquivo = explode('.',$arquivo);
+
+            if($grupoarquivo <> $partesArquivo[0]){
+                echo '<dt>'.ucfirst($partesArquivo[0]).'</dt>';
+
+                $grupoarquivo = $partesArquivo[0];
+                echo '<dd><a href="documentaClasse.php?sistema='.$fase.'&classe='.$partesArquivo[0].'.'.$partesArquivo[1].'">'.$partesArquivo[1].'</a></dd>';
+            }else{
+                echo '<dd><a href="documentaClasse.php?sistema='.$fase.'&classe='.$partesArquivo[0].'.'.$partesArquivo[1].'">'.$partesArquivo[1].'</a></dd>';
+            }
         }
 
-        # Divide o nome do arquivos
-        $partesArquivo = explode('.',$arquivo);
-
-        if($grupoarquivo <> $partesArquivo[0]){
-            echo '<dt>'.ucfirst($partesArquivo[0]).'</dt>';
-
-            $grupoarquivo = $partesArquivo[0];
-            echo '<dd><a href="documentaClasse.php?sistema='.$fase.'&classe='.$partesArquivo[0].'.'.$partesArquivo[1].'">'.$partesArquivo[1].'</a></dd>';
-
-        }
-        else{
-            echo '<dd><a href="documentaClasse.php?sistema='.$fase.'&classe='.$partesArquivo[0].'.'.$partesArquivo[1].'">'.$partesArquivo[1].'</a></dd>';
-
-        }
-    }
-
-    echo '</dl>';
-    echo '</div>';
+        echo '</dl>';
+    $callout->fecha();
     $grid2->fechaColuna(); // Coluna das classes
 
     ##############################################

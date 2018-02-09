@@ -14,8 +14,7 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){    
     # Cabeçalho
     AreaServidor::cabecalho();
 
@@ -46,8 +45,7 @@ if($acesso)
     $page = new Page();
     $page->iniciaPagina();
 
-    # Botão voltar
-    if(is_null($metodo)){
+        # Botão voltar
         $linkBotao1 = new Link("Voltar",'documentaCodigo.php?fase='.$sistema);
         $linkBotao1->set_class('button');
         $linkBotao1->set_title('Volta para a página anterior');
@@ -64,9 +62,6 @@ if($acesso)
         $menu->add_link($linkBotao1,"left");
         $menu->add_link($linkBotao2,"right");
         $menu->show();
-    }else{
-        br(2);
-    }
 
     $grid->fechaColuna();
     $grid->fechaGrid();
@@ -133,7 +128,8 @@ if($acesso)
     switch ($metodo){
         case "" :
             ### Classe
-            echo '<div class="callout success">';
+            $callout = new Callout("primary");
+            $callout->abre();
 
             # Nome
             echo '<h4>'.$nomeClasse.'</h4>';
@@ -172,9 +168,10 @@ if($acesso)
 
             # Deprecated
             if($deprecatedClasse){
-                echo '<div class="callout alert">';
-                echo '<h6>DEPRECATED</h6> Esta classe deverá ser descontiuada nas próximas versões.<br/>Seu uso é desaconselhado.';
-                echo '</div>';
+                $callout = new Callout("alert");
+                $callout->abre();
+                    echo '<h6>DEPRECATED</h6> Esta classe deverá ser descontiuada nas próximas versões.<br/>Seu uso é desaconselhado.';
+                $callout->fecha();
             }
 
             # Variáveis da Classe
@@ -337,7 +334,8 @@ if($acesso)
 
         default:
             ### Método
-            echo '<div class="callout primary">';
+            $callout = new Callout();
+            $callout->abre();
 
             # Nome
             echo '<h5> Método '.$nomeMetodo[$metodo].'</h5>';
@@ -352,9 +350,11 @@ if($acesso)
             # Deprecated        
             if((isset($deprecatedMetodo[$metodo])) AND ($deprecatedMetodo[$metodo])) {
                 br(2);
-                echo '<div class="callout alert">';
-                echo '<h6>DEPRECATED</h6> Este método deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.';
-                echo '</div>';
+
+                $callout1 = new Callout();
+                $callout1->abre("alert");
+                    echo '<h6>DEPRECATED</h6> Este método deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.';
+                $callout1->fecha();
             }
 
             hr();
@@ -369,9 +369,11 @@ if($acesso)
             # Return
             if(isset($retornoMetodo[$metodo])){
               echo 'Valor Retornado:';
-              echo '<div class="callout secondary">';
-              echo $retornoMetodo[$metodo];
-              echo '</div>';
+
+              $callout = new Callout();
+              $callout->abre();
+                echo $retornoMetodo[$metodo];
+              $callout->fecha();
             }
 
             # Nota
@@ -412,7 +414,6 @@ if($acesso)
             # Exemplo
             if(isset($exemploMetodo[$metodo])){
                 echo 'Exemplo:';
-                #echo '<div class="callout secondary">';
                 echo '<pre>';
                 $linesExample = file(PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploMetodo[$metodo]));
 
@@ -422,7 +423,6 @@ if($acesso)
                     echo $linha;
                 }
                 echo '</pre>';
-               # echo '</div>';
                 br();
             }
             break;     
