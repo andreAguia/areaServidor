@@ -119,7 +119,7 @@ if($acesso)
 
     # Parametros da tabela
     $objeto->set_label(array("","Usuário","Data","IP","Tabela","Id","IdServidor","Atividade"));
-    $objeto->set_width(array(5,8,13,7,10,5,5,38));		
+    $objeto->set_width(array(3,15,13,7,10,5,5,34));		
     $objeto->set_align(array("center","center","center","center","center","center","center","left"));
     $objeto->set_funcao(array(NULL,NULL,"datetime_to_php",NULL,NULL,NULL,"exibeNomeTitle"));
     $objeto->set_classe(array(NULL,"intra"));
@@ -233,6 +233,7 @@ if($acesso)
                                                       JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
                                                       JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
                                                      WHERE date(data) = "'.$parametro.'"');
+                $usuariosLogados = $result;
                 array_push($result,array('*','-- Todos --'));
                 
                 $controle = new Input('usuarioLog','combo','Filtra por Usuário',1);
@@ -286,8 +287,20 @@ if($acesso)
                     $divInterna->fecha();
                     echo 'segundos';
                 $div->fecha();
-            }			
-			
+            }
+            
+            # Exibe os usuários logados
+            $div = new Div('divUsuariosHoje');
+            $div->set_title('Usuários logados');
+            $div->abre();
+                echo 'Logaram nesse dia:';
+                br();
+                foreach ($usuariosLogados as $value) {
+                    echo $value[1];
+                    echo "; ";
+                }
+            $div->fecha();
+
             break;			
     }									 	 		
 
