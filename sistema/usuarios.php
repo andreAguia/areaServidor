@@ -14,8 +14,7 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){    
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $pessoal = new Pessoal();
@@ -34,10 +33,9 @@ if($acesso)
     $idLotacaoFerias = soNumeros(get('idLotacaoFerias'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro')))									# Se o parametro não vier por post (for nulo)
+    if(is_null(post('parametro'))){								# Se o parametro não vier por post (for nulo)
         $parametro = retiraAspas(get_session('sessionParametro'));	# passa o parametro da session para a variavel parametro retirando as aspas
-    else
-    { 
+    }else{
         $parametro = post('parametro');								# Se vier por post, retira as aspas e passa para a variavel parametro			
         set_session('sessionParametro',$parametro);			 		# transfere para a session para poder recuperá-lo depois
     }
@@ -90,6 +88,7 @@ if($acesso)
                                       idServidor,
                                       idServidor,
                                       idServidor,
+                                      idUsuario,
                                       idUsuario
                                  FROM tbusuario
                                 WHERE usuario LIKE "%'.$parametro.'%"
@@ -109,19 +108,32 @@ if($acesso)
 
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
-    $objeto->set_linkExcluir('?fase=excluir');
+    #$objeto->set_linkExcluir('?fase=excluir');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
     #$objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
-    $objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Email"));
+    $objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Email","Editar"));
     #$objeto->set_width(array(5,4,10,5,15,10,15,11,5,5,5));
     $objeto->set_align(array("center","center","center","left","center","center","left","left"));
 
     $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,"pessoal","pessoal","pessoal"));
     $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,"get_lotacao","get_cargo","get_emailPrincipalServidor"));
     $objeto->set_funcao(array("statusUsuario",NULL,NULL,NULL,"datetime_to_php"));
+    
+    $objeto->set_botaoExcluir(FALSE);
+    $objeto->set_botaoEditar(FALSE);
+    
+    # Botão de exibição dos servidores com permissão a essa regra
+    $botao = new BotaoGrafico();
+    $botao->set_label('');
+    $botao->set_title('Servidores com permissão a essa regra');
+    $botao->set_url('?fase=exibeAtividades&id='.$id);
+    $botao->set_image(PASTA_FIGURAS.'ver.png',20,20);
+
+    # Coloca o objeto link na tabela			
+    $objeto->set_link(array("","","","","","","","",$botao));
     
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -134,10 +146,10 @@ if($acesso)
     
     # Pega os dados da combo nome
     $result = $pessoal->select('SELECT idServidor, 
-                                     tbpessoa.nome
-                                FROM tbservidor JOIN tbpessoa USING(idPessoa)
-                                WHERE tbservidor.situacao = 1
-                            ORDER BY tbpessoa.nome');
+                                       tbpessoa.nome
+                                  FROM tbservidor JOIN tbpessoa USING(idPessoa)
+                                 WHERE tbservidor.situacao = 1
+                              ORDER BY tbpessoa.nome');
     array_unshift($result, array(0,NULL)); # Adiciona o valor de nulo
 
     # Campos para o formulario
@@ -167,26 +179,9 @@ if($acesso)
         ));
 
     # Log
-    $objeto->set_idUsuario($idUsuario);
-    
-    
-    
-    # Permissões
-    $botaoPermissao = new Button("Permissões");
-    $botaoPermissao->set_title("Gerencia as permissões desse usuário");
-    $botaoPermissao->set_class('button');
-    $botaoPermissao->set_url('?fase=exibePermissao&id='.$id);
-    
-    # Histórico de atividades
-    $botaoHistorico = new Button("Atividades");
-    $botaoHistorico->set_title("Exibe as atividades desse usuário");
-    $botaoHistorico->set_class('button');
-    $botaoHistorico->set_url('?fase=exibeAtividades&id='.$id);
-    
-    $objeto->set_botaoEditarExtra(array($botaoPermissao,$botaoHistorico));
+    $objeto->set_idUsuario($idUsuario); 
     $objeto->set_exibeInfoObrigatoriedade(FALSE);
     
-
     ################################################################
     switch ($fase)
     {
@@ -197,254 +192,96 @@ if($acesso)
 
         case "editar" :
             $objeto->$fase($id);
-            
-            $grid = new Grid("right");
-            $grid->abreColuna(4);
-            
-            # Menu senha
-            $menuSenha = new MenuBar();
-
-            # Senha Padrão
-            $botaoPadrao = new Button("Padrão",'?fase=senhaPadrao&idUsuarioSenhaPadrao='.$id);
-            $botaoPadrao->set_title("Passa para senha padrão");
-            $menuSenha->add_link($botaoPadrao,"right");    
-
-            # Bloquear
-            $botaoBloquear = new Button("Bloquear",'?fase=bloquear&idUsuarioBloqueado='.$id);
-            $botaoBloquear->set_title("Bloqueia o acesso desse servidor a área do servidor. (passa a senha para NULL)");
-            $botaoBloquear->set_class('alert button');
-            $menuSenha->add_link($botaoBloquear,"right");
-            p("Alterar Senha:","right","f10");
-            $menuSenha->show();
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();
             break;
         
-        ##########################################################################################
-        
-        case "exibePermissao" :
-            $grid = new Grid();
-            $grid->abreColuna(12);
-           
-            botaoVoltar("?fase=editar&id=$id");
-            
-            # Exibe os dados do Usuário
-            Grh::listaDadosServidor($intra->get_idServidor($id));
-            #titulo('Permissões');
-            
-            if(!is_null($id)){
-                $grid = new Grid();
-                $grid->abreColuna(6);
-
-                # select
-                $select = 'SELECT tbregra.idRegra,
-                                  tbregra.nome,
-                                  tbregra.descricao,									
-                                  tbpermissao.idPermissao
-                             FROM tbregra LEFT JOIN tbpermissao on tbregra.idRegra = tbpermissao.idRegra
-                            WHERE tbpermissao.idUsuario = '.$id.'
-                         ORDER BY tbregra.nome';
-
-                $conteudo = $intra->select($select,TRUE);
-
-                $tabela = new Tabela();
-                $tabela->set_conteudo($conteudo);
-                $tabela->set_titulo("Permissões Incluídas");
-                $tabela->set_label(array("Num","Regra","Descrição","Excluir"));
-                #$tabela->set_width(array(7,20,66));
-                $tabela->set_align(array("center","left","left"));
-                
-                #$tabela->set_excluir('?fase=excluirPermissao&id='.$id);
-                $tabela->set_idCampo('idPermissao');
-                $tabela->set_nomeGetId("idPermissao");
-                
-                # Botão de exclusao
-                $botao1 = new BotaoGrafico();
-                $botao1->set_label('');
-                $botao1->set_title('Excluir essa permissão');
-                $botao1->set_url("?fase=excluirPermissao&id=$id&idPermissao=");
-                $botao1->set_image(PASTA_FIGURAS.'bullet_cross.png',20,20);
-
-
-                # Coloca o objeto link na tabela			
-                $tabela->set_link(array("","","",$botao1));
-                
-                if(count($conteudo) > 0){
-                    $tabela->show();
-                }else{
-                    tituloTable("Permissões Incluídas");
-                    br();
-                    callout('Usuário sem permissão incluída no sistema !!','secondary');
-                }
-                
-                ###
-                
-                $grid->fechaColuna();
-                $grid->abreColuna(6);
-                
-                # select
-                $select = "SELECT distinct idRegra,
-                                  nome,
-                                  descricao,
-                                  idRegra
-                             FROM tbregra
-                             WHERE idRegra <> 1
-                               AND idRegra NOT IN (SELECT idRegra 
-                                         FROM tbpermissao
-                                        WHERE idUsuario = $id
-                                          AND tbregra.idRegra = tbpermissao.idRegra)
-                         ORDER BY nome";
-
-                $conteudo = $intra->select($select,TRUE);
-
-                $tabela = new Tabela();
-                $tabela->set_conteudo($conteudo);
-                $tabela->set_titulo("Permissões Disponíveis");
-                $tabela->set_label(array("Num","Regra","Descrição","Incluir"));
-                #$tabela->set_width(array(7,20,66));
-                $tabela->set_align(array("center","left","left"));
-
-                #$tabela->set_excluir('?fase=gravarPermissao&id='.$id);
-                $tabela->set_idCampo('idRegra');
-                #$tabela->set_nomeGetId("idRegra");
-
-                # Botão de inclusao
-                $botao = new BotaoGrafico();
-                $botao->set_label('');
-                $botao->set_title('Servidores com permissão a essa regra');
-                $botao->set_url("?fase=incluirPermissao&id=$id&idRegra=");
-                $botao->set_image(PASTA_FIGURAS.'adicionar.png',20,20);
-
-                # Coloca o objeto link na tabela			
-                $tabela->set_link(array("","","",$botao));
-
-
-                if(count($conteudo) > 0){
-                    $tabela->show();
-                }
-
-                $grid->fechaColuna();
-                $grid->fechaGrid();
-                
-                hr();
-                
-                ####################################################################
-                
-                ### Lista de lotações do sistema de férias
-
-                # Verifica se tem permissão ao sistema de férias
-                if($intra->verificaPermissao($id,3)){
-                    
-                    tituloTable("Configurações da Regra do Sistema de Férias");
-                    br();
-                    
-                    $grid = new Grid();
-                    $grid->abreColuna(6);
-
-                    # select
-                    $select = 'SELECT grh.tblotacao.DIR,
-                                      grh.tblotacao.GER,
-                                      grh.tblotacao.nome,
-                                      idLotacaoFerias
-                                 FROM areaServidor.tblotacaoferias JOIN grh.tblotacao USING (idLotacao)
-                                 WHERE idUsuario = '.$id.'
-                             ORDER BY DIR,GER';
-
-                    $conteudo = $intra->select($select,TRUE);
-
-                    $tabela = new Tabela();
-                    $tabela->set_conteudo($conteudo);
-                    $tabela->set_titulo("Lotações Incluídas");
-                    $tabela->set_label(array("Num","Regra","Descrição","Excluir"));
-                    $tabela->set_align(array("center","left","left"));
-                    
-                    $tabela->set_idCampo('idLotacaoFerias');
-                    $tabela->set_nomeGetId("idLotacaoFerias");
-
-                    # Botão de exclusao
-                    $botao1 = new BotaoGrafico();
-                    $botao1->set_label('');
-                    $botao1->set_title('Excluir essa Lotacao');
-                    $botao1->set_url("?fase=excluirLotacao&id=$id&idLotacaoFerias=");
-                    $botao1->set_image(PASTA_FIGURAS.'bullet_cross.png',20,20);
-
-
-                # Coloca o objeto link na tabela			
-                $tabela->set_link(array("","","",$botao1));
-                    
-                    if(count($conteudo) > 0){
-                        $tabela->show();
-                    }else{
-                        tituloTable("Lotações Incluídas");
-                        br();
-                        callout('Nenhuma lotação incluída !!','secondary');
-                    }
-                    
-                    $grid->fechaColuna();
-                    $grid->abreColuna(6);
-                    
-                    ## Exibe as lotações Existentes disponíveis
-                    # select
-                    $select = 'SELECT DIR,
-                                      GER,
-                                      nome,
-                                      idLotacao
-                                 FROM grh.tblotacao
-                                 WHERE ativo
-                                 AND idLotacao NOT IN (SELECT idLotacao 
-                                         FROM tblotacaoferias
-                                        WHERE idUsuario = '.$id.') 
-                             ORDER BY DIR,GER';
-
-                    $conteudo = $intra->select($select,TRUE);
-
-                    $tabela = new Tabela();
-                    $tabela->set_conteudo($conteudo);
-                    $tabela->set_titulo("Lotações Disponíveis");
-                    $tabela->set_label(array("Dir","Gerência","Nome","Incluir"));
-                    $tabela->set_align(array("left","left","left"));
-                    $tabela->set_idCampo('idLotacao');
-                    
-                    # Botão de inclusao
-                    $botao = new BotaoGrafico();
-                    $botao->set_label('');
-                    $botao->set_title('Inclui essa lotação');
-                    $botao->set_url("?fase=incluirLotacao&id=$id&idLotacao=");
-                    $botao->set_image(PASTA_FIGURAS.'adicionar.png',20,20);
-
-                    # Coloca o objeto link na tabela			
-                    $tabela->set_link(array("","","",$botao));
-
-                    
-                    if(count($conteudo) > 0){
-                        $tabela->show();
-                    }else{
-                        tituloTable("Lotações Disponíveis");
-                        br();
-                        callout('Nenhuma lotação incluída !!','secondary');
-                    }
-                    
-                    $grid->fechaColuna();
-                    $grid->fechaGrid();
-                }
-            }
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-            break;
-            
         ##########################################################################################
             
         case "exibeAtividades" : 
-            botaoVoltar("?fase=editar&id=$id");
+            # Grid para o menu, os dados do usuário e informação sobre o status
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+            ############################
+            
+            # Menu
+            $menu1 = new MenuBar();
+            
+            # Verifica o status do usuário editado
+            $statusUsuario = $intra->get_tipoSenha($id);
+
+            # Voltar
+            $linkVoltar = new Link("Voltar","?");
+            $linkVoltar->set_class('button');
+            $menu1->add_link($linkVoltar,"left");
+
+            # Permissões
+            $botaoPermissao = new Button("Permissões");
+            $botaoPermissao->set_title("Gerencia as permissões desse usuário");
+            $botaoPermissao->set_class('button');
+            $botaoPermissao->set_url('?fase=exibePermissao&id='.$id);
+            $menu1->add_link($botaoPermissao,"right");
+
+            # Alterar Senha
+            $linkSenha = new Link("Editar Nome","?fase=editar&id=".$id);
+            $linkSenha->set_class('button');
+            $linkSenha->set_title('Altera a senha do usuário logado');
+            $menu1->add_link($linkSenha,"right");
+            
+            # Senha Padrão
+            if($statusUsuario <> 1){  # Verifica se já está com senha padrão
+                $botaoPadrao = new Button("Padrão",'?fase=senhaPadrao&id='.$id);
+                $botaoPadrao->set_title("Passa para senha padrão");
+                $botaoPadrao->set_class('success button');
+                $menu1->add_link($botaoPadrao,"right");    
+            }
+
+            # Bloquear
+            if($statusUsuario <> 2){ # Verifica se já está bloqueado
+                if($id <> $idUsuario){ # Impede o usuário bloquear a si próprio
+                    $botaoBloquear = new Button("Bloquear",'?fase=bloquear&id='.$id);
+                    $botaoBloquear->set_title("Bloqueia o acesso desse servidor a área do servidor. (passa a senha para NULL)");
+                    $botaoBloquear->set_class('alert button');
+                    $menu1->add_link($botaoBloquear,"right");
+                }
+            }
+
+            $menu1->show();
+            
+            ############################
             
             # Exibe os dados do Usuário
-            Grh::listaDadosServidor($intra->get_idServidor($id));
-            #titulo('Permissões');
+            AreaServidor::listaDadosUsuario($id);
             
-            if(!is_null($id)){ 
-                
+            ############################
+            
+            # Informa o status do usuário editado
+            switch($statusUsuario){
+                case 1 :
+                    # Exibe a mensagem
+                    $callout = new Callout('warning');
+                    $callout->abre();
+                        echo "Usuário com senha padrão.";
+                    $callout->fecha();
+                    break;
+
+                case 2 :
+                    # Exibe a mensagem
+                    $callout = new Callout('warning');
+                    $callout->abre();
+                        echo "Usuário Bloqueado.";
+                    $callout->fecha();
+                    break;
+            }
+                            
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            
+            ############################
+            
+            # área lateral da tela
+            
+            # Combo com a data
+            if(!is_null($id)){                
                 # Pega os dados da combo
                 $parametroMulti = $intra->select('SELECT DISTINCT CONCAT(MONTH(data),"/",YEAR(data))
                                                  FROM tblog
@@ -544,6 +381,11 @@ if($acesso)
                     $tabela->show();
 
                     $grid->fechaColuna();
+                    
+                    ############################
+                    # Área central
+                    
+                    # Exibe o histórico de atividades do usuário
                     $grid->abreColuna(9);
 
                     # select
@@ -628,10 +470,121 @@ if($acesso)
                 }
                 $grid->fechaColuna();
                 $grid->fechaGrid();
+            }
+            break;
+        
+        ##########################################################################################
+        
+        case "exibePermissao" :
+            $grid = new Grid();
+            $grid->abreColuna(12);
+           
+            botaoVoltar('?fase=exibeAtividades&id='.$id);
+            
+            # Exibe os dados do Usuário
+            Grh::listaDadosServidor($intra->get_idServidor($id));
+            #titulo('Permissões');
+            
+            if(!is_null($id)){
+                $grid = new Grid();
+                $grid->abreColuna(6);
+
+                # select
+                $select = 'SELECT tbregra.idRegra,
+                                  tbregra.nome,
+                                  tbregra.descricao,									
+                                  tbpermissao.idPermissao
+                             FROM tbregra LEFT JOIN tbpermissao on tbregra.idRegra = tbpermissao.idRegra
+                            WHERE tbpermissao.idUsuario = '.$id.'
+                         ORDER BY tbregra.nome';
+
+                $conteudo = $intra->select($select,TRUE);
+
+                $tabela = new Tabela();
+                $tabela->set_conteudo($conteudo);
+                $tabela->set_titulo("Permissões Incluídas");
+                $tabela->set_label(array("Num","Regra","Descrição","Excluir"));
+                #$tabela->set_width(array(7,20,66));
+                $tabela->set_align(array("center","left","left"));
+                
+                #$tabela->set_excluir('?fase=excluirPermissao&id='.$id);
+                $tabela->set_idCampo('idPermissao');
+                $tabela->set_nomeGetId("idPermissao");
+                
+                # Botão de exclusao
+                $botao1 = new BotaoGrafico();
+                $botao1->set_label('');
+                $botao1->set_title('Excluir essa permissão');
+                $botao1->set_url("?fase=excluirPermissao&id=$id&idPermissao=");
+                $botao1->set_image(PASTA_FIGURAS.'bullet_cross.png',20,20);
+
+
+                # Coloca o objeto link na tabela			
+                $tabela->set_link(array("","","",$botao1));
+                
+                if(count($conteudo) > 0){
+                    $tabela->show();
+                }else{
+                    tituloTable("Permissões Incluídas");
+                    br();
+                    callout('Usuário sem permissão incluída no sistema !!','secondary');
+                }
+                
+                ###
                 
                 $grid->fechaColuna();
-                $grid->fechaGrid();
+                $grid->abreColuna(6);
+                
+                # select
+                $select = "SELECT distinct idRegra,
+                                  nome,
+                                  descricao,
+                                  idRegra
+                             FROM tbregra
+                             WHERE idRegra NOT IN (SELECT idRegra 
+                                         FROM tbpermissao
+                                        WHERE idUsuario = $id
+                                          AND tbregra.idRegra = tbpermissao.idRegra)
+                         ORDER BY nome";
+
+                $conteudo = $intra->select($select,TRUE);
+
+                $tabela = new Tabela();
+                $tabela->set_conteudo($conteudo);
+                $tabela->set_titulo("Permissões Disponíveis");
+                $tabela->set_label(array("Num","Regra","Descrição","Incluir"));
+                #$tabela->set_width(array(7,20,66));
+                $tabela->set_align(array("center","left","left"));
+
+                #$tabela->set_excluir('?fase=gravarPermissao&id='.$id);
+                $tabela->set_idCampo('idRegra');
+                #$tabela->set_nomeGetId("idRegra");
+
+                # Botão de inclusao
+                $botao = new BotaoGrafico();
+                $botao->set_label('');
+                $botao->set_title('Servidores com permissão a essa regra');
+                $botao->set_url("?fase=incluirPermissao&id=$id&idRegra=");
+                $botao->set_image(PASTA_FIGURAS.'adicionar.png',20,20);
+
+                # Coloca o objeto link na tabela			
+                $tabela->set_link(array("","","",$botao));
+
+
+                if(count($conteudo) > 0){
+                    $tabela->show();
+                }else{
+                    tituloTable("Permissões Disponíveis");
+                    br();
+                    callout('Nenhuma permissão disponível !!','secondary');
+                }
+
+                $grid->fechaColuna();
+                $grid->fechaGrid();                
             }
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();
             break;
             
         case "excluir" :	
@@ -642,43 +595,37 @@ if($acesso)
         ##########################################################################################
 
         case "senhaPadrao" :
-            # Pega o usuário que vai alterar senha
-            $idUsuarioSenhaPadrao = get('idUsuarioSenhaPadrao');
-            
             # Troca a senha
-            $intra->set_senha($idUsuarioSenhaPadrao);
+            $intra->set_senha($id);
             
             # Pega o idServidor desse usuário
-            $idServidorSenhaPadrao = $intra->get_idServidor($idUsuarioSenhaPadrao);
+            $idServidorSenhaPadrao = $intra->get_idServidor($id);
 
             # Grava no log a atividade
             $data = date("Y-m-d H:i:s");
-            $atividade = 'Passou '.$pessoal->get_nome($idServidorSenhaPadrao).' para senha padrão';
-            $intra->registraLog($idUsuario,$data,$atividade,'tbservidor',$idServidorSenhaPadrao,2,$idServidorSenhaPadrao);
+            $atividade = 'Passou o usuário '.$intra->get_nickUsuario($id).' ('.$pessoal->get_nome($idServidorSenhaPadrao).') para senha padrão';
+            $intra->registraLog($idUsuario,$data,$atividade,'tbservidor',$id,2,$idServidorSenhaPadrao);
 
-            loadPage('?fase=listar');
+            loadPage('?fase=exibeAtividades&id='.$id);
 
             break;
         
         ##########################################################################################
 
         case "bloquear" :
-            # Pega o usuário que vai alterar senha
-            $idUsuarioBloqueado = get('idUsuarioBloqueado');
-            
             # Troca a senha
-            $intra->set_senhaNull($idUsuarioBloqueado);
+            $intra->set_senhaNull($id);
             
             # Pega o idServidor desse usuário
-            $idServidorBloqueado = $intra->get_idServidor($idUsuarioBloqueado);
+            $idServidorBloqueado = $intra->get_idServidor($id);
 
             # Grava no log a atividade
             $log = new Intra();
             $data = date("Y-m-d H:i:s");
-            $atividade = 'Bloqueou acesso de '.$pessoal->get_nome($idServidorBloqueado);
-            $log->registraLog($idUsuario,$data,$atividade,'tbservidor',$idUsuarioBloqueado,2,$idServidorBloqueado);
+            $atividade = 'Bloqueou acesso do usuário '.$intra->get_nickUsuario($id).' ('.$pessoal->get_nome($idServidorBloqueado).')';
+            $log->registraLog($idUsuario,$data,$atividade,'tbservidor',$id,2,$idServidorBloqueado);
 
-            loadPage('?fase=listar');
+            loadPage('?fase=exibeAtividades&id='.$id);
 
             break;
 

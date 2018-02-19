@@ -55,13 +55,14 @@ class Intra extends Bd
     */
     public function gravar($campos = NULL,$valor = NULL,$idValor = NULL,$tabela = NULL,$idCampo = NULL,$alerta = FALSE){
         
-        if(is_null($tabela))
-                $tabela = $this->tabela;
+        if(is_null($tabela)){
+            $tabela = $this->tabela;
+        }
 
-            if(is_null($idCampo))
-                $idCampo = $this->idCampo;
-
-            parent::gravar($campos,$valor,$idValor,$tabela,$idCampo,$alerta);
+        if(is_null($idCampo)){
+            $idCampo = $this->idCampo;
+        }
+        parent::gravar($campos,$valor,$idValor,$tabela,$idCampo,$alerta);
     }
 
     ###########################################################
@@ -297,7 +298,7 @@ class Intra extends Bd
 	
 	/**
 	 * M�todo set_senha
-	 * muda a senha de um usu�rio
+	 * muda a senha de um usuário
 	 * 
 	 * @param	string 	$idUsuario 	-> o usuario
 	 * @param 	string	$senha		-> senha (n�o criptofrafada) a ser gravada (se nulo grava-se a senha padr�o)

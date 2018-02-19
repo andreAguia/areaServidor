@@ -105,7 +105,6 @@ if($acesso)
     $botao->set_title('Servidores com permissão a essa regra');
     $botao->set_onClick("abreDivId('divPermissao'); ajaxLoadPage('?fase=servidoresPermissao&id=','divPermissao',");       
     $botao->set_image(PASTA_FIGURAS.'ver.png',20,20);
-    
 
     # Coloca o objeto link na tabela			
     $objeto->set_link(array("","","","",$botao));
