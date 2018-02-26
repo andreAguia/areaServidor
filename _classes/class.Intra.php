@@ -246,7 +246,7 @@ class Intra extends Bd
 	###########################################################
 	
 	/**
-	 * M�todo get_senha
+	 * Método get_senha
 	 * Informa a senha (criptografada) 
 	 * 
 	 * @param	string $usuario	O usuario
@@ -271,7 +271,7 @@ class Intra extends Bd
 	###########################################################
 	
 	/**
-	 * M�todo set_senha
+	 * Método set_senha
 	 * muda a senha de um usu�rio
 	 * 
 	 * @param	string 	$idUsuario 	-> o usuario
@@ -297,7 +297,7 @@ class Intra extends Bd
         ###########################################################
 	
 	/**
-	 * M�todo set_senha
+	 * Método set_senha
 	 * muda a senha de um usuário
 	 * 
 	 * @param	string 	$idUsuario 	-> o usuario
@@ -348,7 +348,7 @@ class Intra extends Bd
     }
   ###########################################################
 	/**
-	 * M�todo get_senha
+	 * Método get_senha
 	 * Informa a senha (criptografada) 
 	 * 
 	 * @param string $usuario	matricula do servidor
@@ -372,7 +372,7 @@ class Intra extends Bd
 	###########################################################
   
 	/**
-	 * M�todo get_senha
+	 * Método get_senha
 	 * Informa a senha (criptografada) 
 	 * 
 	 * @param string $usuario	matricula do servidor
@@ -396,7 +396,7 @@ class Intra extends Bd
 	###########################################################
   
 	/**
-	 * M�todo get_usuario
+	 * Método get_usuario
 	 * Informa a senha (criptografada) 
 	 * 
 	 * @param string $usuario	matricula do servidor
