@@ -327,6 +327,22 @@ if($acesso)
             $menu->add_item($botao);
             $menu->show();  
             $fieldset->fecha();  
+            
+            $fieldset = new Fieldset('Atualização');
+            $fieldset->abre();
+            
+            $menu = new MenuGrafico(5);
+            
+            # Processo Premio
+            $botao = new BotaoGrafico();
+            $botao->set_label('Processo Premio');
+            $botao->set_url('importacaoProcessoPremio.php');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Copia o processo de licença premio para a tbservidor');
+            $menu->add_item($botao);
+            $menu->show();  
+            
+            $fieldset->fecha();  
             break;
         
         case "backup" :
