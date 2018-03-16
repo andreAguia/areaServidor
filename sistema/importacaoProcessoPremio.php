@@ -27,7 +27,7 @@ if($acesso){
     $fase = get('fase');
     
     # Limita o tamanho da tela
-    $grid = new Grid();
+    $grid = new Grid("center");
     $grid->abreColuna(12);
     
     br();
@@ -45,7 +45,7 @@ if($acesso){
             $menu->add_link($linkBotao1,"left");
 
             # Importar
-            $linkBotao2 = new Link("Importar","?fase=inicia");
+            $linkBotao2 = new Link("Importa processo da tblicenca","?fase=inicia");
             $linkBotao2->set_class('button');
             $linkBotao2->set_title('Refazer a Importação');
             $linkBotao2->set_accessKey('I');
@@ -55,13 +55,71 @@ if($acesso){
         
         case "inicia":
             br(4);
-            aguarde();
+            aguarde("Importando da Tabela tblicenca");
             br();    
            
-            loadPage('?fase=importa');
+            loadPage('?fase=importa1');
             break;
+        
+        case "importa1" :
+            # Importa os processos de licença premio da tblicenca
+            # Conecta ao banco
+            $pessoal = new Pessoal();
+            
+            # select
+            $select = 'SELECT processo,
+                              idServidor
+                         FROM tblicenca
+                        WHERE processo IS NOT NULL
+                          AND idTpLicenca = 6';
+                    
+            $conteudo = $pessoal->select($select);
+            
+            $grid = new Grid("center");
+            $grid->abreColuna(8);
+            
+            # Exibe a tabela
+            $tabela = new Tabela();
+            $tabela->set_conteudo($conteudo);
+            $tabela->set_label(array("Processo","IdServidor"));
+            $tabela->set_align(array("center"));
+            $tabela->set_numeroOrdem(TRUE);
+            $tabela->set_titulo("Processos na tblicenca");
+            $tabela->show();
+            
+            # Passa os valores para tbservidor
+            $pessoal->set_tabela("tbservidor");
+            $pessoal->set_idCampo("idServidor");
+            
+            $contador = 0;
+            
+            foreach ($conteudo as $pp){
+                $pessoal->gravar("processoPremio",$pp[0],$pp[1]);
+                $contador++;
+            }
+            
+            br();
+            echo "$contador registros afetados";
+            br(2);
+            
+            # Continua
+            $link = new Button("Continua","?fase=inicia2");
+            $link->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();     
+            break;
+            
+        case "inicia2":
+            br(4);
+            aguarde("Importando da Tabela tbpublicacaoPremio");
+            br();    
+           
+            loadPage('?fase=importa2');
+            break;    
 
-        case "importa" :
+        case "importa2" :
+            # Importa os processos de licença premio da tbpublicacaoPremio
             # Conecta ao banco
             $pessoal = new Pessoal();
             
@@ -72,20 +130,40 @@ if($acesso){
                     
             $conteudo = $pessoal->select($select);
             
+            $grid = new Grid("center");
+            $grid->abreColuna(8);
+            
+            # Exibe a tabela
+            $tabela = new Tabela();
+            $tabela->set_conteudo($conteudo);
+            $tabela->set_label(array("Processo","IdServidor"));
+            $tabela->set_align(array("center"));
+            $tabela->set_numeroOrdem(TRUE);
+            $tabela->set_titulo("Processos na tbpublicacaoPremio");
+            $tabela->show();
+            
+            # Passa os valores para tbservidor
             $pessoal->set_tabela("tbservidor");
             $pessoal->set_idCampo("idServidor");
             
+            $contador = 0;
+            
             foreach ($conteudo as $pp){
                 $pessoal->gravar("processoPremio",$pp[0],$pp[1]);
+                $contador++;
             }
-           
-            loadPage('?fase=acabou');
+            
+            br();
+            echo "$contador registros afetados";
+            br(2);
+            
+            # Continua
+            $link = new Button("Termina","?");
+            $link->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();     
             break;
-        
-         case "acabou" :
-             botaoVoltar("?");
-             echo "acabou";
-             break;
     }
     
     $grid->fechaColuna();
