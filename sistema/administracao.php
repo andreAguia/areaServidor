@@ -316,7 +316,6 @@ if($acesso)
             $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Férias');
             $menu->add_item($botao);
-            $menu->show();  
             
             # Cidades
             $botao = new BotaoGrafico();
@@ -331,7 +330,7 @@ if($acesso)
             $fieldset = new Fieldset('Atualização');
             $fieldset->abre();
             
-            $menu = new MenuGrafico(5);
+            $menu2 = new MenuGrafico(5);
             
             # Processo Premio
             $botao = new BotaoGrafico();
@@ -339,8 +338,15 @@ if($acesso)
             $botao->set_url('importacaoProcessoPremio.php');
             $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Copia o processo de licença premio para a tbservidor');
-            $menu->add_item($botao);
-            $menu->show();  
+            $menu2->add_item($botao);
+            
+            $botao = new BotaoGrafico();
+            $botao->set_label('Publicação Premio');
+            $botao->set_url('importacaoPublicacaoPremio.php');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Preenche a publicação de uma licença premio para a tblicencapremio');
+            $menu2->add_item($botao);
+            $menu2->show();  
             
             $fieldset->fecha();  
             break;
