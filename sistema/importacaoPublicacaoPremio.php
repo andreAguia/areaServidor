@@ -55,7 +55,7 @@ if($acesso){
         
         case "inicia":
             br(4);
-            aguarde("Preenchendo a Tabela tblicencaPremio");
+            aguarde("Preenchendo a Tabela tblicencapremio");
             br();    
            
             loadPage('?fase=importa1');
@@ -70,7 +70,7 @@ if($acesso){
             # select
             $select = 'SELECT idLicencaPremio,
                               idServidor                              
-                         FROM tblicencaPremio
+                         FROM tblicencapremio
                      ORDER BY 1';
                     
             $conteudo = $pessoal->select($select);
@@ -88,7 +88,7 @@ if($acesso){
             $tabela->show();
             
             # Passa os valores para tbservidor
-            $pessoal->set_tabela("tblicencaPremio");
+            $pessoal->set_tabela("tblicencapremio");
             $pessoal->set_idCampo("idLicencaPremio");
             
             $contador = 0;
@@ -118,7 +118,7 @@ if($acesso){
             $select = 'SELECT idLicencaPremio,
                               idServidor,
                               idPublicacaoPremio
-                         FROM tblicencaPremio
+                         FROM tblicencapremio
                      ORDER BY 1';
                     
             $conteudo = $pessoal->select($select);

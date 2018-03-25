@@ -9,7 +9,7 @@ class Doc extends Bd
 {
     private $servidor = "localhost";        // servidor
     private $usuario = "root";              // usuário
-    private $senha = NULL;   // senha
+    private $senha = "chewbacca";                  // senha
     private $banco = "information_schema";  // nome do banco
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela
@@ -103,8 +103,7 @@ class Doc extends Bd
         }
 
         # Executa a exclusão se não tiver erro
-        if($erro)
-        {
+        if($erro){
             # Exibe o alerta
             $alert = new Alert($msgErro);
             $alert->show();

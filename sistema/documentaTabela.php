@@ -9,8 +9,7 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){    
 
     # Começa uma nova página
     $page = new Page();			
@@ -27,16 +26,16 @@ if($acesso)
     $table = get('id');
 
     # Pega o bd
-    $fase = get('fase');
+    $banco = get('banco');
 
     # Botão voltar
-    $linkBotaoVoltar = new Link("Voltar",'documentabd.php?fase='.$fase);
+    $linkBotaoVoltar = new Link("Voltar",'documentaBd.php?banco='.$banco);
     $linkBotaoVoltar->set_class('button float-left');
     $linkBotaoVoltar->set_title('Volta para a página anterior');
     $linkBotaoVoltar->set_accessKey('V');
 
     # Botão editar descrição da tabela
-    $linkBotaoEditar = new Link("Conteúdo",'documentaEditaTabela.php?fase='.$fase.'&tabela='.$table);
+    $linkBotaoEditar = new Link("Conteúdo",'documentaTabelaConteudo.php?banco='.$banco.'&tabela='.$table);
     $linkBotaoEditar->set_class('button');
     $linkBotaoEditar->set_title('Exibe o conteúdo da tabela');
     $linkBotaoEditar->set_accessKey('C');
@@ -46,10 +45,6 @@ if($acesso)
     $menu->add_link($linkBotaoVoltar,"left");
     $menu->add_link($linkBotaoEditar,"right");
     $menu->show();
-
-    # Topbar        
-    $top = new TopBar($fase." / ".$table);
-    $top->show();
 
     # Conecta com o banco de dados
     $servico = new Doc();
@@ -64,21 +59,21 @@ if($acesso)
                       COLUMN_DEFAULT,
                       IS_NULLABLE
                  FROM COLUMNS 
-                WHERE TABLE_SCHEMA = '".$fase."' 
+                WHERE TABLE_SCHEMA = '".$banco."' 
                   AND TABLE_NAME = '".$table."'";
 
     $conteudo = $servico->select($select);
 
     $label = array("#","Nome","Chave","Extra","Descrição","Tipo","Tamanho","Padrão","Nulo");
-    $width = array(5,15,5,5,25,15,5,5,5,5);
     #$function = array("datetime_to_php",NULL,NULL,NULL,"get_nome");
     $align = array("center","left","center","center","left");
 
     # Monta a tabela
     $tabela = new Tabela();
+    $tabela->set_titulo($banco." / ".$table);
     $tabela->set_conteudo($conteudo);
-    $tabela->set_cabecalho($label,$width,$align);
-    #$tabela->set_editar("documentaTabela.php?fase=editaDescricaoCampo");
+    $tabela->set_label($label);
+    $tabela->set_align($align);
     $tabela->set_idCampo('COLUMN_NAME');
 
     # exibe a tabela

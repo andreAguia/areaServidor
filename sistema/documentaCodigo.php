@@ -9,8 +9,7 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){    
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
@@ -37,28 +36,13 @@ if($acesso)
     $linkBotao2->set_title('Classes e Funções');
     $linkBotao2->set_accessKey('C');
 
-    # Banco de Dados
-    $linkBotao3 = new Link("Banco de Dados","documentaBd.php?fase=$fase");
-    $linkBotao3->set_class('button');
-    $linkBotao3->set_title('Exibe informações do banco de dados');
-    $linkBotao3->set_accessKey('B');
-    
-    # Diagramas
-    $linkBotao4 = new Link("Diagramas","documentaDiagrama.php?fase=$fase");
-    $linkBotao4->set_class('button');
-    $linkBotao4->set_title('Diagramas do sistema');
-    $linkBotao4->set_accessKey('D');
-
     # Cria um menu
     $menu = new MenuBar();
     $menu->add_link($linkBotao1,"left");
     $menu->add_link($linkBotao2,"right");
-    $menu->add_link($linkBotao3,"right");    
-    $menu->add_link($linkBotao4,"right");
     $menu->show();
 
-    switch ($fase)
-    {
+    switch ($fase){
       case "Framework" :
           $pastaClasses = PASTA_CLASSES_GERAIS;
           $arquivoFuncao = PASTA_FUNCOES_GERAIS.'/funcoes.gerais.php';
@@ -94,6 +78,7 @@ if($acesso)
         $grupoarquivo = NULL;
         br();
         echo '<dl>';
+        
         # Abre a pasta das Classes
         $ponteiro  = opendir($pastaClasses);
         while ($arquivo = readdir($ponteiro)) {
