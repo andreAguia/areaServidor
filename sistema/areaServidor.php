@@ -186,7 +186,7 @@ if($acesso)
                 $botao->set_label('Geral');
                 $botao->set_url('servidorGeral.php');
                 $botao->set_image(PASTA_FIGURAS.'admin.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Lista de servidores Geral');
+                $botao->set_title('Lista geral de servidores');
                 $menu->add_item($botao);
             }
 
