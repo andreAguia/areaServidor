@@ -212,7 +212,25 @@ if($acesso)
         case "vagas" :
             $grid = new Grid();
             $grid->abreColuna(12);
-            botaoVoltar('?');
+            
+            # Cria um menu
+            $menu1 = new MenuBar();
+
+            # Voltar
+            $linkBotao1 = new Link("Voltar","?");
+            $linkBotao1->set_class('button');
+            $linkBotao1->set_title('Voltar a página anterior');
+            $linkBotao1->set_accessKey('V');
+            $menu1->add_link($linkBotao1,"left");
+            
+            # Relatórios
+            $imagem = new Imagem(PASTA_FIGURAS.'print.png',NULL,15,15);
+            $botaoRel = new Button();
+            $botaoRel->set_title("Relatório");
+            $botaoRel->set_onClick("window.open('../../grh/grhRelatorios/cargoComissaoAtivos.php','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
+            $botaoRel->set_imagem($imagem);
+            $menu1->add_link($botaoRel,"right");
+            $menu1->show();
             
             # Pega os dados
             $select ='SELECT descricao,

@@ -86,6 +86,14 @@ if($acesso)
             $linkBotao1->set_accessKey('V');
             $menu1->add_link($linkBotao1,"left");
             
+            # Cargos Atuais
+            $imagem = new Imagem(PASTA_FIGURAS.'lista.png',NULL,15,15);
+            $botaoLot = new Button();
+            $botaoLot->set_title("Listagem de cargos");
+            $botaoLot->set_onClick("window.open('../../grh/grhRelatorios/cargoNivel.php','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
+            $botaoLot->set_imagem($imagem);
+            $menu1->add_link($botaoLot,"right");
+            
             # Relatórios
             $imagem = new Imagem(PASTA_FIGURAS.'print.png',NULL,15,15);
             $botaoRel = new Button();

@@ -40,6 +40,14 @@ if($acesso)
     set_session('servidorLotacao');
     set_session('servidorCargoComissao');
     
+    # Limpa as sessions usadas servidor geral
+    set_session('parametroNomeMat');
+    set_session('parametroCargo');
+    set_session('parametroCargoComissao');
+    set_session('parametroLotacao');
+    set_session('parametroPerfil');
+    set_session('parametroSituacao');
+    
     
     $grid = new Grid();
     $grid->abreColuna(12);
@@ -171,12 +179,21 @@ if($acesso)
             tituloTable('Servidores da Universidade');
             br(); 
 
-            $menu = new MenuGrafico(3);
+            $menu = new MenuGrafico(4);
+            
+            if(Verifica::acesso($idUsuario,3)){
+                $botao = new BotaoGrafico();
+                $botao->set_label('Geral');
+                $botao->set_url('servidorGeral.php');
+                $botao->set_image(PASTA_FIGURAS.'admin.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_title('Lista de servidores Geral');
+                $menu->add_item($botao);
+            }
 
             $botao = new BotaoGrafico();
             $botao->set_label('por Lotação');
             $botao->set_url('servidorLotacao.php');
-            $botao->set_image(PASTA_FIGURAS.'servidores.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_image(PASTA_FIGURAS.'computador.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Lista de servidores por lotação');
             $menu->add_item($botao);
 
