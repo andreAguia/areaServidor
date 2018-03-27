@@ -57,7 +57,7 @@ if($acesso){
     $objeto->set_voltarLista('administracao.php');
 
     # controle de pesquisa
-    $objeto->set_parametroLabel('Pesquisar nos campos Nome e/ou Comentário:');
+    $objeto->set_parametroLabel('Pesquisar:');
     $objeto->set_parametroValue($parametro);
 
     # ordenação

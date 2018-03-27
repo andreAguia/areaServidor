@@ -14,8 +14,7 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,2);
 
-if($acesso)
-{    
+if($acesso){    
     # Conecta ao Banco de Dados
     $admin = new Intra();
     #$servidor = new Pessoal();
@@ -211,68 +210,68 @@ if($acesso)
             #echo "<audio autoplay='autoplay'><source src='../audio/alerta.mp3' type='audio/mp3'></audio>"; ## funciona !!!
 			
             # Rotina de listar
-                # data
-                $form = new Form('?fase=listar');
+            # data
+            $form = new Form('?fase=listar');
 
-                $controle = new Input('parametro','data','Entre com a data',1);
-                $controle->set_size(30);
-                $controle->set_title('Insira a data');
-                $controle->set_valor($parametro);
-                $controle->set_autofocus(TRUE);
-                $controle->set_onChange('formPadrao.submit();');
-                $controle->set_linha(1);
-                $controle->set_col(3);
-                if (is_null($idServidor)){
-                    $form->add_item($controle);
-                }
-                
-                # Pega os Usuarios
-                $result = $admin->select('SELECT DISTINCT tblog.idUsuario,
-                                                           tbusuario.usuario
-                                                      FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
-                                                      JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
-                                                      JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
-                                                     WHERE date(data) = "'.$parametro.'"');
-                $usuariosLogados = $result;
-                array_push($result,array('*','-- Todos --'));
-                
-                $controle = new Input('usuarioLog','combo','Filtra por Usuário',1);
-                $controle->set_size(30);
-                $controle->set_title('Servidor');
-                $controle->set_array($result);
-                $controle->set_valor($usuarioLog);
-                $controle->set_onChange('formPadrao.submit();');
-                $controle->set_linha(1);
-                $controle->set_col(3);
+            $controle = new Input('parametro','data','Entre com a data',1);
+            $controle->set_size(30);
+            $controle->set_title('Insira a data');
+            $controle->set_valor($parametro);
+            $controle->set_autofocus(TRUE);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(3);
+            if (is_null($idServidor)){
                 $form->add_item($controle);
-                
-                # Pega os ips
-                $result2 = $admin->select('SELECT DISTINCT ip,
-                                                    ip
-                                               FROM tblog
-                                              WHERE date(data) = "'.$parametro.'"							
-                                           ORDER BY 2');
-                array_push($result2,array('*','-- Todos --'));
-                
-                $controle = new Input('usuarioIp','combo','Filtra por IP',1);
-                $controle->set_size(20);
-                $controle->set_title('Ip do computador');
-                $controle->set_array($result2);
-                $controle->set_valor($usuarioIp);
-                $controle->set_onChange('formPadrao.submit();');
-                $controle->set_linha(1);
-                $controle->set_col(3);
-                $form->add_item($controle);
-                
-                br();
-                $form->show();
-                
-                # Limita o tamanho da tela
-                $grid = new Grid();
-                $grid->abreColuna(3);
-                    p(diaSemana($parametro),"diaSemana");
-                $grid->fechaColuna();
-                $grid->fechaGrid();
+            }
+
+            # Pega os Usuarios
+            $result = $admin->select('SELECT DISTINCT tblog.idUsuario,
+                                                       tbusuario.usuario
+                                                  FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
+                                                  JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
+                                                  JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
+                                                 WHERE date(data) = "'.$parametro.'"');
+            $usuariosLogados = $result;
+            array_push($result,array('*','-- Todos --'));
+
+            $controle = new Input('usuarioLog','combo','Filtra por Usuário',1);
+            $controle->set_size(30);
+            $controle->set_title('Servidor');
+            $controle->set_array($result);
+            $controle->set_valor($usuarioLog);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(3);
+            $form->add_item($controle);
+
+            # Pega os ips
+            $result2 = $admin->select('SELECT DISTINCT ip,
+                                                ip
+                                           FROM tblog
+                                          WHERE date(data) = "'.$parametro.'"							
+                                       ORDER BY 2');
+            array_push($result2,array('*','-- Todos --'));
+
+            $controle = new Input('usuarioIp','combo','Filtra por IP',1);
+            $controle->set_size(20);
+            $controle->set_title('Ip do computador');
+            $controle->set_array($result2);
+            $controle->set_valor($usuarioIp);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(3);
+            $form->add_item($controle);
+
+            br();
+            $form->show();
+
+            # Limita o tamanho da tela
+            $grid = new Grid();
+            $grid->abreColuna(3);
+                p(diaSemana($parametro),"diaSemana");
+            $grid->fechaColuna();
+            $grid->fechaGrid();
             $objeto->listar();
             
             # Div Contagem de refresh

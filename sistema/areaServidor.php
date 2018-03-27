@@ -335,31 +335,45 @@ if($acesso)
             Grh::listaDadosServidor($idServidor);
             
             # Pega os dados
-            $select ='SELECT CONCAT(tbtipolicenca.nome,"@",IFNULL(lei,"")),
-                            CASE tipo
-                               WHEN 1 THEN "Inicial"
-                               WHEN 2 THEN "Prorrogação"
-                               end,
-                            IF(alta = 1,"Alta",NULL),
-                            dtInicial,
-                            numdias,
-                            ADDDATE(dtInicial,numDias-1),
-                            tblicenca.processo,
-                            dtInicioPeriodo,
-                            dtFimPeriodo,
-                            dtPublicacao
-                       FROM tblicenca LEFT JOIN tbtipolicenca ON tblicenca.idTpLicenca = tbtipolicenca.idTpLicenca
-                      WHERE idServidor='.$idServidor.'
-                   ORDER BY tblicenca.dtInicial desc';
+            $select ='(SELECT CONCAT(tbtipolicenca.nome,"<br/>",IFNULL(tbtipolicenca.lei,"")),
+                                     CASE tipo
+                                        WHEN 1 THEN "Inicial"
+                                        WHEN 2 THEN "Prorrogação"
+                                        end,
+                                     CASE alta
+                                        WHEN 1 THEN "Sim"
+                                        WHEN 2 THEN "Não"
+                                        end,
+                                     dtInicial,
+                                     numdias,
+                                     ADDDATE(dtInicial,numDias-1),
+                                     CONCAT(tblicenca.idTpLicenca,"&",idLicenca),
+                                     dtPublicacao,
+                                     idLicenca
+                                FROM tblicenca LEFT JOIN tbtipolicenca ON tblicenca.idTpLicenca = tbtipolicenca.idTpLicenca
+                               WHERE idServidor='.$idServidor.')
+                               UNION
+                               (SELECT (SELECT CONCAT(tbtipolicenca.nome,"<br/>",IFNULL(tbtipolicenca.lei,"")) FROM tbtipolicenca WHERE idTpLicenca = 6),
+                                       "",
+                                       "",
+                                       dtInicial,
+                                       tblicencapremio.numdias,
+                                       ADDDATE(dtInicial,tblicencapremio.numDias-1),
+                                       CONCAT("6&",tblicencapremio.idServidor),
+                                       tbpublicacaopremio.dtPublicacao,
+                                       idLicencaPremio
+                                  FROM tblicencapremio LEFT JOIN tbpublicacaopremio USING (idPublicacaoPremio)
+                                 WHERE tblicencapremio.idServidor = '.$idServidor.')
+                              ORDER BY 4 desc';
 
             $result = $servidor->select($select);
             
             $tabela = new Tabela();
             $tabela->set_titulo("Histórico de Licenças");
             $tabela->set_conteudo($result);
-            $tabela->set_label(array("Licença ou Afastamento","Tipo","Alta","Inicio","Dias","Término","Processo","P.Aq. Início","P.Aq. Término","Publicação"));
+            $tabela->set_label(array("Licença ou Afastamento","Tipo","Alta","Inicio","Dias","Término","Processo","Publicação"));
             $tabela->set_align(array("left"));
-            $tabela->set_funcao(array("exibeLeiLicenca",NULL,NULL,'date_to_php',NULL,'date_to_php',NULL,'date_to_php','date_to_php','date_to_php'));
+            $tabela->set_funcao(array(NULL,NULL,NULL,'date_to_php',NULL,'date_to_php','exibeProcessoPremio','date_to_php'));
             $tabela->show();
             
             # Grava no log a atividade
