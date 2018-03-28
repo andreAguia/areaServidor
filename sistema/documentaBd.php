@@ -36,11 +36,19 @@ if($acesso){
     $linkBotao4->set_class('button');
     $linkBotao4->set_title('Diagramas do sistema');
     $linkBotao4->set_accessKey('D');
-
+    
+    # Relatórios
+    $imagem = new Imagem(PASTA_FIGURAS.'print.png',NULL,15,15);
+    $botaoRel = new Button();
+    $botaoRel->set_title("Relatório");
+    $botaoRel->set_onClick("window.open('../relatorios/documentaBd.php?banco=$banco','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
+    $botaoRel->set_imagem($imagem);
+    
     # Cria um menu
     $menu = new MenuBar();
     $menu->add_link($linkBotao1,"left"); 
     $menu->add_link($linkBotao4,"right");
+    $menu->add_link($botaoRel,"right");
     $menu->show();
     
     $grid->fechaColuna();

@@ -22,11 +22,9 @@ if($acesso){
     $grid = new Grid();
     $grid->abreColuna(12);
 
-    # Verifica a fase do programa
-    $table = get('id');
-
-    # Pega o bd
+    # Pega o banco e a tabela
     $banco = get('banco');
+    $tabela = get('id');
 
     # Botão voltar
     $linkBotaoVoltar = new Link("Voltar",'documentaBd.php?banco='.$banco);
@@ -34,16 +32,24 @@ if($acesso){
     $linkBotaoVoltar->set_title('Volta para a página anterior');
     $linkBotaoVoltar->set_accessKey('V');
 
-    # Botão editar descrição da tabela
-    $linkBotaoEditar = new Link("Conteúdo",'documentaTabelaConteudo.php?banco='.$banco.'&tabela='.$table);
+    # Conteudo da tabela
+    $linkBotaoEditar = new Link("Conteúdo",'documentaTabelaConteudo.php?banco='.$banco.'&tabela='.$tabela);
     $linkBotaoEditar->set_class('button');
     $linkBotaoEditar->set_title('Exibe o conteúdo da tabela');
     $linkBotaoEditar->set_accessKey('C');
+    
+    # Relatórios
+    $imagem = new Imagem(PASTA_FIGURAS.'print.png',NULL,15,15);
+    $botaoRel = new Button();
+    $botaoRel->set_title("Relatório");
+    $botaoRel->set_onClick("window.open('../relatorios/documentaTabela.php?banco=$banco&tabela=$tabela','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
+    $botaoRel->set_imagem($imagem);
 
     # Cria um menu
     $menu = new MenuBar();
     $menu->add_link($linkBotaoVoltar,"left");
-    $menu->add_link($linkBotaoEditar,"right");
+    #$menu->add_link($linkBotaoEditar,"right");
+    $menu->add_link($botaoRel,"right");
     $menu->show();
 
     # Conecta com o banco de dados
@@ -60,7 +66,7 @@ if($acesso){
                       IS_NULLABLE
                  FROM COLUMNS 
                 WHERE TABLE_SCHEMA = '".$banco."' 
-                  AND TABLE_NAME = '".$table."'";
+                  AND TABLE_NAME = '".$tabela."'";
 
     $conteudo = $servico->select($select);
 
@@ -69,15 +75,15 @@ if($acesso){
     $align = array("center","left","center","center","left");
 
     # Monta a tabela
-    $tabela = new Tabela();
-    $tabela->set_titulo($banco." / ".$table);
-    $tabela->set_conteudo($conteudo);
-    $tabela->set_label($label);
-    $tabela->set_align($align);
-    $tabela->set_idCampo('COLUMN_NAME');
+    $tabela2 = new Tabela();
+    $tabela2->set_titulo($banco." / ".$tabela);
+    $tabela2->set_conteudo($conteudo);
+    $tabela2->set_label($label);
+    $tabela2->set_align($align);
+    $tabela2->set_idCampo('COLUMN_NAME');
 
     # exibe a tabela
-    $tabela->show();
+    $tabela2->show();
 
     $grid->fechaColuna();
     $grid->fechaGrid();
