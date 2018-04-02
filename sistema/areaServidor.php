@@ -52,8 +52,7 @@ if($acesso)
     $grid = new Grid();
     $grid->abreColuna(12);
     
-    switch ($fase)
-    {	
+    switch ($fase){	
         # Exibe o Menu Inicial
         case "menu" :
     
@@ -98,15 +97,30 @@ if($acesso)
             ################################################################
 
             $grid = new Grid();
-            $grid->abreColuna(3);
-
-            tituloTable('Sistemas');
-            br(); 
-
-            $menu = new MenuGrafico();
-
-            # Sistema de Pessoal
+            
+            # Define os tamanho do grid padrão (sem sistema)
+            $tamanhoGrid2 = 6;
+            $tamanhoGrid3 = 6;
+            $tamanhoGrid4 = 12;
+            
+            # Verifica se usuário tem permissão de acesso a algum sistema
             if(Verifica::acesso($idUsuario,2)){
+                
+                # Cria coluna para o menu de sistemas
+                $grid->abreColuna(3);
+                
+                # Define os tamanho do grid padrão (sem sistema)
+                $tamanhoGrid2 = 9;
+                $tamanhoGrid3 = 12;
+
+                # Título
+                tituloTable('Sistemas');
+                br();
+                
+                # Inicia o menu
+                $menu = new MenuGrafico();
+                
+                # Sistema de Pessoal
                 $botao = new BotaoGrafico();
                 $botao->set_label('Sistema de Pessoal');
                 $botao->set_url('../../grh/grhSistema/grh.php');
@@ -114,35 +128,36 @@ if($acesso)
                 $botao->set_title('Acessa o Sistema de Pessoal');
                 $botao->set_accesskey('P');
                 $menu->add_item($botao);
-            }
             
-            # Sistema de Contratos
-            if(Verifica::acesso($idUsuario,1)){
-                $botao = new BotaoGrafico();
-                $botao->set_label('Sistema de Contratos');
-                $botao->set_url('sistemaContratos.php');
-                $botao->set_image(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Sistema de Gestão de Contratos');
-                $botao->set_accesskey('C');
-                #$menu->add_item($botao);
-                
-                # Solicitação de Férias
-                $botao = new BotaoGrafico();
-                $botao->set_label('Solicitação de Férias');
-                $botao->set_url('solicitaFerias.php');
-                $botao->set_image(PASTA_FIGURAS.'ferias.png',$tamanhoImage,$tamanhoImage);
-                $botao->set_title('Rotina de Solicitação de Férias');
-                $botao->set_accesskey('F');
-                #$menu->add_item($botao);
-            }
+            
+                # Sistema de Contratos
+                if(Verifica::acesso($idUsuario,1)){
+                    $botao = new BotaoGrafico();
+                    $botao->set_label('Sistema de Contratos');
+                    $botao->set_url('sistemaContratos.php');
+                    $botao->set_image(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
+                    $botao->set_title('Sistema de Gestão de Contratos');
+                    $botao->set_accesskey('C');
+                    #$menu->add_item($botao);
 
-            $menu->show();
-            br();            
-            $grid->fechaColuna();
+                    # Solicitação de Férias
+                    $botao = new BotaoGrafico();
+                    $botao->set_label('Solicitação de Férias');
+                    $botao->set_url('solicitaFerias.php');
+                    $botao->set_image(PASTA_FIGURAS.'ferias.png',$tamanhoImage,$tamanhoImage);
+                    $botao->set_title('Rotina de Solicitação de Férias');
+                    $botao->set_accesskey('F');
+                    #$menu->add_item($botao);
+                }
+
+                $menu->show();
+                br();            
+                $grid->fechaColuna();
+            }
         
         ################################################################
            
-            $grid->abreColuna(9);
+            $grid->abreColuna($tamanhoGrid2);
             tituloTable('Sobre o Servidor');
             br(); 
 
@@ -175,19 +190,23 @@ if($acesso)
             
         ################################################################
 
-            $grid->abreColuna(12);
+            $grid->abreColuna($tamanhoGrid3);
             tituloTable('Servidores da Universidade');
             br(); 
 
-            $menu = new MenuGrafico(4);
+            
             
             if(Verifica::acesso($idUsuario,3)){
+                $menu = new MenuGrafico(4);
+                
                 $botao = new BotaoGrafico();
                 $botao->set_label('Geral');
                 $botao->set_url('servidorGeral.php');
                 $botao->set_image(PASTA_FIGURAS.'admin.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_title('Lista geral de servidores');
                 $menu->add_item($botao);
+            }else{
+                $menu = new MenuGrafico(3);
             }
 
             $botao = new BotaoGrafico();
@@ -218,7 +237,7 @@ if($acesso)
         ##########################################################
         
             # links externos
-            $grid->abreColuna(12);
+            $grid->abreColuna($tamanhoGrid4);
             
             tituloTable('Links Externos');
             br(); 

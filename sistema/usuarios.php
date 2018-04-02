@@ -281,7 +281,12 @@ if($acesso){
             # área lateral da tela
             
             # Combo com a data
-            if(!is_null($id)){                
+            if(!is_null($id)){
+                
+                # Limita a tela
+                $grid1 = new Grid();
+                $grid1->abreColuna(12);
+            
                 # Pega os dados da combo
                 $parametroMulti = $intra->select('SELECT DISTINCT CONCAT(MONTH(data),"/",YEAR(data))
                                                  FROM tblog
@@ -295,8 +300,8 @@ if($acesso){
                 }
                 
                 if(count($parametro) > 0){
-                    $grid = new Grid();
-                    $grid->abreColuna(3);
+                    $grid2 = new Grid();
+                    $grid2->abreColuna(3);
                     
                     # Controle do mês
                     $form = new Form('?fase=exibeAtividades&id='.$id);
@@ -380,13 +385,13 @@ if($acesso){
                     $tabela->set_rodape("Total de Logins: ".$soma);
                     $tabela->show();
 
-                    $grid->fechaColuna();
+                    $grid2->fechaColuna();
                     
                     ############################
                     # Área central
                     
                     # Exibe o histórico de atividades do usuário
-                    $grid->abreColuna(9);
+                    $grid2->abreColuna(9);
 
                     # select
                     $select = 'SELECT tipo,
@@ -465,11 +470,13 @@ if($acesso){
                                                                'imagem' => $imagemBackup)
                                                         ));
                     $tabela->show();
+                    $grid2->fechaColuna();
+                    $grid2->fechaGrid();
                 }else{
                     callout('Parece que esse usuário nunca logou no sistema !!','secondary');
                 }
-                $grid->fechaColuna();
-                $grid->fechaGrid();
+                $grid1->fechaColuna();
+                $grid1->fechaGrid();
             }
             break;
         

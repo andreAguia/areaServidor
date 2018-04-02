@@ -54,7 +54,7 @@
     ##########################################################
     
     /**
-    * método rodape
+    * Método rodape
     * Exibe oo rodapé
     * 
     * @param    string $idUsuario -> Usuário logado
@@ -90,7 +90,7 @@
     ###########################################################
     
     /**
-    * método listaDadosUsuario
+    * Método listaDadosUsuario
     * Exibe os dados principais do servidor logado
     * 
     * @param    string $idServidor -> idServidor do servidor

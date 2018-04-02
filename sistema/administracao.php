@@ -239,6 +239,14 @@ if($acesso)
             $botao->set_image(PASTA_FIGURAS.'regOrf.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('registroOrfao.php');
             $menu->add_item($botao);
+            
+            # Importar férias
+            $botao = new BotaoGrafico();
+            $botao->set_label('Importar Férias');
+            $botao->set_title('Faz importação das férias a partir de arquivo Excell');
+            $botao->set_image(PASTA_FIGURAS.'bdados.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('importacaoFerias.php');
+            $menu->add_item($botao);
             $menu->show();
             
             br();
