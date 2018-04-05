@@ -271,6 +271,7 @@ if($acesso){
                 
                 # Array para inserir os dados
                 $conteúdo = array();
+                $contador = 1;
                 
                 # Inicia a Tabela
                 echo "<table border=1>";
@@ -316,6 +317,8 @@ if($acesso){
                     echo "<td>".year($parte[4])."</td>";
                     echo "<td></td>";
                     echo "</tr>";
+                    
+                    $contador++;
                 }
                 
                 echo "</table>";
@@ -400,7 +403,6 @@ if($acesso){
             $linkBotao1->set_title('Volta para a página Inicial');
             $linkBotao1->set_accessKey('I');
             $linkBotao1->show();
-            $painel->fecha();
             break;
         
         #########################################################################
