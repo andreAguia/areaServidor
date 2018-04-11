@@ -14,8 +14,7 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario);
 
-if($acesso)
-{    
+if($acesso){    
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
@@ -49,13 +48,12 @@ if($acesso)
     set_session('parametroSituacao');
     
     
-    $grid = new Grid();
-    $grid->abreColuna(12);
+    $grid1 = new Grid();
+    $grid1->abreColuna(12);
     
     switch ($fase){	
         # Exibe o Menu Inicial
-        case "menu" :
-    
+        case "menu" :    
             # Cria um menu
             $menu1 = new MenuBar();
 
@@ -96,22 +94,47 @@ if($acesso)
 
             ################################################################
 
+            # Cria Grid
             $grid = new Grid();
             
-            # Define os tamanho do grid padrão (sem sistema)
-            $tamanhoGrid2 = 6;
-            $tamanhoGrid3 = 6;
+            # Define os tamanho do grid
+            $tamanhoGrid1 = 0;
+            $tamanhoGrid2 = 0;
+            $tamanhoGrid3 = 0;
             $tamanhoGrid4 = 12;
+            
+            ### GRID 1
+            # Se exibe o icone do sistema de pessoal
+            if(Verifica::acesso($idUsuario,2)){
+                $tamanhoGrid1 = $tamanhoGrid1+3;
+            }
+            
+            # Se exibe o icone do sistema de processos
+            if(Verifica::acesso($idUsuario,1)){
+                $tamanhoGrid1 = $tamanhoGrid1+3;
+            }
+            
+            ### GRID 2
+            # O tamanho do grid 2 depende do tamanho do grid 1
+            if($tamanhoGrid1 > 0){
+                $tamanhoGrid2 = 12 - $tamanhoGrid1;
+            }else{
+                $tamanhoGrid2 = 6;
+            }
+            
+            ### GRID 3
+            # O grid 3 será na mesma linha do grid 2 se não tiver o grid 1 
+            if($tamanhoGrid1 > 0){
+                $tamanhoGrid3 = 12;
+            }else{
+                $tamanhoGrid3 = 6;
+            }
             
             # Verifica se usuário tem permissão de acesso a algum sistema
             if(Verifica::acesso($idUsuario,2)){
                 
                 # Cria coluna para o menu de sistemas
-                $grid->abreColuna(3);
-                
-                # Define os tamanho do grid padrão (sem sistema)
-                $tamanhoGrid2 = 9;
-                $tamanhoGrid3 = 12;
+                $grid->abreColuna($tamanhoGrid1);
 
                 # Título
                 tituloTable('Sistemas');
@@ -130,24 +153,17 @@ if($acesso)
                 $menu->add_item($botao);
             
             
-                # Sistema de Contratos
+                # Sistema de Processos
                 if(Verifica::acesso($idUsuario,1)){
-                    $botao = new BotaoGrafico();
-                    $botao->set_label('Sistema de Contratos');
-                    $botao->set_url('sistemaContratos.php');
-                    $botao->set_image(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
-                    $botao->set_title('Sistema de Gestão de Contratos');
-                    $botao->set_accesskey('C');
-                    #$menu->add_item($botao);
 
-                    # Solicitação de Férias
+                    # Sistema de Processos
                     $botao = new BotaoGrafico();
-                    $botao->set_label('Solicitação de Férias');
-                    $botao->set_url('solicitaFerias.php');
-                    $botao->set_image(PASTA_FIGURAS.'ferias.png',$tamanhoImage,$tamanhoImage);
-                    $botao->set_title('Rotina de Solicitação de Férias');
-                    $botao->set_accesskey('F');
-                    #$menu->add_item($botao);
+                    $botao->set_label('Sistema de Processos');
+                    $botao->set_url('sistemaProcesso.php');
+                    $botao->set_image(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
+                    $botao->set_title('Sistema de controle de processos');
+                    $botao->set_accesskey('P');
+                    $menu->add_item($botao);
                 }
 
                 $menu->show();
@@ -193,8 +209,6 @@ if($acesso)
             $grid->abreColuna($tamanhoGrid3);
             tituloTable('Servidores da Universidade');
             br(); 
-
-            
             
             if(Verifica::acesso($idUsuario,3)){
                 $menu = new MenuGrafico(4);
@@ -232,7 +246,6 @@ if($acesso)
             $menu->show();
             br();
             $grid->fechaColuna();
-            $grid->fechaGrid();
 
         ##########################################################
         
@@ -284,7 +297,8 @@ if($acesso)
             $menu->show();
             br();
             $grid->fechaColuna();
-        
+            $grid->fechaGrid();
+            
         #########################################################
 
             # Exibe o rodapé da página
@@ -472,8 +486,7 @@ if($acesso)
             
 ##################################################################
         
-        case "atualizacoes" :
-            
+        case "atualizacoes" :            
             # Limita a tela
             $grid = new Grid();
             $grid->abreColuna(12);
@@ -525,8 +538,8 @@ if($acesso)
 ##################################################################
     }
     
-    $grid->fechaColuna();
-    $grid->fechaGrid();
+    $grid1->fechaColuna();
+    $grid1->fechaGrid();
 
     $page->terminaPagina();
 }else{

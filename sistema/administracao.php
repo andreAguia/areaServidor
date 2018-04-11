@@ -35,8 +35,7 @@ if($acesso)
     $grid1 = new Grid();
     $grid1->abreColuna(12);
     
-    switch ($fase)
-    {	
+    switch ($fase){	
         # Exibe o Menu Inicial
         case "menu" :
             botaoVoltar('areaServidor.php');
@@ -213,7 +212,7 @@ if($acesso)
             $botao->set_title('Executa a rotina de importação');
             $botao->set_image(PASTA_FIGURAS.'importacao.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('?fase=importacao');
-            #$menu->add_item($botao);
+            $menu->add_item($botao);
 
             # PhpMyAdmin
             $botao = new BotaoGrafico();
@@ -238,14 +237,6 @@ if($acesso)
             $botao->set_title('Faz varredura para encontrar registros órfãos');
             $botao->set_image(PASTA_FIGURAS.'regOrf.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('registroOrfao.php');
-            $menu->add_item($botao);
-            
-            # Importar férias
-            $botao = new BotaoGrafico();
-            $botao->set_label('Importar Férias');
-            $botao->set_title('Faz importação das férias a partir de arquivo Excell');
-            $botao->set_image(PASTA_FIGURAS.'bdados.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('importacaoFerias.php');
             $menu->add_item($botao);
             $menu->show();
             
@@ -288,18 +279,19 @@ if($acesso)
             AreaServidor::rodape($idUsuario);
             break;
         
-        # Exibe o Menu de Documentação
+#############################################################################################
+#   IMPORTAÇÃO
+#############################################################################################
+        
         case "importacao" :
             botaoVoltar("administracao.php");
             titulo('Importação do banco de dados');
 
             # Define o tamanho do ícone
             $tamanhoImage = 60;
-            
-            $fieldset = new Fieldset('Importação');
-            $fieldset->abre();
 
             $menu = new MenuGrafico(5);
+            br();
             
             # Férias
             $botao = new BotaoGrafico();
@@ -309,70 +301,14 @@ if($acesso)
             $botao->set_title('Importação da Tabela de Férias do SigRH');
             $menu->add_item($botao);
             
-            # Identidade
+            # Faltas
             $botao = new BotaoGrafico();
-            $botao->set_label('Identidade');
-            $botao->set_url('importacaoIdentidade.php');
+            $botao->set_label('Faltas');
+            $botao->set_url('importacaoFaltas.php');
             $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Problemas com a identidade truncada na importação anterior');
+            $botao->set_title('Importação da Tabela de Faltas do SigRH');
             $menu->add_item($botao);
-
-            # FEN001
-            $botao = new BotaoGrafico();
-            $botao->set_label('FEN001');
-            $botao->set_url('importacaoUenfNovaUenf.php');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Importação da Tabela de Servidores FEN001');
-            $menu->add_item($botao);
-            
-            # FEN004
-            $botao = new BotaoGrafico();
-            $botao->set_label('FEN004');
-            $botao->set_url('importaFen004.php');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Importação da Tabela de Afastamentos');
-            $menu->add_item($botao);
-            
-            # FEN019
-            $botao = new BotaoGrafico();
-            $botao->set_label('FEN019');
-            $botao->set_url('importaFen019.php');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Importação da Tabela de Férias');
-            $menu->add_item($botao);
-            
-            # Cidades
-            $botao = new BotaoGrafico();
-            $botao->set_label('Cidades');
-            $botao->set_url('importacaoCidades.php');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Importação da Tabela de Cidades');
-            $menu->add_item($botao);
-            $menu->show();  
-            $fieldset->fecha();  
-            
-            $fieldset = new Fieldset('Atualização');
-            $fieldset->abre();
-            
-            $menu2 = new MenuGrafico(5);
-            
-            # Processo Premio
-            $botao = new BotaoGrafico();
-            $botao->set_label('Processo Premio');
-            $botao->set_url('importacaoProcessoPremio.php');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Copia o processo de licença premio para a tbservidor');
-            $menu2->add_item($botao);
-            
-            $botao = new BotaoGrafico();
-            $botao->set_label('Publicação Premio');
-            $botao->set_url('importacaoPublicacaoPremio.php');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Preenche a publicação de uma licença premio para a tblicencapremio');
-            $menu2->add_item($botao);
-            $menu2->show();  
-            
-            $fieldset->fecha();  
+            $menu->show();
             break;
         
         case "backup" :
