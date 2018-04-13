@@ -159,7 +159,7 @@ if($acesso){
                     # Sistema de Processos
                     $botao = new BotaoGrafico();
                     $botao->set_label('Sistema de Processos');
-                    $botao->set_url('sistemaProcesso.php');
+                    $botao->set_url('processo.php');
                     $botao->set_image(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
                     $botao->set_title('Sistema de controle de processos');
                     $botao->set_accesskey('P');

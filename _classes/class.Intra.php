@@ -700,28 +700,4 @@ class Intra extends Bd
     }
 
     ###########################################################
-    
-    /**
-     * Método get_idLotacaoLotacaoFerias
-     * Informa o id de uma lotação da tabela tblotacaoferias
-     * 
-     * @param integer $idLotacaoFerias	o id da tabela
-     */
-    public function get_idLotacaoLotacaoFerias($idLotacaoFerias){ 
-
-        $select = "SELECT idLotacao		  
-                     FROM tblotacaoferias
-                    WHERE $idLotacaoFerias = $idLotacaoFerias";
-
-        # verifica se foi informado o $nome
-        if(is_null($idLotacaoFerias))
-            return 0;
-        else
-        {
-            $result = parent::select($select,FALSE);
-            return $result[0]; 
-        }
-    }
-
-    ###########################################################
 }
