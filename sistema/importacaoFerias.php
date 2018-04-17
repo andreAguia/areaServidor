@@ -36,6 +36,12 @@ if($acesso){
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
+
+    # Abre o banco de dados
+    $pessoal = new Pessoal();
+    
+    # Define o arquivo a ser importado
+    $arquivo = "../importacao/ferias.csv"; 
     
     br();
 
@@ -50,9 +56,9 @@ if($acesso){
             $linkVoltar->set_accessKey('V');
             
             # 2017
-            $link2017 = new Link("2017","importacaoFerias.php?fase=aguarda&ano=2017");
+            $link2017 = new Link("2014 - 2019","importacaoFerias.php?fase=aguarda");
             $link2017->set_class('button');
-            $link2017->set_title('Férias de 2017');
+            $link2017->set_title('Importar');
 
             # Cria um menu
             $menu = new MenuBar();
@@ -68,9 +74,9 @@ if($acesso){
         case "aguarda" :
             titulo('Analisando ...');
             br(4);
-            aguarde("Analisando o arquivo do ano ".$ano);
+            aguarde("Analisando o arquivo.");
 
-            loadPage('?fase=analisa&ano='.$ano);
+            loadPage('?fase=analisa');
             break;
         
         #########################################################################
@@ -78,12 +84,6 @@ if($acesso){
         case "analisa" :            
             # Cria um menu
             $menu = new MenuBar();
-            
-            # Define o arquivo a ser importado
-            $arquivo = "../importacao/ferias".$ano.".csv"; 
-
-            # Abre o banco de dados
-            $pessoal = new Pessoal();
 
             # Botão voltar
             $linkBotao1 = new Link("Voltar",'importacaoFerias.php');
@@ -93,14 +93,14 @@ if($acesso){
             $menu->add_link($linkBotao1,"left");
 
             # Refazer
-            $linkBotao2 = new Link("Refazer",'?fase='.$ano);
+            $linkBotao2 = new Link("Refazer",'?fase=aguarda2');
             $linkBotao2->set_class('button');
             $linkBotao2->set_title('Refazer a Importação');
             $linkBotao2->set_accessKey('R');
             $menu->add_link($linkBotao2,"right");
             $menu->show();
 
-            titulo('Importação da tabela de Férias de '.$ano);
+            titulo('Importação da tabela de Férias');
 
             # Cria um painel
             $painel = new Callout();
@@ -141,7 +141,6 @@ if($acesso){
                         $contador++;
                     }
                 }
-
                
                 echo "Registros analisados: ".$tt;
                 br();
@@ -216,7 +215,7 @@ if($acesso){
                 echo "Podemos fazer a importação";
                 br(2);
                 # Botão importar
-                $linkBotao1 = new Link("Importar",'?fase=aguarda2&ano='.$ano);
+                $linkBotao1 = new Link("Importar",'?fase=aguarda2');
                 $linkBotao1->set_class('button');
                 $linkBotao1->set_title('Volta para a página anterior');
                 $linkBotao1->set_accessKey('I');
@@ -234,9 +233,9 @@ if($acesso){
         case "aguarda2" :
             titulo('Analisando ...');
             br(4);
-            aguarde("Analisando o arquivo do ano ".$ano);
+            aguarde("Analisando o arquivo de férias.");
 
-            loadPage('?fase=analisa2&ano='.$ano);
+            loadPage('?fase=analisa2');
             break;
         
         #########################################################################    
@@ -244,12 +243,6 @@ if($acesso){
         case "analisa2" :            
             # Cria um menu
             $menu = new MenuBar();
-            
-            # Define o arquivo a ser importado
-            $arquivo = "../importacao/ferias".$ano.".csv"; 
-
-            # Abre o banco de dados
-            $pessoal = new Pessoal();
 
             # Botão voltar
             $linkBotao1 = new Link("Voltar",'importacaoFerias.php');
@@ -259,7 +252,7 @@ if($acesso){
             $menu->add_link($linkBotao1,"left");
             $menu->show();
 
-            titulo('Verifique se está tudo certo - Férias '.$ano);
+            titulo('Verifique se está tudo certo.');
 
             # Cria um painel
             $painel = new Callout();
@@ -319,14 +312,13 @@ if($acesso){
                     echo "</tr>";
                     
                     $contador++;
-                }
-                
+                }                
                 echo "</table>";
             }
             
             br(2);
             # Botão importar
-            $linkBotao1 = new Link("Importar",'?fase=importa&ano='.$ano);
+            $linkBotao1 = new Link("Importar",'?fase=importa');
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Volta para a página anterior');
             $linkBotao1->set_accessKey('I');
@@ -339,26 +331,23 @@ if($acesso){
         case "importa" :
             titulo('Importando ...');
             br(4);
-            aguarde("Importando o arquivo do ano ".$ano);
+            aguarde("Importando o arquivo.");
             br();
-            loadPage('?fase=importa2&ano='.$ano);
+            loadPage('?fase=importa2');
             break;
         
         #########################################################################
         
         case "importa2" :
-            # Define o arquivo a ser importado
-            $arquivo = "../importacao/ferias".$ano.".csv"; 
-
+            
+            echo $arquivo;
+            
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
                 $lines = file($arquivo);
-
+                
                 # Array para inserir os dados
                 $conteúdo = array();
-
-                # Abre o banco de dados
-                $pessoal = new Pessoal();
 
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($lines as $linha) {
