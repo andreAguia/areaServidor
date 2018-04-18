@@ -340,8 +340,6 @@ if($acesso){
         
         case "importa2" :
             
-            echo $arquivo;
-            
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
                 $lines = file($arquivo);
@@ -356,16 +354,8 @@ if($acesso){
                     $parte = explode(";",$linha);
                     $idServidor = $pessoal->get_idServidoridFuncional($parte[0]);
                     $nome = $pessoal->get_nome($idServidor);
-
-                    $conteudo[] = array($contador,$parte[0],$parte[1],$parte[2],$parte[3],$parte[4],$parte[5]);
-
                     $diferenca = dataDif($parte[2], $parte[3]) + 1;
-                    
                     $anoExercicio = year($parte[4]);
-
-                    $conteudo[] = array($contador,$idServidor,$nome,$parte[2],$diferenca,year($anoExercicio),"");
-                    $tt++;
-                    $contador++;
 
                     # Grava na tabela
                     $campos = array("idServidor","dtInicial","anoExercicio","numDias","status");
@@ -390,7 +380,6 @@ if($acesso){
             $linkBotao1 = new Link("Ok",'?');
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Volta para a página Inicial');
-            $linkBotao1->set_accessKey('I');
             $linkBotao1->show();
             break;
         

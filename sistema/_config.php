@@ -46,7 +46,7 @@ $mes = array(array("1","Janeiro"),
 
 # Inicia a Session
 session_start();
-session_cache_limiter('private'); 
+#session_cache_limiter('private'); 
 
 # Funções	
 include_once (PASTA_FUNCOES_GERAIS."funcoes.gerais.php");
