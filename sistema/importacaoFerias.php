@@ -36,9 +36,6 @@ if($acesso){
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
-
-    # Abre o banco de dados
-    $pessoal = new Pessoal();
     
     # Define o arquivo a ser importado
     $arquivo = "../importacao/ferias.csv"; 
@@ -105,13 +102,13 @@ if($acesso){
             # Cria um painel
             $painel = new Callout();
             $painel->abre();
+            
+            # Abre o banco de dados
+            $pessoal = new Pessoal();
 
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
                 $lines = file($arquivo);
-                
-                # Array para inserir os dados
-                $conteúdo = array();
 
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($lines as $linha) {
@@ -121,25 +118,15 @@ if($acesso){
                     $idServidor = $pessoal->get_idServidoridFuncional($parte[0]);
                     $nome = $pessoal->get_nome($idServidor);
 
-                    if(is_null($nome)){
-                        $problemas++;
-                        $problemaLinha[] = $linha;
+                    $diferenca = dataDif($parte[2], $parte[3]) + 1;
+                    $anoExercicio = year($parte[4]);
+                    if(isset($$anoExercicio)){
+                        $$anoExercicio++;
                     }else{
-                        $conteudo[] = array($contador,$parte[0],$parte[1],$parte[2],$parte[3],$parte[4],$parte[5]);
-
-                        $diferenca = dataDif($parte[2], $parte[3]) + 1;
-                        
-                        $anoExercicio = year($parte[4]);
-                        if(isset($$anoExercicio)){
-                            $$anoExercicio++;
-                        }else{
-                            $$anoExercicio = 1;
-                        }
-                        
-                        $conteudo[] = array($contador,$idServidor,$nome,$parte[2],$diferenca,$anoExercicio,"");
-                        $tt++;
-                        $contador++;
+                        $$anoExercicio = 1;
                     }
+                    $tt++;
+                    $contador++;
                 }
                
                 echo "Registros analisados: ".$tt;
@@ -147,56 +134,6 @@ if($acesso){
                 echo "Problemas encontrados: ".$problemas;
                 br();
                 $contador = 1;
-                
-                if($problemas > 0){
-                    echo "<table border=1>";
-
-                    echo "<tr>";
-                    echo "<th>#</th>";
-                    echo "<th>IdFuncional</th>";
-                    echo "<th>Nome</th>";
-                    echo "<th>Data Inicial</th>";
-                    echo "<th>Data Final</th>";
-                    echo "<th>Inicio Período Aq.</th>";
-                    echo "<th>Término Período Aq.</th>";
-                    echo "</tr>";
-
-                    # Percorre o arquivo e guarda os dados em um array
-                    foreach ($problemaLinha as $linha2) {
-
-                        $parte = explode(";",$linha2);
-                        $idServidor = $pessoal->get_idServidoridFuncional($parte[0]);
-                        $nome = $pessoal->get_nome($idServidor);
-
-                        # Exibe os dados
-                        echo "<tr>";
-                        echo "<td rowspan='2'>".$contador."</td>";
-                        echo "<td>".$parte[0]."</td>";
-                        echo "<td>".$parte[1]."</td>";
-                        echo "<td>".$parte[2]."</td>";
-                        echo "<td>".$parte[3]."</td>";
-                        echo "<td>".$parte[4]."</td>";
-                        echo "<td>".$parte[5]."</td>";
-                        echo "</tr>";
-
-                        ################################
-
-                        $diferenca = dataDif($parte[2], $parte[3]) + 1;
-
-                        echo "<tr>";
-                        #echo "<td>".$contador."</td>";
-                        echo "<td>".$idServidor."</td>";
-                        echo "<td>".$nome."</td>";
-                        echo "<td>".$parte[2]."</td>";
-                        echo "<td>".$diferenca." dias</td>";
-                        echo "<td>".year($parte[4])."</td>";
-                        echo "<td></td>";
-                        echo "</tr>";
-
-                        $contador++;
-                    }
-                }
-
             }else{
                 echo "Arquivo de Férias não encontrado";
                 br();
@@ -211,111 +148,68 @@ if($acesso){
                 }
             }
             
-            if($problemas == 0){
-                echo "Podemos fazer a importação";
-                br(2);
-                # Botão importar
-                $linkBotao1 = new Link("Importar",'?fase=aguarda2');
-                $linkBotao1->set_class('button');
-                $linkBotao1->set_title('Volta para a página anterior');
-                $linkBotao1->set_accessKey('I');
-                $linkBotao1->show();
-                
-            }else{
-                echo "Temos problemas";
-            }
-
-            $painel->fecha();
-            break;
-            
-         #########################################################################
-    
-        case "aguarda2" :
-            titulo('Analisando ...');
-            br(4);
-            aguarde("Analisando o arquivo de férias.");
-
-            loadPage('?fase=analisa2');
-            break;
-        
-        #########################################################################    
-            
-        case "analisa2" :            
-            # Cria um menu
-            $menu = new MenuBar();
-
-            # Botão voltar
-            $linkBotao1 = new Link("Voltar",'importacaoFerias.php');
+            echo "Podemos fazer a importação";
+            br(2);
+            # Botão importar
+            $linkBotao1 = new Link("Importar",'?fase=aguarda2');
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Volta para a página anterior');
-            $linkBotao1->set_accessKey('V');
-            $menu->add_link($linkBotao1,"left");
-            $menu->show();
+            $linkBotao1->set_accessKey('I');
+            $linkBotao1->show();
 
-            titulo('Verifique se está tudo certo.');
+            br(2);
 
-            # Cria um painel
-            $painel = new Callout();
-            $painel->abre();
+            # Inicia a Tabela
+            echo "<table border=1>";
+            echo "<tr>";
+            echo "<th>#</th>";
+            echo "<th>IdFuncional</th>";
+            echo "<th>Nome</th>";
+            echo "<th>Data Inicial</th>";
+            echo "<th>Data Final</th>";
+            echo "<th>Inicio Período Aq.</th>";
+            echo "<th>Término Período Aq.</th>";
+            echo "</tr>";
 
-            # Verifica a existência do arquivo
-            if(file_exists($arquivo)){
-                $lines = file($arquivo);
-                
-                # Array para inserir os dados
-                $conteúdo = array();
-                $contador = 1;
-                
-                # Inicia a Tabela
-                echo "<table border=1>";
+            $contador = 1;
+
+            # Percorre o arquivo e guarda os dados em um array
+            foreach ($lines as $linha) {
+                $linha = htmlspecialchars($linha);
+
+                $parte = explode(";",$linha);
+                $idServidor = $pessoal->get_idServidoridFuncional($parte[0]);
+                $nome = "nome";
+
+                # Exibe os dados
                 echo "<tr>";
-                echo "<th>#</th>";
-                echo "<th>IdFuncional</th>";
-                echo "<th>Nome</th>";
-                echo "<th>Data Inicial</th>";
-                echo "<th>Data Final</th>";
-                echo "<th>Inicio Período Aq.</th>";
-                echo "<th>Término Período Aq.</th>";
+                echo "<td rowspan='2'>".$contador."</td>";
+                echo "<td>".$parte[0]."</td>";
+                echo "<td>".$parte[1]."</td>";
+                echo "<td>".$parte[2]."</td>";
+                echo "<td>".$parte[3]."</td>";
+                echo "<td>".$parte[4]."</td>";
+                echo "<td>".$parte[5]."</td>";
                 echo "</tr>";
 
-                # Percorre o arquivo e guarda os dados em um array
-                foreach ($lines as $linha) {
-                    $linha = htmlspecialchars($linha);
+                ################################
 
-                    $parte = explode(";",$linha);
-                    $idServidor = $pessoal->get_idServidoridFuncional($parte[0]);
-                    $nome = $pessoal->get_nome($idServidor);
-                    
-                    # Exibe os dados
-                    echo "<tr>";
-                    echo "<td rowspan='2'>".$contador."</td>";
-                    echo "<td>".$parte[0]."</td>";
-                    echo "<td>".$parte[1]."</td>";
-                    echo "<td>".$parte[2]."</td>";
-                    echo "<td>".$parte[3]."</td>";
-                    echo "<td>".$parte[4]."</td>";
-                    echo "<td>".$parte[5]."</td>";
-                    echo "</tr>";
-                    
-                    ################################
+                $diferenca = dataDif($parte[2], $parte[3]) + 1;
 
-                    $diferenca = dataDif($parte[2], $parte[3]) + 1;
+                echo "<tr>";
+                #echo "<td>".$contador."</td>";
+                echo "<td>".$idServidor."</td>";
+                echo "<td>".$nome."</td>";
+                echo "<td>".$parte[2]."</td>";
+                echo "<td>".$diferenca." dias</td>";
+                echo "<td>".year($parte[4])."</td>";
+                echo "<td></td>";
+                echo "</tr>";
 
-                    echo "<tr>";
-                    #echo "<td>".$contador."</td>";
-                    echo "<td>".$idServidor."</td>";
-                    echo "<td>".$nome."</td>";
-                    echo "<td>".$parte[2]."</td>";
-                    echo "<td>".$diferenca." dias</td>";
-                    echo "<td>".year($parte[4])."</td>";
-                    echo "<td></td>";
-                    echo "</tr>";
-                    
-                    $contador++;
-                }                
-                echo "</table>";
-            }
-            
+                $contador++;
+            }                
+            echo "</table>";
+
             br(2);
             # Botão importar
             $linkBotao1 = new Link("Importar",'?fase=importa');
@@ -323,6 +217,7 @@ if($acesso){
             $linkBotao1->set_title('Volta para a página anterior');
             $linkBotao1->set_accessKey('I');
             $linkBotao1->show();
+            
             $painel->fecha();
             break;
             
@@ -344,6 +239,9 @@ if($acesso){
             if(file_exists($arquivo)){
                 $lines = file($arquivo);
                 
+                # Abre o banco de dados
+                $pessoal = new Pessoal();
+                
                 # Array para inserir os dados
                 $conteúdo = array();
 
@@ -353,7 +251,6 @@ if($acesso){
 
                     $parte = explode(";",$linha);
                     $idServidor = $pessoal->get_idServidoridFuncional($parte[0]);
-                    $nome = $pessoal->get_nome($idServidor);
                     $diferenca = dataDif($parte[2], $parte[3]) + 1;
                     $anoExercicio = year($parte[4]);
 
