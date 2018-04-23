@@ -164,14 +164,6 @@ if($acesso)
             $botao->set_url('mensagem.php');
             $menu->add_item($botao);
             
-            # Gestão de Projetos
-            $botao = new BotaoGrafico();
-            $botao->set_label('Projetos');
-            $botao->set_title('Gestão de Projetos');
-            $botao->set_image(PASTA_FIGURAS.'mensagem.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('projetos.php');
-            $menu->add_item($botao);
-            
             $menu->show();
             br();
             $grid2->fechaColuna();
