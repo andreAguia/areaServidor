@@ -1,6 +1,6 @@
 <?php
 /**
- * Cadastro de Computador
+ * Cadastro deComputador
  *  
  * By Alat
  */
@@ -26,11 +26,12 @@ if($acesso){
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro'))){                                # Se o parametro não vier por post (for nulo)
-        $parametro = retiraAspas(get_session('sessionParametro'));  # passa o parametro da session para a variavel parametro retirando as aspas
-    }else{ 
-        $parametro = post('parametro');                             # Se vier por post, retira as aspas e passa para a variavel parametro			
-        set_session('sessionParametro',$parametro);                 # transfere para a session para poder recuperá-lo depois
+    if (is_null(post('parametro')))									# Se o parametro não vier por post (for nulo)
+        $parametro = retiraAspas(get_session('sessionParametro'));	# passa o parametro da session para a variavel parametro retirando as aspas
+    else
+    { 
+        $parametro = post('parametro');								# Se vier por post, retira as aspas e passa para a variavel parametro			
+        set_session('sessionParametro',$parametro);			 		# transfere para a session para poder recuperá-lo depois
     }
 
     # Ordem da tabela
@@ -50,7 +51,7 @@ if($acesso){
     ################################################################
 
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome('Computador');
+    $objeto->set_nome('Mensagem');
 
     # botão de voltar da lista
     $objeto->set_voltarLista('administracao.php');
@@ -67,22 +68,16 @@ if($acesso){
             $orderTipo = 'asc';
 
     # select da lista
-    $objeto->set_selectLista('SELECT data,
-                                     numero,
-                                     assunto,
-                                     idProcesso
-                                FROM tbprocesso
-                               WHERE data LIKE "%'.$parametro.'%"
-                                  OR numero LIKE "%'.$parametro.'%"	
-                                  OR assunto LIKE "%'.$parametro.'%"		    
+    $objeto->set_selectLista('SELECT idProjeto,
+                                     projeto
+                                FROM tbprojeto
+                               WHERE projeto LIKE "%'.$parametro.'%"	    
                             ORDER BY '.$orderCampo.' '.$orderTipo);	
 
     # select do edita
-    $objeto->set_selectEdita('SELECT data,
-                                     numero,
-                                     assunto							    
-                                FROM tbprocesso
-                               WHERE idProcesso = '.$id);
+    $objeto->set_selectEdita('SELECT projeto							    
+                                FROM tbprojeto
+                               WHERE idProjeto = '.$id);
 
     # ordem da lista
     $objeto->set_orderCampo($orderCampo);
@@ -96,47 +91,37 @@ if($acesso){
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("Data","Número","Assunto"));
-    $objeto->set_width(array(15,15,60));		
-    $objeto->set_align(array("center","center","left"));
-    $objeto->set_funcao(array("date_to_php"));
+    $objeto->set_label(array("id","Mensagem"));
+    $objeto->set_width(array(5,85));		
+    $objeto->set_align(array("center","left"));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
 
     # Nome da tabela
-    $objeto->set_tabela('tbprocesso');
+    $objeto->set_tabela('tbprojeto');
 
     # Nome do campo id
-    $objeto->set_idCampo('idProcesso');
+    $objeto->set_idCampo('idProjeto');
 
     # Tipo de label do formulário
     $objeto->set_formlabelTipo(1);
-    
+
     # Campos para o formulario
     $objeto->set_campos(array( 
-                        array ( 'nome' => 'data',
-                                'label' => 'data:',
-                                'tipo' => 'data',
+                        array ( 'nome' => 'projeto',
+                                'label' => 'Nome do Projeto:',
+                                'tipo' => 'texto',
                                 'size' => 20,
-                                'title' => 'data do processo',
                                 'required' => TRUE,
                                 'autofocus' => TRUE,
-                                'col' => 3,
+                                'col' => 12,
                                 'linha' => 1),
-                        array ( 'linha' => 1,
-                                'nome' => 'numero',
-                                'label' => 'Processo:',
-                                'tipo' => 'texto',
-                                'title' => 'O numero do Processo',
-                                'required' => TRUE,
-                                'col' => 3,
-                                'size' => 15),
-                        array ( 'nome' => 'assunto',
-                                'label' => 'Assunto:',
+                        array ( 'nome' => 'descricao',
+                                'label' => 'Descrição:',
                                 'tipo' => 'textarea',
                                 'size' => array(90,5),
-                                'title' => 'Assunto.',
+                                'title' => 'Descrição do Projeto',
                                 'col' => 12,
                                 'linha' => 2)	 	 	 	 	 	 
                     ));

@@ -116,8 +116,7 @@ class Intra extends Bd
     * @param	string	$var	-> o nome da variável
     */
 
-    public function get_variavel($variavel)
-    {
+    public function get_variavel($variavel){
         $select = 'SELECT valor
                      FROM tbvariaveis
                     WHERE nome = "'.$variavel.'"';
