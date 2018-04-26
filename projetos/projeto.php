@@ -56,7 +56,6 @@ if($acesso)
             
             # Se existir algum projeto percorre
             # os projetos e monta o menu
-
             if($numProjetos>0){
                 # Percorre o array e preenche o $return
                 foreach ($row as $valor) {                    
@@ -124,7 +123,16 @@ if($acesso)
             $tarefas = $projeto->listaTarefas($idProjeto);
             
             # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(6);
             p($projetoPesquisado[1],"f18");
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+            $menu2 = new Menu();
+            $menu2->add_item('link','+ Nova Tarefa','?fase=tarefaNova');
+            $menu2->show();
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
             hr("projetosTarefas");
             
             $figura = new Imagem(PASTA_FIGURAS.'tickVazio.png','',15,15);
