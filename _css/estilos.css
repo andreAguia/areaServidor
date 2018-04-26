@@ -228,3 +228,23 @@ p#versao{
     padding: 0px;
     margin: 0px;
 }
+
+/*******************************************
+ * Sistema de Gestão de Projetos
+ *******************************************/
+
+ul.projetosTarefas {
+    list-style-type: none;
+    font-size: 14px;
+    color: blue;    
+}
+
+hr#projetosTarefas{
+    margin: 5px;
+}
+
+li.projetoDataInicial {
+    list-style-type: none;
+    font-size: 14px;
+    color: blue;    
+}

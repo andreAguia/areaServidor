@@ -124,18 +124,34 @@ if($acesso)
             $tarefas = $projeto->listaTarefas($idProjeto);
             
             # Nome do projeto
-            p($projetoPesquisado[1],"f20");
-            hr();
+            p($projetoPesquisado[1],"f18");
+            hr("projetosTarefas");
+            
+            $figura = new Imagem(PASTA_FIGURAS.'tickVazio.png','',15,15);
+            echo '<ul class="projetosTarefas">';
             
             # Se existir alguma tarefa percorre
             # as tarefas e monta a lista
             if($numeroTarefas>0){
                 # Percorre o array e preenche o $return
-                foreach ($tarefas as $valor) {                    
-                    echo $valor[1];
+                foreach ($tarefas as $valor) {
+                    $grid = new Grid();
+                    $grid->abreColuna(1);
+                        $figura->show();
+                    $grid->fechaColuna();
+                    $grid->abreColuna(6);
+                        echo "<li>$valor[1]</li>";
+                    $grid->fechaColuna();
+                    $grid->abreColuna(3);
+                        $dataInicial = date_to_php($valor[4]);
+                        echo "<li id='projetoDataInicial'>".$dataInicial."</li>";
+                    $grid->fechaColuna();
+                    $grid->fechaGrid(); 
+                    hr("projetosTarefas");
                 }
             }
             
+            echo '</ul>';
             # Monta a tabela
             $tabela = new Tabela();
             $tabela->set_conteudo($tarefas);
@@ -147,7 +163,14 @@ if($acesso)
             $grid->fechaColuna();
             $grid->abreColuna(3);
             
-            callout($projetoPesquisado[2],"secondary");
+            $painel2 = new Callout("secondary");
+            $painel2->set_title('Descrição do projeto');
+            $painel2->abre();
+            
+            p('Descrição:','f10');
+            p($projetoPesquisado[2],'f14');
+            
+            $painel2 ->fecha();
             
             $grid->fechaColuna();
             $grid->fechaGrid();    
