@@ -79,3 +79,80 @@ function exibeNomeTitle($idServidor){
         return $escolhida[0];
         
     }
+    
+    ##################################################################
+    
+    function formataDataTarefa($dataInicial,$dataFinal = NULL){
+        
+        # Pega a data de hoje
+        $d = date("d"); 
+        $m = date("m"); 
+        $Y = date("Y");
+        
+        $hoje = ajeita(date("m-d-Y", mktime(0, 0, 0, $m, $d, $Y))); 
+        $ontem = ajeita(date("m-d-Y", mktime(0, 0, 0, $m, $d-1, $Y))); 
+        $amanha = ajeita(date("m-d-Y", mktime(0, 0, 0, $m, $d+1, $Y))); 
+        
+        # Inicia as Variáveis de retorno
+        $inicialRetorno = ajeita2($dataInicial);
+        $finalRetorno = ajeita2($dataFinal);
+        
+        # Se alguma data é hoje
+        if($dataInicial == $hoje){
+            $inicialRetorno = "Hoje";
+        }
+        
+        if($dataFinal == $hoje){
+            $finalRetorno = "Hoje";
+        }
+        
+        # Se alguma data é amanhã
+        if($dataInicial == $amanha){
+            $inicialRetorno = "Amanhã";
+        }
+        
+        if($dataFinal == $amanha){
+            $finalRetorno = "Amanhã";
+        }
+        
+        # Se alguma data é ontem
+        if($dataInicial == $ontem){
+            $inicialRetorno = "Ontem";
+        }
+        
+        if($dataFinal == $ontem){
+            $finalRetorno = "Ontem";
+        }
+        
+        if(vazio($finalRetorno)){
+            $textoRetorno = $inicialRetorno;
+        }else{
+            $textoRetorno = $inicialRetorno." até ".$finalRetorno;
+        }
+        return $textoRetorno;
+    }
+    
+    ##################################################################
+    
+    function ajeita($data){
+        $dt1 = explode("-",$data);
+        $dt2 = $dt1[1].'/'.$dt1[0].'/'.$dt1[2];
+        
+        if(validaData($dt2)){
+            return $dt2;
+        }else{
+            return NULL;
+        }
+    }
+    
+##################################################################
+    
+    function ajeita2($data){
+        if(validaData($data)){
+            $dt1 = explode("/",$data);
+            $dt2 = $dt1[0].'/'.$dt1[1];
+            return $dt2;
+        }else{
+            return NULL;
+        }
+    }

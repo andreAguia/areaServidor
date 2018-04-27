@@ -233,18 +233,38 @@ p#versao{
  * Sistema de Gestão de Projetos
  *******************************************/
 
-ul.projetosTarefas {
+ul#projetosTarefas {
     list-style-type: none;
-    font-size: 14px;
-    color: blue;    
+    font-size: 13px;
 }
 
 hr#projetosTarefas{
-    margin: 5px;
+    margin: 0;
 }
 
-li.projetoDataInicial {
+li#projetoDataInicial {
     list-style-type: none;
-    font-size: 14px;
-    color: blue;    
+    font-size: 13px;
+}
+
+div#divTarefas:hover {
+    background-color:  #f3f3f5;
+}
+
+div#divTarefas {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+p#descricaoProjeto {
+    font-size: 12px;
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+p#descricaoProjetoTitulo{
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
 }
