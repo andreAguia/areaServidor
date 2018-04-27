@@ -245,6 +245,8 @@ hr#projetosTarefas{
 li#projetoDataInicial {
     list-style-type: none;
     font-size: 13px;
+    text-align: right;
+    width: 100%;
 }
 
 div#divTarefas:hover {

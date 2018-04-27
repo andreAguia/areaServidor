@@ -316,15 +316,13 @@ if($acesso)
             $dataFinal = post('dataFinal');
             $idProjeto = post('idProjeto');
             $idEtiqueta = post('idEtiqueta');
-            
-            $id = NULL;
-            
+                      
             # Cria arrays para gravação
             $arrayNome = array("tarefa","descricao","dataInicial","dataFinal","idProjeto","feito","idEtiqueta");
             $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,0,$idEtiqueta);
             
             # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$id,"tbprojetoTarefa","idTarefa");
+            $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");
             loadPage("?fase=projeto&idProjeto=".$idProjeto);
             break;
         

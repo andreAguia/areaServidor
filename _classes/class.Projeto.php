@@ -117,11 +117,15 @@ class Projeto{
     
     ###########################################################
     
-    public function exibeTarefas($idProjeto = NULL, $feito = FALSE){
+    public function exibeTarefas($idProjeto = NULL, $feito = FALSE, $data = TRUE){
     /**
      * Retorna uma lista das terefas do projeto informado
      * 
      * @param $idProjeto integer NULL o idProjeto 
+     * @param $idProjeto integer NULL o idProjeto 
+     * @param $idProjeto integer NULL o idProjeto 
+     * 
+
      * 
      * @syntax $projeto->exibeTarefas($idProjeto);  
      */
@@ -136,7 +140,8 @@ class Projeto{
                           feito,
                           idEtiqueta
                      FROM tbprojetotarefa
-                     WHERE idProjeto = '.$idProjeto;
+                    WHERE idProjeto = '.$idProjeto.' 
+                      AND dataInicial <> "0000-00-00"';
         
         if($feito){
             $select.= ' AND feito';
@@ -144,7 +149,7 @@ class Projeto{
             $select.= ' AND NOT feito';
         }
         
-        $select .=' ORDER BY feito, noOrdem';
+        $select .=' ORDER BY dataInicial, noOrdem';
         
         $intra = new Intra();
         
@@ -185,6 +190,13 @@ class Projeto{
                 # Tarefa
                 $grid->abreColuna(6);
                     echo "<li>$valor[1]</li>";
+                $grid->fechaColuna();                
+                
+                # Etiqueta
+                $grid->abreColuna(2);
+                    if(!vazio($valor[7])){
+                        echo "<li>".label($valor[7])."</li>";
+                    }
                 $grid->fechaColuna();
                 
                 # Datas Inicial
@@ -195,13 +207,6 @@ class Projeto{
                     echo "<li id='projetoDataInicial'>".formataDataTarefa($dataInicial,$dataFinal)."</li>";
                     #echo "<li id='projetoDataInicial'>".$dataInicial.'-'.$dataFinal."</li>";
                     
-                $grid->fechaColuna();
-                
-                # Etiqueta
-                $grid->abreColuna(2);
-                    if(!vazio($valor[7])){
-                        echo "<li>".label($valor[7])."</li>";
-                    }
                 $grid->fechaColuna();
                 
                 # Editar
