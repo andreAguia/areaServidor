@@ -117,13 +117,38 @@ class Projeto{
     
     ###########################################################
     
+    public function get_dadosEtiqueta($idEtiqueta){
+    /**
+     * Retorna um array com todos os dados de uma etiqueta específica
+     * 
+     * @param $idEtiqueta integer NULL o idEtiqueta 
+     * 
+     * @syntax $projeto->get_dadosEtiqueta($idEtiqueta);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT idEtiqueta,
+                          etiqueta,
+                          cor
+                     FROM tbprojetoetiqueta
+                     WHERE idEtiqueta = '.$idEtiqueta.' 
+                ORDER BY etiqueta';
+        
+        $intra = new Intra();
+        
+        $row = $intra->select($select,false);
+        return $row;
+    }
+    
+    ###########################################################
+    
     public function exibeTarefas($idProjeto = NULL, $feito = FALSE, $data = TRUE){
     /**
      * Retorna uma lista das terefas do projeto informado
      * 
-     * @param $idProjeto integer NULL o idProjeto 
-     * @param $idProjeto integer NULL o idProjeto 
-     * @param $idProjeto integer NULL o idProjeto 
+     * @param $idProjeto integer NULL  o idProjeto 
+     * @param $feito     BOOLEAN FALSE Informa se será exibido as tarefas feitas ou por fazer 
+     * @param $data      BOOLEAN TRUE  Informa se será exibido as tarefas com data ou não 
      * 
 
      * 
@@ -140,17 +165,142 @@ class Projeto{
                           feito,
                           idEtiqueta
                      FROM tbprojetotarefa
-                    WHERE idProjeto = '.$idProjeto.' 
-                      AND dataInicial <> "0000-00-00"';
+                    WHERE idProjeto = '.$idProjeto;
         
         if($feito){
             $select.= ' AND feito';
         }else{
+            if($data){
+                $select.= ' AND dataInicial <> "0000-00-00"';
+            }else{
+                $select.= ' AND dataInicial = "0000-00-00"';
+            }       
             $select.= ' AND NOT feito';
         }
         
         $select .=' ORDER BY dataInicial, noOrdem';
+        #echo $select;
+        $intra = new Intra();
         
+        $tarefas = $intra->select($select);
+        $numeroTarefas = $intra->count($select);
+            
+        echo '<ul id="projetosTarefas">';
+            
+        # Se existir alguma tarefa percorre
+        # as tarefas e monta a lista
+        if($numeroTarefas>0){
+            
+            if($feito){
+                p("Tarefas Completadas","f14");
+            }else{
+                if(!$data){
+                    p("Tarefas Sem Data","f14");
+                }
+            }
+            
+            # Percorre o array e preenche o $return
+            foreach ($tarefas as $valor) {
+                $div = new Div("divTarefas");
+                $div->abre();
+                $grid = new Grid();
+                
+                # Ticked
+                $grid->abreColuna(1);
+
+                    $botao = new BotaoGrafico();
+                    $botao->set_url('?fase=mudaTarefa&idTarefa='.$valor[0].'&idProjeto='.$idProjeto);
+
+                    if($valor[6] == 1){
+                        $botao->set_image(PASTA_FIGURAS.'tickCheio.png',15,15);
+                    }else{
+                        $botao->set_image(PASTA_FIGURAS.'tickVazio.png',15,15);
+                    }
+                    $botao->show();
+
+                $grid->fechaColuna();
+                
+                # Tarefa
+                $grid->abreColuna(7);
+                    echo "<li title='$valor[2]'>$valor[1]</li>";
+                $grid->fechaColuna();                
+                
+                # Etiqueta
+                $grid->abreColuna(2);
+                    if(!vazio($valor[7])){
+                        $dadosEtiqueta = $this->get_dadosEtiqueta($valor[7]);
+                        echo "<li>".label($dadosEtiqueta[1],$dadosEtiqueta[2])."</li>";
+                    }
+                $grid->fechaColuna();
+                
+                # Datas Inicial
+                $grid->abreColuna(1);
+                    $dataInicial = date_to_php($valor[4]);
+                    $dataFinal = date_to_php($valor[5]);
+                    
+                    echo "<li id='projetoDataInicial'>".formataDataTarefa($dataInicial,$dataFinal)."</li>";
+                    #echo "<li id='projetoDataInicial'>".$dataInicial.'-'.$dataFinal."</li>";
+                    
+                $grid->fechaColuna();
+                
+                # Editar
+                $grid->abreColuna(1);
+                    $botao = new BotaoGrafico();
+                    $botao->set_url('?fase=tarefaNova&idTarefa='.$valor[0].'&idProjeto='.$idProjeto);
+                    $botao->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',15,15);
+                    $botao->show();
+                $grid->fechaColuna();
+                $grid->fechaGrid(); 
+                
+                $div->fecha();
+                
+                hr("projetosTarefas");   
+            }
+        }
+        echo '</ul>';
+    }
+    
+    ###########################################################
+    
+    public function exibeTarefasEtiqueta($idEtiqueta, $feito = FALSE, $data = TRUE){
+    /**
+     * Retorna uma lista das terefas do projeto informado
+     * 
+     * @param $idProjeto integer NULL  o idProjeto 
+     * @param $feito     BOOLEAN FALSE Informa se será exibido as tarefas feitas ou por fazer 
+     * @param $data      BOOLEAN TRUE  Informa se será exibido as tarefas com data ou não 
+     * 
+
+     * 
+     * @syntax $projeto->exibeTarefas($idProjeto);  
+     */
+    
+        # Pega as tarefas
+        $select = 'SELECT idTarefa,
+                          tarefa,
+                          descricao,
+                          idSecao,
+                          dataInicial,
+                          dataFinal,
+                          feito,
+                          idEtiqueta,
+                          idProjeto
+                     FROM tbprojetotarefa
+                    WHERE idEtiqueta = '.$idEtiqueta;
+        
+        if($feito){
+            $select.= ' AND feito';
+        }else{
+            if($data){
+                $select.= ' AND dataInicial <> "0000-00-00"';
+            }else{
+                $select.= ' AND dataInicial = "0000-00-00"';
+            }       
+            $select.= ' AND NOT feito';
+        }
+        
+        $select .=' ORDER BY dataInicial, noOrdem';
+        #echo $select;
         $intra = new Intra();
         
         $tarefas = $intra->select($select);
@@ -176,7 +326,7 @@ class Projeto{
                 $grid->abreColuna(1);
 
                     $botao = new BotaoGrafico();
-                    $botao->set_url('?fase=mudaTarefa&idTarefa='.$valor[0].'&idProjeto='.$idProjeto);
+                    $botao->set_url('?fase=mudaTarefa&idTarefa='.$valor[0].'&idEtiqueta='.$idEtiqueta);
 
                     if($valor[6] == 1){
                         $botao->set_image(PASTA_FIGURAS.'tickCheio.png',15,15);
@@ -189,18 +339,19 @@ class Projeto{
                 
                 # Tarefa
                 $grid->abreColuna(6);
-                    echo "<li>$valor[1]</li>";
+                    echo "<li title='$valor[2]'>$valor[1]</li>";
                 $grid->fechaColuna();                
                 
-                # Etiqueta
-                $grid->abreColuna(2);
-                    if(!vazio($valor[7])){
-                        echo "<li>".label($valor[7])."</li>";
+                # Projeto
+                $grid->abreColuna(3);
+                    if(!vazio($valor[8])){
+                        $nome = $this->get_nomeProjeto($valor[8]);
+                        echo "<li>".$nome."</li>";
                     }
                 $grid->fechaColuna();
                 
                 # Datas Inicial
-                $grid->abreColuna(2);
+                $grid->abreColuna(1);
                     $dataInicial = date_to_php($valor[4]);
                     $dataFinal = date_to_php($valor[5]);
                     
@@ -212,7 +363,7 @@ class Projeto{
                 # Editar
                 $grid->abreColuna(1);
                     $botao = new BotaoGrafico();
-                    $botao->set_url('?fase=tarefaNova&idTarefa='.$valor[0].'&idProjeto='.$idProjeto);
+                    $botao->set_url('?fase=tarefaNova&idTarefa='.$valor[0].'&idEtiqueta='.$idEtiqueta);
                     $botao->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',15,15);
                     $botao->show();
                 $grid->fechaColuna();
@@ -246,7 +397,7 @@ class Projeto{
         $row = $intra->select($select,false);
         return $row[0];
     }
-    
+           
     ###########################################################
     
     public function listaEtiquetas($idProjeto = NULL){
@@ -262,7 +413,8 @@ class Projeto{
     
         # Pega os projetos cadastrados
         $select = 'SELECT idEtiqueta,
-                          etiqueta
+                          etiqueta,
+                          cor
                      FROM tbprojetoetiqueta
                      ORDER BY etiqueta';
         

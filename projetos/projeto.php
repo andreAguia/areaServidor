@@ -27,6 +27,7 @@ if($acesso)
     # Pega os ids quando se é necessário
     $idProjeto = get('idProjeto');
     $idTarefa = get('idTarefa');
+    $idEtiqueta = get('idEtiqueta');
     
     # Começa uma nova página
     $page = new Page();
@@ -40,6 +41,8 @@ if($acesso)
     AreaServidor::cabecalho();
 
     botaoVoltar('../sistema/administracao.php');
+    titulo("Sistema de Gestão de Projetos");
+    br();
     
     # Limita o tamanho da tela
     $grid = new Grid();
@@ -81,14 +84,14 @@ if($acesso)
     if($numEtiquetas>0){
         # Percorre o array 
         foreach ($dadosEtiquetas as $valor) {                    
-            $menu1->add_item('link',$valor[1],'#');
+            $menu1->add_item('link',$valor[1],'?fase=projetoEtiqueta&idEtiqueta='.$valor[0]);
         }
     }
 
     $menu1->show();
     
     $menu2 = new Menu();
-    $menu2->add_item('link','+ Novo Etiqueta','?fase=EtiquetaNova');
+    $menu2->add_item('link','+ Nova Etiqueta','?fase=etiquetaNova');
     $menu2->show();
 
     $grid->fechaColuna();
@@ -113,24 +116,25 @@ if($acesso)
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(10);
+            $grid->abreColuna(9);
             p($projetoPesquisado[1],'descricaoProjetoTitulo');
             p($projetoPesquisado[2],'descricaoProjeto');
             $grid->fechaColuna();
-            $grid->abreColuna(2);
-            
-                $botao = new BotaoGrafico();
-                $botao->set_url('?fase=tarefaNova&idProjeto='.$idProjeto);
-                $botao->set_image(PASTA_FIGURAS.'adicionar.png',25,25);
-                $botao->set_title('Adicionar uma tarefa');
-                $botao->show();
+            $grid->abreColuna(3);
+                
+                $menu2 = new Menu();
+                $menu2->add_item('link','+ Nova Tarefa','?fase=tarefaNova&idProjeto='.$idProjeto);
+                $menu2->show();
                 
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
             
-            # Exibe as tarefas
-            $projeto->exibeTarefas($idProjeto);
+            # Exibe as tarefas com data
+            $projeto->exibeTarefas($idProjeto,FALSE,TRUE);
+            
+            # Exibe as tarefas sem data
+            $projeto->exibeTarefas($idProjeto,FALSE,FALSE);
             
             # Exibe as tarefas completadas
             $projeto->exibeTarefas($idProjeto,TRUE);
@@ -139,7 +143,45 @@ if($acesso)
             $grid->fechaGrid();    
             break;
                  
-        ###########################################################  
+        ###########################################################
+            
+        case "projetoEtiqueta" :
+            
+            $grid->abreColuna(9);
+            
+            # Pega os dados da etiqueta pesquisado
+            $etiquetaPesquisada = $projeto->get_dadosEtiqueta($idEtiqueta);
+            
+            # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(9);
+            p($etiquetaPesquisada[1],'descricaoProjetoTitulo');
+            p("Tarefas com a etiqueta: ".$etiquetaPesquisada[1],'descricaoProjeto');
+             $grid->fechaColuna();
+            $grid->abreColuna(3);
+                
+                $menu2 = new Menu();
+                $menu2->add_item('link','Editar','?fase=etiquetaNova&idEtiqueta='.$idEtiqueta);
+                $menu2->show();
+                
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            hr("projetosTarefas");
+            
+            # Exibe as tarefas com data
+            $projeto->exibeTarefasEtiqueta($idEtiqueta,FALSE,TRUE);
+            
+            # Exibe as tarefas sem data
+            $projeto->exibeTarefasEtiqueta($idEtiqueta,FALSE,FALSE);
+            
+            # Exibe as tarefas completadas
+            $projeto->exibeTarefasEtiqueta($idEtiqueta,TRUE);
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+                 
+        ###########################################################   
             
          case "projetoNovo" :
              
@@ -218,7 +260,7 @@ if($acesso)
                 # Pega os dados dessa etiqueta
                 $dados = $projeto->get_dadosTarefas($idTarefa);
             }else{
-                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL);
+                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
             }
             
             # Nome do projeto
@@ -232,12 +274,21 @@ if($acesso)
             hr("projetosTarefas");
             br();
             
+            # Pega os dados da combo etiqueta
+            $selectetiqueta = 'SELECT idEtiqueta, 
+                                     etiqueta
+                                FROM tbprojetoetiqueta
+                               ORDER BY etiqueta';
+            
+            $result = $intra->select($selectetiqueta);
+            array_unshift($result, array(NULL,NULL)); # Adiciona o valor de nulo
+            
             # Formuário
             $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa);        
                     
             # tarefa
             $controle = new Input('tarefa','texto','Tarefa:',1);
-            $controle->set_size(50);
+            $controle->set_size(200);
             $controle->set_linha(1);
             $controle->set_required(TRUE);
             $controle->set_autofocus(TRUE);
@@ -248,7 +299,7 @@ if($acesso)
             
             # descrição
             $controle = new Input('descricao','textarea','Descrição:',1);
-            $controle->set_size(array(80,5));
+            $controle->set_size(array(80,10));
             $controle->set_linha(2);
             $controle->set_title('A descrição detalhda do tarefa');
             $controle->set_placeholder('Descrição da tarefa');
@@ -276,14 +327,14 @@ if($acesso)
             $form->add_item($controle);
             
             # etiqueta
-            $controle = new Input('etiqueta','combo','Etiqueta:',1);
+            $controle = new Input('idEtiqueta','combo','Etiqueta:',1);
             $controle->set_size(20);
             $controle->set_linha(3);
             $controle->set_col(3);
             $controle->set_placeholder('Etiqueta');
             $controle->set_title('Uma etiqueta para ajudar na busca');
-            $controle->set_array($dadosEtiquetas);
-            $controle->set_valor($dados[1]);
+            $controle->set_array($result);
+            $controle->set_valor($dados[7]);
             $form->add_item($controle);
             
             # idProjeto
@@ -346,7 +397,100 @@ if($acesso)
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");
-            loadPage("?fase=projeto&idProjeto=".$idProjeto);
+            
+            if(is_null($idProjeto)){
+                loadPage("?fase=projetoEtiqueta&idEtiqueta=".$idEtiqueta);
+            }else if(is_null($idEtiqueta)){
+                loadPage("?fase=projeto&idProjeto=".$idProjeto);
+            }
+            break;
+            
+        ###########################################################  
+            
+         case "etiquetaNova" :
+             
+            $grid->abreColuna(9);
+             
+            # Verifica se é incluir ou editar
+            if(!is_null($idEtiqueta)){
+                # Pega os dados dessa etiqueta
+                $dados = $projeto->get_dadosEtiqueta($idEtiqueta);
+            }else{
+                $dados = array(NULL,NULL,NULL);
+            } 
+             
+            # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+            p("Nova Etiqueta","f18");
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            hr("projetosTarefas");
+            br();
+            
+            # Formulário
+            $form = new Form('?fase=validaEtiqueta&idEtiqueta='.$idEtiqueta);        
+                    
+            # projeto
+            $controle = new Input('etiqueta','texto','Etiqueta:',1);
+            $controle->set_size(50);
+            $controle->set_linha(1);
+            $controle->set_col(4);
+            $controle->set_required(TRUE);
+            $controle->set_autofocus(TRUE);
+            $controle->set_placeholder('Etiqueta');
+            $controle->set_title('A Etiqueta');
+            $controle->set_valor($dados[1]);
+            $form->add_item($controle);
+            
+            # cor
+            $controle = new Input('cor','combo','Cor:',1);
+            $controle->set_size(10);
+            $controle->set_col(3);
+            $controle->set_linha(1);
+            $controle->set_title('A cor da etiqueta');
+            $controle->set_placeholder('Cor');
+            $controle->set_array(array("secondary","primary","success","warning","alert"));
+            $controle->set_valor($dados[2]);
+            $form->add_item($controle);
+            
+            # submit
+            $controle = new Input('submit','submit');
+            $controle->set_valor('Salvar');
+            $controle->set_linha(3);
+            $form->add_item($controle);
+            
+            $form->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+                        
+        ###########################################################
+            
+        case "validaEtiqueta" :
+            
+            # Recuperando os valores
+            $etiqueta = post('etiqueta');
+            $cor = post('cor');
+                      
+            # Cria arrays para gravação
+            $arrayNome = array("etiqueta","cor");
+            $arrayValores = array($etiqueta,$cor);
+            
+            # Grava	
+            $intra->gravar($arrayNome,$arrayValores,$idEtiqueta,"tbprojetoEtiqueta","idEtiqueta");
+            
+            if(is_null($idEtiqueta)){
+                loadPage("?");
+            }else{
+                loadPage("?fase=projetoEtiqueta&idEtiqueta=".$idEtiqueta);
+            }
+            break;
+        
+        ########################################################### 
+            
     }
     
     $grid->fechaColuna();
