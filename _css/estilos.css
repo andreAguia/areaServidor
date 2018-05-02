@@ -336,3 +336,23 @@ p#pCardNomeGrupo {
     padding: 0;
     color:cadetblue;
 }
+
+/*******************************************
+ * Sistema de controle de processos
+ *******************************************/
+
+div#divTituloProcesso {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 5px;
+    border: thin solid #E0E0E0;
+    border-radius: 10px;
+    background-color:#8FBC8F;
+}
+
+p#pNumeroProcesso {
+    font-size: 26px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}

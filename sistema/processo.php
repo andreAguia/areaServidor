@@ -50,26 +50,29 @@ if($acesso){
     ################################################################
 
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome('Computador');
+    $objeto->set_nome('Cadastro de Processos');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('areaServidor.php');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
     $objeto->set_parametroValue($parametro);
 
     # ordenação
-    if(is_null($orderCampo))
+    if(is_null($orderCampo)){
             $orderCampo = 1;
+    }
 
-    if(is_null($orderTipo))
+    if(is_null($orderTipo)){
             $orderTipo = 'asc';
+    }
 
     # select da lista
     $objeto->set_selectLista('SELECT data,
                                      numero,
                                      assunto,
+                                     idProcesso,
                                      idProcesso
                                 FROM tbprocesso
                                WHERE data LIKE "%'.$parametro.'%"
@@ -94,12 +97,26 @@ if($acesso){
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
     $objeto->set_linkExcluir('?fase=excluir');
+    
+    # Retira os botões de editar e excluir padrões
+    $objeto->set_botaoExcluir(FALSE);
+    $objeto->set_botaoEditar(FALSE);
 
     # Parametros da tabela
-    $objeto->set_label(array("Data","Número","Assunto"));
+    $objeto->set_label(array("Data","Número","Assunto","Movimentação"));
     $objeto->set_width(array(15,15,60));		
     $objeto->set_align(array("center","center","left"));
     $objeto->set_funcao(array("date_to_php"));
+    
+    # Botão de exibição dos servidores com permissão a essa regra
+    $botao = new BotaoGrafico();
+    $botao->set_label('');
+    $botao->set_title('Movimentação do processo');
+    $botao->set_url('?fase=movimentacao&id='.$id);
+    $botao->set_image(PASTA_FIGURAS.'movimentacao.png',20,20);
+
+    # Coloca o objeto link na tabela			
+    $objeto->set_link(array("","","",$botao));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -156,7 +173,42 @@ if($acesso){
         case "excluir" :	
         case "gravar" :		
             $objeto->$fase($id);		
-            break;		
+            break;
+        
+        case "movimentacao" :
+            # Limita o tamanho da tela
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+            # Cria um menu
+            $menu1 = new MenuBar();
+
+            # Sair da Área do Servidor
+            $linkVoltar = new Link("Voltar","?");
+            $linkVoltar->set_class('button');
+            $linkVoltar->set_title('Voltar');
+            $menu1->add_link($linkVoltar,"left");
+
+            $menu1->show();
+            
+            tituloTable("Cadastro de Processos");
+            br();
+            Gprocessos::exibeProcesso($id);
+            
+            #$processo = new Processo();
+            #$dadosProcesso = $processo->get_dadosProcesso($id);
+            
+            #$tabela = new Tabela();
+            #$tabela->set_titulo("Processo");
+            #$tabela->set_conteudo($dadosProcesso);
+            #$tabela->set_label(array("#","Número","Data","Assunto"));
+            #$tabela->set_funcao(array(NULL,NULL,"date_to_php"));
+            #$tabela->set_align(array("center","center","center","left"));
+            #$tabela->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            break;
     }									 	 		
 
     $page->terminaPagina();
