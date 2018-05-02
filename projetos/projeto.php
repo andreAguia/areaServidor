@@ -14,8 +14,7 @@ include ("../sistema/_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){    
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
@@ -28,6 +27,8 @@ if($acesso)
     $idProjeto = get('idProjeto');
     $idTarefa = get('idTarefa');
     $idEtiqueta = get('idEtiqueta');
+    $grupo = get('grupo');
+    $hojeGet = get('hoje');
     
     # Começa uma nova página
     $page = new Page();
@@ -49,50 +50,13 @@ if($acesso)
     $grid->abreColuna(3);
 
     # Menu de Projetos
-    $row = $projeto->listaProjetosAtivos();
-    $numProjetos = $projeto->numeroProjetosAtivos();
-
-    # Inicia o menu
-    $menu1 = new Menu();
-    $menu1->add_item('titulo','Projetos Ativos');
-
-    # Se existir algum projeto percorre
-    # o array e monta o menu
-    if($numProjetos>0){
-        # Percorre o array 
-        foreach ($row as $valor) {                    
-            $menu1->add_item('link',$valor[1],'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
-        }
-    }
-
-    $menu1->show();
+    Gprojetos::menuProjetosAtivos($idProjeto);
     
-    $menu2 = new Menu();
-    $menu2->add_item('link','+ Novo Projeto','?fase=projetoNovo');
-    $menu2->show();
+    # Menu Cronológico
+    Gprojetos::menuCronologico($fase);
     
     # Menu de Etiquetas
-    $dadosEtiquetas = $projeto->listaEtiquetas();
-    $numEtiquetas = $projeto->numeroEtiquetas();
-
-    # Inicia o menu
-    $menu1 = new Menu();
-    $menu1->add_item('titulo','Etiquetas');
-
-    # Se existir alguma etiqueta percorre
-    # o array e monta o menu
-    if($numEtiquetas>0){
-        # Percorre o array 
-        foreach ($dadosEtiquetas as $valor) {                    
-            $menu1->add_item('link',$valor[1],'?fase=projetoEtiqueta&idEtiqueta='.$valor[0]);
-        }
-    }
-
-    $menu1->show();
-    
-    $menu2 = new Menu();
-    $menu2->add_item('link','+ Nova Etiqueta','?fase=etiquetaNova');
-    $menu2->show();
+    Gprojetos::menuEtiquetas($idEtiqueta);
 
     $grid->fechaColuna();
     
@@ -100,6 +64,9 @@ if($acesso)
         case "ínicial" :
             
             $grid->abreColuna(9);
+            
+            # Menu de Projetos
+            Gprojetos::cartoesProjetosAtivos($grupo);  
             
             $grid->fechaColuna();
             $grid->fechaGrid();    
@@ -112,32 +79,44 @@ if($acesso)
             $grid->abreColuna(9);
             
             # Pega os dados do projeto pesquisado
-            $projetoPesquisado = $projeto->listaProjetosAtivos($idProjeto);
+            $projetoPesquisado = $projeto->get_dadosProjeto($idProjeto);
             
             # Nome do projeto
             $grid = new Grid();
             $grid->abreColuna(9);
-            p($projetoPesquisado[1],'descricaoProjetoTitulo');
-            p($projetoPesquisado[2],'descricaoProjeto');
+            
+                # Exibe o nome e a descrição
+                p($projetoPesquisado[1],'descricaoProjetoTitulo');
+                p($projetoPesquisado[2],'descricaoProjeto');
+                
             $grid->fechaColuna();
             $grid->abreColuna(3);
-                
+            
+                # Exibe o link de Nova Tarefa
                 $menu2 = new Menu();
                 $menu2->add_item('link','+ Nova Tarefa','?fase=tarefaNova&idProjeto='.$idProjeto);
                 $menu2->show();
                 
             $grid->fechaColuna();
             $grid->fechaGrid(); 
+            
             hr("projetosTarefas");
+            br();
             
-            # Exibe as tarefas com data
-            $projeto->exibeTarefas($idProjeto,FALSE,TRUE);
+            # Exibe as tarefas pendentes com data
+            $lista = new ListaTarefas();
+            $lista->set_projeto($idProjeto);
+            $lista->showPendenteDatado();
             
-            # Exibe as tarefas sem data
-            $projeto->exibeTarefas($idProjeto,FALSE,FALSE);
+            # Exibe as tarefas pendentes sem data
+            $lista = new ListaTarefas();
+            $lista->set_projeto($idProjeto);
+            $lista->showPendenteSemData();
             
-            # Exibe as tarefas completadas
-            $projeto->exibeTarefas($idProjeto,TRUE);
+            # Exibe as tarefas completatadas
+            $lista = new ListaTarefas();
+            $lista->set_projeto($idProjeto);
+            $lista->showCompletadas();
             
             $grid->fechaColuna();
             $grid->fechaGrid();    
@@ -155,27 +134,39 @@ if($acesso)
             # Nome do projeto
             $grid = new Grid();
             $grid->abreColuna(9);
-            p($etiquetaPesquisada[1],'descricaoProjetoTitulo');
-            p("Tarefas com a etiqueta: ".$etiquetaPesquisada[1],'descricaoProjeto');
-             $grid->fechaColuna();
-            $grid->abreColuna(3);
+            
+                # Exibe o nome e a descrição
+                p($etiquetaPesquisada[1],'descricaoProjetoTitulo');
+                p("Tarefas com a etiqueta: ".$etiquetaPesquisada[1],'descricaoProjeto');
                 
+            $grid->fechaColuna();
+            $grid->abreColuna(3);
+            
+                # Exibe o link editar
                 $menu2 = new Menu();
                 $menu2->add_item('link','Editar','?fase=etiquetaNova&idEtiqueta='.$idEtiqueta);
                 $menu2->show();
                 
             $grid->fechaColuna();
             $grid->fechaGrid(); 
+            
             hr("projetosTarefas");
+            br();
             
-            # Exibe as tarefas com data
-            $projeto->exibeTarefasEtiqueta($idEtiqueta,FALSE,TRUE);
+            # Exibe as tarefas pendentes com data
+            $lista = new ListaTarefas();
+            $lista->set_etiqueta($idEtiqueta);
+            $lista->showPendenteDatado();
             
-            # Exibe as tarefas sem data
-            $projeto->exibeTarefasEtiqueta($idEtiqueta,FALSE,FALSE);
+            # Exibe as tarefas pendentes sem data
+            $lista = new ListaTarefas();
+            $lista->set_etiqueta($idEtiqueta);
+            $lista->showPendenteSemData();
             
-            # Exibe as tarefas completadas
-            $projeto->exibeTarefasEtiqueta($idEtiqueta,TRUE);
+            # Exibe as tarefas completatadas
+            $lista = new ListaTarefas();
+            $lista->set_etiqueta($idEtiqueta);
+            $lista->showCompletadas();
             
             $grid->fechaColuna();
             $grid->fechaGrid();    
@@ -187,18 +178,31 @@ if($acesso)
              
             $grid->abreColuna(9);
              
+            # Verifica se é incluir ou editar
+            if(!is_null($idProjeto)){
+                # Pega os dados desse projeto
+                $dados = $projeto->get_dadosProjeto($idProjeto);
+                $titulo = "Editar Projeto";
+            }else{
+                $dados = array(NULL,NULL,NULL,NULL);
+                $titulo = "Novo Projeto";
+            }
+             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(12);
-            
-            p("Novo Projeto","f18");
+            $grid->abreColuna(10);
+                p($titulo,"f18");
+            $grid->fechaColuna();
+            $grid->abreColuna(2);
+                $link = new Button("Cancelar","?");
+                $link->show();
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
             br();
             
             # Formulário
-            $form = new Form('?fase=validaProjeto');        
+            $form = new Form('?fase=validaProjeto&idProjeto='.$idProjeto);        
                     
             # projeto
             $controle = new Input('projeto','texto','Nome do Projeto:',1);
@@ -208,6 +212,7 @@ if($acesso)
             $controle->set_autofocus(TRUE);
             $controle->set_placeholder('Nome do rojeto');
             $controle->set_title('O nome do Projeto a ser criado');
+            $controle->set_valor($dados[1]);
             $form->add_item($controle);
             
             # descrição
@@ -216,12 +221,34 @@ if($acesso)
             $controle->set_linha(2);
             $controle->set_title('A descrição detalhda do projeto');
             $controle->set_placeholder('Descrição');
+            $controle->set_valor($dados[2]);
+            $form->add_item($controle);
+            
+            # grupo
+            $controle = new Input('grupo','texto','Nome do agrupamento:',1);
+            $controle->set_size(50);
+            $controle->set_linha(3);
+            $controle->set_col(3);
+            $controle->set_placeholder('Grupo');
+            $controle->set_title('O nome agrupamento do Projeto');
+            $controle->set_valor($dados[3]);
+            $form->add_item($controle);
+            
+            # cor
+            $controle = new Input('cor','combo','Cor:',1);
+            $controle->set_size(10);
+            $controle->set_col(3);
+            $controle->set_linha(3);
+            $controle->set_title('A cor da etiqueta');
+            $controle->set_placeholder('Cor');
+            $controle->set_array(array("secondary","primary","success","warning","alert"));
+            $controle->set_valor($dados[2]);
             $form->add_item($controle);
             
             # submit
             $controle = new Input('submit','submit');
             $controle->set_valor('Salvar');
-            $controle->set_linha(3);
+            $controle->set_linha(4);
             $form->add_item($controle);
             
             $form->show();
@@ -237,15 +264,15 @@ if($acesso)
             # Recuperando os valores
             $projeto = post('projeto');
             $descricao = post('descricao');
-            
-            $id = NULL;
+            $grupo = post('grupo');
+            $cor = post('cor');
             
             # Cria arrays para gravação
-            $arrayNome = array("projeto","descricao","ativo","grupo");
-            $arrayValores = array($projeto,$descricao,1,"Geral");
+            $arrayNome = array("projeto","descricao","ativo","grupo","cor");
+            $arrayValores = array($projeto,$descricao,1,$grupo,$cor);
             
             # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$id,"tbprojeto","idProjeto");
+            $intra->gravar($arrayNome,$arrayValores,$idProjeto,"tbprojeto","idProjeto");
             loadPage("?");
             break;
         
@@ -258,17 +285,21 @@ if($acesso)
             # Verifica se é incluir ou editar
             if(!is_null($idTarefa)){
                 # Pega os dados dessa etiqueta
-                $dados = $projeto->get_dadosTarefas($idTarefa);
+                $dados = $projeto->get_dadosTarefa($idTarefa);
+                $titulo = "Editar Tarefa";
             }else{
                 $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+                $titulo = "Nova Tarefa";
             }
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(12);
-            
-            p($projeto->get_nomeProjeto($idProjeto)." - Nova Tarefa","f18");
-            
+            $grid->abreColuna(10);
+                p($projeto->get_nomeProjeto($idProjeto)." - ".$titulo,"f18");
+            $grid->fechaColuna();
+            $grid->abreColuna(2);
+                $link = new Button("Cancelar","?");
+                $link->show();
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
@@ -284,7 +315,7 @@ if($acesso)
             array_unshift($result, array(NULL,NULL)); # Adiciona o valor de nulo
             
             # Formuário
-            $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa);        
+            $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa.'&hoje='.$hojeGet);        
                     
             # tarefa
             $controle = new Input('tarefa','texto','Tarefa:',1);
@@ -342,7 +373,14 @@ if($acesso)
             $controle->set_size(20);
             $controle->set_linha(4);
             $controle->set_valor($idProjeto);
-            $form->add_item($controle);            
+            $form->add_item($controle);     
+            
+            # pendente
+            $controle = new Input('pendente','hidden','',1);
+            $controle->set_size(20);
+            $controle->set_linha(6);
+            $controle->set_valor($dados[6]);
+            $form->add_item($controle);     
             
             # submit
             $controle = new Input('submit','submit');
@@ -367,14 +405,24 @@ if($acesso)
             $dataFinal = post('dataFinal');
             $idProjeto = post('idProjeto');
             $idEtiqueta = post('idEtiqueta');
+            $pendente = post('pendente');
+            
+            # Força a tarefa pendente quando é inclusão
+            if(is_null($idTarefa)){
+                $pendente = 1;
+            }
                       
             # Cria arrays para gravação
-            $arrayNome = array("tarefa","descricao","dataInicial","dataFinal","idProjeto","feito","idEtiqueta");
-            $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,0,$idEtiqueta);
+            $arrayNome = array("tarefa","descricao","dataInicial","dataFinal","idProjeto","pendente","idEtiqueta");
+            $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,$pendente,$idEtiqueta);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");
-            loadPage("?fase=projeto&idProjeto=".$idProjeto);
+            if($hojeGet){
+                loadPage("?fase=hoje");
+            }else{
+                loadPage("?fase=projeto&idProjeto=".$idProjeto);
+            }
             break;
         
         ###########################################################  
@@ -382,26 +430,33 @@ if($acesso)
         case "mudaTarefa" :
             
             # Pega os dados da tarefa
-            $valor = $projeto->get_dadosTarefas($idTarefa);
+            $valor = $projeto->get_dadosTarefa($idTarefa);
             
-            # Verifica o valor de feito
+            # Verifica o valor de pendente
             if($valor[6] == 1){
-                $feito = 0;
+                $pendente = 0;
             }else{
-                $feito = 1;
+                $pendente = 1;
             }
             
             # Cria arrays para gravação
-            $arrayNome = array("feito");
-            $arrayValores = array($feito);
+            $arrayNome = array("pendente");
+            $arrayValores = array($pendente);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");
             
-            if(is_null($idProjeto)){
-                loadPage("?fase=projetoEtiqueta&idEtiqueta=".$idEtiqueta);
-            }else if(is_null($idEtiqueta)){
-                loadPage("?fase=projeto&idProjeto=".$idProjeto);
+            if($hojeGet){
+                loadPage("?fase=hoje");
+            }else{            
+            
+                if(is_null($idProjeto)){
+                    loadPage("?fase=projetoEtiqueta&idEtiqueta=".$idEtiqueta);
+                }
+
+                if(is_null($idEtiqueta)){
+                    loadPage("?fase=projeto&idProjeto=".$idProjeto);
+                }
             }
             break;
             
@@ -415,15 +470,20 @@ if($acesso)
             if(!is_null($idEtiqueta)){
                 # Pega os dados dessa etiqueta
                 $dados = $projeto->get_dadosEtiqueta($idEtiqueta);
+                $titulo = "Editar Etiqueta";
             }else{
                 $dados = array(NULL,NULL,NULL);
+                $titulo = "Nova Etiqueta";
             } 
              
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(12);
-            
-            p("Nova Etiqueta","f18");
+            $grid->abreColuna(10);
+                p($titulo,"f18");
+            $grid->fechaColuna();    
+            $grid->abreColuna(2);
+                $link = new Button("Cancelar","?");
+                $link->show();
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
@@ -489,7 +549,45 @@ if($acesso)
             }
             break;
         
-        ########################################################### 
+        ###########################################################
+            
+        case "hoje" :
+            
+            $grid->abreColuna(9);
+            
+            # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(9);
+            
+            $hoje = date("d/m/Y");
+            
+                # Exibe o nome e a descrição
+                p('Tarefas agendadas para hoje.','descricaoProjetoTitulo');
+                p('Tarefas de todos os projetos agendadas para hoje - '.$hoje,'descricaoProjeto');
+                
+            $grid->fechaColuna();
+            $grid->abreColuna(3);
+            
+                # Exibe o link de Nova Tarefa
+                #$menu2 = new Menu();
+                #$menu2->add_item('link','+ Nova Tarefa','?fase=tarefaNova&idProjeto='.$idProjeto);
+                #$menu2->show();
+                
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            
+            hr("projetosTarefas");
+            br();
+            
+            # Exibe as tarefas pendentes com data
+            $lista = new ListaTarefas();
+            $lista->showPendenteHoje();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+                 
+        ###########################################################  
             
     }
     

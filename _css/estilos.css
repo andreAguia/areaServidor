@@ -239,7 +239,7 @@ ul#projetosTarefas {
 }
 
 hr#projetosTarefas{
-    margin: 0;
+    margin: 1px;
 }
 
 li#projetoDataInicial {
@@ -250,13 +250,50 @@ li#projetoDataInicial {
 }
 
 div#divTarefas:hover {
-    background-color:  #f3f3f5;
+    background-color:  #E0E0E0;
 }
 
 div#divTarefas {
     padding-bottom: 5px;
-    padding-top: 5px;
+    padding-top: 10px;
     padding-left: 5px;
+    margin-bottom: 3px;
+    border: thin solid #E0E0E0;
+    border-radius: 10px;
+    background-color: #f3f3f5;
+}
+
+div#divTarefasAtrasadas {
+    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-left: 5px;
+    margin-bottom: 3px;
+    border: thin solid #E0E0E0;
+    border-radius: 10px;
+    background-color:#ff6600;
+    color:white;
+    font-weight: bolder;
+}
+
+div#divTarefasHoje {
+    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-left: 5px;
+    margin-bottom: 3px;
+    border: thin solid #E0E0E0;
+    border-radius: 10px;
+    background-color:cornflowerblue;
+    color:white;
+    font-weight: bolder;
+}
+
+div#divTarefasCompletadas {
+    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-left: 5px;
+    margin-bottom: 3px;
+    border: thin solid #E0E0E0;
+    border-radius: 10px;
 }
 
 p#descricaoProjeto {
@@ -265,8 +302,37 @@ p#descricaoProjeto {
     padding-bottom: 5px;
 }
 
-p#descricaoProjetoTitulo{
+p#descricaoProjetoTitulo {
     font-size: 20px;
     margin: 0;
     padding: 0;
+}
+
+div#card {
+    min-height: 250px;
+    max-height: 250px;
+}
+
+hr#hrCard {
+    margin-top: 2px;
+}
+
+p#pCardNumTarefas {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+p#pCardNomeProjeto {
+    font-size: 18px;
+    margin: 5px;
+    padding: 0;
+}
+
+p#pCardNomeGrupo {
+    font-size: 10px;
+    margin: 0px;
+    margin-left: 8px;
+    padding: 0;
+    color:cadetblue;
 }
