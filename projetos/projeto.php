@@ -83,14 +83,14 @@ if($acesso){
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(9);
+            $grid->abreColuna(6,8,9);
             
                 # Exibe o nome e a descrição
                 p($projetoPesquisado[1],'descricaoProjetoTitulo');
                 p($projetoPesquisado[2],'descricaoProjeto');
                 
             $grid->fechaColuna();
-            $grid->abreColuna(3);
+            $grid->abreColuna(6,4,3);
             
                 # Exibe o link de Nova Tarefa
                 $menu2 = new Menu();
@@ -133,14 +133,14 @@ if($acesso){
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(9);
+            $grid->abreColuna(6,8,9);
             
                 # Exibe o nome e a descrição
                 p($etiquetaPesquisada[1],'descricaoProjetoTitulo');
                 p("Tarefas com a etiqueta: ".$etiquetaPesquisada[1],'descricaoProjeto');
                 
             $grid->fechaColuna();
-            $grid->abreColuna(3);
+            $grid->abreColuna(6,4,3);
             
                 # Exibe o link editar
                 $menu2 = new Menu();
@@ -190,10 +190,10 @@ if($acesso){
              
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(10);
+            $grid->abreColuna(6,8,10);
                 p($titulo,"f18");
             $grid->fechaColuna();
-            $grid->abreColuna(2);
+            $grid->abreColuna(6,4,2);
                 $link = new Button("Cancelar","?");
                 $link->show();
             $grid->fechaColuna();
@@ -228,7 +228,7 @@ if($acesso){
             $controle = new Input('grupo','texto','Nome do agrupamento:',1);
             $controle->set_size(50);
             $controle->set_linha(3);
-            $controle->set_col(3);
+            $controle->set_col(6);
             $controle->set_placeholder('Grupo');
             $controle->set_title('O nome agrupamento do Projeto');
             $controle->set_valor($dados[3]);
@@ -237,7 +237,7 @@ if($acesso){
             # cor
             $controle = new Input('cor','combo','Cor:',1);
             $controle->set_size(10);
-            $controle->set_col(3);
+            $controle->set_col(6);
             $controle->set_linha(3);
             $controle->set_title('A cor da etiqueta');
             $controle->set_placeholder('Cor');
@@ -294,10 +294,10 @@ if($acesso){
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(10);
+            $grid->abreColuna(8,9,10);
                 p($projeto->get_nomeProjeto($idProjeto)." - ".$titulo,"f18");
             $grid->fechaColuna();
-            $grid->abreColuna(2);
+            $grid->abreColuna(4,3,2);
                 $link = new Button("Cancelar","?");
                 $link->show();
             $grid->fechaColuna();
@@ -341,7 +341,7 @@ if($acesso){
             $controle = new Input('dataInicial','data','Data:',1);
             $controle->set_size(20);
             $controle->set_linha(3);
-            $controle->set_col(3);
+            $controle->set_col(6);
             $controle->set_title('A data inicial da tarefa');
             $controle->set_placeholder('A Data Inicial');
             $controle->set_valor($dados[4]);
@@ -351,7 +351,7 @@ if($acesso){
             $controle = new Input('dataFinal','data','Data da Conclusão:',1);
             $controle->set_size(20);
             $controle->set_linha(3);
-            $controle->set_col(3);
+            $controle->set_col(6);
             $controle->set_title('A data da conclusão da tarefa');
             $controle->set_placeholder('A Data da conclusão');
             $controle->set_valor($dados[5]);
@@ -360,8 +360,8 @@ if($acesso){
             # etiqueta
             $controle = new Input('idEtiqueta','combo','Etiqueta:',1);
             $controle->set_size(20);
-            $controle->set_linha(3);
-            $controle->set_col(3);
+            $controle->set_linha(4);
+            $controle->set_col(6);
             $controle->set_placeholder('Etiqueta');
             $controle->set_title('Uma etiqueta para ajudar na busca');
             $controle->set_array($result);
@@ -371,7 +371,7 @@ if($acesso){
             # idProjeto
             $controle = new Input('idProjeto','hidden','',1);
             $controle->set_size(20);
-            $controle->set_linha(4);
+            $controle->set_linha(5);
             $controle->set_valor($idProjeto);
             $form->add_item($controle);     
             
@@ -385,7 +385,7 @@ if($acesso){
             # submit
             $controle = new Input('submit','submit');
             $controle->set_valor('Salvar');
-            $controle->set_linha(3);
+            $controle->set_linha(7);
             $form->add_item($controle);
             
             $form->show();
@@ -581,6 +581,7 @@ if($acesso){
             
             # Exibe as tarefas pendentes com data
             $lista = new ListaTarefas();
+            $lista->showPendenteAtrasada();
             $lista->showPendenteHoje();
             
             $grid->fechaColuna();

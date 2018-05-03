@@ -245,7 +245,7 @@ hr#projetosTarefas{
 li#projetoDataInicial {
     list-style-type: none;
     font-size: 13px;
-    text-align: right;
+    text-align: left;
     width: 100%;
 }
 

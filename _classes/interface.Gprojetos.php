@@ -189,7 +189,7 @@ class Gprojetos{
             # Percorre o array 
             foreach ($dadosProjetos as $valor){
                 
-                $grid->abreColuna(4);
+                $grid->abreColuna(12,6,4);
                 $card = new Callout($valor[4],"card");
                 $card->abre();
                     $grid = new Grid();
