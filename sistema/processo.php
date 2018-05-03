@@ -23,7 +23,7 @@ if($acesso){
     $fase = get('fase','listar');
 
     # pega o id se tiver)
-    $id = soNumeros(get('id'));
+    $idProcesso = soNumeros(get('idProcesso'));
 
     # Pega o parametro de pesquisa (se tiver)
     if (is_null(post('parametro'))){                                # Se o parametro não vier por post (for nulo)
@@ -85,7 +85,7 @@ if($acesso){
                                      numero,
                                      assunto							    
                                 FROM tbprocesso
-                               WHERE idProcesso = '.$id);
+                               WHERE idProcesso = '.$idProcesso);
 
     # ordem da lista
     $objeto->set_orderCampo($orderCampo);
@@ -112,7 +112,7 @@ if($acesso){
     $botao = new BotaoGrafico();
     $botao->set_label('');
     $botao->set_title('Movimentação do processo');
-    $botao->set_url('?fase=movimentacao&id='.$id);
+    $botao->set_url('?fase=movimentacao&idProcesso='.$idProcesso);
     $botao->set_image(PASTA_FIGURAS.'movimentacao.png',20,20);
 
     # Coloca o objeto link na tabela			
@@ -172,31 +172,220 @@ if($acesso){
         case "editar" :	
         case "excluir" :	
         case "gravar" :		
-            $objeto->$fase($id);		
+            $objeto->$fase($idProcesso);		
             break;
+        
+    ################################################################    
         
         case "movimentacao" :
             # Limita o tamanho da tela
             $grid = new Grid();
-            $grid->abreColuna(3);
+            $grid->abreColuna(12);
             
             # Cria um menu
             $menu1 = new MenuBar();
 
-            # Sair da Área do Servidor
+            # Sair 
+            $linkVoltar = new Link("Voltar","?");
+            $linkVoltar->set_class('button');
+            $linkVoltar->set_title('Voltar');
+            $menu1->add_link($linkVoltar,"left");
+            
+            # Inserir Movimento 
+            $linkVoltar = new Link("Incluir Movimento","?fase=movimentacaoIncluir&idProcesso=".$idProcesso);
+            $linkVoltar->set_class('button');
+            $linkVoltar->set_title('Incluir Movimento');
+            $menu1->add_link($linkVoltar,"right");
+
+            $menu1->show();
+            $grid = new Grid();
+            $grid->abreColuna(3);
+            
+            
+            Gprocessos::exibeProcesso($idProcesso);
+            
+            $grid->fechaColuna();
+            $grid->abreColuna(9);
+                $lista = new ListaMovimentos($idProcesso);
+                $lista->show();
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            break;
+        
+    ################################################################
+        
+        case "movimentacaoIncluir" :
+            # Limita o tamanho da tela
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+            # Cria um menu
+            $menu1 = new MenuBar();
+
+            # Sair 
             $linkVoltar = new Link("Voltar","?");
             $linkVoltar->set_class('button');
             $linkVoltar->set_title('Voltar');
             $menu1->add_link($linkVoltar,"left");
 
             $menu1->show();
-            Gprocessos::exibeProcesso($id);
+            $grid = new Grid();
+            $grid->abreColuna(3);
+            
+            
+            Gprocessos::exibeProcesso($idProcesso);
             
             $grid->fechaColuna();
             $grid->abreColuna(9);
+            
+            # Verifica se é incluir ou editar
+            if(!is_null($idTarefa)){
+                # Pega os dados dessa etiqueta
+                $dados = $projeto->get_dadosTarefa($idTarefa);
+                $titulo = "Editar Tarefa";
+            }else{
+                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+                $titulo = "Nova Tarefa";
+            }
+            
+            # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(8,9,10);
+                p($projeto->get_nomeProjeto($idProjeto)." - ".$titulo,"f18");
             $grid->fechaColuna();
-            $grid->fechaGrid();
+            $grid->abreColuna(4,3,2);
+                $link = new Button("Cancelar","?");
+                $link->show();
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            hr("projetosTarefas");
+            br();
+            
+            # Pega os dados da combo etiqueta
+            $selectetiqueta = 'SELECT idEtiqueta, 
+                                     etiqueta
+                                FROM tbprojetoetiqueta
+                               ORDER BY etiqueta';
+            
+            $result = $intra->select($selectetiqueta);
+            array_unshift($result, array(NULL,NULL)); # Adiciona o valor de nulo
+            
+            # Formuário
+            $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa.'&hoje='.$hojeGet);        
+                    
+            # tarefa
+            $controle = new Input('tarefa','texto','Tarefa:',1);
+            $controle->set_size(200);
+            $controle->set_linha(1);
+            $controle->set_required(TRUE);
+            $controle->set_autofocus(TRUE);
+            $controle->set_placeholder('Tarefa');
+            $controle->set_title('A tarefa a ser executada');
+            $controle->set_valor($dados[1]);
+            $form->add_item($controle);
+            
+            # descrição
+            $controle = new Input('descricao','textarea','Descrição:',1);
+            $controle->set_size(array(80,10));
+            $controle->set_linha(2);
+            $controle->set_title('A descrição detalhda do tarefa');
+            $controle->set_placeholder('Descrição da tarefa');
+            $controle->set_valor($dados[2]);
+            $form->add_item($controle);
+            
+            # dataInicial
+            $controle = new Input('dataInicial','data','Data:',1);
+            $controle->set_size(20);
+            $controle->set_linha(3);
+            $controle->set_col(6);
+            $controle->set_title('A data inicial da tarefa');
+            $controle->set_placeholder('A Data Inicial');
+            $controle->set_valor($dados[4]);
+            $form->add_item($controle);
+            
+            # dataFinal
+            $controle = new Input('dataFinal','data','Data da Conclusão:',1);
+            $controle->set_size(20);
+            $controle->set_linha(3);
+            $controle->set_col(6);
+            $controle->set_title('A data da conclusão da tarefa');
+            $controle->set_placeholder('A Data da conclusão');
+            $controle->set_valor($dados[5]);
+            $form->add_item($controle);
+            
+            # etiqueta
+            $controle = new Input('idEtiqueta','combo','Etiqueta:',1);
+            $controle->set_size(20);
+            $controle->set_linha(4);
+            $controle->set_col(6);
+            $controle->set_placeholder('Etiqueta');
+            $controle->set_title('Uma etiqueta para ajudar na busca');
+            $controle->set_array($result);
+            $controle->set_valor($dados[7]);
+            $form->add_item($controle);
+            
+            # idProjeto
+            $controle = new Input('idProjeto','hidden','',1);
+            $controle->set_size(20);
+            $controle->set_linha(5);
+            $controle->set_valor($idProjeto);
+            $form->add_item($controle);     
+            
+            # pendente
+            $controle = new Input('pendente','hidden','',1);
+            $controle->set_size(20);
+            $controle->set_linha(6);
+            $controle->set_valor($dados[6]);
+            $form->add_item($controle);     
+            
+            # submit
+            $controle = new Input('submit','submit');
+            $controle->set_valor('Salvar');
+            $controle->set_linha(7);
+            $form->add_item($controle);
+            
+            $form->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
             break;
+                        
+        ###########################################################
+            
+        case "validaTarefa" :
+            
+            # Recuperando os valores
+            $tarefa = post('tarefa');
+            $descricao = post('descricao');
+            $dataInicial = post('dataInicial');
+            $dataFinal = post('dataFinal');
+            $idProjeto = post('idProjeto');
+            $idEtiqueta = post('idEtiqueta');
+            $pendente = post('pendente');
+            
+            # Força a tarefa pendente quando é inclusão
+            if(is_null($idTarefa)){
+                $pendente = 1;
+            }
+                      
+            # Cria arrays para gravação
+            $arrayNome = array("tarefa","descricao","dataInicial","dataFinal","idProjeto","pendente","idEtiqueta");
+            $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,$pendente,$idEtiqueta);
+            
+            # Grava	
+            $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");
+            if($hojeGet){
+                loadPage("?fase=hoje");
+            }else{
+                loadPage("?fase=projeto&idProjeto=".$idProjeto);
+            }
+            break;
+        
+        ###########################################################  
+        
     }									 	 		
 
     $page->terminaPagina();

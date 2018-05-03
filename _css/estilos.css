@@ -345,13 +345,14 @@ div#divTituloProcesso {
     width: auto;
     height: auto;
     line-height: 50px;
-    text-align:center;
+    text-align: center;
     background-color: #E0E0E0;
     border-radius: 10px;
+    padding: 10px;
 }
 
 p#pNumeroProcesso {
-    font-size: 26px;
+    font-size: 23px;
     text-align: center;
     margin: 0;
     padding: 0;
