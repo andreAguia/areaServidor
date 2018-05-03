@@ -178,7 +178,7 @@ if($acesso){
         case "movimentacao" :
             # Limita o tamanho da tela
             $grid = new Grid();
-            $grid->abreColuna(12);
+            $grid->abreColuna(3);
             
             # Cria um menu
             $menu1 = new MenuBar();
@@ -190,22 +190,10 @@ if($acesso){
             $menu1->add_link($linkVoltar,"left");
 
             $menu1->show();
-            
-            tituloTable("Cadastro de Processos");
-            br();
             Gprocessos::exibeProcesso($id);
             
-            #$processo = new Processo();
-            #$dadosProcesso = $processo->get_dadosProcesso($id);
-            
-            #$tabela = new Tabela();
-            #$tabela->set_titulo("Processo");
-            #$tabela->set_conteudo($dadosProcesso);
-            #$tabela->set_label(array("#","Número","Data","Assunto"));
-            #$tabela->set_funcao(array(NULL,NULL,"date_to_php"));
-            #$tabela->set_align(array("center","center","center","left"));
-            #$tabela->show();
-            
+            $grid->fechaColuna();
+            $grid->abreColuna(9);
             $grid->fechaColuna();
             $grid->fechaGrid();
             break;

@@ -29,20 +29,43 @@ class Gprocessos{
         $intra = new Intra();
         $row = $intra->select($select,FALSE);
         
-        $grid = new Grid("center");
-        $grid->abreColuna(4);
-        $grid->fechaColuna();
-        $grid->abreColuna(4);
             $div = new Div("divTituloProcesso");
             $div->abre();
                 p($row[1],"pNumeroProcesso");
-                p(date_to_php($row[2]." "),"right","f14");
+                p(date_to_php($row[2]),"pDataProcesso");
+                p($row[3],"pAssuntoProcesso");
             $div->fecha();
-        $grid->fechaColuna();
-        $grid->abreColuna(4);
-        $grid->fechaColuna();
-        $grid->fechaGrid();
+        
     }
    
+    #########################################################
     
+    public static function exibeMovimentacao($idProcesso){
+    /**
+    * Exibe uma tela com a movimentação de um processo
+    * 
+    * @syntax Gprocessos::exibeMovimentacao($isProcesso);
+    * 
+    * @param $idProcesso integer NULL o id do processo a ser exibido.
+    */    
+        
+        # Pega os dados
+        $select = 'SELECT status,
+                          data,
+                          setorCombo,
+                          motivo
+                     FROM tbprocessomovimento
+                     WHERE idProcesso = '.$idProcesso;
+        
+        $intra = new Intra();
+        $row = $intra->select($select,FALSE);
+        
+            $div = new Div("divTituloProcesso");
+            $div->abre();
+                p($row[1],"pNumeroProcesso");
+                p(date_to_php($row[2]),"pDataProcesso");
+                p($row[3],"pAssuntoProcesso");
+            $div->fecha();
+        
+    }
 }
