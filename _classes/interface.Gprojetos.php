@@ -247,5 +247,122 @@ class Gprojetos{
         $menu1->show();
     }
 
-    ##########################################################
+    ###########################################################
+    
+    public function showProjeto($idProjeto){
+    /**
+     * Retorna o nome do projeto informado
+     * 
+     * @param $idProjeto integer NULL o idProjeto
+     * 
+     * @syntax $projeto->get_nomeProjeto([$idProjeto]);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT projeto,
+                          cor
+                     FROM tbprojeto
+                     WHERE idProjeto = '.$idProjeto;
+        
+        $intra = new Intra();
+        $row = $intra->select($select,false);
+        label($row[0],$row[1]);
+        
+    }
+           
+    ###########################################################
+    
+    public function showEtiqueta($idEtiqueta){
+    /**
+     * Retorna o nome da etiqueta
+     * 
+     * @param $idEtiqueta integer NULL o idProjeto
+     * 
+     * @syntax $projeto->get_nomeProjeto([$idEtiqueta]);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT etiqueta,
+                          cor
+                     FROM tbprojetoetiqueta
+                     WHERE idEtiqueta = '.$idEtiqueta;
+        
+        $intra = new Intra();
+        $row = $intra->select($select,false);
+        label($row[0],$row[1]);
+        
+    }
+           
+    ###########################################################
+    
+    public function showData($idTarefa){
+    /**
+     * Retorna o nome da etiqueta
+     * 
+     * @param $idEtiqueta integer NULL o idProjeto
+     * 
+     * @syntax $projeto->get_nomeProjeto([$idEtiqueta]);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT dataInicial,
+                          dataFinal
+                     FROM tbprojetotarefa
+                     WHERE idTarefa = '.$idTarefa;
+        
+        $intra = new Intra();
+        $row = $intra->select($select,false);
+        
+        $dataInicial = $row[0];
+        $dataFinal = $row[1];
+        
+        # Pega a data de hoje
+        $d = date("d"); 
+        $m = date("m"); 
+        $Y = date("Y");
+        
+        $hoje = ajeita(date("m-d-Y", mktime(0, 0, 0, $m, $d, $Y))); 
+        $ontem = ajeita(date("m-d-Y", mktime(0, 0, 0, $m, $d-1, $Y))); 
+        $amanha = ajeita(date("m-d-Y", mktime(0, 0, 0, $m, $d+1, $Y))); 
+        
+        # Inicia as Variáveis de retorno
+        $inicialRetorno = ajeita2($dataInicial);
+        $finalRetorno = ajeita2($dataFinal);
+        
+        # Se alguma data é hoje
+        if($dataInicial == $hoje){
+            $inicialRetorno = "Hoje";
+        }
+        
+        if($dataFinal == $hoje){
+            $finalRetorno = "Hoje";
+        }
+        
+        # Se alguma data é amanhã
+        if($dataInicial == $amanha){
+            $inicialRetorno = "Amanhã";
+        }
+        
+        if($dataFinal == $amanha){
+            $finalRetorno = "Amanhã";
+        }
+        
+        # Se alguma data é ontem
+        if($dataInicial == $ontem){
+            $inicialRetorno = "Ontem";
+        }
+        
+        if($dataFinal == $ontem){
+            $finalRetorno = "Ontem";
+        }
+        
+        if(vazio($finalRetorno)){
+            $textoRetorno = $inicialRetorno;
+        }else{
+            $textoRetorno = $inicialRetorno." até ".$finalRetorno;
+        }
+        echo $textoRetorno;
+    }
+           
+    ###########################################################
 }

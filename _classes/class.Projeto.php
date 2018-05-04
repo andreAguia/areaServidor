@@ -132,7 +132,8 @@ class Projeto{
                           dataInicial,
                           dataFinal,
                           pendente,
-                          idEtiqueta
+                          idEtiqueta,
+                          idProjeto
                      FROM tbprojetotarefa
                      WHERE idTarefa = '.$idTarefa.' 
                 ORDER BY noOrdem';

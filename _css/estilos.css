@@ -270,8 +270,7 @@ div#divTarefasAtrasadas {
     margin-bottom: 3px;
     border: thin solid #E0E0E0;
     border-radius: 10px;
-    background-color:#ff6600;
-    color:white;
+    color:red;
     font-weight: bolder;
 }
 

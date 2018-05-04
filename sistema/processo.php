@@ -24,6 +24,7 @@ if($acesso){
 
     # pega o id se tiver)
     $idProcesso = soNumeros(get('idProcesso'));
+    $idProcessoMovimento = soNumeros(get('idProcessoMovimento'));
 
     # Pega o parametro de pesquisa (se tiver)
     if (is_null(post('parametro'))){                                # Se o parametro não vier por post (for nulo)
@@ -162,8 +163,8 @@ if($acesso){
     $objeto->set_idUsuario($idUsuario);
     
     ################################################################
-    switch ($fase)
-    {
+    switch ($fase){
+        
         case "" :
         case "listar" :
             $objeto->listar();
@@ -226,7 +227,7 @@ if($acesso){
             $menu1 = new MenuBar();
 
             # Sair 
-            $linkVoltar = new Link("Voltar","?");
+            $linkVoltar = new Link("Voltar","?fase=movimentacao&idProcesso=".$idProcesso);
             $linkVoltar->set_class('button');
             $linkVoltar->set_title('Voltar');
             $menu1->add_link($linkVoltar,"left");
@@ -242,104 +243,87 @@ if($acesso){
             $grid->abreColuna(9);
             
             # Verifica se é incluir ou editar
-            if(!is_null($idTarefa)){
+            if(!is_null($idProcessoMovimento)){
                 # Pega os dados dessa etiqueta
-                $dados = $projeto->get_dadosTarefa($idTarefa);
-                $titulo = "Editar Tarefa";
+                $dados = $projeto->get_Movimento($idProcessoMovimento);
+                $titulo = "Editar Movimento";
             }else{
-                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-                $titulo = "Nova Tarefa";
+                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+                $titulo = "Novo Movimento";
             }
             
-            # Nome do projeto
-            $grid = new Grid();
-            $grid->abreColuna(8,9,10);
-                p($projeto->get_nomeProjeto($idProjeto)." - ".$titulo,"f18");
-            $grid->fechaColuna();
-            $grid->abreColuna(4,3,2);
-                $link = new Button("Cancelar","?");
-                $link->show();
-            $grid->fechaColuna();
-            $grid->fechaGrid(); 
-            hr("projetosTarefas");
+            tituloTable($titulo);
             br();
             
-            # Pega os dados da combo etiqueta
-            $selectetiqueta = 'SELECT idEtiqueta, 
-                                     etiqueta
-                                FROM tbprojetoetiqueta
-                               ORDER BY etiqueta';
+            # Pega os dados da combo setorCombo
+            $selectLotacao = 'SELECT idlotacao, 
+                                     concat(IFNULL(tblotacao.UADM,"")," - ",IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")," - ",IFNULL(tblotacao.nome,"")) as lotacao
+                                FROM tblotacao
+                               WHERE ativo
+                               ORDER BY lotacao';
             
-            $result = $intra->select($selectetiqueta);
-            array_unshift($result, array(NULL,NULL)); # Adiciona o valor de nulo
+            $comboSetor = $servidor->select($selectLotacao);
+            array_unshift($comboSetor, array(NULL,NULL)); # Adiciona o valor de nulo
             
             # Formuário
-            $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa.'&hoje='.$hojeGet);        
+            $form = new Form('?fase=validaMovimento&idProcessoMovimento='.$idProcessoMovimento);        
                     
-            # tarefa
-            $controle = new Input('tarefa','texto','Tarefa:',1);
-            $controle->set_size(200);
+            # data
+            $controle = new Input('data','data','Data:',1);
+            $controle->set_size(20);
             $controle->set_linha(1);
-            $controle->set_required(TRUE);
+            $controle->set_col(6);
             $controle->set_autofocus(TRUE);
-            $controle->set_placeholder('Tarefa');
-            $controle->set_title('A tarefa a ser executada');
-            $controle->set_valor($dados[1]);
+            $controle->set_required(TRUE);
+            $controle->set_title('A data do movimento');
+            $controle->set_placeholder('A Data do Movimento');
+            $controle->set_valor($dados[3]);
             $form->add_item($controle);
             
-            # descrição
-            $controle = new Input('descricao','textarea','Descrição:',1);
-            $controle->set_size(array(80,10));
-            $controle->set_linha(2);
-            $controle->set_title('A descrição detalhda do tarefa');
-            $controle->set_placeholder('Descrição da tarefa');
+            # status
+            $controle = new Input('status','combo','Status:',1);
+            $controle->set_size(20);
+            $controle->set_linha(1);
+            $controle->set_col(6); 
+            $controle->set_required(TRUE);
+            $controle->set_title('Status do movimento');
+            $controle->set_array(array(NULL,"Entrada","Saída"));
             $controle->set_valor($dados[2]);
             $form->add_item($controle);
             
-            # dataInicial
-            $controle = new Input('dataInicial','data','Data:',1);
+            # setorCombo
+            $controle = new Input('setorCombo','combo','Setor dentro da UENF:',1);
             $controle->set_size(20);
-            $controle->set_linha(3);
+            $controle->set_linha(2);
             $controle->set_col(6);
-            $controle->set_title('A data inicial da tarefa');
-            $controle->set_placeholder('A Data Inicial');
+            $controle->set_title('Setor dentro da UENF');
+            $controle->set_array($comboSetor);
             $controle->set_valor($dados[4]);
             $form->add_item($controle);
             
-            # dataFinal
-            $controle = new Input('dataFinal','data','Data da Conclusão:',1);
-            $controle->set_size(20);
-            $controle->set_linha(3);
+            # setorTexto
+            $controle = new Input('setorTexto','texto','Setor fora da UENF:',1);
+            $controle->set_size(200);
+            $controle->set_linha(2);
             $controle->set_col(6);
-            $controle->set_title('A data da conclusão da tarefa');
-            $controle->set_placeholder('A Data da conclusão');
+            $controle->set_title('Setor de fora da UENF');
             $controle->set_valor($dados[5]);
             $form->add_item($controle);
             
-            # etiqueta
-            $controle = new Input('idEtiqueta','combo','Etiqueta:',1);
-            $controle->set_size(20);
+            # motivo
+            $controle = new Input('motivo','textarea','Motivo:',1);
+            $controle->set_size(array(80,5));
             $controle->set_linha(4);
-            $controle->set_col(6);
-            $controle->set_placeholder('Etiqueta');
-            $controle->set_title('Uma etiqueta para ajudar na busca');
-            $controle->set_array($result);
-            $controle->set_valor($dados[7]);
+            $controle->set_title('O motivo do movimento');
+            $controle->set_valor($dados[6]);
             $form->add_item($controle);
             
-            # idProjeto
-            $controle = new Input('idProjeto','hidden','',1);
+            # idProcesso
+            $controle = new Input('idProcesso','hidden','',1);
             $controle->set_size(20);
             $controle->set_linha(5);
-            $controle->set_valor($idProjeto);
-            $form->add_item($controle);     
-            
-            # pendente
-            $controle = new Input('pendente','hidden','',1);
-            $controle->set_size(20);
-            $controle->set_linha(6);
-            $controle->set_valor($dados[6]);
-            $form->add_item($controle);     
+            $controle->set_valor($idProcesso);
+            $form->add_item($controle); 
             
             # submit
             $controle = new Input('submit','submit');
@@ -355,16 +339,15 @@ if($acesso){
                         
         ###########################################################
             
-        case "validaTarefa" :
+        case "validaMovimento" :
             
             # Recuperando os valores
-            $tarefa = post('tarefa');
-            $descricao = post('descricao');
-            $dataInicial = post('dataInicial');
-            $dataFinal = post('dataFinal');
-            $idProjeto = post('idProjeto');
-            $idEtiqueta = post('idEtiqueta');
-            $pendente = post('pendente');
+            $data = post('data');
+            $status = post('status');
+            $setorCombo = post('setorCombo');
+            $setorTexto = post('setorTexto');
+            $motivo = post('motivo');
+            $idProcesso = post('idProcesso');
             
             # Força a tarefa pendente quando é inclusão
             if(is_null($idTarefa)){

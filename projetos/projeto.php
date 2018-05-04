@@ -104,7 +104,7 @@ if($acesso){
             br();
             
             # Exibe as tarefas pendentes com data
-            $lista = new ListaTarefas();
+            $lista = new ListaTarefas2();
             $lista->set_projeto($idProjeto);
             $lista->showPendenteDatado();
             
@@ -288,7 +288,7 @@ if($acesso){
                 $dados = $projeto->get_dadosTarefa($idTarefa);
                 $titulo = "Editar Tarefa";
             }else{
-                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
                 $titulo = "Nova Tarefa";
             }
             
@@ -305,14 +305,23 @@ if($acesso){
             hr("projetosTarefas");
             br();
             
+            # Pega os dados da combo projeto
+            $select = 'SELECT idProjeto,
+                              projeto
+                         FROM tbprojeto
+                         ORDER BY projeto';
+
+            $comboProjeto = $intra->select($select);
+            array_unshift($comboProjeto, array(NULL,NULL)); # Adiciona o valor de nulo
+            
             # Pega os dados da combo etiqueta
             $selectetiqueta = 'SELECT idEtiqueta, 
                                      etiqueta
                                 FROM tbprojetoetiqueta
                                ORDER BY etiqueta';
             
-            $result = $intra->select($selectetiqueta);
-            array_unshift($result, array(NULL,NULL)); # Adiciona o valor de nulo
+            $comboEtiqueta = $intra->select($selectetiqueta);
+            array_unshift($comboEtiqueta, array(NULL,NULL)); # Adiciona o valor de nulo
             
             # Formuário
             $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa.'&hoje='.$hojeGet);        
@@ -364,15 +373,21 @@ if($acesso){
             $controle->set_col(6);
             $controle->set_placeholder('Etiqueta');
             $controle->set_title('Uma etiqueta para ajudar na busca');
-            $controle->set_array($result);
+            $controle->set_array($comboEtiqueta);
             $controle->set_valor($dados[7]);
             $form->add_item($controle);
             
             # idProjeto
-            $controle = new Input('idProjeto','hidden','',1);
+            $controle = new Input('idProjeto','combo','Projeto:',1);
             $controle->set_size(20);
-            $controle->set_linha(5);
-            $controle->set_valor($idProjeto);
+            $controle->set_linha(4);
+            $controle->set_col(6);
+            $controle->set_array($comboProjeto);
+            if(is_null($idTarefa)){
+                $controle->set_valor($idProjeto);
+            }else{
+                $controle->set_valor($dados[8]);
+            }
             $form->add_item($controle);     
             
             # pendente

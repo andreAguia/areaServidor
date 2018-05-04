@@ -1,6 +1,6 @@
 <?php
 
-class ListaTarefas{
+class ListaTarefas2{
  /**
   * Exibe uma lista de tarefas do sistema de gestão de projetos seguindo os critérios fornecidos
   * 
@@ -309,13 +309,9 @@ class ListaTarefas{
         # Pega as tarefas
         $select = 'SELECT idTarefa,
                           tarefa,
-                          descricao,
-                          idSecao,
-                          dataInicial,
-                          dataFinal,
-                          pendente,
+                          idProjeto,
                           idEtiqueta,
-                          idProjeto
+                          idTarefa
                      FROM tbprojetotarefa
                     WHERE pendente
                       AND dataInicial <> "0000-00-00"';
@@ -335,140 +331,17 @@ class ListaTarefas{
         # Acessa o banco
         $intra = new Intra();
         $tarefas = $intra->select($select);
-        $numeroTarefas = $intra->count($select);
-        #echo $select;
         
-        # Inicia classe projeto
-        $classProjeto = new Projeto();
-        
-        # Inicia a lista
-        echo '<ul id="projetosTarefas">';
-            
-        # Verifica se tem algum registro
-        if($numeroTarefas>0){
-            
-            # Exibe o título
-            p("Tarefas Pendentes com Data","f14");
-            
-            # Percorre o array
-            foreach ($tarefas as $valor) {
-                
-                # Muda a cor da tarefa pendente de acordo com a situação
-                
-                # Define a cor padrão
-                $idDiv = "divTarefas";
-                    
-                # Passa para o padrão brasileiro para exigencia das funções
-                $dataInicial = date_to_php($valor[4]);
-                $dataFinal = date_to_php($valor[5]);
-
-                # Datas atrasadas somente com data inicial preenchida
-                if(($dataFinal == "00/00/0000") AND (jaPassou($dataInicial))){
-                    $idDiv = "divTarefasAtrasadas";
-                }
-
-                # Datas atrasadas com data inicial e final preenchida
-                if($dataFinal <> "00/00/0000"){
-                    if((jaPassou($dataFinal)) AND (jaPassou($dataInicial))){
-                        $idDiv = "divTarefasAtrasadas";
-                    }
-                }
-
-                # é hoje? com apenas a data inicial
-                if(eHoje($dataInicial)){
-                    $idDiv = "divTarefasHoje";
-                }
-
-                # é hoje? com as duas datas
-                if(entre($hoje,$dataInicial,$dataFinal)){
-                    $idDiv = "divTarefasHoje";
-                }
-                
-                # Cria uma div para o mouseover
-                $div = new Div($idDiv);
-                $div->abre();
-                
-                # Inicia a grid interna
-                $grid = new Grid();
-                
-                #####################################################
-                # Ticked
-                $grid->abreColuna(1);
-
-                    # Inicia o botão
-                    $botao = new BotaoGrafico();
-                    
-                    # o link para quando se é por projeto
-                    if(!is_null($this->projeto)){
-                        $botao->set_url('?fase=mudaTarefa&idTarefa='.$valor[0].'&idProjeto='.$this->projeto);
-                    }
-                    
-                    # o link para quando se é por etiqueta
-                    if(!is_null($this->etiqueta)){
-                        $botao->set_url('?fase=mudaTarefa&idTarefa='.$valor[0].'&idEtiqueta='.$this->etiqueta);
-                    }
-                    
-                    $botao->set_image(PASTA_FIGURAS.'tickVazio.png',15,15);
-                    $botao->show();
-
-                $grid->fechaColuna();
-                #####################################################
-                # Tarefa
-                $grid->abreColuna(5,5,6);
-                    echo "<li title='$valor[2]'>$valor[1]</li>";
-                $grid->fechaColuna(); 
-                #####################################################
-                $grid->abreColuna(4);                    
-                    $grid = new Grid();
-                    # Etiqueta
-                    if(is_null($this->etiqueta)){
-                        if((!is_null($valor[7])) AND ($valor[7] <> 0)){
-                            $grid->abreColuna(12,12,6);
-                                    $dadosEtiqueta = $classProjeto->get_dadosEtiqueta($valor[7]);
-                                    echo "<li>".label($dadosEtiqueta[1],$dadosEtiqueta[2])."</li>";
-                            $grid->fechaColuna();
-                        }
-                    }
-                    #####################################################
-                    # Projeto
-                    if(is_null($this->projeto)){
-                        if(!is_null($valor[8])){
-                            $grid->abreColuna(12,12,6);
-                                $nome = $classProjeto->get_nomeProjeto($valor[8]);
-                                $cor = $classProjeto->get_corProjeto($valor[8]);
-                                echo "<li>".label($nome,$cor)."</li>";
-                            $grid->fechaColuna();
-                        }
-                    }
-                    #####################################################
-                    # Datas
-                    $grid->abreColuna(12,12,6);
-                        # Define as datas
-                        $dataInicial = date_to_php($valor[4]);
-                        $dataFinal = date_to_php($valor[5]);
-
-                        # Exibe as datas
-                        echo "<li id='projetoDataInicial'>".formataDataTarefa($dataInicial,$dataFinal)."</li>";
-                        #echo "<li id='projetoDataInicial'>".$dataInicial.'-'.$dataFinal."</li>";
-                    $grid->fechaColuna();
-                    $grid->fechaGrid();
-                $grid->fechaColuna();
-                #####################################################
-                # Editar
-                $grid->abreColuna(2,2,1);
-                    $botao = new BotaoGrafico();
-                    $botao->set_url('?fase=tarefaNova&idTarefa='.$valor[0].'&idProjeto='.$valor[8]);
-                    $botao->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',15,15);
-                    $botao->show();
-                $grid->fechaColuna();
-                $grid->fechaGrid(); 
-                
-                $div->fecha();
-                
-                #hr("projetosTarefas");   
-            }
-        }
-        echo '</ul>';
+        # Exemplo de tabela simples
+        $tabela = new Tabela();
+        #$tabela->set_titulo("Tarefas");
+        $tabela->set_conteudo($tarefas);
+        $tabela->set_label(array("Pendente","Tarefa","Projeto","Etiqueta","Data"));
+        #$tabela->set_width(array(5,30,20,10,10,10));
+        $tabela->set_align(array("center","left","center","center"));
+        $tabela->set_classe(array(NULL,NULL,"Gprojetos","Gprojetos","Gprojetos"));
+        $tabela->set_metodo(array(NULL,NULL,"showProjeto","showEtiqueta","showData"));
+        $tabela->show();
     }
     
     ###########################################################
