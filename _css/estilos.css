@@ -322,10 +322,11 @@ p#pCardNumTarefas {
     padding: 0;
 }
 
-p#pCardNomeProjeto {
+a#aCardNomeProjeto {
     font-size: 18px;
     margin: 5px;
     padding: 0;
+    color:#000;
 }
 
 p#pCardNomeGrupo {

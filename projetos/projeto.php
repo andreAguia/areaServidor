@@ -41,7 +41,12 @@ if($acesso){
     # Cabeçalho
     AreaServidor::cabecalho();
 
-    botaoVoltar('../sistema/administracao.php');
+    # Define o botão voltar de acordo com a rotina
+    if($fase == 'ínicial'){
+        botaoVoltar('../sistema/administracao.php');
+    }else{
+        botaoVoltar('?');
+    }
     titulo("Sistema de Gestão de Projetos");
     br();
     
@@ -74,8 +79,7 @@ if($acesso){
             
         ###########################################################
             
-        case "projeto" :
-            
+        case "projeto" :            
             $grid->abreColuna(9);
             
             # Pega os dados do projeto pesquisado
@@ -91,11 +95,17 @@ if($acesso){
                 
             $grid->fechaColuna();
             $grid->abreColuna(6,4,3);
-            
-                # Exibe o link de Nova Tarefa
-                $menu2 = new Menu();
-                $menu2->add_item('link','+ Nova Tarefa','?fase=tarefaNova&idProjeto='.$idProjeto);
-                $menu2->show();
+                
+                # Menu
+                $menu1 = new MenuBar();
+
+                # Nova Tarefa
+                $link = new Link("+",'?fase=tarefaNova&idProjeto='.$idProjeto);
+                $link->set_class('button');
+                $link->set_title('Nova tarefa');
+                $menu1->add_link($link,"right");
+                
+                $menu1->show();
                 
             $grid->fechaColuna();
             $grid->fechaGrid(); 
@@ -104,19 +114,23 @@ if($acesso){
             br();
             
             # Exibe as tarefas pendentes com data
-            $lista = new ListaTarefas2();
+            $lista = new ListaTarefas2("Tarefas Pendentes com Data");
             $lista->set_projeto($idProjeto);
-            $lista->showPendenteDatado();
+            $lista->set_datado(TRUE);
+            $lista->show();
             
             # Exibe as tarefas pendentes sem data
-            $lista = new ListaTarefas();
+            $lista = new ListaTarefas2("Tarefas Pendentes sem Data");
             $lista->set_projeto($idProjeto);
-            $lista->showPendenteSemData();
+            $lista->set_datado(FALSE);
+            $lista->show();
             
             # Exibe as tarefas completatadas
-            $lista = new ListaTarefas();
+            $lista = new ListaTarefas2("Tarefas Concluídas");
             $lista->set_projeto($idProjeto);
-            $lista->showCompletadas();
+            $lista->set_datado(NULL);
+            $lista->set_pendente(FALSE);
+            $lista->show();
             
             $grid->fechaColuna();
             $grid->fechaGrid();    
@@ -141,11 +155,16 @@ if($acesso){
                 
             $grid->fechaColuna();
             $grid->abreColuna(6,4,3);
-            
-                # Exibe o link editar
-                $menu2 = new Menu();
-                $menu2->add_item('link','Editar','?fase=etiquetaNova&idEtiqueta='.$idEtiqueta);
-                $menu2->show();
+                # Menu
+                $menu1 = new MenuBar();
+
+                # Nova Tarefa
+                $link = new Link("Editar",'?fase=etiquetaNova&idEtiqueta='.$idEtiqueta);
+                $link->set_class('button');
+                $link->set_title('Editar Etiqueta');
+                $menu1->add_link($link,"right");
+                
+                $menu1->show();
                 
             $grid->fechaColuna();
             $grid->fechaGrid(); 
@@ -154,19 +173,23 @@ if($acesso){
             br();
             
             # Exibe as tarefas pendentes com data
-            $lista = new ListaTarefas();
+            $lista = new ListaTarefas2("Tarefas Pendentes com Data");
             $lista->set_etiqueta($idEtiqueta);
-            $lista->showPendenteDatado();
+            $lista->set_datado(TRUE);
+            $lista->show();
             
             # Exibe as tarefas pendentes sem data
-            $lista = new ListaTarefas();
+            $lista = new ListaTarefas2("Tarefas Pendentes sem Data");
             $lista->set_etiqueta($idEtiqueta);
-            $lista->showPendenteSemData();
+            $lista->set_datado(FALSE);
+            $lista->show();
             
             # Exibe as tarefas completatadas
-            $lista = new ListaTarefas();
+            $lista = new ListaTarefas2("Tarefas Concluídas");
             $lista->set_etiqueta($idEtiqueta);
-            $lista->showCompletadas();
+            $lista->set_datado(NULL);
+            $lista->set_pendente(FALSE);
+            $lista->show();
             
             $grid->fechaColuna();
             $grid->fechaGrid();    
@@ -190,12 +213,8 @@ if($acesso){
              
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(6,8,10);
+            $grid->abreColuna(12);
                 p($titulo,"f18");
-            $grid->fechaColuna();
-            $grid->abreColuna(6,4,2);
-                $link = new Button("Cancelar","?");
-                $link->show();
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
@@ -287,6 +306,8 @@ if($acesso){
                 # Pega os dados dessa etiqueta
                 $dados = $projeto->get_dadosTarefa($idTarefa);
                 $titulo = "Editar Tarefa";
+                $idEtiqueta = $dados[7];
+                $idProjeto = $dados[8];
             }else{
                 $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
                 $titulo = "Nova Tarefa";
@@ -294,12 +315,8 @@ if($acesso){
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(8,9,10);
+            $grid->abreColuna(12);
                 p($projeto->get_nomeProjeto($idProjeto)." - ".$titulo,"f18");
-            $grid->fechaColuna();
-            $grid->abreColuna(4,3,2);
-                $link = new Button("Cancelar","?");
-                $link->show();
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
@@ -309,16 +326,16 @@ if($acesso){
             $select = 'SELECT idProjeto,
                               projeto
                          FROM tbprojeto
-                         ORDER BY projeto';
-
+                     ORDER BY projeto';
+            
             $comboProjeto = $intra->select($select);
             array_unshift($comboProjeto, array(NULL,NULL)); # Adiciona o valor de nulo
             
             # Pega os dados da combo etiqueta
             $selectetiqueta = 'SELECT idEtiqueta, 
-                                     etiqueta
-                                FROM tbprojetoetiqueta
-                               ORDER BY etiqueta';
+                                      etiqueta
+                                 FROM tbprojetoetiqueta
+                             ORDER BY etiqueta';
             
             $comboEtiqueta = $intra->select($selectetiqueta);
             array_unshift($comboEtiqueta, array(NULL,NULL)); # Adiciona o valor de nulo
@@ -491,15 +508,11 @@ if($acesso){
                 $titulo = "Nova Etiqueta";
             } 
              
-            # Nome do projeto
+            # Titulo
             $grid = new Grid();
-            $grid->abreColuna(10);
+            $grid->abreColuna(12);
                 p($titulo,"f18");
-            $grid->fechaColuna();    
-            $grid->abreColuna(2);
-                $link = new Button("Cancelar","?");
-                $link->show();
-            $grid->fechaColuna();
+            $grid->fechaColuna(); 
             $grid->fechaGrid(); 
             hr("projetosTarefas");
             br();

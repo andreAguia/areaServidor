@@ -157,7 +157,7 @@ class Gprojetos{
         
         if($numGrupos>0){
             # Inicia o grid
-            echo '<nav aria-label="You are here:" role="navigation">';
+            echo '<nav aria-label="Grupos" role="navigation">';
             echo '<ul class="breadcrumbs">';
             
             echo '<li>';
@@ -194,7 +194,12 @@ class Gprojetos{
                 $card->abre();
                     $grid = new Grid();
                     $grid->abreColuna(10);
-                        p($valor[1],"pCardNomeProjeto");             // Nome do projeto
+                        $link = new Link($valor[1],'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
+                        $link->set_id("aCardNomeProjeto");
+                        $link->set_title("Exibe os Projetos ativos do grupo ".$grupoValor[0]);
+                        $link->show();
+                        
+                        #p($valor[1],"pCardNomeProjeto");             // Nome do projeto
                         p(strtoupper($valor[3]),"pCardNomeGrupo");   // Grupo
                     $grid->fechaColuna();
                     $grid->abreColuna(2);
@@ -266,8 +271,11 @@ class Gprojetos{
         
         $intra = new Intra();
         $row = $intra->select($select,false);
-        label($row[0],$row[1]);
-        
+        if(!is_null($row[0])){
+            label($row[0],$row[1]);
+        }else{
+            echo "--";
+        }
     }
            
     ###########################################################
@@ -289,7 +297,11 @@ class Gprojetos{
         
         $intra = new Intra();
         $row = $intra->select($select,false);
-        label($row[0],$row[1]);
+        if(!is_null($row[0])){
+            label($row[0],$row[1]);
+        }else{
+            echo "--";
+        }
         
     }
            
@@ -313,8 +325,8 @@ class Gprojetos{
         $intra = new Intra();
         $row = $intra->select($select,false);
         
-        $dataInicial = $row[0];
-        $dataFinal = $row[1];
+        $dataInicial = date_to_php($row[0]);
+        $dataFinal = date_to_php($row[1]);
         
         # Pega a data de hoje
         $d = date("d"); 
@@ -361,7 +373,13 @@ class Gprojetos{
         }else{
             $textoRetorno = $inicialRetorno." até ".$finalRetorno;
         }
-        echo $textoRetorno;
+        
+        # Exibe a data
+        if(!is_null($textoRetorno)){
+             echo $textoRetorno;
+        }else{
+            echo "--";
+        }
     }
            
     ###########################################################

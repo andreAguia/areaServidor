@@ -55,11 +55,13 @@ if($acesso){
     $objeto->set_voltarLista('administracao.php');
 
     # ordenação
-    if(is_null($orderCampo))
+    if(is_null($orderCampo)){
         $orderCampo = 1;
+    }
 
-    if(is_null($orderTipo))
+    if(is_null($orderTipo)){
         $orderTipo = 'asc';
+    }
 
     # ordem da lista
     $objeto->set_orderCampo($orderCampo);
