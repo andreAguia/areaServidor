@@ -114,19 +114,19 @@ if($acesso){
             br();
             
             # Exibe as tarefas pendentes com data
-            $lista = new ListaTarefas2("Tarefas Pendentes com Data");
+            $lista = new ListaTarefas("Tarefas Pendentes com Data");
             $lista->set_projeto($idProjeto);
             $lista->set_datado(TRUE);
             $lista->show();
             
             # Exibe as tarefas pendentes sem data
-            $lista = new ListaTarefas2("Tarefas Pendentes sem Data");
+            $lista = new ListaTarefas("Tarefas Pendentes sem Data");
             $lista->set_projeto($idProjeto);
             $lista->set_datado(FALSE);
             $lista->show();
             
             # Exibe as tarefas completatadas
-            $lista = new ListaTarefas2("Tarefas Concluídas");
+            $lista = new ListaTarefas("Tarefas Concluídas");
             $lista->set_projeto($idProjeto);
             $lista->set_datado(NULL);
             $lista->set_pendente(FALSE);
@@ -173,19 +173,19 @@ if($acesso){
             br();
             
             # Exibe as tarefas pendentes com data
-            $lista = new ListaTarefas2("Tarefas Pendentes com Data");
+            $lista = new ListaTarefas("Tarefas Pendentes com Data");
             $lista->set_etiqueta($idEtiqueta);
             $lista->set_datado(TRUE);
             $lista->show();
             
             # Exibe as tarefas pendentes sem data
-            $lista = new ListaTarefas2("Tarefas Pendentes sem Data");
+            $lista = new ListaTarefas("Tarefas Pendentes sem Data");
             $lista->set_etiqueta($idEtiqueta);
             $lista->set_datado(FALSE);
             $lista->show();
             
             # Exibe as tarefas completatadas
-            $lista = new ListaTarefas2("Tarefas Concluídas");
+            $lista = new ListaTarefas("Tarefas Concluídas");
             $lista->set_etiqueta($idEtiqueta);
             $lista->set_datado(NULL);
             $lista->set_pendente(FALSE);

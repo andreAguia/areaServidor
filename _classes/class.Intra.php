@@ -90,16 +90,21 @@ class Intra extends Bd
             }
         }
 
+        if(is_null($this->tabela)){
+            ($this->tabela = $tabela);
+        }
+        
+        if(is_null($this->idCampo)){
+            ($this->idCampo = $idCampo);
+        }
+        
         # Executa a exclusão se não tiver erro
-        if($erro)
-        {
+        if($erro){
             # Exibe o alerta
             $alert = new Alert($msgErro);
             $alert->show();
             return 0; # False -> o FALSE não funcionou então colocou 0
-        }
-        else
-        {
+        }else{
             # efetua a exclusão
             parent::excluir($idValor,$this->tabela,$this->idCampo);
             return 1; # True 		

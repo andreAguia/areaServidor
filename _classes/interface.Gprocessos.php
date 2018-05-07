@@ -29,12 +29,16 @@ class Gprocessos{
         $intra = new Intra();
         $row = $intra->select($select,FALSE);
         
-            $div = new Div("divTituloProcesso");
-            $div->abre();
+            $painel = new Callout();
+            $painel->abre();
+        
+            
+        
                 p($row[1],"pNumeroProcesso");
                 p(date_to_php($row[2]),"pDataProcesso");
                 p($row[3],"pAssuntoProcesso");
-            $div->fecha();
+            
+            $painel->fecha();
         
     }
    

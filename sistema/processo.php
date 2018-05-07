@@ -18,6 +18,7 @@ if($acesso){
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
+    $processo = new Processo();
 	
     # Verifica a fase do programa
     $fase = get('fase','listar');
@@ -148,13 +149,15 @@ if($acesso){
                                 'tipo' => 'texto',
                                 'title' => 'O numero do Processo',
                                 'required' => TRUE,
-                                'col' => 3,
-                                'size' => 15),
+                                'unique' => TRUE,
+                                'col' => 6,
+                                'size' => 50),
                         array ( 'nome' => 'assunto',
                                 'label' => 'Assunto:',
                                 'tipo' => 'textarea',
                                 'size' => array(90,5),
                                 'title' => 'Assunto.',
+                                'required' => TRUE,
                                 'col' => 12,
                                 'linha' => 2)	 	 	 	 	 	 
                     ));
@@ -171,9 +174,12 @@ if($acesso){
             break;
 
         case "editar" :	
-        case "excluir" :	
-        case "gravar" :		
+        case "excluir" :
             $objeto->$fase($idProcesso);		
+            break;
+        
+        case "gravar" :	
+            $objeto->gravar($idProcesso,"");	
             break;
         
     ################################################################    
@@ -200,8 +206,7 @@ if($acesso){
 
             $menu1->show();
             $grid = new Grid();
-            $grid->abreColuna(3);
-            
+            $grid->abreColuna(3);            
             
             Gprocessos::exibeProcesso($idProcesso);
             
@@ -223,6 +228,17 @@ if($acesso){
             $grid = new Grid();
             $grid->abreColuna(12);
             
+            # Verifica se é incluir ou editar
+            if(!is_null($idProcessoMovimento)){
+                # Pega os dados dessa etiqueta
+                $dados = $processo->get_Movimento($idProcessoMovimento);
+                $titulo = "Editar Movimento";
+                $idProcesso = $dados[1];
+            }else{
+                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+                $titulo = "Novo Movimento";
+            }
+            
             # Cria um menu
             $menu1 = new MenuBar();
 
@@ -234,23 +250,12 @@ if($acesso){
 
             $menu1->show();
             $grid = new Grid();
-            $grid->abreColuna(3);
-            
+            $grid->abreColuna(3);            
             
             Gprocessos::exibeProcesso($idProcesso);
             
             $grid->fechaColuna();
             $grid->abreColuna(9);
-            
-            # Verifica se é incluir ou editar
-            if(!is_null($idProcessoMovimento)){
-                # Pega os dados dessa etiqueta
-                $dados = $projeto->get_Movimento($idProcessoMovimento);
-                $titulo = "Editar Movimento";
-            }else{
-                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-                $titulo = "Novo Movimento";
-            }
             
             tituloTable($titulo);
             br();
@@ -266,7 +271,7 @@ if($acesso){
             array_unshift($comboSetor, array(NULL,NULL)); # Adiciona o valor de nulo
             
             # Formuário
-            $form = new Form('?fase=validaMovimento&idProcessoMovimento='.$idProcessoMovimento);        
+            $form = new Form('?fase=validaMovimento&idProcesso='.$idProcesso.'&idProcessoMovimento='.$idProcessoMovimento);        
                     
             # data
             $controle = new Input('data','data','Data:',1);
@@ -292,7 +297,7 @@ if($acesso){
             $form->add_item($controle);
             
             # setorCombo
-            $controle = new Input('setorCombo','combo','Setor dentro da UENF:',1);
+            $controle = new Input('setorCombo','combo','Origem ou destino dentro da UENF:',1);
             $controle->set_size(20);
             $controle->set_linha(2);
             $controle->set_col(6);
@@ -302,7 +307,7 @@ if($acesso){
             $form->add_item($controle);
             
             # setorTexto
-            $controle = new Input('setorTexto','texto','Setor fora da UENF:',1);
+            $controle = new Input('setorTexto','texto','Origem ou destino fora da UENF:',1);
             $controle->set_size(200);
             $controle->set_linha(2);
             $controle->set_col(6);
@@ -348,26 +353,36 @@ if($acesso){
             $setorTexto = post('setorTexto');
             $motivo = post('motivo');
             $idProcesso = post('idProcesso');
-            
-            # Força a tarefa pendente quando é inclusão
-            if(is_null($idTarefa)){
-                $pendente = 1;
-            }
                       
             # Cria arrays para gravação
-            $arrayNome = array("tarefa","descricao","dataInicial","dataFinal","idProjeto","pendente","idEtiqueta");
-            $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,$pendente,$idEtiqueta);
+            $arrayNome = array("status","data","setorCombo","SetorTexto","motivo","idProcesso");
+            $arrayValores = array($status,$data,$setorCombo,$setorTexto,$motivo,$idProcesso);
             
             # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");
-            if($hojeGet){
-                loadPage("?fase=hoje");
-            }else{
-                loadPage("?fase=projeto&idProjeto=".$idProjeto);
-            }
+            $intra->gravar($arrayNome,$arrayValores,$idProcessoMovimento,"tbprocessomovimento","idProcessoMovimento");
+           
+            loadPage("?fase=movimentacao&idProcesso=".$idProcesso);
             break;
         
         ###########################################################  
+        
+        case "movimentacaoExcluir" :
+            
+            $tabela = "tbprocessomovimento";
+            $idNome = "idProcessoMovimento";
+            
+            # Pega os dados
+            $dados = $processo->get_Movimento($idProcessoMovimento);
+            
+            # Pega o processo
+            $idProcesso = $dados[1];
+            
+            $intra->excluir($idProcessoMovimento,$tabela,$idNome);
+            loadPage("?fase=movimentacao&idProcesso=".$idProcesso);
+            break;
+        
+        ###########################################################
+        
         
     }									 	 		
 
