@@ -233,66 +233,8 @@ p#versao{
  * Sistema de Gestão de Projetos
  *******************************************/
 
-ul#projetosTarefas {
-    list-style-type: none;
-    font-size: 13px;
-}
-
 hr#projetosTarefas{
     margin: 1px;
-}
-
-li#projetoDataInicial {
-    list-style-type: none;
-    font-size: 13px;
-    text-align: left;
-    width: 100%;
-}
-
-div#divTarefas:hover {
-    background-color:  #E0E0E0;
-}
-
-div#divTarefas {
-    padding-bottom: 5px;
-    padding-top: 10px;
-    padding-left: 5px;
-    margin-bottom: 3px;
-    border: thin solid #E0E0E0;
-    border-radius: 10px;
-    background-color: #f3f3f5;
-}
-
-div#divTarefasAtrasadas {
-    padding-bottom: 5px;
-    padding-top: 10px;
-    padding-left: 5px;
-    margin-bottom: 3px;
-    border: thin solid #E0E0E0;
-    border-radius: 10px;
-    color:red;
-    font-weight: bolder;
-}
-
-div#divTarefasHoje {
-    padding-bottom: 5px;
-    padding-top: 10px;
-    padding-left: 5px;
-    margin-bottom: 3px;
-    border: thin solid #E0E0E0;
-    border-radius: 10px;
-    background-color:cornflowerblue;
-    color:white;
-    font-weight: bolder;
-}
-
-div#divTarefasCompletadas {
-    padding-bottom: 5px;
-    padding-top: 10px;
-    padding-left: 5px;
-    margin-bottom: 3px;
-    border: thin solid #E0E0E0;
-    border-radius: 10px;
 }
 
 p#descricaoProjeto {
@@ -323,7 +265,7 @@ p#pCardNumTarefas {
 }
 
 a#aCardNomeProjeto {
-    font-size: 18px;
+    font-size: 16px;
     margin: 5px;
     padding: 0;
     color:#000;

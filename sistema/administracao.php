@@ -169,7 +169,7 @@ if($acesso)
             $botao->set_label('Projeto');
             $botao->set_title('Gestão de Projetos');
             $botao->set_image(PASTA_FIGURAS.'projeto.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('../projetos/projeto.php');
+            $botao->set_url('projeto.php');
             $menu->add_item($botao);
             
             $menu->show();

@@ -353,15 +353,37 @@ if($acesso){
             $setorTexto = post('setorTexto');
             $motivo = post('motivo');
             $idProcesso = post('idProcesso');
-                      
-            # Cria arrays para gravação
-            $arrayNome = array("status","data","setorCombo","SetorTexto","motivo","idProcesso");
-            $arrayValores = array($status,$data,$setorCombo,$setorTexto,$motivo,$idProcesso);
             
-            # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idProcessoMovimento,"tbprocessomovimento","idProcessoMovimento");
-           
-            loadPage("?fase=movimentacao&idProcesso=".$idProcesso);
+            # Variáveis da mensagem de erro
+            $erro = 0;		    // flag de erro: 1 - tem erro; 0 - não tem	
+            $msgErro = NULL;        // repositório de mensagens de erro
+            
+            # Passa para nullo
+            if($setorCombo == 0){
+                $setorCombo = NULL;
+            }
+            
+            # Critica o setor
+            if((vazio($setorCombo)) AND (vazio($setorTexto))){
+                $msgErro.='Tem que ser definido um setor de origem/destino!\n';
+                $erro = 1;
+            }
+                      
+            if ($erro == 0){
+                # Cria arrays para gravação
+                $arrayNome = array("status","data","setorCombo","SetorTexto","motivo","idProcesso");
+                $arrayValores = array($status,$data,$setorCombo,$setorTexto,$motivo,$idProcesso);
+
+                # Grava	
+                $intra->gravar($arrayNome,$arrayValores,$idProcessoMovimento,"tbprocessomovimento","idProcessoMovimento");
+                
+                aguarde();
+
+                loadPage("?fase=movimentacao&idProcesso=".$idProcesso);
+            }else{
+                alert($msgErro);
+                back(1);
+            }
             break;
         
         ###########################################################  

@@ -9,7 +9,7 @@
 $idUsuario = NULL;
 
 # Configuração
-include ("../sistema/_config.php");
+include ("_config.php");
 
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
@@ -43,7 +43,7 @@ if($acesso){
 
     # Define o botão voltar de acordo com a rotina
     if($fase == 'ínicial'){
-        botaoVoltar('../sistema/administracao.php');
+        botaoVoltar('administracao.php');
     }else{
         botaoVoltar('?');
     }
@@ -309,7 +309,7 @@ if($acesso){
                 $idEtiqueta = $dados[7];
                 $idProjeto = $dados[8];
             }else{
-                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
                 $titulo = "Nova Tarefa";
             }
             
@@ -356,7 +356,7 @@ if($acesso){
             
             # descrição
             $controle = new Input('descricao','textarea','Descrição:',1);
-            $controle->set_size(array(80,10));
+            $controle->set_size(array(80,5));
             $controle->set_linha(2);
             $controle->set_title('A descrição detalhda do tarefa');
             $controle->set_placeholder('Descrição da tarefa');
@@ -407,6 +407,14 @@ if($acesso){
             }
             $form->add_item($controle);     
             
+            # conclusao
+            $controle = new Input('conclusao','textarea','Conclusão:',1);
+            $controle->set_size(array(80,5));
+            $controle->set_linha(5);
+            $controle->set_title('O que foi feito para colcluir');
+            $controle->set_valor($dados[9]);
+            $form->add_item($controle);
+            
             # pendente
             $controle = new Input('pendente','hidden','',1);
             $controle->set_size(20);
@@ -438,6 +446,7 @@ if($acesso){
             $idProjeto = post('idProjeto');
             $idEtiqueta = post('idEtiqueta');
             $pendente = post('pendente');
+            $conclusao = post('conclusao');
             
             # Força a tarefa pendente quando é inclusão
             if(is_null($idTarefa)){
@@ -445,8 +454,8 @@ if($acesso){
             }
                       
             # Cria arrays para gravação
-            $arrayNome = array("tarefa","descricao","dataInicial","dataFinal","idProjeto","pendente","idEtiqueta");
-            $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,$pendente,$idEtiqueta);
+            $arrayNome = array("tarefa","descricao","dataInicial","dataFinal","idProjeto","pendente","idEtiqueta","conclusao");
+            $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,$pendente,$idEtiqueta,$conclusao);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");
@@ -601,7 +610,7 @@ if($acesso){
             
                 # Exibe o nome e a descrição
                 p('Tarefas agendadas para hoje.','descricaoProjetoTitulo');
-                p('Tarefas de todos os projetos agendadas para hoje - '.$hoje,'descricaoProjeto');
+                p('Tarefas de todos os projetos agendadas para hoje (Incluindo as atrasadas) - '.$hoje,'descricaoProjeto');
                 
             $grid->fechaColuna();
             $grid->abreColuna(3);
@@ -617,10 +626,12 @@ if($acesso){
             hr("projetosTarefas");
             br();
             
-            # Exibe as tarefas pendentes com data
-            $lista = new ListaTarefas();
-            $lista->showPendenteAtrasada();
-            $lista->showPendenteHoje();
+            # Exibe as tarefas pendentes de hoje
+            $lista = new ListaTarefas("Tarefas de Hoje");
+            #$lista->set_projeto($idProjeto);
+            $lista->set_hoje(TRUE);
+            $lista->set_datado(TRUE);
+            $lista->show();
             
             $grid->fechaColuna();
             $grid->fechaGrid();    
