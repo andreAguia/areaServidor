@@ -151,7 +151,7 @@ if($acesso){
             
                 # Exibe o nome e a descrição
                 p($etiquetaPesquisada[1],'descricaoProjetoTitulo');
-                p("Tarefas com a etiqueta: ".$etiquetaPesquisada[1],'descricaoProjeto');
+                p($etiquetaPesquisada[3],'descricaoProjeto');
                 
             $grid->fechaColuna();
             $grid->abreColuna(6,4,3);
@@ -504,7 +504,7 @@ if($acesso){
                 $dados = $projeto->get_dadosEtiqueta($idEtiqueta);
                 $titulo = "Editar Etiqueta";
             }else{
-                $dados = array(NULL,NULL,NULL);
+                $dados = array(NULL,NULL,NULL,NULL);
                 $titulo = "Nova Etiqueta";
             } 
              
@@ -520,7 +520,7 @@ if($acesso){
             # Formulário
             $form = new Form('?fase=validaEtiqueta&idEtiqueta='.$idEtiqueta);        
                     
-            # projeto
+            # Etiqueta
             $controle = new Input('etiqueta','texto','Etiqueta:',1);
             $controle->set_size(50);
             $controle->set_linha(1);
@@ -543,6 +543,15 @@ if($acesso){
             $controle->set_valor($dados[2]);
             $form->add_item($controle);
             
+            # Descrição
+            $controle = new Input('descricao','texto','Descrição:',1);
+            $controle->set_size(50);
+            $controle->set_linha(2);
+            $controle->set_col(12);
+            $controle->set_title('Descrição do porquê da Etiqueta');
+            $controle->set_valor($dados[3]);
+            $form->add_item($controle);
+            
             # submit
             $controle = new Input('submit','submit');
             $controle->set_valor('Salvar');
@@ -562,10 +571,11 @@ if($acesso){
             # Recuperando os valores
             $etiqueta = post('etiqueta');
             $cor = post('cor');
+            $descricao = post('descricao');
                       
             # Cria arrays para gravação
-            $arrayNome = array("etiqueta","cor");
-            $arrayValores = array($etiqueta,$cor);
+            $arrayNome = array("etiqueta","cor","descricao");
+            $arrayValores = array($etiqueta,$cor,$descricao);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idEtiqueta,"tbprojetoEtiqueta","idEtiqueta");

@@ -144,15 +144,15 @@ class ListaTarefas{
         
         # Verifica qual simbolo vai colocar
         if($this->pendente){
-            $botao1->set_image(PASTA_FIGURAS.'tickVazio.png',15,15);
+            $botao1->set_image(PASTA_FIGURAS.'tickVazio.png',20,20);
         }else{
-            $botao1->set_image(PASTA_FIGURAS.'tickCheio.png',15,15);
+            $botao1->set_image(PASTA_FIGURAS.'tickCheio.png',20,20);
         }
         
         # Botão de editar
         $botao2 = new BotaoGrafico();
         $botao2->set_url('?fase=tarefaNova&idTarefa=');
-        $botao2->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',15,15);
+        $botao2->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
         
         # Coloca o objeto link na tabela	
         $tabela->set_idCampo("idTarefa");

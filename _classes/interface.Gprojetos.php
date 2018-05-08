@@ -73,7 +73,8 @@ class Gprojetos{
         # Pega os projetos cadastrados
         $select = 'SELECT idEtiqueta,
                           etiqueta,
-                          cor
+                          cor,
+                          descricao
                      FROM tbprojetoetiqueta
                      ORDER BY etiqueta';
         
@@ -99,7 +100,7 @@ class Gprojetos{
                     $texto = ">".$texto;
                 }
 
-                $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&idEtiqueta='.$valor[0],'Exibe as tarefas com a etiqueta '.$valor[1]);
+                $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&idEtiqueta='.$valor[0],$valor[3]);
             }
 
             $menu1->show();
@@ -205,7 +206,7 @@ class Gprojetos{
                     $grid->abreColuna(2);
                         $botao = new BotaoGrafico();
                         $botao->set_url('?fase=projetoNovo&idProjeto='.$valor[0]);
-                        $botao->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',15,15);
+                        $botao->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
                         $botao->show();
                     $grid->fechaColuna();
                     $grid->fechaGrid();
@@ -265,14 +266,15 @@ class Gprojetos{
     
         # Pega os projetos cadastrados
         $select = 'SELECT projeto,
-                          cor
+                          cor,
+                          descricao
                      FROM tbprojeto
                      WHERE idProjeto = '.$idProjeto;
         
         $intra = new Intra();
         $row = $intra->select($select,false);
         if(!is_null($row[0])){
-            label($row[0],$row[1]);
+            label($row[0],$row[1],NULL,$row[2]);
         }else{
             echo "--";
         }
@@ -291,14 +293,15 @@ class Gprojetos{
     
         # Pega os projetos cadastrados
         $select = 'SELECT etiqueta,
-                          cor
+                          cor,
+                          descricao
                      FROM tbprojetoetiqueta
                      WHERE idEtiqueta = '.$idEtiqueta;
         
         $intra = new Intra();
         $row = $intra->select($select,false);
         if(!is_null($row[0])){
-            label($row[0],$row[1]);
+            label($row[0],$row[1],NULL,$row[2]);
         }else{
             echo "--";
         }
@@ -316,6 +319,7 @@ class Gprojetos{
      * @syntax $projeto->get_nomeProjeto([$idEtiqueta]);  
      */
     
+       
         # Pega os projetos cadastrados
         $select = 'SELECT dataInicial,
                           dataFinal
@@ -328,18 +332,21 @@ class Gprojetos{
         $dataInicial = date_to_php($row[0]);
         $dataFinal = date_to_php($row[1]);
         
-        # Pega a data de hoje
-        $d = date("d"); 
-        $m = date("m"); 
-        $Y = date("Y");
+        if($dataFinal == "00/00/0000"){
+            $dataFinal = NULL;
+        }
         
-        $hoje = ajeita(date("m-d-Y", mktime(0, 0, 0, $m, $d, $Y))); 
-        $ontem = ajeita(date("m-d-Y", mktime(0, 0, 0, $m, $d-1, $Y))); 
-        $amanha = ajeita(date("m-d-Y", mktime(0, 0, 0, $m, $d+1, $Y))); 
+        if($dataInicial == "00/00/0000"){
+            $dataInicial = NULL;
+        }
         
+        $hoje = date('d/m/Y');
+        $amanha = addDias($hoje,1,FALSE);
+        $ontem = addDias($hoje,-1,FALSE);
+         
         # Inicia as Variáveis de retorno
-        $inicialRetorno = ajeita2($dataInicial);
-        $finalRetorno = ajeita2($dataFinal);
+        $inicialRetorno = $dataInicial;
+        $finalRetorno = $dataFinal;
         
         # Se alguma data é hoje
         if($dataInicial == $hoje){
@@ -381,6 +388,4 @@ class Gprojetos{
             echo "--";
         }
     }
-           
-    ###########################################################
 }

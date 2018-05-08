@@ -158,7 +158,8 @@ class Projeto{
         # Pega os projetos cadastrados
         $select = 'SELECT idEtiqueta,
                           etiqueta,
-                          cor
+                          cor,
+                          descricao
                      FROM tbprojetoetiqueta
                      WHERE idEtiqueta = '.$idEtiqueta.' 
                 ORDER BY etiqueta';
