@@ -22,6 +22,9 @@ if($acesso){
 	
     # Verifica a fase do programa
     $fase = get('fase','listar');
+    
+    # Define como padrão a máscara do processo novo
+    $processoNovo = get("processoNovo",TRUE);
 
     # pega o id se tiver)
     $idProcesso = soNumeros(get('idProcesso'));
@@ -67,7 +70,7 @@ if($acesso){
     }
 
     if(is_null($orderTipo)){
-            $orderTipo = 'asc';
+            $orderTipo = 'desc';
     }
 
     # select da lista
@@ -83,8 +86,8 @@ if($acesso){
                             ORDER BY '.$orderCampo.' '.$orderTipo);	
 
     # select do edita
-    $objeto->set_selectEdita('SELECT data,
-                                     numero,
+    $objeto->set_selectEdita('SELECT numero,
+                                     data,
                                      assunto							    
                                 FROM tbprocesso
                                WHERE idProcesso = '.$idProcesso);
@@ -106,7 +109,7 @@ if($acesso){
 
     # Parametros da tabela
     $objeto->set_label(array("Data","Número","Assunto","Movimentação"));
-    $objeto->set_width(array(15,15,60));		
+    $objeto->set_width(array(15,20,55));		
     $objeto->set_align(array("center","center","left"));
     $objeto->set_funcao(array("date_to_php"));
     
@@ -134,6 +137,15 @@ if($acesso){
     
     # Campos para o formulario
     $objeto->set_campos(array( 
+                        array ( 'linha' => 1,
+                                'nome' => 'numero',
+                                'label' => 'Processo:',
+                                'tipo' => 'processoNovo',
+                                'title' => 'O numero do Processo',
+                                'required' => TRUE,
+                                'unique' => TRUE,
+                                'col' => 6,
+                                'size' => 50),
                         array ( 'nome' => 'data',
                                 'label' => 'data:',
                                 'tipo' => 'data',
@@ -143,15 +155,6 @@ if($acesso){
                                 'autofocus' => TRUE,
                                 'col' => 3,
                                 'linha' => 1),
-                        array ( 'linha' => 1,
-                                'nome' => 'numero',
-                                'label' => 'Processo:',
-                                'tipo' => 'texto',
-                                'title' => 'O numero do Processo',
-                                'required' => TRUE,
-                                'unique' => TRUE,
-                                'col' => 6,
-                                'size' => 50),
                         array ( 'nome' => 'assunto',
                                 'label' => 'Assunto:',
                                 'tipo' => 'textarea',
@@ -174,6 +177,33 @@ if($acesso){
             break;
 
         case "editar" :	
+            $grid1 = new Grid();
+            $grid1->abreColuna(12);
+            br();
+            
+            # Informa os formatos
+            $painel = new Callout("primary");
+            $painel->abre();
+            
+            # Limita o tamanho da tela
+            $grid = new Grid();
+            $grid->abreColuna(6);
+                p("Modelo de processo antigo","center");
+                p("E-xx/xxxxxx/xxxx","center");
+            $grid->fechaColuna();    
+            $grid->abreColuna(6);    
+                p("Modelo de processo novo","center");
+                p("E-xx/xxx/xxxxxx/xxxx","center");
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            $painel->fecha();
+            
+            $grid1->fechaColuna();
+            $grid1->fechaGrid(); 
+            
+            $objeto->editar($idProcesso);
+            break;
+            
         case "excluir" :
             $objeto->$fase($idProcesso);		
             break;
