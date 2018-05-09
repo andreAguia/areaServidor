@@ -98,12 +98,18 @@ if($acesso){
                 
                 # Menu
                 $menu1 = new MenuBar();
+                
+                # Timeline
+                $link1 = new Link("Timeline",'?fase=timeline&idProjeto='.$idProjeto);
+                $link1->set_class('button');
+                $link1->set_title('Timeline');
+                $menu1->add_link($link1,"right");
 
                 # Nova Tarefa
-                $link = new Link("+",'?fase=tarefaNova&idProjeto='.$idProjeto);
-                $link->set_class('button');
-                $link->set_title('Nova tarefa');
-                $menu1->add_link($link,"right");
+                $link2 = new Link("+",'?fase=tarefaNova&idProjeto='.$idProjeto);
+                $link2->set_class('button');
+                $link2->set_title('Nova tarefa');
+                $menu1->add_link($link2,"right");
                 
                 $menu1->show();
                 
@@ -157,6 +163,12 @@ if($acesso){
             $grid->abreColuna(6,4,3);
                 # Menu
                 $menu1 = new MenuBar();
+                
+                # Timeline
+                $link1 = new Link("Timeline",'?fase=timeline&idEtiqueta='.$idEtiqueta);
+                $link1->set_class('button');
+                $link1->set_title('Timeline');
+                $menu1->add_link($link1,"right");
 
                 # Nova Tarefa
                 $link = new Link("Editar",'?fase=etiquetaNova&idEtiqueta='.$idEtiqueta);
@@ -631,6 +643,64 @@ if($acesso){
             #$lista->set_projeto($idProjeto);
             $lista->set_hoje(TRUE);
             $lista->set_datado(TRUE);
+            $lista->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+                 
+        ###########################################################
+            
+        case "timeline" :            
+            $grid->abreColuna(9);
+            
+            # Pega os dados do Projeto
+            if(!is_null($idProjeto)){
+                $projetoPesquisado = $projeto->get_dadosProjeto($idProjeto);
+            }
+            
+            # Pega os dados da Etiqueta
+            if(!is_null($idEtiqueta)){
+                $etiquetaPesquisada = $projeto->get_dadosEtiqueta($idEtiqueta);
+            }
+            
+            # Nome
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+                # Projeto
+                if(!is_null($idProjeto)){
+                    p($projetoPesquisado[1],'descricaoProjetoTitulo');
+                    p($projetoPesquisado[2],'descricaoProjeto');
+                }
+                
+                # Etiqueta
+                if(!is_null($idEtiqueta)){
+                    p($etiquetaPesquisada[1],'descricaoProjetoTitulo');
+                    p($etiquetaPesquisada[3],'descricaoProjeto');
+                }
+                
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            
+            hr("projetosTarefas");
+            br();
+            
+            # Exibe as tarefas pendentes com data
+            $lista = new ListaTarefas("Tarefas Pendentes com Data");
+            
+            # Projeto
+            if(!is_null($idProjeto)){
+                $lista->set_projeto($idProjeto);
+            }
+            
+            # Etiqueta
+            if(!is_null($idEtiqueta)){
+                $lista->set_etiqueta($idEtiqueta);
+            }
+            
+            $lista->set_datado(TRUE);
+            $lista->showTimeline();
             $lista->show();
             
             $grid->fechaColuna();

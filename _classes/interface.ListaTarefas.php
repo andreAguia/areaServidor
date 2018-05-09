@@ -175,4 +175,118 @@ class ListaTarefas{
     
     ###########################################################
     
+    public function showTimeline(){
+    /**
+     * Exibe a lista
+     * 
+     */
+        # Define a data de hoje
+        $hoje = date("d/m/Y");
+        
+        # Pega as tarefas
+        $select = 'SELECT idTarefa,
+                          tarefa,
+                          idProjeto,
+                          idEtiqueta,
+                          dataInicial,
+                          dataFinal
+                     FROM tbprojetotarefa';
+        
+        # Pendente
+        if($this->pendente){
+            $select.= ' WHERE pendente';
+        }else{
+            $select.= ' WHERE NOT pendente';
+        }
+        
+        # Com Data (datado)
+        if(!is_null($this->datado)){  // se tiver null exibe os dois
+            if($this->datado){
+                $select.= ' AND dataInicial <> "0000-00-00"'; // Exibe os datados
+            }else{
+                $select.= ' AND dataInicial = "0000-00-00"';  // Exibe os sem data
+            }
+        }
+        
+        # De hoje (com as atrasadas)
+        if($this->hoje){
+            $select.= ' AND dataInicial <= NOW()';  // Exibe os sem data
+        }
+                 
+        # Etiquetas
+        if(!is_null($this->etiqueta)){
+            $select.= ' AND idEtiqueta = '.$this->etiqueta;
+        }
+        
+        # Projeto
+        if(!is_null($this->projeto)){
+            $select.= ' AND idProjeto = '.$this->projeto;
+        }
+        
+        $select .=' ORDER BY dataInicial, noOrdem';
+        
+        # Acessa o banco
+        $intra = new Intra();
+        $tarefas = $intra->select($select);
+        $numTarefas = $intra->count($select);
+        
+        tituloTable("Timeline");
+        
+        if($numTarefas > 0){
+        
+            # Carrega a rotina do Google
+            echo '<script type="text/javascript" src="'.PASTA_FUNCOES_GERAIS.'/loader.js"></script>';
+
+            # Inicia o script
+            echo "<script type='text/javascript'>";
+            echo "google.charts.load('current', {'packages':['timeline']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        function drawChart() {
+                          var container = document.getElementById('timeline');
+                          var chart = new google.visualization.Timeline(container);
+                          var dataTable = new google.visualization.DataTable();";
+
+            echo "dataTable.addColumn({ type: 'string', id: 'Tarefa' });
+                  dataTable.addColumn({ type: 'date', id: 'Inicio' });
+                  dataTable.addColumn({ type: 'date', id: 'Fim' });";
+
+            echo "dataTable.addRows([";
+
+            $separador = '-';
+
+            foreach ($tarefas as $row){
+
+                # Trata a data inicial
+                $dt1 = explode($separador,$row['dataInicial']);
+
+                if($row['dataFinal'] == '0000-00-00'){
+                    $dt2 = $dt1;
+                    $dt2[2]++;
+                }else{
+                    $dt2 = explode($separador,$row['dataFinal']);
+                }
+
+
+                echo "[ '".$row['tarefa']."', new Date($dt1[0], $dt1[1]-1, $dt1[2]), new Date($dt2[0], $dt2[1]-1, $dt2[2]) ],";
+            }
+            echo "]);";
+            echo "chart.draw(dataTable);";
+            echo "}";
+            echo "</script>";
+
+            $altura = ($numTarefas * 40) + 60;
+
+            #[ 'Washington', new Date(1789, 3, 30), new Date(1797, 2, 4) ],
+            #[ 'Adams',      new Date(1797, 2, 4),  new Date(1801, 2, 4) ],
+            #[ 'Jefferson',  new Date(1801, 2, 4),  new Date(1809, 2, 4) ]]);
+
+                echo '<div id="timeline" style="height: '.$altura.'px;"></div>';
+        }else{
+            br(3);
+            p("Não há tarefas Pendentes com data para gerar uma timeline.","f16","center");
+        }
+    }
+    
+    ###########################################################
+    
 }
