@@ -24,7 +24,7 @@ if($acesso){
     $fase = get('fase','listar');
     
     # Define como padrão a máscara do processo novo
-    $processoNovo = get("processoNovo",TRUE);
+    $tipoProcesso = get("tipoProcesso","processoNovo");
 
     # pega o id se tiver)
     $idProcesso = soNumeros(get('idProcesso'));
@@ -140,8 +140,9 @@ if($acesso){
                         array ( 'linha' => 1,
                                 'nome' => 'numero',
                                 'label' => 'Processo:',
-                                'tipo' => 'processoNovo',
+                                'tipo' => $tipoProcesso,
                                 'title' => 'O numero do Processo',
+                                'autofocus' => TRUE,
                                 'required' => TRUE,
                                 'unique' => TRUE,
                                 'col' => 6,
@@ -152,7 +153,6 @@ if($acesso){
                                 'size' => 20,
                                 'title' => 'data do processo',
                                 'required' => TRUE,
-                                'autofocus' => TRUE,
                                 'col' => 3,
                                 'linha' => 1),
                         array ( 'nome' => 'assunto',
@@ -168,6 +168,14 @@ if($acesso){
     # Log
     $objeto->set_idUsuario($idUsuario);
     
+    # Botões extras
+    $botaoProcessoNovo = new Button("Processo Novo","#");
+    $botaoProcessoAntigo = new Button("Processo Antigo","#");
+    
+    
+    
+    $objeto->set_botaoEditarExtra(array($botaoProcessoNovo,$botaoProcessoAntigo)); 
+    
     ################################################################
     switch ($fase){
         
@@ -177,6 +185,8 @@ if($acesso){
             break;
 
         case "editar" :	
+            $objeto->editar($idProcesso);
+            
             $grid1 = new Grid();
             $grid1->abreColuna(12);
             br();
@@ -200,8 +210,6 @@ if($acesso){
             
             $grid1->fechaColuna();
             $grid1->fechaGrid(); 
-            
-            $objeto->editar($idProcesso);
             break;
             
         case "excluir" :
