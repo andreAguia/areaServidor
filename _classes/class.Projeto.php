@@ -46,6 +46,31 @@ class Projeto{
     
     ###########################################################
     
+    public function get_dadosNota($idNota = NULL){
+    /**
+     * Retorna um array com as informações da nota
+     * 
+     * @param $idNota integer NULL o idNota
+     * 
+     * @syntax $projeto->get_dadosNota([$idNota]);  
+     */
+    
+        # Pega as notas
+        $select = 'SELECT idNota,
+                          idProjeto,
+                          idEtiqueta, 
+                          titulo,
+                          nota
+                     FROM tbprojetonota
+                     WHERE idProjeto = '.$idNota;
+        
+        $intra = new Intra();
+        $row = $intra->select($select,false);
+        return $row;
+    }
+    
+    ###########################################################
+    
     public function get_numeroTarefasPendentes($idProjeto){
     /**
      * Retorna um inteiro com o número de tarefas pendentes de um projeto

@@ -34,13 +34,11 @@ class ListaNotas{
      * @param 	$metodo		O nome do metodo
      * @param 	$parametros	Os parâmetros inseridos  
      */
-    public function __call ($metodo, $parametros)
-    {
+     public function __call ($metodo, $parametros){
         ## Se for set, atribui um valor para a propriedade
-        if (substr($metodo, 0, 3) == 'set')
-        {
-          $var = substr($metodo, 4);
-          $this->$var = $parametros[0];
+        if (substr($metodo, 0, 3) == 'set'){
+            $var = substr($metodo, 4);
+            $this->$var = $parametros[0];
         }
 
         # Se for Get, retorna o valor da propriedade
@@ -66,7 +64,7 @@ class ListaNotas{
                           idProjeto,
                           idEtiqueta,
                           idNota
-                     FROM tbprojetonotas';
+                     FROM tbprojetonota';
         
         # Etiquetas
         if(!is_null($this->etiqueta)){
@@ -98,7 +96,7 @@ class ListaNotas{
         
         # Botão de editar
         $botao2 = new BotaoGrafico();
-        $botao2->set_url('?fase=notaNova');
+        $botao2->set_url('?fase=exibeNota&idNota=');
         $botao2->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
         
         # Coloca o objeto link na tabela	
