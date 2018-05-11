@@ -31,6 +31,8 @@ if($acesso){
     $grupo = get('grupo');
     $hojeGet = get('hoje');
     
+    $origem = get('origem');
+    
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
@@ -46,7 +48,16 @@ if($acesso){
     if($fase == 'ínicial'){
         botaoVoltar('administracao.php');
     }else{
-        botaoVoltar('?');
+        switch ($origem){
+            case NULL :
+                botaoVoltar('?');
+                break;
+            
+            case "projeto" :
+            case "nota" :    
+                botaoVoltar('?fase=projeto&idProjeto='.$idProjeto);
+                break;
+        }
     }
     titulo("Sistema de Gestão de Projetos");
     br();
@@ -101,13 +112,13 @@ if($acesso){
                 $menu1 = new MenuBar();
                 
                 # Timeline
-                $link1 = new Link("Timeline",'?fase=timeline&idProjeto='.$idProjeto);
+                $link1 = new Link("Timeline",'?fase=timeline&origem=projeto&idProjeto='.$idProjeto);
                 $link1->set_class('button');
                 $link1->set_title('Timeline');
                 $menu1->add_link($link1,"right");
                 
                 # Notas
-                $link2 = new Link("Notas",'?fase=notas&idProjeto='.$idProjeto);
+                $link2 = new Link("Notas",'?fase=notas&origem=nota&idProjeto='.$idProjeto);
                 $link2->set_class('button');
                 $link2->set_title('Notas');
                 $menu1->add_link($link2,"right");
@@ -750,10 +761,16 @@ if($acesso){
                 # Menu
                 $menu1 = new MenuBar();
                 
+                # Notas
+                $link2 = new Link("Tarefas",'?fase=projeto&idProjeto='.$idProjeto);
+                $link2->set_class('button');
+                $link2->set_title('Tarefas');
+                $menu1->add_link($link2,"right");
+                
                 # Nova Nota
-                $link = new Link("Nova Nota",'?fase=notaNova&idProjeto='.$idProjeto);
+                $link = new Link("+",'?fase=notaNova&idProjeto='.$idProjeto);
                 $link->set_class('button');
-                $link->set_title('Nota');
+                $link->set_title('Nova Nota');
                 $menu1->add_link($link,"right");
                 
                 $menu1->show();
@@ -776,7 +793,6 @@ if($acesso){
         case "exibeNota" :
              
             $grid->abreColuna(9);
-            
             # Pega os dados dessa nota
             $dados = $projeto->get_dadosNota($idNota);
             
@@ -786,15 +802,6 @@ if($acesso){
             
                 # Exibe o nome e a descrição
                 p($dados[3],'descricaoProjetoTitulo');
-                
-                # Exibe o projeto
-                $gprojeto = new Gprojetos();
-                $gprojeto->showProjeto($dados[1]);
-                
-                # Exibe a etiqueta
-                if(!is_null($idEtiqueta)){
-                    $gprojeto->showEtiqueta($dados[2]);
-                }
                 
             $grid->fechaColuna();
             $grid->abreColuna(6,4,3);
@@ -811,12 +818,24 @@ if($acesso){
                 
             $grid->fechaColuna();
             $grid->fechaGrid();
+            #hr("projetosTarefas");
+            #br();
+            
+            echo "<pre>";
             br();
-            hr("projetosTarefas");
+            echo $dados[4];
+            br(2);
+            echo "</pre>";
             br();
             
-            echo "<pre>".$dados[4]."</pre>";
-            hr("projetosTarefas");
+            # Exibe o projeto
+            $gprojeto = new Gprojetos();
+            $gprojeto->showProjeto($dados[1]);
+
+            # Exibe a etiqueta
+            if(!is_null($idEtiqueta)){
+                $gprojeto->showEtiqueta($dados[2]);
+            }
             break;
             
         ###########################################################    
@@ -902,7 +921,7 @@ if($acesso){
             
             # nota            
             $controle = new Input('nota','textarea','Descrição:',1);
-            $controle->set_size(array(80,5));
+            $controle->set_size(array(80,15));
             $controle->set_linha(2);
             $controle->set_col(12);
             $controle->set_title('Corpo da nota');
@@ -930,20 +949,18 @@ if($acesso){
             $projeto = post('idProjeto');
             $etiqueta = post('idEtiqueta');
             $nota = post('nota');
-            
-            echo "oi";
                       
             # Cria arrays para gravação
             $arrayNome = array("titulo","idProjeto","idEtiqueta","nota");
             $arrayValores = array($titulo,$projeto,$etiqueta,$nota);
             
             # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idEtiqueta,"tbprojetonota","idNota");
+            $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");
             
-            if(is_null($idProjeto)){
-                loadPage("?");
+            if(is_null($idNota)){
+                loadPage("?fase=nota&idProjeto=".$idProjeto);
             }else{
-                loadPage("?fase=notas&idProjeto=".$idProjeto);
+                loadPage("?fase=exibeNota&idNota=".$idNota);
             }
             break;
         

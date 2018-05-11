@@ -62,7 +62,7 @@ class Projeto{
                           titulo,
                           nota
                      FROM tbprojetonota
-                     WHERE idProjeto = '.$idNota;
+                     WHERE idNota = '.$idNota;
         
         $intra = new Intra();
         $row = $intra->select($select,false);
