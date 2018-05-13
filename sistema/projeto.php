@@ -54,7 +54,7 @@ if($acesso){
                 break;
             
             case "projeto" :
-            case "nota" :    
+            case "nota" :   
                 botaoVoltar('?fase=projeto&idProjeto='.$idProjeto);
                 break;
         }
@@ -99,14 +99,14 @@ if($acesso){
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(6,8,9);
+            $grid->abreColuna(6);
             
                 # Exibe o nome e a descrição
                 p($projetoPesquisado[1],'descricaoProjetoTitulo');
                 p($projetoPesquisado[2],'descricaoProjeto');
                 
             $grid->fechaColuna();
-            $grid->abreColuna(6,4,3);
+            $grid->abreColuna(6);
                 
                 # Menu
                 $menu1 = new MenuBar();
@@ -122,12 +122,18 @@ if($acesso){
                 $link2->set_class('button');
                 $link2->set_title('Notas');
                 $menu1->add_link($link2,"right");
+                
+                # Concluídas
+                $link3 = new Link("Concluídas",'?fase=projetoConcluidas&origem=nota&idProjeto='.$idProjeto);
+                $link3->set_class('button');
+                $link3->set_title('Concluídas');
+                $menu1->add_link($link3,"right");
 
                 # Nova Tarefa
-                $link3 = new Link("+",'?fase=tarefaNova&idProjeto='.$idProjeto);
-                $link3->set_class('button');
-                $link3->set_title('Nova tarefa');
-                $menu1->add_link($link3,"right");
+                $link4 = new Link("+",'?fase=tarefaNova&idProjeto='.$idProjeto);
+                $link4->set_class('button');
+                $link4->set_title('Nova tarefa');
+                $menu1->add_link($link4,"right");
                 
                 $menu1->show();
                 
@@ -148,6 +154,32 @@ if($acesso){
             $lista->set_projeto($idProjeto);
             $lista->set_datado(FALSE);
             $lista->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+                 
+        ###########################################################
+            
+        case "projetoConcluidas" :            
+            $grid->abreColuna(9);
+            
+            # Pega os dados do projeto pesquisado
+            $projetoPesquisado = $projeto->get_dadosProjeto($idProjeto);
+            
+            # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+                # Exibe o nome e a descrição
+                p($projetoPesquisado[1],'descricaoProjetoTitulo');
+                p($projetoPesquisado[2],'descricaoProjeto');
+                
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            
+            hr("projetosTarefas");
+            br();
             
             # Exibe as tarefas completatadas
             $lista = new ListaTarefas("Tarefas Concluídas");
@@ -181,12 +213,6 @@ if($acesso){
             $grid->abreColuna(6,4,3);
                 # Menu
                 $menu1 = new MenuBar();
-                
-                # Timeline
-                $link1 = new Link("Timeline",'?fase=timeline&idEtiqueta='.$idEtiqueta);
-                $link1->set_class('button');
-                $link1->set_title('Timeline');
-                $menu1->add_link($link1,"right");
 
                 # Nova Tarefa
                 $link = new Link("Editar",'?fase=etiquetaNova&idEtiqueta='.$idEtiqueta);
@@ -671,33 +697,15 @@ if($acesso){
             
         case "timeline" :            
             $grid->abreColuna(9);
-            
-            # Pega os dados do Projeto
-            if(!is_null($idProjeto)){
-                $projetoPesquisado = $projeto->get_dadosProjeto($idProjeto);
-            }
-            
-            # Pega os dados da Etiqueta
-            if(!is_null($idEtiqueta)){
-                $etiquetaPesquisada = $projeto->get_dadosEtiqueta($idEtiqueta);
-            }
+            $projetoPesquisado = $projeto->get_dadosProjeto($idProjeto);
             
             # Nome
             $grid = new Grid();
             $grid->abreColuna(12);
             
-                # Projeto
-                if(!is_null($idProjeto)){
-                    p($projetoPesquisado[1],'descricaoProjetoTitulo');
-                    p($projetoPesquisado[2],'descricaoProjeto');
-                }
-                
-                # Etiqueta
-                if(!is_null($idEtiqueta)){
-                    p($etiquetaPesquisada[1],'descricaoProjetoTitulo');
-                    p($etiquetaPesquisada[3],'descricaoProjeto');
-                }
-                
+                p($projetoPesquisado[1],'descricaoProjetoTitulo');
+                p($projetoPesquisado[2],'descricaoProjeto');
+                                
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             
@@ -706,17 +714,7 @@ if($acesso){
             
             # Exibe as tarefas pendentes com data
             $lista = new ListaTarefas("Tarefas Pendentes com Data");
-            
-            # Projeto
-            if(!is_null($idProjeto)){
-                $lista->set_projeto($idProjeto);
-            }
-            
-            # Etiqueta
-            if(!is_null($idEtiqueta)){
-                $lista->set_etiqueta($idEtiqueta);
-            }
-            
+            $lista->set_projeto($idProjeto);            
             $lista->set_datado(TRUE);
             $lista->showTimeline();
             $lista->show();
@@ -731,44 +729,23 @@ if($acesso){
             $grid->abreColuna(9);
             
             # Pega os dados do Projeto
-            if(!is_null($idProjeto)){
-                $projetoPesquisado = $projeto->get_dadosProjeto($idProjeto);
-            }
-            
-            # Pega os dados da Etiqueta
-            if(!is_null($idEtiqueta)){
-                $etiquetaPesquisada = $projeto->get_dadosEtiqueta($idEtiqueta);
-            }
+            $projetoPesquisado = $projeto->get_dadosProjeto($idProjeto);
             
             # Nome
             $grid = new Grid();
             $grid->abreColuna(6,8,9);
             
-                # Projeto
-                if(!is_null($idProjeto)){
-                    p($projetoPesquisado[1],'descricaoProjetoTitulo');
-                    p($projetoPesquisado[2],'descricaoProjeto');
-                }
-                
-                # Etiqueta
-                if(!is_null($idEtiqueta)){
-                    p($etiquetaPesquisada[1],'descricaoProjetoTitulo');
-                    p($etiquetaPesquisada[3],'descricaoProjeto');
-                }
+                p($projetoPesquisado[1],'descricaoProjetoTitulo');
+                p($projetoPesquisado[2],'descricaoProjeto');
                 
             $grid->fechaColuna();
             $grid->abreColuna(6,4,3);
+                
                 # Menu
                 $menu1 = new MenuBar();
                 
-                # Notas
-                $link2 = new Link("Tarefas",'?fase=projeto&idProjeto='.$idProjeto);
-                $link2->set_class('button');
-                $link2->set_title('Tarefas');
-                $menu1->add_link($link2,"right");
-                
                 # Nova Nota
-                $link = new Link("+",'?fase=notaNova&idProjeto='.$idProjeto);
+                $link = new Link("+",'?fase=notaNova&origem=nota&idProjeto='.$idProjeto);
                 $link->set_class('button');
                 $link->set_title('Nova Nota');
                 $menu1->add_link($link,"right");
@@ -796,20 +773,24 @@ if($acesso){
             # Pega os dados dessa nota
             $dados = $projeto->get_dadosNota($idNota);
             
-            # Nome do projeto
+            # Pega os dados do Projeto
+            $projetoPesquisado = $projeto->get_dadosProjeto($dados[1]);
+            
+            # Nome
             $grid = new Grid();
             $grid->abreColuna(6,8,9);
             
-                # Exibe o nome e a descrição
-                p($dados[3],'descricaoProjetoTitulo');
+                p($projetoPesquisado[1],'descricaoProjetoTitulo');
+                p($projetoPesquisado[2],'descricaoProjeto');
                 
             $grid->fechaColuna();
             $grid->abreColuna(6,4,3);
+            
                 # Menu
                 $menu1 = new MenuBar();
 
                 # Nova Tarefa
-                $link = new Link("Editar",'?fase=notaNova&idNota='.$idNota);
+                $link = new Link("Editar",'?fase=notaNova&origem=nota&idNota='.$idNota);
                 $link->set_class('button');
                 $link->set_title('Editar Nota');
                 $menu1->add_link($link,"right");
@@ -818,24 +799,19 @@ if($acesso){
                 
             $grid->fechaColuna();
             $grid->fechaGrid();
-            #hr("projetosTarefas");
-            #br();
-            
-            echo "<pre>";
-            br();
-            echo $dados[4];
-            br(2);
-            echo "</pre>";
+            hr("projetosTarefas");
             br();
             
-            # Exibe o projeto
-            $gprojeto = new Gprojetos();
-            $gprojeto->showProjeto($dados[1]);
-
-            # Exibe a etiqueta
-            if(!is_null($idEtiqueta)){
-                $gprojeto->showEtiqueta($dados[2]);
-            }
+            # Pega os dados dessa nota
+            $dados = $projeto->get_dadosNota($idNota);
+            
+            # Exibe a nota
+            $painel = new Callout();
+            $painel->abre();
+                p($dados[3],'descricaoProjetoTitulo');
+                hr("projetosTarefas");
+                echo "<pre id='preNota'>".$dados[4]."</pre>";
+            $painel->fecha();
             break;
             
         ###########################################################    
@@ -872,15 +848,6 @@ if($acesso){
             $comboProjeto = $intra->select($select);
             array_unshift($comboProjeto, array(NULL,NULL)); # Adiciona o valor de nulo
             
-            # Pega os dados da combo etiqueta
-            $selectetiqueta = 'SELECT idEtiqueta, 
-                                      etiqueta
-                                 FROM tbprojetoetiqueta
-                             ORDER BY etiqueta';
-            
-            $comboEtiqueta = $intra->select($selectetiqueta);
-            array_unshift($comboEtiqueta, array(NULL,NULL)); # Adiciona o valor de nulo
-            
             # Formuário
             $form = new Form('?fase=validaNota&idNota='.$idNota);        
                     
@@ -888,7 +855,7 @@ if($acesso){
             $controle = new Input('titulo','texto','Título:',1);
             $controle->set_size(100);
             $controle->set_linha(1);
-            $controle->set_col(12);
+            $controle->set_col(8);
             $controle->set_required(TRUE);
             $controle->set_autofocus(TRUE);
             $controle->set_title('Título da nota');
@@ -898,8 +865,8 @@ if($acesso){
             # idProjeto
             $controle = new Input('idProjeto','combo','Projeto:',1);
             $controle->set_size(20);
-            $controle->set_linha(2);
-            $controle->set_col(6);
+            $controle->set_linha(1);
+            $controle->set_col(4);
             $controle->set_array($comboProjeto);
             if(is_null($idNota)){
                 $controle->set_valor($idProjeto);
@@ -907,18 +874,7 @@ if($acesso){
                 $controle->set_valor($dados[1]);
             }
             $form->add_item($controle);  
-            
-            # etiqueta
-            $controle = new Input('idEtiqueta','combo','Etiqueta:',1);
-            $controle->set_size(20);
-            $controle->set_linha(2);
-            $controle->set_col(6);
-            $controle->set_placeholder('Etiqueta');
-            $controle->set_title('Uma etiqueta para ajudar na busca');
-            $controle->set_array($comboEtiqueta);
-            $controle->set_valor($dados[2]);
-            $form->add_item($controle);
-            
+                                    
             # nota            
             $controle = new Input('nota','textarea','Descrição:',1);
             $controle->set_size(array(80,15));
@@ -947,12 +903,11 @@ if($acesso){
             # Recuperando os valores
             $titulo = post('titulo');
             $projeto = post('idProjeto');
-            $etiqueta = post('idEtiqueta');
             $nota = post('nota');
                       
             # Cria arrays para gravação
-            $arrayNome = array("titulo","idProjeto","idEtiqueta","nota");
-            $arrayValores = array($titulo,$projeto,$etiqueta,$nota);
+            $arrayNome = array("titulo","idProjeto","nota");
+            $arrayValores = array($titulo,$projeto,$nota);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");

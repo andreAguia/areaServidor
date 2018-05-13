@@ -279,6 +279,62 @@ p#pCardNomeGrupo {
     color:cadetblue;
 }
 
+table#tableTarefas{
+    border-collapse: separate;
+    border-spacing: 2pt;
+    font-size: 13px;
+    width: 100%;
+}
+
+table#tableTarefas th{
+    background-color:#fff;
+    text-align: center;
+    font-weight: normal;
+    font-size: 13px;
+    color: #000;
+    border-bottom: 3px solid gray;    
+}
+
+table#tableTarefas caption {
+    background-color: #fff;
+    font-weight: normal;
+    color: #02548b;
+    font-size: 16px;
+    color: #000;
+    text-align: left;
+    border-bottom: 3px solid gray;
+}
+
+table#tableTarefas td{
+   background-color: #FFF;
+   padding: 2px;
+   border-bottom: 1px solid gray;
+   color: #000;
+}
+
+table#tableTarefas tfoot td {
+    background-color: #FFF;
+    color: #000;
+    text-align: right;
+    border-bottom: 0px;
+}
+
+pre#preNota{
+    
+    color: #000;
+    background: #fff;
+    font-size: 14px;
+    
+    
+    unicode-bidi: embed;
+    font-family: sans-serif;
+    white-space:pre-wrap;
+    
+    padding: 1em;
+    border: 0px;
+    border-radius: 0px;
+}
+
 /*******************************************
  * Sistema de controle de processos
  *******************************************/

@@ -61,22 +61,9 @@ class ListaNotas{
         
         # Pega as tarefas
         $select = 'SELECT titulo,
-                          idProjeto,
-                          idEtiqueta,
                           idNota
-                     FROM tbprojetonota';
-        
-        # Etiquetas
-        if(!is_null($this->etiqueta)){
-            $select.= ' WHERE idEtiqueta = '.$this->etiqueta;
-        }
-        
-        # Projeto
-        if(!is_null($this->projeto)){
-            $select.= ' WHERE idProjeto = '.$this->projeto;
-        }
-        
-        $select .=' ORDER BY titulo';
+                     FROM tbprojetonota
+                    WHERE idProjeto = '.$this->projeto.' ORDER BY titulo';
         
         # Acessa o banco
         $intra = new Intra();
@@ -84,15 +71,13 @@ class ListaNotas{
         $numNotas = $intra->count($select);
         
         # Inicia a tabela
-        $tabela = new Tabela();
+        $tabela = new Tabela("tableTarefas");
         $tabela->set_titulo("Notas");
         
         $tabela->set_conteudo($notas);
-        $tabela->set_label(array("Nota","Projeto","Etiqueta","Editar"));
+        $tabela->set_label(array("Nota","Editar"));
         #$tabela->set_width(array(5,30,20,10,10,10));
-        $tabela->set_align(array("left","center","center"));
-        $tabela->set_classe(array(NULL,"Gprojetos","Gprojetos"));
-        $tabela->set_metodo(array(NULL,"showProjeto","showEtiqueta"));
+        $tabela->set_align(array("left"));
         
         # Botão de editar
         $botao2 = new BotaoGrafico();
@@ -101,7 +86,7 @@ class ListaNotas{
         
         # Coloca o objeto link na tabela	
         $tabela->set_idCampo("idNota");
-        $tabela->set_link(array(NULL,NULL,NULL,$botao2));
+        $tabela->set_link(array(NULL,$botao2));
         
         if($numNotas > 0){
             $tabela->show();

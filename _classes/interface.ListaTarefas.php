@@ -69,12 +69,21 @@ class ListaTarefas{
         
         # Pega as tarefas
         $select = 'SELECT idTarefa,
-                          tarefa,
-                          idProjeto,
-                          idEtiqueta,
-                          idTarefa,
-                          idTarefa
-                     FROM tbprojetotarefa';
+                          tarefa,';
+        
+        # Retira o projeto do select quando for filtrado por projeto
+        if(is_null($this->projeto)){
+             $select.= ' idProjeto,';
+        }
+        
+        # Retira a etiqueta do select quando for filtrado por etiqueta
+        if(is_null($this->etiqueta)){
+             $select.= ' idEtiqueta,';
+        }
+                          
+        $select.= '  idTarefa,
+                     idTarefa
+                FROM tbprojetotarefa';
         
         # Pendente
         if($this->pendente){
@@ -109,31 +118,12 @@ class ListaTarefas{
         
         $select .=' ORDER BY dataInicial, noOrdem';
         
+        #echo $select;
+        
         # Acessa o banco
         $intra = new Intra();
         $tarefas = $intra->select($select);
         $numTarefas = $intra->count($select);
-        
-        # Inicia a tabela
-        $tabela = new Tabela();
-        
-        # Verifica se tem título
-        if(!is_null($this->titulo)){
-            $tabela->set_titulo($this->titulo);
-        }
-        
-        $tabela->set_conteudo($tarefas);
-        $tabela->set_label(array("","Tarefa","Projeto","Etiqueta","Data","Editar"));
-        #$tabela->set_width(array(5,30,20,10,10,10));
-        $tabela->set_align(array("center","left","center","center"));
-        
-        # Tacha o texto quando completado
-        if(!$this->pendente){
-            $tabela->set_funcao(array(NULL,"del"));
-        }
-        
-        $tabela->set_classe(array(NULL,NULL,"Gprojetos","Gprojetos","Gprojetos"));
-        $tabela->set_metodo(array(NULL,NULL,"showProjeto","showEtiqueta","showData"));
         
         # Botão  do Tick
         $botao1 = new BotaoGrafico();                    
@@ -164,9 +154,56 @@ class ListaTarefas{
         $botao2->set_url('?fase=tarefaNova&idTarefa=');
         $botao2->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
         
+        # Inicia a tabela
+        $tabela = new Tabela("tableTarefas");
+        
+        # Verifica se tem título
+        if(!is_null($this->titulo)){
+            $tabela->set_titulo($this->titulo);
+        }
+        
+        $label = array("","Tarefa");
+        $align = array("center","left");
+        $classe = array(NULL,NULL);
+        $metodo = array(NULL,NULL);
+        $link = array($botao1,NULL);
+        
+        if(is_null($this->projeto)){
+            array_push($label,"Projeto");
+            array_push($align,"center");      
+            array_push($classe,"Gprojetos");
+            array_push($metodo,"showProjeto");
+            array_push($link,NULL);
+        }
+        
+        if(is_null($this->etiqueta)){
+            array_push($label,"Etiqueta");
+            array_push($align,"center");
+            array_push($classe,"Gprojetos");
+            array_push($metodo,"showEtiqueta");
+            array_push($link,NULL);
+        }
+        
+        array_push($label,"Data","Editar");
+        array_push($classe,"Gprojetos");
+        array_push($metodo,"showData"); 
+        array_push($link,NULL,$botao2);
+        
+        $tabela->set_conteudo($tarefas);
+        $tabela->set_label($label);
+        $tabela->set_align($align);
+        
+        # Tacha o texto quando completado
+        if(!$this->pendente){
+            $tabela->set_funcao(array(NULL,"del"));
+        }
+        
+        $tabela->set_classe($classe);
+        $tabela->set_metodo($metodo);
+        
         # Coloca o objeto link na tabela	
         $tabela->set_idCampo("idTarefa");
-        $tabela->set_link(array($botao1,NULL,NULL,NULL,NULL,$botao2));
+        $tabela->set_link($link);
         
         if($numTarefas > 0){
             $tabela->show();
