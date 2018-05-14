@@ -201,7 +201,7 @@ class Gprojetos{
                         $link->show();
                         
                         #p($valor[1],"pCardNomeProjeto");             // Nome do projeto
-                        p(strtoupper($valor[3]),"pCardNomeGrupo");   // Grupo
+                        p(strtoupper($valor[3]),"pCardNomeGrupo");    // Grupo
                     $grid->fechaColuna();
                     $grid->abreColuna(2);
                         $botao = new BotaoGrafico();
