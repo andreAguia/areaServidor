@@ -81,5 +81,16 @@ function exibeNomeTitle($idServidor){
     }
     
         
-##################################################################
+##########################################################
+/**
+ * Função que exibe dados de um processo
+ * 
+ */
+
+function get_dadosProcesso($idProcesso){
+    $dados = new Gprocessos();
+    return $dados->exibeProcesso($idProcesso);
+}
+
+###########################################################
     

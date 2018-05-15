@@ -31,19 +31,6 @@ class Gprocessos{
         
             $painel = new Callout();
             $painel->abre();
-                
-                # Botão Editar
-                $grid = new Grid();
-                $grid->abreColuna(9);
-                $grid->fechaColuna();
-                $grid->abreColuna(3);
-                    $botao = new BotaoGrafico();
-                    $botao->set_url('?fase=editar&idProcesso='.$idProcesso);
-                    $botao->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
-                    $botao->show();
-                $grid->fechaColuna();
-                $grid->fechaGrid();
-            
                 # Dados do Processo
                 p($row[1],"pNumeroProcesso");
                 p(date_to_php($row[2]),"pDataProcesso");

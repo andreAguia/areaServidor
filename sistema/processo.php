@@ -51,7 +51,7 @@ if($acesso){
     $objeto = new Modelo();
 
     ################################################################
-
+    
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
     $objeto->set_nome('Processos');
 
@@ -86,16 +86,21 @@ if($acesso){
     $objeto->set_orderChamador('?fase=listar');
 
     # Caminhos
-    $objeto->set_linkEditar('?fase=editar');
+    #$objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
-    $objeto->set_linkExcluir('?fase=excluir');
+    #$objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("Data","Número","Assunto"));
-    $objeto->set_width(array(10,20,50));		
+    $objeto->set_label(array("Data","Número","Assunto","Movimentação"));
+    $objeto->set_width(array(10,20,65));		
     $objeto->set_align(array("center","center","left"));
-    $objeto->set_funcao(array("date_to_php"));		
+    $objeto->set_funcao(array("date_to_php"));	
+    
+    # Botão de exibição dos servidores com permissão a essa regra
+    $botao = new Link(NULL,'processoMovimentacao.php?idProcesso=','Movimentação do Processo');
+    $botao->set_image(PASTA_FIGURAS.'movimentacao.png',20,20);
+    $objeto->set_link(array(NULL,NULL,NULL,$botao));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
