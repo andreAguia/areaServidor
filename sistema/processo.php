@@ -150,10 +150,13 @@ if($acesso){
     switch ($fase) {
         case "" :
         case "listar" :
+            # Inicia o sesion do processo
+            set_session('idProcesso');
+            
             $objeto->listar();
             break;
 
-        case "editar" :	
+        case "editar" :
         case "excluir" :	
         case "gravar" :		
             $objeto->$fase($id);		

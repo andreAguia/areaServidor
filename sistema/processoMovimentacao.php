@@ -26,7 +26,7 @@ if($acesso){
     $id = soNumeros(get('id'));
     
     # Pega o processo
-    $idProcesso = get('idProcesso');
+    $idProcesso = get_session("idProcesso");
 
     # Começa uma nova página
     $page = new Page();			
@@ -78,7 +78,7 @@ if($acesso){
     # Parametros da tabela
     $objeto->set_label(array("Status","Data","Origem / Destino","Motivo"));
     $objeto->set_align(array("center","center","center","left"));
-    $objeto->set_width(array(10,10,65));	
+    $objeto->set_width(array(10,10,20,45));	
     $objeto->set_funcao(array(NULL,"date_to_php"));
     $objeto->set_classe(array(NULL,NULL,"Processo"));
     $objeto->set_metodo(array(NULL,NULL,"get_MovimentoSetor"));
@@ -166,9 +166,12 @@ if($acesso){
             break;
 
         case "editar" :	
-        case "excluir" :	
-        case "gravar" :		
+        case "excluir" :
             $objeto->$fase($id);		
+            break;
+        
+        case "gravar" :		
+            $objeto->gravar($id,"processoMovimentacaoExtra.php");		
             break;		
     }									 	 		
 

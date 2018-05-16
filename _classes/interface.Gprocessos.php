@@ -29,7 +29,7 @@ class Gprocessos{
         $intra = new Intra();
         $row = $intra->select($select,FALSE);
         
-            $painel = new Callout();
+            $painel = new Callout("primary");
             $painel->abre();
                 # Dados do Processo
                 p($row[1],"pNumeroProcesso");

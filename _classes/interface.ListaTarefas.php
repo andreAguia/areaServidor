@@ -69,7 +69,7 @@ class ListaTarefas{
         
         # Pega as tarefas
         $select = 'SELECT idTarefa,
-                          tarefa,';
+                          idTarefa,';
         
         # Retira o projeto do select quando for filtrado por projeto
         if(is_null($this->projeto)){
@@ -116,7 +116,7 @@ class ListaTarefas{
             $select.= ' AND idProjeto = '.$this->projeto;
         }
         
-        $select .=' ORDER BY dataInicial, noOrdem';
+        $select .=' ORDER BY dataInicial, noOrdem desc';
         
         #echo $select;
         
@@ -125,7 +125,7 @@ class ListaTarefas{
         $tarefas = $intra->select($select);
         $numTarefas = $intra->count($select);
         
-        # Botão  do Tick
+        # Botão do Tick
         $botao1 = new BotaoGrafico();                    
         # o link para quando se é por projeto
         if(!is_null($this->projeto)){
@@ -164,8 +164,8 @@ class ListaTarefas{
         
         $label = array("","Tarefa");
         $align = array("center","left");
-        $classe = array(NULL,NULL);
-        $metodo = array(NULL,NULL);
+        $classe = array(NULL,"Gprojetos");
+        $metodo = array(NULL,"showTarefa");
         $link = array($botao1,NULL);
         
         if(is_null($this->projeto)){
@@ -192,11 +192,6 @@ class ListaTarefas{
         $tabela->set_conteudo($tarefas);
         $tabela->set_label($label);
         $tabela->set_align($align);
-        
-        # Tacha o texto quando completado
-        if(!$this->pendente){
-            $tabela->set_funcao(array(NULL,"del"));
-        }
         
         $tabela->set_classe($classe);
         $tabela->set_metodo($metodo);

@@ -65,12 +65,12 @@ if($acesso){
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(3);
-
-    # Menu de Projetos
-    Gprojetos::menuProjetosAtivos($idProjeto);
     
     # Menu Cronológico
     Gprojetos::menuCronologico($fase);
+
+    # Menu de Projetos
+    Gprojetos::menuProjetosAtivos($idProjeto);
     
     # Menu de Etiquetas
     Gprojetos::menuEtiquetas($idEtiqueta);
@@ -423,7 +423,7 @@ if($acesso){
             $controle = new Input('dataInicial','data','Data:',1);
             $controle->set_size(20);
             $controle->set_linha(3);
-            $controle->set_col(6);
+            $controle->set_col(4);
             $controle->set_title('A data inicial da tarefa');
             $controle->set_placeholder('A Data Inicial');
             $controle->set_valor($dados[4]);
@@ -433,10 +433,21 @@ if($acesso){
             $controle = new Input('dataFinal','data','Data da Conclusão:',1);
             $controle->set_size(20);
             $controle->set_linha(3);
-            $controle->set_col(6);
+            $controle->set_col(4);
             $controle->set_title('A data da conclusão da tarefa');
             $controle->set_placeholder('A Data da conclusão');
             $controle->set_valor($dados[5]);
+            $form->add_item($controle);
+            
+            # noOrdem
+            $controle = new Input('noOrdem','combo','Prioridade:',1);
+            $controle->set_size(20);
+            $controle->set_linha(3);
+            $controle->set_col(4);
+            $controle->set_placeholder('Prioridade');
+            $controle->set_title('A prioridade da tarefa');
+            $controle->set_array(array(array(0,"Nenhuma"),array(1,"Média"),array(2,"Alta"),array(3,"Urgente")));
+            $controle->set_valor($dados[3]);
             $form->add_item($controle);
             
             # etiqueta
@@ -503,6 +514,7 @@ if($acesso){
             $idEtiqueta = post('idEtiqueta');
             $pendente = post('pendente');
             $conclusao = post('conclusao');
+            $noOrdem = post('noOrdem');
             
             # Força a tarefa pendente quando é inclusão
             if(is_null($idTarefa)){
@@ -510,8 +522,8 @@ if($acesso){
             }
                       
             # Cria arrays para gravação
-            $arrayNome = array("tarefa","descricao","dataInicial","dataFinal","idProjeto","pendente","idEtiqueta","conclusao");
-            $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,$pendente,$idEtiqueta,$conclusao);
+            $arrayNome = array("tarefa","descricao","dataInicial","dataFinal","idProjeto","pendente","idEtiqueta","conclusao","noOrdem");
+            $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,$pendente,$idEtiqueta,$conclusao,$noOrdem);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");

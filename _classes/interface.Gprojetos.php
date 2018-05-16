@@ -310,6 +310,57 @@ class Gprojetos{
            
     ###########################################################
     
+    public function showTarefa($idTarefa){
+    /**
+     * Retorna o nome da etiqueta
+     * 
+     * @param $idEtiqueta integer NULL o idProjeto
+     * 
+     * @syntax $projeto->get_nomeProjeto([$idEtiqueta]);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT tarefa,
+                          noOrdem,
+                          pendente
+                     FROM tbprojetotarefa
+                     WHERE idTarefa = '.$idTarefa;
+        
+        $intra = new Intra();
+        $row = $intra->select($select,false);
+        $tamanho = 20;
+        
+        # Exibe a prioridade
+        switch ($row[1]){
+            case 1 :
+                $figura = new Imagem(PASTA_FIGURAS.'prioridadeMedia.png','Prioridade Média',$tamanho,$tamanho);
+                $figura->show();
+                echo " ";
+                break;
+            
+            case 2 :
+                $figura = new Imagem(PASTA_FIGURAS.'prioridadeAlta.png','Prioridade Média',$tamanho,$tamanho);
+                $figura->show();
+                echo " ";
+                break;
+            
+            case 3 :
+                $figura = new Imagem(PASTA_FIGURAS.'prioridadeUrgente.png','Prioridade Média',$tamanho,$tamanho);
+                $figura->show();
+                echo " ";
+                break;
+        }
+        
+        # Verifica se estã pendente
+        if($row[2]){
+            echo $row[0];
+        }else{
+            echo del($row[0]);
+        }
+    }
+           
+    ###########################################################
+    
     public function showData($idTarefa){
     /**
      * Retorna o nome da etiqueta

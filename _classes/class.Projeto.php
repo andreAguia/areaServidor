@@ -153,7 +153,7 @@ class Projeto{
         $select = 'SELECT idTarefa,
                           tarefa,
                           descricao,
-                          idSecao,
+                          noOrdem,
                           dataInicial,
                           dataFinal,
                           pendente,

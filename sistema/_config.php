@@ -99,8 +99,7 @@ setlocale(LC_ALL, 'pt_BR');
  * @param  $classe = a classe instanciada
  */
 
-function __autoload($classe)
-{
+function __autoload($classe){
     # Verifica se existe essa classe nas classes gerais
     if (file_exists(PASTA_CLASSES_GERAIS."/class.{$classe}.php"))
         include_once PASTA_CLASSES_GERAIS."/class.{$classe}.php"; 
