@@ -26,7 +26,15 @@ if($acesso){
     $id = soNumeros(get('id'));
     
     # Pega o processo
-    $idProcesso = get_session("idProcesso");
+    $idProcessoGet = get("idProcesso");
+    $idProcessoSession = get_session("idProcesso");
+    
+    if(is_null($idProcessoGet)){
+        $idProcesso = $idProcessoSession;
+    }else{
+        $idProcesso = $idProcessoGet;
+        set_session("idProcesso",$idProcesso);
+    }
 
     # Começa uma nova página
     $page = new Page();			

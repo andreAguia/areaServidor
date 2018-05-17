@@ -89,8 +89,7 @@ class Gprojetos{
         
             # Percorre o array 
             foreach ($dadosProjetos as $valor){
-                #$numNotas = $projeto->get_numeroNotas($valor[0]);
-                $numNotas = 0;
+                $numNotas = $projeto->get_numeroNotas($valor[0]);
                 $texto = $valor[1]." ($numNotas)";
                 
                 # Marca o item que está sendo editado

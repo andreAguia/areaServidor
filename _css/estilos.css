@@ -336,7 +336,7 @@ table#tableNotas th{
     margin: 0px;
 }
 
-table#tableTarefas caption {
+table#tableNotas caption {
     background-color: #fff;
     height: 0px;
     border: 0px;

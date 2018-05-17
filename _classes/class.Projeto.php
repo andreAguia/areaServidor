@@ -262,4 +262,25 @@ class Projeto{
     }
            
     ###########################################################
+    
+    public function get_numeroNotas($idCaderno){
+    /**
+     * Retorna um inteiro com o número de notas de um caderno
+     * 
+     * @param $idCaderno integer NULL o idCaderno 
+     * 
+     * @syntax $projeto->get_numeroNotas([$idCaderno]);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT idNota
+                     FROM tbprojetonota
+                    WHERE idCaderno = '.$idCaderno;
+        
+        $intra = new Intra();
+        $numNotas = $intra->count($select);
+        return $numNotas;
+    }
+    
+    ###########################################################
 }

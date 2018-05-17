@@ -56,7 +56,7 @@ if($acesso){
     $objeto->set_nome('Processos');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('areaServidor.php');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
@@ -66,7 +66,8 @@ if($acesso){
     $objeto->set_selectLista('SELECT data,
                                      numero,
                                      assunto,
-                                     idProcesso	
+                                     idProcesso,
+                                     idProcesso
                                 FROM tbprocesso
                                WHERE data LIKE "%'.$parametro.'%"
                                   OR numero LIKE "%'.$parametro.'%"	
@@ -86,7 +87,7 @@ if($acesso){
     $objeto->set_orderChamador('?fase=listar');
 
     # Caminhos
-    #$objeto->set_linkEditar('?fase=editar');
+    $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
     #$objeto->set_linkExcluir('?fase=excluir');
