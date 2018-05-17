@@ -325,16 +325,25 @@ table#tableNotas{
     font-size: 13px;
     width: 100%;
     padding: 0px;
+    margin: 0px;
 }
 
 table#tableNotas th{
     background-color:#fff;
-    text-align: center;
-    font-weight: normal;
-    font-size: 16px;
-    color: #000;
-    border-bottom: #D7D7D7 solid 1px;
+    height: 0px;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
 }
+
+table#tableTarefas caption {
+    background-color: #fff;
+    height: 0px;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
 
 table#tableNotas td{
    background-color: #FFF;
@@ -353,9 +362,10 @@ table#tableNotas td:hover{
 
 table#tableNotas tfoot td {
     background-color: #FFF;
-    color: #000;
-    text-align: left;
+    color: #076cba;
+    text-align: right;
     border-bottom: 0px;
+    font-size: 11px;
 }
 
 pre#preNota{    

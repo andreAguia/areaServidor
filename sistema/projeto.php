@@ -932,14 +932,14 @@ if($acesso){
             hr("projetosTarefas");
             br();
             
-            # Pega os dados da combo projeto
-            $select = 'SELECT idProjeto,
-                              projeto
-                         FROM tbprojeto
-                     ORDER BY projeto';
+            # Pega os dados da combo caderno
+            $select = 'SELECT idCaderno,
+                              caderno
+                         FROM tbprojetocaderno
+                     ORDER BY caderno';
             
-            $comboProjeto = $intra->select($select);
-            array_unshift($comboProjeto, array(NULL,NULL)); # Adiciona o valor de nulo
+            $comboCaderno = $intra->select($select);
+            array_unshift($comboCaderno, array(NULL,NULL)); # Adiciona o valor de nulo
             
             # Formuário
             $form = new Form('?fase=validaNota&idNota='.$idNota);        
@@ -956,13 +956,13 @@ if($acesso){
             $form->add_item($controle);
             
             # idProjeto
-            $controle = new Input('idProjeto','combo','Projeto:',1);
+            $controle = new Input('idCaderno','combo','Caderno:',1);
             $controle->set_size(20);
             $controle->set_linha(1);
             $controle->set_col(4);
-            $controle->set_array($comboProjeto);
+            $controle->set_array($comboCaderno);
             if(is_null($idNota)){
-                $controle->set_valor($idProjeto);
+                $controle->set_valor($idCaderno);
             }else{
                 $controle->set_valor($dados[1]);
             }
@@ -995,18 +995,18 @@ if($acesso){
             
             # Recuperando os valores
             $titulo = post('titulo');
-            $projeto = post('idProjeto');
+            $caderno = post('idCaderno');
             $nota = post('nota');
                       
             # Cria arrays para gravação
-            $arrayNome = array("titulo","idProjeto","nota");
-            $arrayValores = array($titulo,$projeto,$nota);
+            $arrayNome = array("titulo","idCaderno","nota");
+            $arrayValores = array($titulo,$caderno,$nota);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");
             
             if(is_null($idNota)){
-                loadPage("?fase=nota&idProjeto=".$idProjeto);
+                loadPage("?fase=nota&idcaderno=".$idcaderno);
             }else{
                 loadPage("?fase=exibeNota&idNota=".$idNota);
             }
@@ -1019,18 +1019,43 @@ if($acesso){
             # Area das notas
             $grid->abreColuna(9);
             
-            # Exibe o nome e a descrição
-            $dados = $projeto->get_dadosCaderno($idCaderno);
-            p($dados[1],'descricaoProjetoTitulo');
-            p($dados[2],'descricaoProjeto');
+            # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(6);
+            
+                # Exibe o nome e a descrição
+                $dados = $projeto->get_dadosCaderno($idCaderno);
+                p($dados[1],'descricaoProjetoTitulo');
+                p($dados[2],'descricaoProjeto');
+                
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+                
+                # Menu
+                $menu1 = new MenuBar();
+
+                # Nova Nota
+                $link4 = new Link("+",'?fase=notaNova&idCaderno='.$idCaderno);
+                $link4->set_class('button');
+                $link4->set_title('Nova Nota');
+                $menu1->add_link($link4,"right");
+                
+                $menu1->show();
+                
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            
+            
+            hr("projetosTarefas");
+            br();
             
             # Limita o tamanho da tela
             $grid = new Grid();
             $grid->abreColuna(4);
             
                 # Exibe as notas
-                $painel = new Callout();
-                $painel->abre();
+                #$painel = new Callout();
+                #$painel->abre();
             
                 # Pega as notas
                 $select = 'SELECT idNota
@@ -1056,12 +1081,12 @@ if($acesso){
                     $tabela->show();
                 }else{
                     #tituloTable("Notas");
-                    br(3);
+                    br();
                     p("Clique em + para acrescentar uma nota","f14","center");
                     br(3);
                 }
                 
-                $painel->fecha();
+                #$painel->fecha();
             
             $grid->fechaColuna();
             
