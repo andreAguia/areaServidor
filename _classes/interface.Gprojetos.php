@@ -37,7 +37,8 @@ class Gprojetos{
         if($numProjetos>0){
             # Inicia o menu
             $menu1 = new Menu();
-            $menu1->add_item('titulo','Projetos Ativos','?','Cartões de Projetos');
+            $menu1->add_item('titulo1','Projetos','?','Cartões de Projetos');
+            $menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
         
             # Percorre o array 
             foreach ($dadosProjetos as $valor){
@@ -53,10 +54,54 @@ class Gprojetos{
              
              $menu1->show();
         }
+    }
 
-        $menu2 = new Menu();
-        $menu2->add_item('link','+ Novo Projeto','?fase=projetoNovo');
-        $menu2->show();
+    ##########################################################
+    
+    public static function menuCadernos($idCaderno = NULL){
+    /**
+    * Exibe o menu de cadernos.
+    * 
+    * @syntax Gprojetos::Gprojetos;
+    * 
+    * @param $idPCaderno integer NULL o id do caderno a sser ressaltado no menu informando que stá sendo editado.
+    */    
+   
+        # Pega os projetos cadastrados
+        $select = 'SELECT idCaderno,
+                          caderno,
+                          descricao
+                     FROM tbprojetocaderno
+                  ORDER BY caderno';
+        
+        # Acessa o banco de dados
+        $projeto = new Projeto();
+        $intra = new Intra();
+        $dadosProjetos = $intra->select($select);
+        $numProjetos = $intra->count($select);
+        
+        # Verifica se tem cadernos
+        if($numProjetos>0){
+            # Inicia o menu
+            $menu1 = new Menu();
+            $menu1->add_item('titulo1','Cadernos');
+            $menu1->add_item('link','+ Novo Caderno','?fase=cadernoNovo');
+        
+            # Percorre o array 
+            foreach ($dadosProjetos as $valor){
+                #$numNotas = $projeto->get_numeroNotas($valor[0]);
+                $numNotas = 0;
+                $texto = $valor[1]." ($numNotas)";
+                
+                # Marca o item que está sendo editado
+                if($idCaderno == $valor[0]){
+                    $texto = ">".$texto;
+                }
+                $menu1->add_item('link',$texto,'?fase=caderno&idCaderno='.$valor[0],$valor[2]);
+             }
+             
+             $menu1->show();
+        }
     }
 
     ##########################################################
@@ -88,8 +133,8 @@ class Gprojetos{
         if($numEtiquetas>0){
             # Inicia o menu
             $menu1 = new Menu();
-            $menu1->add_item('titulo','Etiquetas');
-            
+            $menu1->add_item('titulo1','Etiquetas');
+            $menu1->add_item('link','+ Nova Etiqueta','?fase=etiquetaNova');
             # Percorre o array 
             foreach ($dadosEtiquetas as $valor) {
                 $numTarefa = $projeto->get_numeroTarefasEtiqueta($valor[0]);
@@ -102,13 +147,9 @@ class Gprojetos{
 
                 $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&idEtiqueta='.$valor[0],$valor[3]);
             }
-
+            
             $menu1->show();
         }
-
-        $menu2 = new Menu();
-        $menu2->add_item('link','+ Nova Etiqueta','?fase=etiquetaNova');
-        $menu2->show();
     }
 
     ##########################################################
@@ -243,7 +284,7 @@ class Gprojetos{
         
         # Inicia o menu
         $menu1 = new Menu();
-        $menu1->add_item('titulo','Cronológico');
+        #$menu1->add_item('titulo','Cronológico');
         
         if($fase == "hoje"){
             $menu1->add_item('link','>Hoje','?fase=hoje','Exibe as tarefas para hoje');
@@ -281,6 +322,31 @@ class Gprojetos{
     }
            
     ###########################################################
+    
+    public function showNota($idNota){
+    /**
+     * Retorna um link para editar a nota
+     * 
+     * @param $idNota integer NULL o idNota
+     * 
+     * @syntax $projeto->showNota([$idNota]);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT titulo,
+                          idCaderno
+                     FROM tbprojetonota
+                    WHERE idNota = '.$idNota;
+        
+        $intra = new Intra();
+        $row = $intra->select($select,false);
+        
+        $link = new Link($row[0],"?fase=caderno&idCaderno=$row[1]&idNota=$idNota");
+        $link->show();
+    }
+           
+    ###########################################################
+    
     
     public function showEtiqueta($idEtiqueta){
     /**

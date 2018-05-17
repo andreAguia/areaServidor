@@ -46,6 +46,29 @@ class Projeto{
     
     ###########################################################
     
+    public function get_dadosCaderno($idCaderno = NULL){
+    /**
+     * Retorna um array com todas as informações do caderno informado
+     * 
+     * @param $idCaderno integer NULL o idCaderno
+     * 
+     * @syntax $projeto->get_dadosCaderno([$idCaderno]);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT idCaderno,
+                          Caderno,
+                          descricao
+                     FROM tbprojetocaderno
+                     WHERE idCaderno = '.$idCaderno;
+        
+        $intra = new Intra();
+        $row = $intra->select($select,false);
+        return $row;
+    }
+    
+    ###########################################################
+    
     public function get_dadosNota($idNota = NULL){
     /**
      * Retorna um array com as informações da nota
@@ -57,7 +80,7 @@ class Projeto{
     
         # Pega as notas
         $select = 'SELECT idNota,
-                          idProjeto,
+                          idCaderno,
                           idEtiqueta, 
                           titulo,
                           nota

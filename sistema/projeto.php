@@ -25,6 +25,7 @@ if($acesso){
     
     # Pega os ids quando se é necessário
     $idProjeto = get('idProjeto');
+    $idCaderno = get('idCaderno');
     $idTarefa = get('idTarefa');
     $idEtiqueta = get('idEtiqueta');
     $idNota = get('idNota');
@@ -71,6 +72,9 @@ if($acesso){
 
     # Menu de Projetos
     Gprojetos::menuProjetosAtivos($idProjeto);
+    
+    # Menu de Cadernos
+    Gprojetos::menuCadernos($idCaderno);
     
     # Menu de Etiquetas
     Gprojetos::menuEtiquetas($idEtiqueta);
@@ -285,7 +289,7 @@ if($acesso){
             $controle->set_linha(1);
             $controle->set_required(TRUE);
             $controle->set_autofocus(TRUE);
-            $controle->set_placeholder('Nome do rojeto');
+            $controle->set_placeholder('Nome do Projeto');
             $controle->set_title('O nome do Projeto a ser criado');
             $controle->set_valor($dados[1]);
             $form->add_item($controle);
@@ -351,7 +355,84 @@ if($acesso){
             loadPage("?");
             break;
         
-        ###########################################################  
+        ###########################################################   
+            
+         case "cadernoNovo" :
+             
+            $grid->abreColuna(9);
+             
+            # Verifica se é incluir ou editar
+            if(!is_null($idCaderno)){
+                # Pega os dados 
+                $dados = $projeto->get_dadosCaderno($idCaderno);
+                $titulo = "Editar";
+            }else{
+                $dados = array(NULL,NULL,NULL,NULL);
+                $titulo = "Novo Caderno";
+            }
+             
+            # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(12);
+                p($titulo,"f18");
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            hr("projetosTarefas");
+            br();
+            
+            # Formulário
+            $form = new Form('?fase=validaCaderno&idCaderno='.$idCaderno);        
+                    
+            # caderno
+            $controle = new Input('caderno','texto','Nome do Caderno:',1);
+            $controle->set_size(50);
+            $controle->set_linha(1);
+            $controle->set_required(TRUE);
+            $controle->set_autofocus(TRUE);
+            $controle->set_placeholder('Nome do Caderno');
+            $controle->set_title('O nome do Caderno a ser criado');
+            $controle->set_valor($dados[1]);
+            $form->add_item($controle);
+            
+            # descrição
+            $controle = new Input('descricao','textarea','Descrição:',1);
+            $controle->set_size(array(80,5));
+            $controle->set_linha(2);
+            $controle->set_title('A descrição detalhda do caderno');
+            $controle->set_placeholder('Descrição');
+            $controle->set_valor($dados[2]);
+            $form->add_item($controle);
+            
+            # submit
+            $controle = new Input('submit','submit');
+            $controle->set_valor('Salvar');
+            $controle->set_linha(4);
+            $form->add_item($controle);
+            
+            $form->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+                        
+        ###########################################################
+            
+        case "validaCaderno" :
+            
+            # Recuperando os valores
+            $caderno = post('caderno');
+            $descricao = post('descricao');
+            
+            # Cria arrays para gravação
+            $arrayNome = array("caderno","descricao");
+            $arrayValores = array($caderno,$descricao);
+            
+            # Grava	
+            $intra->gravar($arrayNome,$arrayValores,$idCaderno,"tbprojetocaderno","idCaderno");
+            loadPage("?");
+            break;
+        
+        ###########################################################    
             
         case "tarefaNova" :
                         
@@ -931,6 +1012,90 @@ if($acesso){
             }
             break;
         
+        ###########################################################    
+            
+        case "caderno" :
+             
+            # Area das notas
+            $grid->abreColuna(9);
+            
+            # Exibe o nome e a descrição
+            $dados = $projeto->get_dadosCaderno($idCaderno);
+            p($dados[1],'descricaoProjetoTitulo');
+            p($dados[2],'descricaoProjeto');
+            
+            # Limita o tamanho da tela
+            $grid = new Grid();
+            $grid->abreColuna(4);
+            
+                # Exibe as notas
+                $painel = new Callout();
+                $painel->abre();
+            
+                # Pega as notas
+                $select = 'SELECT idNota
+                             FROM tbprojetonota
+                            WHERE idcaderno = '.$idCaderno.' ORDER BY titulo';
+
+                # Acessa o banco
+                $intra = new Intra();
+                $notas = $intra->select($select);
+                $numNotas = $intra->count($select);
+
+                # Inicia a tabela
+                $tabela = new Tabela("tableNotas");
+                #$tabela->set_titulo("Notas");
+
+                $tabela->set_conteudo($notas);
+                $tabela->set_label(array(""));
+                $tabela->set_classe(array("Gprojetos"));
+                $tabela->set_metodo(array("showNota"));
+                $tabela->set_align(array("left"));
+                
+                if($numNotas > 0){
+                    $tabela->show();
+                }else{
+                    #tituloTable("Notas");
+                    br(3);
+                    p("Clique em + para acrescentar uma nota","f14","center");
+                    br(3);
+                }
+                
+                $painel->fecha();
+            
+            $grid->fechaColuna();
+            
+            # Área da nota editada
+            $grid->abreColuna(8);
+            
+            # Pega os dados dessa nota
+            if(!is_null($idNota)){
+                $dados = $projeto->get_dadosNota($idNota);
+            
+                # Exibe a nota
+                $painel = new Callout();
+                $painel->abre();
+                    p($dados[3],'descricaoProjetoTitulo');
+                    hr("projetosTarefas");
+                    echo "<pre id='preNota'>".$dados[4]."</pre>";
+                $painel->fecha();
+            }else{
+                $painel = new Callout();
+                $painel->abre();
+                    br(3);
+                    p("Nenhuma nota selecionada","f14","center");
+                    br(3);
+                $painel->fecha();
+                
+            }
+
+            $grid->fechaColuna();
+            $grid->fechaGrid();   
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();   
+            break;
+                        
         ###########################################################
     }
     

@@ -319,12 +319,49 @@ table#tableTarefas tfoot td {
     border-bottom: 0px;
 }
 
-pre#preNota{
-    
+table#tableNotas{
+    border-collapse: separate;
+    border-spacing: 2pt;
+    font-size: 13px;
+    width: 100%;
+    padding: 0px;
+}
+
+table#tableNotas th{
+    background-color:#fff;
+    text-align: center;
+    font-weight: normal;
+    font-size: 16px;
+    color: #000;
+    border-bottom: #D7D7D7 solid 1px;
+}
+
+table#tableNotas td{
+   background-color: #FFF;
+   padding: 5px;
+   border-bottom: #D7D7D7 solid 1px;
+   font-size: 15px;
+}
+
+table#tableNotas a{
+    color: #076cba;
+}
+
+table#tableNotas td:hover{
+    background-color: #E0E0E0;
+}
+
+table#tableNotas tfoot td {
+    background-color: #FFF;
+    color: #000;
+    text-align: left;
+    border-bottom: 0px;
+}
+
+pre#preNota{    
     color: #000;
     background: #fff;
-    font-size: 14px;
-    
+    font-size: 14px;    
     
     unicode-bidi: embed;
     font-family: sans-serif;
