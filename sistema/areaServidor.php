@@ -155,14 +155,22 @@ if($acesso){
             
                 # Sistema de Processos
                 if(Verifica::acesso($idUsuario,1)){
-
-                    # Sistema de Processos
                     $botao = new BotaoGrafico();
                     $botao->set_label('Sistema de Processos');
                     $botao->set_url('processo.php');
-                    $botao->set_image(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
+                    $botao->set_image(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
                     $botao->set_title('Sistema de controle de processos');
-                    $botao->set_accesskey('P');
+                    $menu->add_item($botao);
+                }
+                
+                # Controle de pastas Digitalizadas
+                if(Verifica::acesso($idUsuario,1)){
+                    $botao = new BotaoGrafico();
+                    $botao->set_label('Pastas Digitalizadas');
+                    $botao->set_url('?fase=pastasDigitalizadas');
+                    $botao->set_image(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
+                    $botao->set_title('Sistema de controle de pastas digitalizadas');
+                    $botao->set_accesskey('D');
                     $menu->add_item($botao);
                 }
 
@@ -536,6 +544,115 @@ if($acesso){
             break;
         
 ##################################################################
+                      
+        case "pastasDigitalizadas" :
+            botaoVoltar('?');
+            
+            $select = 'SELECT tbservidor.idFuncional,
+                              tbpessoa.nome,
+                              tbservidor.idServidor,
+                              concat(IFNULL(tblotacao.UADM,"")," - ",IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")) lotacao,
+                              tbperfil.nome,
+                              tbservidor.dtAdmissao,
+                              tbservidor.idServidor
+                         FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
+                                              JOIN tbhistlot ON (tbservidor.idServidor = tbhistlot.idServidor)
+                                              JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
+                                         LEFT JOIN tbperfil ON (tbservidor.idPerfil = tbperfil.idPerfil)
+                        WHERE tbhistlot.data = (select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)
+                          AND tbservidor.situacao = 1
+                     ORDER BY tbpessoa.nome';
+
+            $result = $servidor->select($select);
+            
+            $tabela = new Tabela();
+            $tabela->set_titulo("Servidores Ativos");
+            $tabela->set_conteudo($result);
+            $tabela->set_label(array("IdFuncional","Nome","Cargo","Lotação","Perfil","Admissão","Pasta"));
+            $tabela->set_align(array("center","left","left","left"));
+            $tabela->set_funcao(array (NULL,NULL,NULL,NULL,NULL,'date_to_php','verificaPasta'));
+            $tabela->set_classe(array(NULL,NULL,"pessoal"));
+            $tabela->set_metodo(array(NULL,NULL,"get_Cargo"));
+            $tabela->show();
+            break;
+
+##################################################################	
+        
+        case "pasta" :
+            # Pasta Funcional
+            $grid = new Grid();
+            $grid->abreColuna(4);
+            
+            # Título
+            tituloTable('Pasta Funcional');
+            
+            br();
+                        
+            # Pega o idfuncional
+            $idFuncional = $pessoal->get_idFuncional($idServidorPesquisado);
+            
+            # Define a pasta
+            $pasta = "../../_arquivo/";
+            
+            $achei = NULL;
+            
+            # Encontra a pasta
+            foreach (glob($pasta.$idFuncional."*") as $escolhido) {
+                $achei = $escolhido;
+            }
+            
+            # Verifica se tem pasta desse servidor
+            if(file_exists($achei)){
+                
+                $grupoarquivo = NULL;
+                $contador = 0;
+                
+                # Inicia o menu
+                $tamanhoImage = 60;
+                $menu = new MenuGrafico(1);
+            
+                # pasta
+                $ponteiro  = opendir($achei."/");
+                while ($arquivo = readdir($ponteiro)) {
+
+                    # Desconsidera os diretorios 
+                    if($arquivo == ".." || $arquivo == "."){
+                        continue;
+                    }
+                    
+                    # Verifica a codificação do nome do arquivo
+                    if(codificacao($arquivo) == 'ISO-8859-1'){
+                        $arquivo = utf8_encode($arquivo);
+                    }
+
+                    # Divide o nome do arquivos
+                    $partesArquivo = explode('.',$arquivo);
+                    
+                    # VErifica se arquivo é da pasta
+                    if(substr($arquivo, 0, 5) == "Pasta"){
+                        $botao = new BotaoGrafico();
+                        $botao->set_label($partesArquivo[0]);
+                        $botao->set_url($achei.'/'.$arquivo);
+                        $botao->set_target('_blank');
+                        $botao->set_image(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
+                        $menu->add_item($botao);
+                        
+                        $contador++;
+                    }
+                }
+                if($contador >0){
+                    $menu->show();
+                }
+            }else{                
+                p("Nenhum arquivo encontrado.","center");
+            }
+            
+            #$callout->fecha();
+            $grid->fechaColuna();
+            $grid->abreColuna(8);
+            
+    #############################################################
+        
     }
     
     $grid1->fechaColuna();
