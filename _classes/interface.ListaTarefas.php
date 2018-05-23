@@ -166,14 +166,13 @@ class ListaTarefas{
         $align = array("center","left");
         $classe = array(NULL,"Gprojetos");
         $metodo = array(NULL,"showTarefa");
-        $link = array($botao1,NULL);
+        $link = array($botao1);
         
         if(is_null($this->projeto)){
             array_push($label,"Projeto");
             array_push($align,"center");      
             array_push($classe,"Gprojetos");
             array_push($metodo,"showProjeto");
-            array_push($link,NULL);
         }
         
         if(is_null($this->etiqueta)){
@@ -181,14 +180,12 @@ class ListaTarefas{
             array_push($align,"center");
             array_push($classe,"Gprojetos");
             array_push($metodo,"showEtiqueta");
-            array_push($link,NULL);
         }
         
-        array_push($label,"Data","Editar");
+        array_push($label,"Data");
         array_push($classe,"Gprojetos");
         array_push($metodo,"showData"); 
-        array_push($link,NULL,$botao2);
-        
+                
         $tabela->set_conteudo($tarefas);
         $tabela->set_label($label);
         $tabela->set_align($align);

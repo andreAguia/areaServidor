@@ -286,6 +286,10 @@ table#tableTarefas{
     width: 100%;
 }
 
+table#tableTarefas a{
+    color: #000;
+}
+
 table#tableTarefas th{
     background-color:#fff;
     text-align: center;

@@ -113,18 +113,18 @@ if($acesso){
             $grid->abreColuna(6);
                 
                 # Menu
-                $menu1 = new MenuBar();
+                $menu1 = new MenuBar("small button-group");
                 
                 # Timeline
-                $link1 = new Link("Timeline",'?fase=timeline&origem=projeto&idProjeto='.$idProjeto);
+                $link1 = new Link("Editar Projeto",'?fase=projetoNovo&idProjeto='.$idProjeto);
                 $link1->set_class('button');
-                $link1->set_title('Timeline');
+                $link1->set_title('Editar Projeto');
                 $menu1->add_link($link1,"right");
                 
-                # Notas
-                $link2 = new Link("Notas",'?fase=notas&origem=nota&idProjeto='.$idProjeto);
+                # Timeline
+                $link2 = new Link("Timeline",'?fase=timeline&origem=projeto&idProjeto='.$idProjeto);
                 $link2->set_class('button');
-                $link2->set_title('Notas');
+                $link2->set_title('Timeline');
                 $menu1->add_link($link2,"right");
                 
                 # Concluídas
@@ -216,7 +216,7 @@ if($acesso){
             $grid->fechaColuna();
             $grid->abreColuna(6,4,3);
                 # Menu
-                $menu1 = new MenuBar();
+                $menu1 = new MenuBar("small button-group");
 
                 # Nova Tarefa
                 $link = new Link("Editar",'?fase=etiquetaNova&idEtiqueta='.$idEtiqueta);
@@ -816,97 +816,6 @@ if($acesso){
             $grid->fechaGrid();    
             break;
                  
-        ###########################################################  
-            
-            case "notas" :            
-            $grid->abreColuna(9);
-            
-            # Pega os dados do Projeto
-            $projetoPesquisado = $projeto->get_dadosProjeto($idProjeto);
-            
-            # Nome
-            $grid = new Grid();
-            $grid->abreColuna(6,8,9);
-            
-                p($projetoPesquisado[1],'descricaoProjetoTitulo');
-                p($projetoPesquisado[2],'descricaoProjeto');
-                
-            $grid->fechaColuna();
-            $grid->abreColuna(6,4,3);
-                
-                # Menu
-                $menu1 = new MenuBar();
-                
-                # Nova Nota
-                $link = new Link("+",'?fase=notaNova&origem=nota&idProjeto='.$idProjeto);
-                $link->set_class('button');
-                $link->set_title('Nova Nota');
-                $menu1->add_link($link,"right");
-                
-                $menu1->show();
-                
-            $grid->fechaColuna();
-            $grid->fechaGrid(); 
-            
-            hr("projetosTarefas");
-            br();
-            
-            # Exibe as notas
-            $lista = new ListaNotas();
-            $lista->set_projeto($idProjeto);
-            $lista->show();
-            
-            break;
-            
-        ###########################################################
-            
-        case "exibeNota" :
-             
-            $grid->abreColuna(9);
-            # Pega os dados dessa nota
-            $dados = $projeto->get_dadosNota($idNota);
-            
-            # Pega os dados do Projeto
-            $projetoPesquisado = $projeto->get_dadosProjeto($dados[1]);
-            
-            # Nome
-            $grid = new Grid();
-            $grid->abreColuna(6,8,9);
-            
-                p($projetoPesquisado[1],'descricaoProjetoTitulo');
-                p($projetoPesquisado[2],'descricaoProjeto');
-                
-            $grid->fechaColuna();
-            $grid->abreColuna(6,4,3);
-            
-                # Menu
-                $menu1 = new MenuBar();
-
-                # Nova Tarefa
-                $link = new Link("Editar",'?fase=notaNova&origem=nota&idNota='.$idNota);
-                $link->set_class('button');
-                $link->set_title('Editar Nota');
-                $menu1->add_link($link,"right");
-                
-                $menu1->show();
-                
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-            hr("projetosTarefas");
-            br();
-            
-            # Pega os dados dessa nota
-            $dados = $projeto->get_dadosNota($idNota);
-            
-            # Exibe a nota
-            $painel = new Callout();
-            $painel->abre();
-                p($dados[3],'descricaoProjetoTitulo');
-                hr("projetosTarefas");
-                echo "<pre id='preNota'>".$dados[4]."</pre>";
-            $painel->fecha();
-            break;
-            
         ###########################################################    
             
         case "notaNova" :
@@ -1006,9 +915,9 @@ if($acesso){
             $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");
             
             if(is_null($idNota)){
-                loadPage("?fase=nota&idcaderno=".$idcaderno);
+                loadPage("?fase=caderno&idCaderno=$caderno");
             }else{
-                loadPage("?fase=exibeNota&idNota=".$idNota);
+                loadPage("?fase=caderno&idCaderno=$caderno&idNota=$idNota");
             }
             break;
         
@@ -1032,7 +941,7 @@ if($acesso){
             $grid->abreColuna(6);
                 
                 # Menu
-                $menu1 = new MenuBar();
+                $menu1 = new MenuBar("small button-group");
 
                 # Nova Nota
                 $link4 = new Link("+",'?fase=notaNova&idCaderno='.$idCaderno);
@@ -1043,8 +952,7 @@ if($acesso){
                 $menu1->show();
                 
             $grid->fechaColuna();
-            $grid->fechaGrid(); 
-            
+            $grid->fechaGrid();             
             
             hr("projetosTarefas");
             br();
@@ -1100,9 +1008,29 @@ if($acesso){
                 # Exibe a nota
                 $painel = new Callout();
                 $painel->abre();
-                    p($dados[3],'descricaoProjetoTitulo');
-                    hr("projetosTarefas");
-                    echo "<pre id='preNota'>".$dados[4]."</pre>";
+                    $grid = new Grid();
+                    $grid->abreColuna(10);
+                        p($dados[3],'descricaoProjetoTitulo');
+                    $grid->fechaColuna();
+                    $grid->abreColuna(2);
+
+                        # Menu
+                        $menu1 = new MenuBar("small button-group");
+
+                        # Nova Nota
+                        $link = new Link("Editar",'?fase=notaNova&origem=nota&idNota='.$idNota);
+                        $link->set_class('button');
+                        $link->set_title('Editar Nota');
+                        $menu1->add_link($link,"right");
+
+                        $menu1->show();
+
+                    $grid->fechaColuna();
+                    $grid->fechaGrid();
+                
+                        hr("projetosTarefas");
+                        echo "<pre id='preNota'>".$dados[4]."</pre>";
+                        
                 $painel->fecha();
             }else{
                 $painel = new Callout();

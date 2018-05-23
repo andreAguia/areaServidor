@@ -233,8 +233,7 @@ class Gprojetos{
                 $grid->abreColuna(12,6,4);
                 $card = new Callout($valor[4],"card");
                 $card->abre();
-                    $grid = new Grid();
-                    $grid->abreColuna(10);
+                
                         $link = new Link($valor[1],'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
                         $link->set_id("aCardNomeProjeto");
                         $link->set_title("Exibe os Projetos ativos do grupo ".$grupoValor[0]);
@@ -242,14 +241,7 @@ class Gprojetos{
                         
                         #p($valor[1],"pCardNomeProjeto");             // Nome do projeto
                         p(strtoupper($valor[3]),"pCardNomeGrupo");    // Grupo
-                    $grid->fechaColuna();
-                    $grid->abreColuna(2);
-                        $botao = new BotaoGrafico();
-                        $botao->set_url('?fase=projetoNovo&idProjeto='.$valor[0]);
-                        $botao->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
-                        $botao->show();
-                    $grid->fechaColuna();
-                    $grid->fechaGrid();
+                    
                     hr("hrCard");
                     p($valor[2],"f12");   // descrição
                     
@@ -392,7 +384,7 @@ class Gprojetos{
                      WHERE idTarefa = '.$idTarefa;
         
         $intra = new Intra();
-        $row = $intra->select($select,false);
+        $row = $intra->select($select,false); 
         $tamanho = 20;
         
         # Exibe a prioridade
@@ -416,11 +408,16 @@ class Gprojetos{
                 break;
         }
         
-        # Verifica se estã pendente
+        # Verifica se está pendente
         if($row[2]){
-            echo $row[0];
+            
+            $link = new Link($row[0],'?fase=tarefaNova&idTarefa='.$idTarefa);
+            $link->show();
+            
         }else{
-            echo del($row[0]);
+            
+            $link = new Link(del($row[0]),'?fase=tarefaNova&idTarefa='.$idTarefa);
+            $link->show();
         }
     }
            
