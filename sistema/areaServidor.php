@@ -21,7 +21,10 @@ if($acesso){
     
     # Pega o idServidor do usuário logado
     $idServidor = $intra->get_idServidor($idUsuario);
-
+    
+    # Pega o idServidor Pesquisado da rotina de pasta digitaliozada
+    $idServidorPesquisado = get("idServidorPesquisado");
+    
     # Verifica a fase do programa
     $fase = get('fase','menu'); # Qual a fase
 
@@ -164,7 +167,7 @@ if($acesso){
                 }
                 
                 # Controle de pastas Digitalizadas
-                if(Verifica::acesso($idUsuario,1)){
+                if(Verifica::acesso($idUsuario,4)){
                     $botao = new BotaoGrafico();
                     $botao->set_label('Pastas Digitalizadas');
                     $botao->set_url('?fase=pastasDigitalizadas');
@@ -542,12 +545,82 @@ if($acesso){
             $grid->fechaColuna();
             $grid->fechaGrid();
             break;
-        
+
 ##################################################################
                       
         case "pastasDigitalizadas" :
-            botaoVoltar('?');
             
+            if(Verifica::acesso($idUsuario,4)){
+                br(4);
+                aguarde("Aguarde...");
+                loadPage("?fase=pastasDigitalizadas1");
+            }else{
+                loadPage("?");
+            }    
+            break;
+
+##################################################################
+                      
+        case "pastasDigitalizadas1" :
+            # Voltar
+            $grid = new Grid();
+            $grid->abreColuna(8);
+            botaoVoltar('?');
+            br(0);
+            
+            # Pega os parâmetros
+            $parametro = retiraAspas(post('parametro'));
+            
+            # Parâmetros
+            $form = new Form('?fase=pastasDigitalizadas1');
+
+                # Nome ou Matrícula
+                $controle = new Input('parametro','texto','Pesquisa por nome:',1);
+                $controle->set_size(55);
+                $controle->set_title('Pesquisa por nome');
+                $controle->set_valor($parametro);
+                $controle->set_autofocus(TRUE);
+                $controle->set_onChange('formPadrao.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(10);
+                $form->add_item($controle);
+                
+            $form->show();  
+            
+            $grid->fechaColuna();
+            $grid->abreColuna(4);
+                # Define a pasta
+                $pasta = "../../_arquivo/";
+                $numPasta = 0;
+                
+                # Calcula o número de pastas no diretótio de pastas
+                $s = scandir($pasta);
+                foreach($s as $k){
+                    if(($k <> ".") AND ($k <> "..")){
+                        $numPasta++;
+                    }
+                }
+                
+                $numServidores = 900;
+                $total = $numServidores - $numPasta;
+                
+                
+                
+                $conteudo = array(array("Quantidade",$numServidores),
+                                  array("Com Pasta Digitalizada",$numPasta),
+                                  array("Falta Digitalizar:",$total));
+            
+                $tabela1 = new Tabela();
+                $tabela1->set_conteudo($conteudo);
+                $tabela1->set_label(array("Servidores Ativos","Quantidade"));
+                $tabela1->set_align(array("left","center"));
+                $tabela1->set_totalRegistro(FALSE);
+                $tabela1->set_scroll(FALSE);
+                $tabela1->show();
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            
+            # Monta o select
             $select = 'SELECT tbservidor.idFuncional,
                               tbpessoa.nome,
                               tbservidor.idServidor,
@@ -560,9 +633,13 @@ if($acesso){
                                               JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
                                          LEFT JOIN tbperfil ON (tbservidor.idPerfil = tbperfil.idPerfil)
                         WHERE tbhistlot.data = (select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)
-                          AND tbservidor.situacao = 1
-                     ORDER BY tbpessoa.nome';
-
+                          AND tbservidor.situacao = 1';
+            if(!is_null($parametro)){
+                $select .= ' AND tbpessoa.nome LIKE "%'.$parametro.'%"';
+            }
+            
+            $select .= ' ORDER BY tbpessoa.nome';
+            
             $result = $servidor->select($select);
             
             $tabela = new Tabela();
@@ -573,12 +650,21 @@ if($acesso){
             $tabela->set_funcao(array (NULL,NULL,NULL,NULL,NULL,'date_to_php','verificaPasta'));
             $tabela->set_classe(array(NULL,NULL,"pessoal"));
             $tabela->set_metodo(array(NULL,NULL,"get_Cargo"));
-            $tabela->show();
+            $tabela->set_textoRessaltado($parametro);
+            if(Verifica::acesso($idUsuario,4)){
+                $tabela->show();
+            }else{
+                loadPage("?");
+            }    
             break;
 
 ##################################################################	
         
         case "pasta" :
+            # Voltar
+            botaoVoltar('?fase=pastasDigitalizadas');
+            br(0);
+            
             # Pasta Funcional
             $grid = new Grid();
             $grid->abreColuna(4);
@@ -589,7 +675,7 @@ if($acesso){
             br();
                         
             # Pega o idfuncional
-            $idFuncional = $pessoal->get_idFuncional($idServidorPesquisado);
+            $idFuncional = $servidor->get_idFuncional($idServidorPesquisado);
             
             # Define a pasta
             $pasta = "../../_arquivo/";
@@ -628,7 +714,7 @@ if($acesso){
                     # Divide o nome do arquivos
                     $partesArquivo = explode('.',$arquivo);
                     
-                    # VErifica se arquivo é da pasta
+                    # Verifica se arquivo é da pasta
                     if(substr($arquivo, 0, 5) == "Pasta"){
                         $botao = new BotaoGrafico();
                         $botao->set_label($partesArquivo[0]);
@@ -650,6 +736,57 @@ if($acesso){
             #$callout->fecha();
             $grid->fechaColuna();
             $grid->abreColuna(8);
+            
+            #############################################################
+            
+            tituloTable('Processos');
+            br();
+            
+            # Verifica se tem pasta desse servidor
+            if(file_exists($achei)){
+                
+                $grupoarquivo = NULL;
+                 
+                # Inicia o menu
+                $tamanhoImage = 60;
+                $menu = new MenuGrafico(4);
+            
+                # pasta
+                $ponteiro  = opendir($achei."/");
+                while ($arquivo = readdir($ponteiro)) {
+
+                    # Desconsidera os diretorios 
+                    if($arquivo == ".." || $arquivo == "."){
+                        continue;
+                    }
+
+                    # Verifica a codificação do nome do arquivo
+                    if(codificacao($arquivo) == 'ISO-8859-1'){
+                        $arquivo = utf8_encode($arquivo);
+                    }
+                    
+                    # Divide o nome do arquivos
+                    $partesArquivo = explode('.',$arquivo);
+                    
+                    
+                    # Verifica se arquivo é da pasta
+                    if(substr($arquivo, 0, 5) <> "Pasta"){
+                        $botao = new BotaoGrafico();
+                        $botao->set_label($partesArquivo[0]);
+                        $botao->set_url($achei.'/'.$arquivo);
+                        $botao->set_target('_blank');
+                        $botao->set_image(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
+                        $menu->add_item($botao);
+                    }
+                }
+                $menu->show();
+            }else{               
+                p("Nenhum arquivo encontrado.","center");
+            }
+            
+            #$callout->fecha();
+            $grid->fechaColuna();
+            $grid1->fechaGrid();
             
     #############################################################
         

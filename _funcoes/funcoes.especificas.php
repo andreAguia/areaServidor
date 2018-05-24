@@ -79,7 +79,6 @@ function exibeNomeTitle($idServidor){
         return $escolhida[0];
         
     }
-    
         
 ##########################################################
 /**
@@ -92,5 +91,8 @@ function get_dadosProcesso($idProcesso){
     return $dados->exibeProcesso($idProcesso);
 }
 
-###########################################################
+
+    
+
+
     
