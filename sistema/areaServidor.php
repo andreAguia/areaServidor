@@ -604,10 +604,8 @@ if($acesso){
                     }
                 }
                 
-                $numServidores = 900;
+                $numServidores = $servidor->get_numServidoresAtivos();
                 $total = $numServidores - $numPasta;
-                
-                
                 
                 $conteudo = array(array("Quantidade",$numServidores),
                                   array("Com Pasta Digitalizada",$numPasta),
