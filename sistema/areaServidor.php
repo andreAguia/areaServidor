@@ -574,7 +574,7 @@ if($acesso){
             # Parâmetros
             $form = new Form('?fase=pastasDigitalizadas1');
 
-                # Nome ou Matrícula
+                # Pesquisa por nome
                 $controle = new Input('parametro','texto','Pesquisa por nome:',1);
                 $controle->set_size(55);
                 $controle->set_title('Pesquisa por nome');
@@ -593,11 +593,14 @@ if($acesso){
                 $pasta = "../../_arquivo/";
                 $numPasta = 0;
                 
-                # Calcula o número de pastas no diretótio de pastas
-                $s = scandir($pasta);
-                foreach($s as $k){
-                    if(($k <> ".") AND ($k <> "..")){
-                        $numPasta++;
+                # Exibe um quadro com o resumo
+                if(file_exists($pasta)){        // Verifica se a pasta existe
+                    # Calcula o número de pastas no diretótio de pastas
+                    $s = scandir($pasta);
+                    foreach($s as $k){
+                        if(($k <> ".") AND ($k <> "..")){
+                            $numPasta++;
+                        }
                     }
                 }
                 
