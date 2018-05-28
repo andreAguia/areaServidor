@@ -317,12 +317,12 @@ if($acesso){
             $menu->add_link($linkBotao1,"left");
 
             # Refazer
-            $linkBotao2 = new Link("Refazer",'?fase=aguarda2');
+            $linkBotao2 = new Link("Refazer",'?fase=2014');
             $linkBotao2->set_class('button');
             $linkBotao2->set_title('Refazer a Importação');
             $linkBotao2->set_accessKey('R');
             $menu->add_link($linkBotao2,"right");
-            #$menu->show();
+            $menu->show();
 
             titulo('Importação da tabela de Férias 2014');
 
@@ -387,6 +387,9 @@ if($acesso){
                     echo "<td>$obs</td>";
                     echo "</tr>";
                     $contador++;
+                    
+                    echo $linha;
+                    br(2);
                 }
                 
                 echo "</table>";
