@@ -338,7 +338,7 @@ if($acesso){
                 $lines = file($arquivo);
                 
                 # Inicia contador
-                $contador = 1;
+                $contador = 0;
                 
                 # Inicia a Tabela
                 echo "<table border=1>";
@@ -359,8 +359,7 @@ if($acesso){
                     $parte = explode(";",$linha);
                     
                     # Pega o id Funcional a partir da matrícula
-                    $idServidor = $pessoal->get_idServidor($parte[0]);
-                    $idFuncional = $pessoal->get_idFuncional($idServidor);
+                    $idServidor = $parte[0];
                     
                     # Pega o nome
                     $nome = $pessoal->get_nome($idServidor);
@@ -377,28 +376,25 @@ if($acesso){
                     # Numero de dias
                     $numDias = $parte[4];
                     
+                    $contador++;
                     echo "<tr>";
                     echo "<td>".$contador."</td>";
-                    echo "<td>$idFuncional</td>";
+                    echo "<td>$idServidor</td>";
                     echo "<td>$nome</td>";
                     echo "<td>$anoExercicio</td>";
                     echo "<td>$dtInicial</td>";
                     echo "<td>$numDias</td>";
                     echo "<td>$obs</td>";
                     echo "</tr>";
-                    $contador++;
-                    
-                    echo $linha;
-                    br(2);
                 }
                 
                 echo "</table>";
                
-                echo "Registros analisados: ".$tt;
+                echo "Registros analisados: ".$contador;
             }else{
                 echo "Arquivo de Férias não encontrado";
             }
-            
+            br(2);
             echo "Podemos fazer a importação";
             br(2);
             # Botão importar
@@ -411,10 +407,87 @@ if($acesso){
             $painel->fecha();
             break;
             
+        #########################################################################
+    
+        case "aguarda2014" :
+            titulo('Importando ...');
+            br(4);
+            aguarde("Importando férias 2014.");
+
+            loadPage('?fase=importa2014');
+            break;
+        
+        #########################################################################
+        
+        case "importa2014" :
+
+            # Define o arquivo a ser importado
+            $arquivo = "../importacao/2014.csv";
+
+            titulo('Importação da tabela de Férias 2014');
+
+            # Cria um painel
+            $painel = new Callout();
+            $painel->abre();
+            
+            # Abre o banco de dados
+            $pessoal = new Pessoal();
+
+            # Verifica a existência do arquivo
+            if(file_exists($arquivo)){
+                $lines = file($arquivo);
+                
+                # Inicia contador
+                $contador = 0;
+
+                # Percorre o arquivo e guarda os dados em um array
+                foreach ($lines as $linha) {
+                    $linha = htmlspecialchars($linha);
+
+                    $parte = explode(";",$linha);
+                    
+                    # Pega o id Funcional a partir da matrícula
+                    $idServidor = $parte[0];
+                    
+                    # Pega o nome
+                    $nome = $pessoal->get_nome($idServidor);
+                    
+                    # Data Inicial
+                    $dtInicial = $parte[1];
+                    
+                    # Ano Exercicio
+                    $anoExercicio = $parte[2];
+                    
+                    # Obs
+                    $obs = $parte[3];
+                    
+                    # Numero de dias
+                    $numDias = $parte[4];
+                    
+                    # Grava na tabela
+                    $campos = array("idServidor","dtInicial","anoExercicio","numDias","status");
+                    $valor = array($idServidor,date_to_bd($dtInicial),$anoExercicio,$numDias,"fruída");                    
+                    $pessoal->gravar($campos,$valor,NULL,"tbferias","idFerias",FALSE);
+                    $contador++;
+                }
+               
+                echo "Registros importados: ".$contador;
+            }else{
+                echo "Arquivo de Férias não encontrado";
+            }
+            br(2);
+            # Botão voltar
+            $linkBotao1 = new Link("Voltar",'?');
+            $linkBotao1->set_class('button');
+            $linkBotao1->set_title('Volta');
+            $linkBotao1->show();
+            
+            $painel->fecha();
+            break;
+            
         #########################################################################    
 
     }
-    
     $grid->fechaColuna();
     $grid->fechaGrid();        
     $page->terminaPagina();
