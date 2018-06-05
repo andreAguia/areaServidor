@@ -566,32 +566,16 @@ if($acesso){
             $grid = new Grid();
             $grid->abreColuna(8);
             botaoVoltar('?');
-            br(0);
-            
-            # Pega os parâmetros
-            $parametro = retiraAspas(post('parametro'));
-            
-            # Parâmetros
-            $form = new Form('?fase=pastasDigitalizadas1');
-
-                # Pesquisa por nome
-                $controle = new Input('parametro','texto','Pesquisa por nome:',1);
-                $controle->set_size(55);
-                $controle->set_title('Pesquisa por nome');
-                $controle->set_valor($parametro);
-                $controle->set_autofocus(TRUE);
-                $controle->set_onChange('formPadrao.submit();');
-                $controle->set_linha(1);
-                $controle->set_col(10);
-                $form->add_item($controle);
-                
-            $form->show();  
             
             $grid->fechaColuna();
             $grid->abreColuna(4);
+            
                 # Define a pasta
                 $pasta = "../../_arquivo/";
                 $numPasta = 0;
+                
+                # Define o array da tabela
+                $result = array();
                 
                 # Exibe um quadro com o resumo
                 if(file_exists($pasta)){        // Verifica se a pasta existe
@@ -600,6 +584,32 @@ if($acesso){
                     foreach($s as $k){
                         if(($k <> ".") AND ($k <> "..")){
                             $numPasta++;
+                            
+                            # Divide o nome da pasta
+                            $partes = explode('-',$k);
+                            
+                            # IdFuncional
+                            $idFuncionalServ = intval($partes[0]);
+                            
+                            # IdServidor
+                            $idServidorServ = $servidor->get_idServidoridFuncional($idFuncionalServ);
+                            
+                            # Nome
+                            $nome = $servidor->get_nome($idServidorServ);
+                            
+                            # Cargo
+                            $cargo = $servidor->get_cargo($idServidorServ);
+                            
+                            # Lotação
+                            $lotacao = $servidor->get_lotacao($idServidorServ);
+                            
+                            # Perfil
+                            $perfil = $servidor->get_perfil($idServidorServ);
+                            
+                            # Admissao
+                            $admissao = $servidor->get_dtAdmissao($idServidorServ);
+                            
+                            $result[] = array($idFuncionalServ,$nome,$cargo,$lotacao,$perfil,$admissao,$idServidorServ);
                         }
                     }
                 }
@@ -621,37 +631,15 @@ if($acesso){
             $grid->fechaColuna();
             $grid->fechaGrid();
             
-            # Monta o select
-            $select = 'SELECT tbservidor.idFuncional,
-                              tbpessoa.nome,
-                              tbservidor.idServidor,
-                              concat(IFNULL(tblotacao.UADM,"")," - ",IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")) lotacao,
-                              tbperfil.nome,
-                              tbservidor.dtAdmissao,
-                              tbservidor.idServidor
-                         FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
-                                              JOIN tbhistlot ON (tbservidor.idServidor = tbhistlot.idServidor)
-                                              JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
-                                         LEFT JOIN tbperfil ON (tbservidor.idPerfil = tbperfil.idPerfil)
-                        WHERE tbhistlot.data = (select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)
-                          AND tbservidor.situacao = 1';
-            if(!is_null($parametro)){
-                $select .= ' AND tbpessoa.nome LIKE "%'.$parametro.'%"';
-            }
-            
-            $select .= ' ORDER BY tbpessoa.nome';
-            
-            $result = $servidor->select($select);
-            
             $tabela = new Tabela();
-            $tabela->set_titulo("Servidores Ativos");
+            $tabela->set_titulo("Servidores Com Pasta Digitalizada");
             $tabela->set_conteudo($result);
             $tabela->set_label(array("IdFuncional","Nome","Cargo","Lotação","Perfil","Admissão","Pasta"));
+            #$tabela->set_label(array("IdFuncional","Nome","Cargo","Lotação","Perfil","Admissão","Pasta"));
             $tabela->set_align(array("center","left","left","left"));
-            $tabela->set_funcao(array (NULL,NULL,NULL,NULL,NULL,'date_to_php','verificaPasta'));
-            $tabela->set_classe(array(NULL,NULL,"pessoal"));
-            $tabela->set_metodo(array(NULL,NULL,"get_Cargo"));
-            $tabela->set_textoRessaltado($parametro);
+            $tabela->set_funcao(array (NULL,NULL,NULL,NULL,NULL,NULL,'verificaPasta'));
+            #$tabela->set_classe(array(NULL,NULL,"pessoal"));
+            #$tabela->set_metodo(array(NULL,NULL,"get_Cargo"));
             if(Verifica::acesso($idUsuario,4)){
                 $tabela->show();
             }else{
