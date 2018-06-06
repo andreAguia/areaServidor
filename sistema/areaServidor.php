@@ -566,6 +566,26 @@ if($acesso){
             $grid = new Grid();
             $grid->abreColuna(8);
             botaoVoltar('?');
+            br(0);
+            
+            # Pega os parâmetros
+            $parametro = retiraAspas(post('parametro'));
+            
+            # Parâmetros
+            $form = new Form('?fase=pastasDigitalizadas1');
+
+                # Pesquisa por nome
+                $controle = new Input('parametro','texto','Pesquisa por nome:',1);
+                $controle->set_size(55);
+                $controle->set_title('Pesquisa por nome');
+                $controle->set_valor($parametro);
+                $controle->set_autofocus(TRUE);
+                $controle->set_onChange('formPadrao.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(10);
+                $form->add_item($controle);
+                
+            $form->show();
             
             $grid->fechaColuna();
             $grid->abreColuna(4);
@@ -579,6 +599,7 @@ if($acesso){
                 
                 # Exibe um quadro com o resumo
                 if(file_exists($pasta)){        // Verifica se a pasta existe
+                
                     # Calcula o número de pastas no diretótio de pastas
                     $s = scandir($pasta);
                     foreach($s as $k){
@@ -589,27 +610,43 @@ if($acesso){
                             $partes = explode('-',$k);
                             
                             # IdFuncional
-                            $idFuncionalServ = intval($partes[0]);
+                            $idFuncionalServ = $partes[0];
                             
                             # IdServidor
                             $idServidorServ = $servidor->get_idServidoridFuncional($idFuncionalServ);
                             
-                            # Nome
-                            $nome = $servidor->get_nome($idServidorServ);
+                            if(is_null($idServidorServ)){
+                                $nome = "Servidor Não Encontrado";
+                                $cargo = NULL;
+                                $lotacao = NULL;
+                                $perfil = NULL;
+                                $admissao = NULL;
+                            }else{
+                                # Nome
+                                $nome = $servidor->get_nome($idServidorServ);
+
+                                # Cargo
+                                $cargo = $servidor->get_cargo($idServidorServ);
+
+                                # Lotação
+                                $lotacao = $servidor->get_lotacao($idServidorServ);
+
+                                # Perfil
+                                $perfil = $servidor->get_perfil($idServidorServ);
+
+                                # Admissao
+                                $admissao = $servidor->get_dtAdmissao($idServidorServ);
+                            }
                             
-                            # Cargo
-                            $cargo = $servidor->get_cargo($idServidorServ);
-                            
-                            # Lotação
-                            $lotacao = $servidor->get_lotacao($idServidorServ);
-                            
-                            # Perfil
-                            $perfil = $servidor->get_perfil($idServidorServ);
-                            
-                            # Admissao
-                            $admissao = $servidor->get_dtAdmissao($idServidorServ);
-                            
-                            $result[] = array($idFuncionalServ,$nome,$cargo,$lotacao,$perfil,$admissao,$idServidorServ);
+                            # verifica o parametro
+                            if(vazio($parametro)){
+                                $result[] = array($idFuncionalServ,$nome,$cargo,$lotacao,$perfil,$admissao,$idServidorServ);
+                            }else{
+                                # Conta quantas vezes o parametro aparece no nome
+                                if(substr_count(strtolower(retiraAcento($nome)),strtolower(retiraAcento($parametro))) > 0){
+                                    $result[] = array($idFuncionalServ,$nome,$cargo,$lotacao,$perfil,$admissao,$idServidorServ);
+                                }
+                            }
                         }
                     }
                 }
