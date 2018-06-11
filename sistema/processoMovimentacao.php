@@ -128,7 +128,7 @@ if($acesso){
                                 'label' => 'Status:',
                                 'tipo' => 'combo',
                                 'size' => 20,
-                                'array' => array(NULL,"Entrada","Saída"),
+                                'array' => array(array(NULL,NULL),array(1,"Entrada"),array(2,"Saída")),
                                 'title' => 'Status do Movimento',
                                 'required' => TRUE,
                                 'col' => 6,
