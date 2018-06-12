@@ -96,7 +96,7 @@ if($acesso){
     $objeto->set_label(array("Data","Número","Assunto","Movimentação"));
     $objeto->set_width(array(10,20,65));		
     $objeto->set_align(array("center","center","left"));
-    $objeto->set_funcao(array("date_to_php"));	
+    $objeto->set_funcao(array("date_to_php",NULL,"retiraAcento"));	
     
     # Botão de exibição dos servidores com permissão a essa regra
     $botao = new Link(NULL,'processoMovimentacao.php?idProcesso=','Movimentação do Processo');

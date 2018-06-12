@@ -59,7 +59,7 @@ if($acesso){
     $objeto->set_voltarLista('processo.php');
 
     # select da lista
-    $objeto->set_selectLista('SELECT status,
+    $objeto->set_selectLista('SELECT IF(status = 1,"Entrada", "Saída"),
                                      data,
                                      idProcessoMovimento,
                                      motivo
@@ -122,7 +122,7 @@ if($acesso){
                                 'title' => 'A data do movimento',
                                 'autofocus' => TRUE,
                                 'required' => TRUE,
-                                'col' => 6,
+                                'col' => 3,
                                 'size' => 50),
                         array ( 'nome' => 'status',
                                 'label' => 'Status:',
@@ -131,7 +131,7 @@ if($acesso){
                                 'array' => array(array(NULL,NULL),array(1,"Entrada"),array(2,"Saída")),
                                 'title' => 'Status do Movimento',
                                 'required' => TRUE,
-                                'col' => 6,
+                                'col' => 3,
                                 'linha' => 1),
                         array ( 'nome' => 'setorCombo',
                                 'label' => 'Origem ou destino dentro da UENF:',
