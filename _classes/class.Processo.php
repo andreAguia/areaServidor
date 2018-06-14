@@ -22,81 +22,6 @@ class Processo{
 
     ###########################################################
     
-    public function get_dadosProcesso($idProcesso = NULL){
-    /**
-     * Retorna um array com todas as informações do processo informado
-     * 
-     * @param $idProcesso integer NULL o idProcesso
-     * 
-     * @syntax $processo->get_dadosProcesso([$idProcesso]);  
-     */
-    
-        # Pega os processos cadastrados
-        $select = 'SELECT idProcesso,
-                          numero,
-                          data,
-                          assunto
-                     FROM tbprocesso
-                     WHERE idProcesso = '.$idProcesso;
-        
-        $intra = new Intra();
-        $row = $intra->select($select);
-        return $row;
-    }
-    
-    ###########################################################
-    
-    public function get_MovimentosProcesso($idProcesso = NULL){
-    /**
-     * Retorna um array com todas as informações do processo informado
-     * 
-     * @param $idProcesso integer NULL o idProcesso
-     * 
-     * @syntax $processo->get_dadosProcesso([$idProcesso]);  
-     */
-    
-        # Pega os processos cadastrados
-        $select = 'SELECT idProcesso,
-                          numero,
-                          data,
-                          assunto
-                     FROM tbprocesso
-                     WHERE idProcesso = '.$idProcesso;
-        
-        $intra = new Intra();
-        $row = $intra->select($select);
-        return $row;
-    }
-    
-    ###########################################################
-    
-    public function get_Movimento($idMovimento = NULL){
-    /**
-     * Retorna um array com todas as informações de um movimento específico
-     * 
-     * @param $idMovimento integer NULL o idMovimento
-     * 
-     * @syntax $processo->get_Movimento([$idMovimento]);  
-     */
-    
-        # Pega os processos cadastrados
-        $select = 'SELECT idProcessoMovimento,
-                          idProcesso,
-                          status,
-                          data,
-                          setorCombo,
-                          setorTexto,
-                          motivo
-                     FROM tbprocessomovimento
-                     WHERE idProcessoMovimento = '.$idMovimento;
-        
-        $intra = new Intra();
-        $row = $intra->select($select,false);
-        return $row;
-    }
-    
-    ###########################################################
-    
     public function get_MovimentoSetor($idMovimento = NULL){
     /**
      * Retorna o setor desse movimento
@@ -125,5 +50,27 @@ class Processo{
         }
         
         return $retorno;
+    }
+    
+    ###########################################################
+    
+    public function get_numMovimentos($idProcesso){
+    /**
+     * Retorna o número de movimentos de um processo
+     * 
+     * @param $idProcesso integer NULL o idProcesso
+     * 
+     * @syntax $processo->get_numMovimentos($idProcesso);  
+     */
+    
+        # Pega os processos cadastrados
+        $select = 'SELECT idProcessoMovimento
+                     FROM tbprocessomovimento
+                     WHERE idProcesso = '.$idProcesso;
+        
+        $intra = new Intra();
+        $row = $intra->count($select);
+        
+        return $row;
     }
 }

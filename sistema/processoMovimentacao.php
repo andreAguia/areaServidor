@@ -12,7 +12,7 @@ $idUsuario = NULL;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,1);
+$acesso = Verifica::acesso($idUsuario,5);
 
 if($acesso){    
     # Conecta ao Banco de Dados
@@ -48,9 +48,10 @@ if($acesso){
 
     ################################################################
     
-    # Exibe os dados do Servidor
+    # Exibe os dados do Processo
+    $tt = array($idProcesso,$idUsuario);
     $objeto->set_rotinaExtraListar("get_dadosProcesso");
-    $objeto->set_rotinaExtraListarParametro($idProcesso); 
+    $objeto->set_rotinaExtraListarParametro($tt); 
 
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
     $objeto->set_nome('Movimentos');

@@ -12,7 +12,7 @@ $idUsuario = NULL;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,1);
+$acesso = Verifica::acesso($idUsuario,5);
 
 if($acesso){    
     # Conecta ao Banco de Dados
@@ -26,7 +26,7 @@ if($acesso){
     $id = soNumeros(get('id'));
     
     # Define como padrão a máscara do processo novo
-    $tipoProcesso = get("tipoProcesso","processoNovo");
+    #$tipoProcesso = get("tipoProcesso","processoNovo");
 
     # Pega o parametro de pesquisa (se tiver)
     if (is_null(post('parametro'))){                                     # Se o parametro não vier por post (for nulo)
@@ -53,10 +53,10 @@ if($acesso){
     ################################################################
     
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome('Processos');
+    $objeto->set_nome('Sistema de Controle de Processos');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('areaServidor.php');
+    #$objeto->set_voltarLista('areaServidor.php');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
@@ -90,7 +90,18 @@ if($acesso){
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
-    #$objeto->set_linkExcluir('?fase=excluir');
+    
+    # Esconde o botão editar
+    $objeto->set_botaoEditar(FALSE);
+    
+    # Esconde o botão voltar da lista
+    $objeto->set_botaoVoltarLista(FALSE);
+    
+    # Altera o link de volta do formulário
+    if(!is_null($id)){
+        $objeto->set_voltarForm('processoMovimentacao.php?idProcesso='.$id);
+        $objeto->set_linkListar('processoMovimentacao.php?idProcesso='.$id);
+    }
 
     # Parametros da tabela
     $objeto->set_label(array("Data","Número","Assunto","Movimentação"));
@@ -120,15 +131,15 @@ if($acesso){
                         array ( 'linha' => 1,
                                 'nome' => 'numero',
                                 'label' => 'Processo:',
-                                'tipo' => $tipoProcesso,
+                                'tipo' => 'texto',
                                 'title' => 'O numero do Processo',
                                 'autofocus' => TRUE,
                                 'required' => TRUE,
                                 'unique' => TRUE,
-                                'col' => 6,
-                                'size' => 50),
+                                'col' => 5,
+                                'size' => 40),
                         array ( 'nome' => 'data',
-                                'label' => 'data:',
+                                'label' => 'Data:',
                                 'tipo' => 'data',
                                 'size' => 20,
                                 'title' => 'data do processo',

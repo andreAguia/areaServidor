@@ -86,9 +86,55 @@ function exibeNomeTitle($idServidor){
  * 
  */
 
-function get_dadosProcesso($idProcesso){
-    $dados = new Gprocessos();
-    return $dados->exibeProcesso($idProcesso);
+function get_dadosProcesso($tt){
+    # Pega os argumentod que veem como array 
+    $idProcesso = $tt[0];
+    $idUsuario = $tt[1];
+    
+    # Pega os dados
+    $select = 'SELECT idProcesso,
+                      numero,
+                      data,
+                      assunto
+                 FROM tbprocesso
+                WHERE idProcesso = '.$idProcesso;
+
+    $intra = new Intra();
+    $row = $intra->select($select,FALSE);
+    
+    $grid = new Grid();
+    $grid->abreColuna();
+
+    $painel = new Callout("primary");
+    $painel->set_id("right");
+    $painel->abre();
+            
+        $link = new Link('Editar','processo.php?fase=editar&id='.$idProcesso);
+        $link->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
+        $link->set_title('Editar Processo');
+        $link->show();
+        
+        $processo = new Processo();
+        if($processo->get_numMovimentos($idProcesso) == 0){
+            if(Verifica::acesso($idUsuario,1)){   // Somente Administradores
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+
+                $link = new Link('Excluir','processo.php?fase=excluir&id='.$idProcesso);
+                $link->set_image(PASTA_FIGURAS_GERAIS.'lixo.png',20,20);
+                $link->set_title('Excluir Processo');
+                $link->set_confirma('Deseja mesmo excluir?');
+                $link->show();
+            }
+        }
+        
+        # Dados do Processo
+        p($row[1],"pNumeroProcesso");
+        p(date_to_php($row[2]),"pDataProcesso");
+        p($row[3],"pAssuntoProcesso");
+    $painel->fecha();
+    
+    $grid->fechaColuna();
+    $grid->fechaGrid(); 
 }
 
 

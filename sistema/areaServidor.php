@@ -49,7 +49,7 @@ if($acesso){
     set_session('parametroLotacao');
     set_session('parametroPerfil');
     set_session('parametroSituacao');
-    
+    set_session('sessionParametro');
     
     $grid1 = new Grid();
     $grid1->abreColuna(12);
@@ -113,7 +113,7 @@ if($acesso){
             }
             
             # Se exibe o icone do sistema de processos
-            if(Verifica::acesso($idUsuario,1)){
+            if(Verifica::acesso($idUsuario,5)){
                 $tamanhoGrid1 = $tamanhoGrid1+3;
             }
             
@@ -157,12 +157,13 @@ if($acesso){
             
             
                 # Sistema de Processos
-                if(Verifica::acesso($idUsuario,1)){
+                if(Verifica::acesso($idUsuario,5)){
                     $botao = new BotaoGrafico();
                     $botao->set_label('Sistema de Processos');
                     $botao->set_url('processo.php');
                     $botao->set_image(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
                     $botao->set_title('Sistema de controle de processos');
+                    $botao->set_target("_blank");
                     $menu->add_item($botao);
                 }
                 
