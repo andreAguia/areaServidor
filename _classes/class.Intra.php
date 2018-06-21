@@ -704,4 +704,23 @@ class Intra extends Bd
     }
 
     ###########################################################
+
+    /**
+    * Método get_numProcesso
+    * 
+    * Retorna o noumero do processo
+    * 
+    * @param integer $idProcesso -> o id do processo
+    */
+
+    public function get_numProcesso($idProcesso)
+    {
+        $select = 'SELECT numero
+                     FROM tbprocesso
+                    WHERE idProcesso = '.$idProcesso;
+        $row = parent::select($select,FALSE);
+        return $row[0];
+    }
+
+    ###########################################################
 }

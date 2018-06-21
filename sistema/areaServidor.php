@@ -157,15 +157,7 @@ if($acesso){
             
             
                 # Sistema de Processos
-                if(Verifica::acesso($idUsuario,5)){
-                    $botao = new BotaoGrafico();
-                    $botao->set_label('Sistema de Processos');
-                    $botao->set_url('processoNovo.php');
-                    $botao->set_image(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
-                    $botao->set_title('Sistema de controle de processos');
-                    $botao->set_target("_blank");
-                    $menu->add_item($botao);
-                    
+                if(Verifica::acesso($idUsuario,5)){                    
                     $botao = new BotaoGrafico();
                     $botao->set_label('Sistema de Processos');
                     $botao->set_url('processo.php');

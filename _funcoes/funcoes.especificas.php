@@ -38,8 +38,7 @@ function exibeNomeTitle($idServidor){
         $intra = new Intra();
         $tipoSenha = $intra->get_tipoSenha($idUsuario);
 
-        switch($tipoSenha)
-        {
+        switch($tipoSenha){
             case 1 :
                 badge("!","secondary",NULL,"Usuário com senha padrão.");
                 break;
@@ -113,10 +112,11 @@ function get_dadosProcesso($tt){
         $link->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
         $link->set_title('Editar Processo');
         $link->show();
-        
-        $processo = new Processo();
-        if($processo->get_numMovimentos($idProcesso) == 0){
-            if(Verifica::acesso($idUsuario,1)){   // Somente Administradores
+
+        if(Verifica::acesso($idUsuario,1)){   // Somente Administradores
+            $processo = new Processo();
+            if($processo->get_numMovimentos($idProcesso) == 0){
+
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 
                 $link = new Link('Excluir','processo.php?fase=excluir&id='.$idProcesso);
@@ -131,6 +131,7 @@ function get_dadosProcesso($tt){
         p($row[1],"pNumeroProcesso");
         p(date_to_php($row[2]),"pDataProcesso");
         p($row[3],"pAssuntoProcesso");
+        
     $painel->fecha();
     
     $grid->fechaColuna();
