@@ -113,6 +113,13 @@ if($acesso){
 
     $comboSetor = $servidor->select($selectLotacao);
     array_unshift($comboSetor, array(NULL,NULL)); # Adiciona o valor de nulo
+    
+    # Data padrão
+    if(HTML5){
+        $dataPadrao = date("Y-m-d");
+    }else{
+        $dataPadrao = date("d/m/Y");
+    }
 
     # Campos para o formulario
     $objeto->set_campos(array( 
@@ -123,6 +130,7 @@ if($acesso){
                                 'title' => 'A data do movimento',
                                 'autofocus' => TRUE,
                                 'required' => TRUE,
+                                'padrao' => $dataPadrao,
                                 'col' => 4,
                                 'size' => 50),
                         array ( 'nome' => 'status',
