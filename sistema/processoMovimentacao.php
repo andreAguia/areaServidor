@@ -89,8 +89,8 @@ if($acesso){
     $objeto->set_align(array("center","center","center","left"));
     $objeto->set_width(array(10,10,20,45));	
     $objeto->set_funcao(array(NULL,"date_to_php"));
-    $objeto->set_classe(array(NULL,NULL,"Processo"));
-    $objeto->set_metodo(array(NULL,NULL,"get_MovimentoSetor"));
+    $objeto->set_classe(array(NULL,NULL,"Intra"));
+    $objeto->set_metodo(array(NULL,NULL,"get_ProcessoMovimentoSetor"));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');

@@ -114,9 +114,14 @@ function get_dadosProcesso($tt){
         $link->show();
 
         if(Verifica::acesso($idUsuario,1)){   // Somente Administradores
-            $processo = new Processo();
-            if($processo->get_numMovimentos($idProcesso) == 0){
-
+            # Verifica se tem movimentação com esse processo
+            $select = 'SELECT idProcessoMovimento
+                         FROM tbprocessomovimento
+                         WHERE idProcesso = '.$idProcesso;
+            $numMov = $intra->count($select);
+            
+            # Somente exibe o link se não tiver movimentação
+            if($numMov == 0){
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 
                 $link = new Link('Excluir','processo.php?fase=excluir&id='.$idProcesso);
@@ -131,6 +136,9 @@ function get_dadosProcesso($tt){
         p($row[1],"pNumeroProcesso");
         p(date_to_php($row[2]),"pDataProcesso");
         p($row[3],"pAssuntoProcesso");
+        
+        $processo = new Processo($row[1]);
+        echo $processo->get_tipoProcesso();
         
     $painel->fecha();
     

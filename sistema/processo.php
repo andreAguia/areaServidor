@@ -97,7 +97,7 @@ if($acesso){
     $grid1 = new Grid();
     $grid1->abreColuna(12);
     
-    ################################################################
+################################################################
     
     switch ($fase) {
         case "" :
@@ -155,7 +155,7 @@ if($acesso){
 
             $row = $intra->select($select);
 
-            # Exemplo com mais itens
+            # Tabela
             $tabela = new Tabela();
             $tabela->set_titulo("Sistema de Controle de Processos");
             $tabela->set_conteudo($row);

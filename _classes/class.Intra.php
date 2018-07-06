@@ -723,4 +723,35 @@ class Intra extends Bd
     }
 
     ###########################################################
+    
+    public function get_ProcessoMovimentoSetor($idMovimento = NULL){
+    /**
+     * Retorna o setor desse movimento no cadastro de movimentação de processo
+     * 
+     * @param $idMovimento integer NULL o idMovimento
+     * 
+     * @syntax $processo->get_MovimentoSetor([$idMovimento]);  
+     */
+    
+        # Pega os processos cadastrados
+        $select = 'SELECT setorCombo,
+                          setorTexto
+                     FROM tbprocessomovimento
+                     WHERE idProcessoMovimento = '.$idMovimento;
+        
+        $row = parent::select($select,FALSE);
+        
+        # Verifica qual campo foi preenchido
+        # Se for setor interno, pega o nome e retorna 
+        if((!vazio($row[0]) AND ($row[0] <> 0))){
+            $pessoal = new Pessoal();
+            $retorno = $pessoal->get_nomeLotacao($row[0]);
+        }else{
+            $retorno = $row[1];
+        }
+        
+        return $retorno;
+    }
+    
+    ###########################################################
 }
