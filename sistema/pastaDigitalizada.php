@@ -187,10 +187,6 @@ if($acesso){
                       tbperfil.nome,
                       tbservidor.dtAdmissao,';
 
-            if($parametroSituacao <> 1){
-                 $select .= 'tbservidor.dtDemissao,';
-            }
-
             $select .= '      tbsituacao.situacao,
                               tbservidor.idServidor
                          FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
@@ -235,7 +231,7 @@ if($acesso){
             }
 
             # cargo
-            if(!is_null($parametroCargo)){
+            if($parametroCargo <> "*"){
                 $select .= ' AND (tbcargo.idcargo = "'.$parametroCargo.'")';
             }
 
@@ -257,19 +253,10 @@ if($acesso){
             # ordenação
             $select .= ' ORDER BY tbpessoa.nome';
     
-        # Dados da Tabela
-        if($parametroSituacao == 1){
-            $label = array("IDFuncional","Matrícula","Servidor","Cargo - Função (Comissão)","Lotação","Perfil","Admissão","Situação");
-        }else{
-            $label = array("IDFuncional","Matrícula","Servidor","Cargo - Função (Comissão)","Lotação","Perfil","Admissão","Saída","Situação");
-        }
-
+        # Dados da Tabela        
+        $label = array("IDFuncional","Matrícula","Servidor","Cargo - Função (Comissão)","Lotação","Perfil","Admissão","Situação");
         $align = array("center","center","left","left","left");
-        if($parametroSituacao){
-            $function = array (NULL,"dv",NULL,NULL,NULL,NULL,"date_to_php");
-        }else{
-            $function = array (NULL,"dv",NULL,NULL,NULL,NULL,"date_to_php","date_to_php");
-        }            
+        $function = array (NULL,"dv",NULL,NULL,NULL,NULL,"date_to_php");
         $classe = array(NULL,NULL,NULL,"pessoal");
         $metodo = array(NULL,NULL,NULL,"get_Cargo");
 
@@ -296,7 +283,6 @@ if($acesso){
         }
 
         $tabela->show();
-        echo $select;
         
         # Pega o time final
         $time_end = microtime(TRUE);

@@ -6,8 +6,7 @@
  * By Alat
  */
  
- class AreaServidor
-{	
+ class AreaServidor{	
     /**
      * Método cabecalho
      * 

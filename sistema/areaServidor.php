@@ -171,7 +171,8 @@ if($acesso){
                 if(Verifica::acesso($idUsuario,4)){
                     $botao = new BotaoGrafico();
                     $botao->set_label('Pastas Digitalizadas');
-                    $botao->set_url('pastaDigitalizada.php');
+                    $botao->set_url('?fase=pastasDigitalizadas');
+                    #$botao->set_url('pastaDigitalizada.php');
                     $botao->set_image(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
                     $botao->set_title('Sistema de controle de pastas digitalizadas');
                     $botao->set_accesskey('D');
