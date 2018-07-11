@@ -56,6 +56,9 @@ if($acesso){
     
     switch ($fase){
         case "lista" :
+            $grid = new Grid();
+            $grid->abreColuna(9);
+            
             $menu1 = new MenuBar();
             
             # Pega o time inicial
@@ -179,23 +182,96 @@ if($acesso){
 
             $form->show();
             
+            $grid->fechaColuna();
+            $grid->abreColuna(3);
+            
+                # Define a pasta
+                $pasta = "../../_arquivo/";
+                $numPasta = 0;
+                
+                # Define o array da tabela
+                $result = array();
+                
+                # Exibe um quadro com o resumo
+                if(file_exists($pasta)){        // Verifica se a pasta existe
+                
+                    # Calcula o número de pastas no diretótio de pastas
+                    $s = scandir($pasta);
+                    foreach($s as $k){
+                        if(($k <> ".") AND ($k <> "..")){
+                            $numPasta++;
+                            
+                            # Divide o nome da pasta
+                            $partes = explode('-',$k);
+                            
+                            # IdFuncional
+                            $idFuncionalServ = $partes[0];
+                            
+                            # IdServidor
+                            $idServidorServ = $servidor->get_idServidoridFuncional($idFuncionalServ);
+                            
+                            if(is_null($idServidorServ)){
+                                $nome = "Servidor Não Encontrado";
+                                $cargo = NULL;
+                                $lotacao = NULL;
+                                $perfil = NULL;
+                                $admissao = NULL;
+                            }else{
+                                # Nome
+                                $nome = $servidor->get_nome($idServidorServ);
+
+                                # Cargo
+                                $cargo = $servidor->get_cargo($idServidorServ);
+
+                                # Lotação
+                                $lotacao = $servidor->get_lotacao($idServidorServ);
+
+                                # Perfil
+                                $perfil = $servidor->get_perfil($idServidorServ);
+
+                                # Admissao
+                                $admissao = $servidor->get_dtAdmissao($idServidorServ);
+                            }
+                            
+                            $result[] = array($idFuncionalServ,$nome,$cargo,$lotacao,$perfil,$admissao,$idServidorServ);
+                        }
+                    }
+                }
+                
+                $numServidores = $servidor->get_numServidoresAtivos();
+                $total = $numServidores - $numPasta;
+                
+                $conteudo = array(array("Quantidade",$numServidores),
+                                  array("Com Pasta Digitalizada",$numPasta),
+                                  array("Falta Digitalizar:",$total));
+            
+                $tabela1 = new Tabela();
+                $tabela1->set_titulo("Total Geral");
+                $tabela1->set_conteudo($conteudo);
+                $tabela1->set_label(array("Servidores Ativos","Quantidade"));
+                $tabela1->set_align(array("left","center"));
+                $tabela1->set_totalRegistro(FALSE);
+                $tabela1->set_scroll(FALSE);
+                $tabela1->show();
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            
             $select = 'SELECT tbservidor.idFuncional,
                       tbservidor.matricula,
                       tbpessoa.nome,
                       tbservidor.idServidor,
                       concat(IFNULL(tblotacao.UADM,"")," - ",IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")) lotacao,
                       tbperfil.nome,
-                      tbservidor.dtAdmissao,';
-
-            $select .= '      tbsituacao.situacao,
-                              tbservidor.idServidor
-                         FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
-                                              JOIN tbhistlot ON (tbservidor.idServidor = tbhistlot.idServidor)
-                                              JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
-                                         LEFT JOIN tbsituacao ON (tbservidor.situacao = tbsituacao.idsituacao)
-                                         LEFT JOIN tbperfil ON (tbservidor.idPerfil = tbperfil.idPerfil)
-                                         LEFT JOIN tbcargo ON (tbservidor.idCargo = tbcargo.idCargo)
-                                         LEFT JOIN tbtipocargo ON (tbcargo.idTipoCargo = tbtipocargo.idTipoCargo)';
+                      tbservidor.dtAdmissao,
+                      tbsituacao.situacao,
+                      tbservidor.idServidor
+                 FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
+                                      JOIN tbhistlot ON (tbservidor.idServidor = tbhistlot.idServidor)
+                                      JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
+                                 LEFT JOIN tbsituacao ON (tbservidor.situacao = tbsituacao.idsituacao)
+                                 LEFT JOIN tbperfil ON (tbservidor.idPerfil = tbperfil.idPerfil)
+                                 LEFT JOIN tbcargo ON (tbservidor.idCargo = tbcargo.idCargo)
+                                 LEFT JOIN tbtipocargo ON (tbcargo.idTipoCargo = tbtipocargo.idTipoCargo)';
 
             if($parametroCargoComissao <> "*"){
                 $select .= ' LEFT JOIN tbcomissao ON (tbservidor.idServidor = tbcomissao.idServidor)
@@ -254,9 +330,9 @@ if($acesso){
             $select .= ' ORDER BY tbpessoa.nome';
     
         # Dados da Tabela        
-        $label = array("IDFuncional","Matrícula","Servidor","Cargo - Função (Comissão)","Lotação","Perfil","Admissão","Situação");
+        $label = array("IDFuncional","Matrícula","Servidor","Cargo - Função (Comissão)","Lotação","Perfil","Admissão","Situação","Pasta");
         $align = array("center","center","left","left","left");
-        $function = array (NULL,"dv",NULL,NULL,NULL,NULL,"date_to_php");
+        $function = array (NULL,"dv",NULL,NULL,NULL,NULL,"date_to_php",NULL,"verificaPasta");
         $classe = array(NULL,NULL,NULL,"pessoal");
         $metodo = array(NULL,NULL,NULL,"get_Cargo");
 
