@@ -703,7 +703,7 @@ if($acesso){
             br();
                         
             # Pega o idfuncional
-            $idFuncional = $servidor->get_idFuncional($idServidorPesquisado);
+            $idFuncional = intval($servidor->get_idFuncional($idServidorPesquisado));
             
             # Define a pasta
             $pasta = "../../_arquivo/";
@@ -778,6 +778,8 @@ if($acesso){
                 # Inicia o menu
                 $tamanhoImage = 60;
                 $menu = new MenuGrafico(4);
+                
+                $numeroArquivos = 0;
             
                 # pasta
                 $ponteiro  = opendir($achei."/");
@@ -799,6 +801,7 @@ if($acesso){
                     
                     # Verifica se arquivo é da pasta
                     if(substr($arquivo, 0, 5) <> "Pasta"){
+                        $numeroArquivos++;
                         $botao = new BotaoGrafico();
                         $botao->set_label($partesArquivo[0]);
                         $botao->set_url($achei.'/'.$arquivo);
@@ -807,8 +810,14 @@ if($acesso){
                         $menu->add_item($botao);
                     }
                 }
-                $menu->show();
-            }else{               
+                if($numeroArquivos>0){
+                    $menu->show();
+                }else{
+                    br(2);
+                    p("Nenhum arquivo encontrado.","center");
+                }
+            }else{
+                br(2);
                 p("Nenhum arquivo encontrado.","center");
             }
             

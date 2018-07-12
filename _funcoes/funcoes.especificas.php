@@ -146,6 +146,36 @@ function get_dadosProcesso($tt){
     $grid->fechaGrid(); 
 }
 
+##########################################################
+/**
+ * Função que informa a pasta digitalizada de um servidor
+ */
+
+function verificaPasta($idServidorPesquisado){
+    # Pega o idfuncional
+    $pessoal = new Pessoal();
+    $idFuncional = intval($pessoal->get_idFuncional($idServidorPesquisado));
+
+    # Define a pasta
+    $pasta = "../../_arquivo/";
+
+    $achei = NULL;
+
+    # Encontra a pasta
+    foreach (glob($pasta.$idFuncional."*") as $escolhido) {
+        $achei = $escolhido;
+    }
+
+    # Verifica se tem pasta desse servidor
+    if(file_exists($achei)){        
+        $link = new Link('Editar','?fase=pasta&idServidorPesquisado='.$idServidorPesquisado);
+        $link->set_image(PASTA_FIGURAS.'pastaDigitalizada.png',20,20);
+        $link->set_title("Pasta encontrada");
+        $link->show();
+    }
+    
+}
+
 
     
 
