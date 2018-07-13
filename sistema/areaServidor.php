@@ -443,9 +443,39 @@ if($acesso){
             # Pega a Lotação atual do usuário
             $idLotacao = $servidor->get_idlotacao($idServidor);
             
-            $lista1 = new ListaFerias($ano);
-            $lista1->set_lotacao($idLotacao);
-            $lista1->showPorSolicitacao("Férias de $ano dos Servidores da ".$servidor->get_nomeLotacao($idLotacao));
+            # Conecta com o banco de dados
+            $servidor = new Pessoal();
+
+            $select ="SELECT tbpessoa.nome,
+                         tbservidor.idServidor,
+                         tbferias.anoExercicio,
+                         tbferias.dtInicial,
+                         tbferias.numDias,
+                         date_format(ADDDATE(tbferias.dtInicial,tbferias.numDias-1),'%d/%m/%Y') as dtf,
+                         idFerias,
+                         tbferias.status,
+                         tbsituacao.situacao
+                    FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
+                                         JOIN tbhistlot ON (tbservidor.idServidor = tbhistlot.idServidor)
+                                         JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
+                                         JOIN tbferias ON (tbservidor.idServidor = tbferias.idServidor)
+                                         JOIN tbsituacao ON (tbservidor.situacao = tbsituacao.idSituacao)
+                   WHERE tbhistlot.data =(select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)
+                     AND YEAR(tbferias.dtInicial) = $ano
+                     AND (tblotacao.idlotacao = $idLotacao)
+                ORDER BY dtInicial";
+
+            $result = $servidor->select($select);
+
+            $tabela = new Tabela();
+            $tabela->set_titulo("Férias dos Servidores da ".$servidor->get_nomeLotacao($idLotacao)." em 2018");
+            $tabela->set_label(array('Nome','Lotação','Exercício','Inicio','Dias','Fim','Período','Status','Situação'));
+            $tabela->set_align(array("left","left"));
+            $tabela->set_funcao(array(NULL,NULL,NULL,"date_to_php",NULL,NULL,NULL,NULL));
+            $tabela->set_classe(array(NULL,"pessoal",NULL,NULL,NULL,NULL,"pessoal"));
+            $tabela->set_metodo(array(NULL,"get_lotacaoSimples",NULL,NULL,NULL,NULL,"get_feriasPeriodo"));
+            $tabela->set_conteudo($result);
+            $tabela->show();
             
             # Grava no log a atividade
             $atividade = 'Visualizou os servidores em férias do próprio setor na área do servidor';
