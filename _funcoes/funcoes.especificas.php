@@ -137,9 +137,6 @@ function get_dadosProcesso($tt){
         p(date_to_php($row[2]),"pDataProcesso");
         p($row[3],"pAssuntoProcesso");
         
-        $processo = new Processo($row[1]);
-        echo $processo->get_tipoProcesso();
-        
     $painel->fecha();
     
     $grid->fechaColuna();
