@@ -29,11 +29,7 @@ if($acesso){
     $idServidor = soNumeros(get('idServidor'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if(HTML5){
-        $parametro = retiraAspas(post('parametro',get('parametro',date("Y-m-d"))));
-    }else{
-        $parametro = retiraAspas(post('parametro',get('parametro',date("d/m/Y"))));
-    }
+    $parametro = retiraAspas(post('parametro',get('parametro',date("Y-m-d"))));
     
     $usuarioLog = post('usuarioLog','*');
     $usuarioIp = post('usuarioIp','*');

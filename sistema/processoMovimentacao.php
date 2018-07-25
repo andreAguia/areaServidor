@@ -115,11 +115,7 @@ if($acesso){
     array_unshift($comboSetor, array(NULL,NULL)); # Adiciona o valor de nulo
     
     # Data padrão
-    if(HTML5){
-        $dataPadrao = date("Y-m-d");
-    }else{
-        $dataPadrao = date("d/m/Y");
-    }
+    $dataPadrao = date("Y-m-d");
 
     # Campos para o formulario
     $objeto->set_campos(array( 

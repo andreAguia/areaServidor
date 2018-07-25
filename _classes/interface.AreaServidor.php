@@ -74,11 +74,7 @@
             p('Usuário : '.$intra->get_usuario($idUsuario),'usuarioLogado');
         $grid->fechaColuna();
         $grid->abreColuna(4);
-            if(HTML5){
-                p('Versão: '.VERSAO.' (HTML5)','versao');
-            }else{
                 p('Versão: '.VERSAO,'versao');
-            }
         $grid->fechaColuna();
         $grid->abreColuna(4);
             p(BROWSER_NAME." - ".IP,'ip');
