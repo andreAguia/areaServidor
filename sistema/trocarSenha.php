@@ -25,9 +25,10 @@ if($acesso)
 
     # Verifica a fase do programa
     $fase = get('fase');
-
+    
     # Começa uma nova página
-    $page = new Page();			
+    $page = new Page();
+    $page->set_jscript($senhaForte);
     $page->iniciaPagina();	
 
     # Cabeçalho da Página
@@ -107,10 +108,11 @@ if($acesso)
 
             $form->show();
             $callout->fecha();
+            
             $grid->fechaColuna();
             $grid->fechaGrid();
             
-            br();
+            br(2);
             Grh::rodape($idUsuario);
             break;
         

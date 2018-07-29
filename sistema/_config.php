@@ -25,7 +25,7 @@ define("PASTA_ESTILOS_GERAIS","../../_framework/_cssGerais/");     # Estilos Ger
 define("PASTA_ESTILOS","../_css/");                                # Estilos Específicos
 
 # Fontes para PDF
-define('FPDF_FONTPATH','../../_framework/_pdfFont/');
+#define('FPDF_FONTPATH','../../_framework/_pdfFont/');
 
 # Tags aceitas em campos com htmlTag = TRUE
 define('TAGS','<p></p><a></a><br/><br><div></div><table></table><tr></tr><td></td><th></th><strong></strong><em></em><u></u><sub></sub><sup></sup><ol></ol><li></li><ul></ul><hr><span></span><h3></h3>');       
