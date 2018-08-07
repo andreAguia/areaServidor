@@ -38,8 +38,7 @@ $page->iniciaPagina();
 AreaServidor::cabecalho("Login do Sistema");
 br(2);
 
-switch ($fase)
-{
+switch ($fase){
     case "":
         # Limpando todas as sessions
         session_destroy();
@@ -93,7 +92,6 @@ switch ($fase)
         $grid = new Grid("center");
         $grid->abreColuna(8); 
         
-        
         span("Mensagem do dia:","mensagemLabel");
         $callout = new Callout("success");
         $callout->abre();
@@ -119,8 +117,7 @@ switch ($fase)
         $ip = getenv("REMOTE_ADDR");
 
         # Verifica a senha
-        switch ($verifica)
-        {
+        switch ($verifica){
             case 0: // Login Incorreto: Usuário inexistente
                 # Informa o Erro
                 alert('Login Incorreto!');

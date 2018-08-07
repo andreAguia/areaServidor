@@ -5,8 +5,7 @@
  * 
  * By Alat
  */
-class Intra extends Bd
-{
+class Intra extends Bd {
     private $servidor = "localhost";        // servidor
     private $usuario = "intranet";          // usuário
     private $senha = "txzVHnMdh53ZWX9p";    // senha
@@ -232,17 +231,19 @@ class Intra extends Bd
                 $verificaIp = $this->verificaComputador($ip);  // Verifica se esse computador está cadastrado
             
                 if(!$verificaIp){
-                    return 5;           // Retorna o valor 5 quando o computador não estiver cadastrado
+                    return 5;               // Retorna o valor 5 quando o computador não estiver cadastrado
                 }
             }
 
             if($senhaServidor == $senha_md5){
+                # Guarda nas sessions as informações importantes
+                set_session('idUsuario',$idUsuario);    // Guarda o idUsuário na session
+                set_session('ip',$ip);                  // Guarda o ip na session
+                
                 if ($senha == SENHA_PADRAO){
-                    set_session('idUsuario',$idUsuario);	
-                    return 4;
+                    return 4;   // Para ser direcionado para rotina de alteração de senha
                 }else{
-                    set_session('idUsuario',$idUsuario);
-                    return 3;			
+                    return 3;   // Acessa a tela inicial do sistema
                 }
             }
 	}
