@@ -14,8 +14,7 @@ include ("_config.php");
 # Verifica se o usuário está logado
 $acesso = Verifica::acesso($idUsuario);
 
-if($acesso)
-{    
+if($acesso) {    
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $pessoal = new Pessoal();
@@ -119,7 +118,7 @@ if($acesso)
             $form->show();
 
             # select
-            $select ='SELECT distinct tbservidor.idFuncional,
+            $select ='SELECT DISTINCT tbservidor.idFuncional,
                             tbservidor.matricula,
                             tbpessoa.nome,
                             tbcomissao.dtNom,
@@ -150,7 +149,7 @@ if($acesso)
             #---------------------
             
             # select
-            $select ='SELECT distinct tbservidor.idFuncional,
+            $select ='SELECT DISTINCT tbservidor.idFuncional,
                             tbservidor.matricula,
                             tbpessoa.nome,
                             tbcomissao.dtNom,
