@@ -241,14 +241,12 @@ switch ($fase){
 
                 # Executa o backup
                 if($intra->get_variavel("backupAutomatico")){
-                    $backupData = $intra->get_variavel("backupData");   // Verifica a data do último backup
-                    $backupPasta = str_replace("/","\\",$intra->get_variavel("backupPasta"));   // Pega o caminho do banco de dados invertendo a barra.
                     $hoje = date("d/m/Y");                              // Pega a data de hoje
 
                     # Verifica se foi feito backup hoje
                     if($hoje <> $backupData){
                         #exec("backup.bat C:\\".$backupPasta);       // Executa o backup no Windows
-                        exec("executaBackup");                      // Executa o backup no Linux
+                        exec("executaBackup");                       // Executa o backup no Linux
                         $intra->set_variavel("backupData",$hoje);    // Atualiza a data do último backup
 
                         # Grava no log a atividade

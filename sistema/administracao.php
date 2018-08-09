@@ -335,10 +335,7 @@ if($acesso)
             break;
 
         case "backup2" :
-            $backupData = $intra->get_variavel("backupData");   // Verifica a data do último backup
-            $backupPasta = str_replace("/","\\",$intra->get_variavel("backupPasta"));   // Pega o caminho do banco de dados invertendo a barra.
-
-            exec("backup.bat C:\\".$backupPasta);   // Executa o backup
+            exec("executaBackup");  // Executa o backup no Linux
 
             # Grava no log a atividade
             $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);
