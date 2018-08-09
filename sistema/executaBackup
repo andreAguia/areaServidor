@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Informa que iniciou o backup 
+echo 'Executando backup'
+
+# Define os valores para conectar o banco de dados
+USUARIO="andre"
+SENHA="alat"
+
+# Caminho
+CAMINHO="/var/www/backup/"
+
+# Define a string da data e hora
+ANO=$(date +%Y)
+MES=$(date +%m)
+DIA=$(date +%d)
+HORA=$(date +%T)
+DATA="$ANO.$MES.$DIA"
+
+# Executa o backup no banco do GRH
+BANCO="grh"
+NOME="$CAMINHO""$DATA"_"$HORA.$BANCO"
+mysqldump -u $USUARIO -p$SENHA $BANCO > $NOME
+
+# Executa o backup no banco do AREASERVIDOR
+BANCO="areaservidor"
+NOME="$CAMINHO""$DATA"_"$HORA.$BANCO"
+mysqldump -u $USUARIO -p$SENHA $BANCO > $NOME
