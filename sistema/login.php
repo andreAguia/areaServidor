@@ -246,7 +246,7 @@ switch ($fase){
                     # Verifica se foi feito backup hoje
                     if($hoje <> $backupData){
                         #exec("backup.bat C:\\".$backupPasta);       // Executa o backup no Windows
-                        exec("executaBackup");                       // Executa o backup no Linux
+                        shell_exec("executaBackup");                       // Executa o backup no Linux
                         $intra->set_variavel("backupData",$hoje);    // Atualiza a data do último backup
 
                         # Grava no log a atividade

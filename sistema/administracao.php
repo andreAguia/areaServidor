@@ -319,6 +319,10 @@ if($acesso)
             $menu->show();
             break;
         
+#############################################################################################
+#   BACKUP
+#############################################################################################
+        
         case "backup" :
             br(4);
             aguarde();
@@ -335,7 +339,7 @@ if($acesso)
             break;
 
         case "backup2" :
-            exec("executaBackup");  // Executa o backup no Linux
+            shell_exec("executaBackup");  // Executa o backup no Linux
 
             # Grava no log a atividade
             $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);
