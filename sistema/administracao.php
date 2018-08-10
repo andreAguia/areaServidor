@@ -287,9 +287,7 @@ if($acesso)
             AreaServidor::rodape($idUsuario);
             break;
         
-#############################################################################################
-#   IMPORTAÇÃO
-#############################################################################################
+########################################################################################
         
         case "importacao" :
             botaoVoltar("administracao.php");
@@ -319,9 +317,7 @@ if($acesso)
             $menu->show();
             break;
         
-#############################################################################################
-#   BACKUP
-#############################################################################################
+########################################################################################
         
         case "backup" :
             br(4);
@@ -339,7 +335,8 @@ if($acesso)
             break;
 
         case "backup2" :
-            shell_exec("./executaBackup");  // Executa o backup no Linux
+            # Executa o backup no Linux
+            shell_exec("./executaBackup");
 
             # Grava no log a atividade
             $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);

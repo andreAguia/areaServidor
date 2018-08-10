@@ -241,18 +241,35 @@ switch ($fase){
 
                 # Executa o backup
                 if($intra->get_variavel("backupAutomatico")){
-                    $hoje = date("d/m/Y");                              // Pega a data de hoje
+                    
+                    # Verifica a data do último backup
+                    $backupData = $intra->get_variavel("backupData");
+                    
+                    # Pega o caminho do banco de dados invertendo a barra.
+                    $backupPasta = str_replace("/","\\",$intra->get_variavel("backupPasta"));
+                    
+                    # Pega a data de hoje
+                    $hoje = date("d/m/Y");                              
 
                     # Verifica se foi feito backup hoje
                     if($hoje <> $backupData){
-                        #exec("backup.bat C:\\".$backupPasta);       // Executa o backup no Windows
-                        shell_exec("./executaBackup");                       // Executa o backup no Linux
-                        $intra->set_variavel("backupData",$hoje);    // Atualiza a data do último backup
+                        
+                        # Executa o backup no servidor windows (desabilitado)
+                        #exec("backup.bat C:\\".$backupPasta);
+                        
+                        # Executa o backup no servidor linux
+                        shell_exec("./executaBackup");
+                        
+                        # Atualiza a data do último backup
+                        $intra->set_variavel("backupData",$hoje);
 
                         # Grava no log a atividade
                         $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup automático realizado',NULL,NULL,6);
                     }
                 }
+                
+                echo "Hoje:".$hoje;br();
+                echo "Backup:".$backupData;
                 
                 # Verifica se o servidor está aniversariando hoje
                 if($pessoal->aniversariante($idServidor)){
