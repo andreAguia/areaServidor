@@ -240,13 +240,13 @@ switch ($fase){
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
 
                 # Executa o backup
-                if($intra->get_variavel("./backupAutomatico")){
+                if($intra->get_variavel("backupAutomatico")){
                     $hoje = date("d/m/Y");                              // Pega a data de hoje
 
                     # Verifica se foi feito backup hoje
                     if($hoje <> $backupData){
                         #exec("backup.bat C:\\".$backupPasta);       // Executa o backup no Windows
-                        shell_exec("executaBackup");                       // Executa o backup no Linux
+                        shell_exec("./executaBackup");                       // Executa o backup no Linux
                         $intra->set_variavel("backupData",$hoje);    // Atualiza a data do último backup
 
                         # Grava no log a atividade
