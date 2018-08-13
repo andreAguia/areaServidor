@@ -7,6 +7,9 @@ echo 'Executando backup'
 USUARIO="andre"
 SENHA="alat"
 
+#USUARIO="root"
+#SENHA="chewbacca"
+
 # Caminho
 CAMINHO="/var/www/backup/"
 
