@@ -59,7 +59,7 @@ define("BROWSER_NAME",$browser['browser']);	# Nome do browser
 define("BROWSER_VERSION",$browser['version']);	# Versão do browser
 
 # Pega o ip e nome da máquina
-# define("IP",getenv("REMOTE_ADDR"));     # Ip da máquina --> Substituído pelo codigo lá embaixo
+define("IP",getenv("REMOTE_ADDR"));     # Ip da máquina
 
 # Sistema Operacional
 define("SO",get_So());
@@ -74,7 +74,6 @@ setlocale (LC_CTYPE, 'pt_BR');
 
 # Carrega as session
 $idUsuario = get_session('idUsuario');  // Servidor Logado
-define("IP",get_session('ip'));         // Ip da máquina
 
 # Define o horário
 date_default_timezone_set("America/Sao_Paulo");

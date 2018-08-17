@@ -112,9 +112,6 @@ switch ($fase){
         
         # Verifica o Login
         $verifica = $intra->verificaLogin($usuario,$senha);
-                
-        # Pega o ip da máquina que fez login
-        $ip = getenv("REMOTE_ADDR");
 
         # Verifica a senha
         switch ($verifica){
