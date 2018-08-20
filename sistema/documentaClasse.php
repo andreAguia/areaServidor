@@ -105,7 +105,19 @@ if($acesso){
     echo $nomeClasse;
     echo '</a>';
     echo '</h4>';
-
+    
+    hr();
+    
+    # Percorre as variáveis
+    
+    if($numVariaveis > 0){
+        for ($i=1; $i < $numVariaveis;$i++){
+            span($variaveisClasse[$i][1]." (".$variaveisClasse[$i][2].")",NULL,NULL,$variaveisClasse[$i][4]);
+            br();
+        }
+        hr();
+    }
+    
     # Percorre os métodos
     for ($i=1; $i <= $numMetodo;$i++){
         # link
@@ -118,7 +130,7 @@ if($acesso){
         echo '</a>';
         br();
     }
-    echo "</table>";
+    #echo "</table>";
     $callout->fecha();
     $grid2->fechaColuna();
 
@@ -187,8 +199,7 @@ if($acesso){
                         if($grupo == 0){
                             $grupoAnterior = $vc[1];
                             $grupo++;
-                        }
-                        elseif($grupo > 0) {
+                        }elseif($grupo > 0) {
                             echo $grupoAnterior;
                             br();
 
@@ -207,11 +218,11 @@ if($acesso){
                             $novoArray = NULL;
                             $grupo++;
                         }                 
-                    }
-                    else{
+                    }else{
                         $novoArray[] = $vc;
                     }   
                 }
+                
                 # Exibe a lista de variáveis quando não se definiu grupos    
                 if($grupo == 0){        
                     $tabela = new Tabela();
@@ -221,8 +232,7 @@ if($acesso){
                     $tabela->set_align(array("center","center","center","center","left"));
                     $tabela->set_width(array(10,10,10,10,60));
                     $tabela->show();
-                }
-                else{
+                }else{
                     # Exibe o último grupo de variáveis
                     echo $grupoAnterior;
                     br();
