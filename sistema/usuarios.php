@@ -129,9 +129,9 @@ if($acesso){
     # Botão de exibição dos servidores com permissão a essa regra
     $botao = new BotaoGrafico();
     $botao->set_label('');
-    $botao->set_title('Servidores com permissão a essa regra');
+    $botao->set_title('Editar Usuário');
     $botao->set_url('?fase=exibeAtividades&id='.$id);
-    $botao->set_image(PASTA_FIGURAS.'ver.png',20,20);
+    $botao->set_image(PASTA_FIGURAS.'bullet_edit.png',20,20);
 
     # Coloca o objeto link na tabela			
     $objeto->set_link(array("","","","","","","","",$botao));
