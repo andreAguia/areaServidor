@@ -31,8 +31,11 @@ if($acesso){
     # Pega o parametro de pesquisa (se tiver)
     $parametro = retiraAspas(post('parametro',get('parametro',date("Y-m-d"))));
     
-    $usuarioLog = post('usuarioLog','*');
-    $usuarioIp = post('usuarioIp','*');
+    $usuarioLog = post('usuarioLog');
+    $usuarioIp = post('usuarioIp');
+    $idTabela = post('idTabela');
+    $tabela = post('tabela');
+    $idServidorPesquisado = post('idServidorPesquisado');
     
     # Aparentemente a rotina acima só funciona a contento no chrome
     # Como é uma rotina de acesso restrito deixei para avaliar esse problema depois
@@ -40,7 +43,7 @@ if($acesso){
     
     # Começa uma nova página
     $page = new Page();
-    if(($parametro == date("Y-m-d")) OR ($parametro == date("d/m/Y"))){
+    if(is_null($idServidor)){ 
         $page->set_refresh(TRUE);
         $page->set_bodyOnLoad('contagemRegressiva(30,"divContagemInterna")');
     }
@@ -85,19 +88,34 @@ if($acesso){
     }
     
     # usuário
-    if($usuarioLog <> "*"){
+    if(!vazio($usuarioLog)){
         $selectLista .=' AND idUsuario = '.$usuarioLog;
     }
     
     # IP
-    if($usuarioIp <> "*"){
+    if(!vazio($usuarioIp)){
         $selectLista .=' AND ip = "'.$usuarioIp.'"';
     }
     
-    $selectLista .=' ORDER BY 9 desc';
+    # idTabela
+    if(!vazio($idTabela)){
+        $selectLista .=' AND idValor = "'.$idTabela.'"';
+    }
+    
+    # Tabela
+    if(!vazio($tabela)){
+        $selectLista .=' AND tabela = "'.$tabela.'"';
+    }
+    
+    # Id Servidor
+    if(!vazio($idServidorPesquisado)){
+        $selectLista .=' AND idServidor = "'.$idServidorPesquisado.'"';
+    }
+    
+    $selectLista .=' ORDER BY data desc';
     
     $objeto->set_selectLista ($selectLista);
-
+    
     # select do edita
     $objeto->set_selectEdita('SELECT idUsuario,
                                      data,
@@ -207,7 +225,7 @@ if($acesso){
 			
             # Rotina de listar
             # data
-            $form = new Form('?fase=listar');
+            $form = new Form('?fase=listar&idServidor='.$idServidor);
 
             $controle = new Input('parametro','data','Entre com a data',1);
             $controle->set_size(30);
@@ -216,20 +234,34 @@ if($acesso){
             $controle->set_autofocus(TRUE);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(1);
-            $controle->set_col(3);
+            $controle->set_col(2);
             if (is_null($idServidor)){
                 $form->add_item($controle);
             }
 
+################################################################################
+            
             # Pega os Usuarios
-            $result = $admin->select('SELECT DISTINCT tblog.idUsuario,
-                                                       tbusuario.usuario
-                                                  FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
-                                                  JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
-                                                  JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
-                                                 WHERE date(data) = "'.$parametro.'"');
+             $select = 'SELECT DISTINCT tblog.idUsuario,
+                                tbusuario.usuario
+                                FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
+                                JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
+                                JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
+                         WHERE ';
+            
+            if(is_null($idServidor)){
+                $select .=' date(data) = "'.$parametro.'"';
+            }else{
+                $select .=' tblog.idServidor = '.$idServidor;
+            }
+            
+            $select .= ' AND tblog.idUsuario IS NOT NULL  
+                              ORDER BY 2';
+            
+            $result = $admin->select($select);
+            
             $usuariosLogados = $result;
-            array_push($result,array('*','-- Todos --'));
+            array_push($result,array(NULL,'-- Todos --'));
 
             $controle = new Input('usuarioLog','combo','Filtra por Usuário',1);
             $controle->set_size(30);
@@ -238,17 +270,30 @@ if($acesso){
             $controle->set_valor($usuarioLog);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(1);
-            $controle->set_col(3);
+            $controle->set_col(2);
             $form->add_item($controle);
 
-            # Pega os ips
-            $result2 = $admin->select('SELECT DISTINCT ip,
-                                                ip
-                                           FROM tblog
-                                          WHERE date(data) = "'.$parametro.'"							
-                                       ORDER BY 2');
-            array_push($result2,array('*','-- Todos --'));
+################################################################################            
 
+            # Pega os ips
+            $select2 = 'SELECT DISTINCT ip,
+                               ip
+                          FROM tblog
+                         WHERE ';
+            
+            if(is_null($idServidor)){
+                $select2 .=' date(data) = "'.$parametro.'"';
+            }else{
+                $select2 .=' idServidor = '.$idServidor;
+            }
+            
+            $select2 .= ' AND ip IS NOT NULL  
+                              ORDER BY 2';
+            
+            $result2 = $admin->select($select2);
+            
+            array_push($result2,array(NULL,'-- Todos --'));
+            
             $controle = new Input('usuarioIp','combo','Filtra por IP',1);
             $controle->set_size(20);
             $controle->set_title('Ip do computador');
@@ -256,22 +301,110 @@ if($acesso){
             $controle->set_valor($usuarioIp);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(1);
-            $controle->set_col(3);
+            $controle->set_col(2);
             $form->add_item($controle);
+            
+################################################################################
+            
+            # Pega as tabelas
+            $select3 = 'SELECT DISTINCT tabela,
+                               tabela
+                          FROM tblog
+                         WHERE ';
+            
+            if(is_null($idServidor)){
+                $select3 .=' date(data) = "'.$parametro.'"';
+            }else{
+                $select3 .=' idServidor = '.$idServidor;
+            }
+            
+            $select3 .= ' AND tabela IS NOT NULL  
+                              ORDER BY 2';
+            
+            $result3 = $admin->select($select3);
+            
+            array_push($result3,array(NULL,'-- Todos --'));
+            
+            $controle = new Input('tabela','combo','Tabela',1);
+            $controle->set_size(20);
+            $controle->set_title('Tabela');
+            $controle->set_array($result3);
+            $controle->set_valor($tabela);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(2);
+            $form->add_item($controle);
+            
+################################################################################
+#            
+            # Pega o id das tabelas
+            $select4 = 'SELECT DISTINCT idValor,
+                               idValor
+                          FROM tblog
+                         WHERE ';
+            
+            if(is_null($idServidor)){
+                $select4 .=' date(data) = "'.$parametro.'"';
+            }else{
+                $select4 .=' idServidor = '.$idServidor;
+            }
+            
+            $select4 .= ' AND idValor IS NOT NULL  
+                              ORDER BY 2';
+            
+            $result4 = $admin->select($select4);
+            
+            array_push($result4,array(NULL,'-- Todos --'));
+            
+            $controle = new Input('idTabela','combo','Id',1);
+            $controle->set_size(20);
+            $controle->set_title('Id da tabela');
+            $controle->set_array($result4);
+            $controle->set_valor($idTabela);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(2);
+            $form->add_item($controle);
+    
+################################################################################            
+            
+            # Pega o id Servidor
+            $result5 = $admin->select('SELECT DISTINCT idServidor,
+                                                idServidor
+                                           FROM tblog
+                                          WHERE date(data) = "'.$parametro.'"
+                                            AND idServidor IS NOT NULL  
+                                       ORDER BY 2');
+            array_push($result5,array(NULL,'-- Todos --'));
+            
+            $controle = new Input('idServidorPesquisado','combo','Id Servidor',1);
+            $controle->set_size(20);
+            $controle->set_title('id Servidor');
+            $controle->set_array($result5);
+            $controle->set_valor($idServidorPesquisado);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(2);
+            
+            if(is_null($idServidor)){
+                $form->add_item($controle);
+            }
 
             br();
             $form->show();
 
+################################################################################
+            
             # Limita o tamanho da tela
             $grid = new Grid();
-            $grid->abreColuna(3);
+            $grid->abreColuna(2);
                 p(diaSemana($parametro),"diaSemana");
             $grid->fechaColuna();
             $grid->fechaGrid();
             $objeto->listar();
             
             # Div Contagem de refresh
-            if(($parametro == date("Y-m-d")) OR ($parametro == date("d/m/Y"))){
+            if(is_null($idServidor)){ 
                 $div = new Div('divContagemExterna');
                 $div->set_title('Atualização da página');
                 $div->abre();
@@ -288,7 +421,7 @@ if($acesso){
             $div = new Div('divUsuariosHoje');
             $div->set_title('Usuários logados');
             $div->abre();
-                echo 'Logaram nesse dia:';
+                echo 'Usuários:';
                 br();
                 foreach ($usuariosLogados as $value) {
                     echo $value[1];
