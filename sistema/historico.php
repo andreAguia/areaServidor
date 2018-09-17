@@ -398,7 +398,7 @@ if($acesso){
             # Limita o tamanho da tela
             $grid = new Grid();
             $grid->abreColuna(2);
-                p(diaSemana($parametro),"diaSemana");
+                p(diaSemana(date_to_php($parametro)),"diaSemana");
             $grid->fechaColuna();
             $grid->fechaGrid();
             $objeto->listar();

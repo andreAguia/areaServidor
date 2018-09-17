@@ -103,6 +103,7 @@ if($acesso)
         $parametrosFuncao = $doc->get_parametrosMetodo();
         $exemploFuncao = $doc->get_exemploMetodo();
         $categoriaFuncao = $doc->get_categoriaMetodo();
+        $autorFuncao = $doc->get_autorMetodo();
 
         # Busca a função dentro do array
         $keyFuncao = array_search($funcao, $nomeFuncao);
@@ -118,8 +119,7 @@ if($acesso)
         $callout = new Callout("success");
         $callout->abre();
 
-        switch ($fase)
-        {
+        switch ($fase){
             case "" :    
                 # Nome
                 echo '<h5>'.$nomeFuncao[$keyFuncao].'</h5>';
@@ -139,6 +139,11 @@ if($acesso)
                 # Categoria
                 if(isset($categoriaFuncao[$keyFuncao])){
                     p("Categoria: $categoriaFuncao[$keyFuncao]",'right','f12');
+                }
+
+                # Autor
+                if(isset($autorFuncao[$keyFuncao])){
+                    echo '<small>Autor: '.$autorFuncao[$keyFuncao].'</small>';
                 }
 
                 hr();

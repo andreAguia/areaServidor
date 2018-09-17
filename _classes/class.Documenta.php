@@ -36,6 +36,7 @@ class Documenta
     private $parametrosMetodo = NULL;       // Array com os parâmetros de cada método
     private $exemploMetodo = NULL;          // Array com arquivos exemplos de códigos
     private $categoriaMetodo = NULL;        // Array com a categoria dos método
+    private $autorMetodo = NULL;            // Array com o autor da função. Usado mais em funções de terceiros
 
 ###########################################################
     
@@ -206,6 +207,12 @@ class Documenta
             if (($line_num == ($linhaComentarioMetodo+1)) AND ($this->numMetodo > 0)){
                 $posicao = stripos($line,'*');
                 $this->descricaoMetodo[$this->numMetodo] = substr($line, $posicao+2);
+            }
+
+            # Autor
+            if (stristr($line, "@author")){
+                $posicao = stripos($line,'@');
+                $this->autorMetodo[$this->numMetodo] = substr($line, $posicao+7);
             }
 
             # Syntax do método
@@ -485,7 +492,7 @@ class Documenta
         return $this->exemploMetodo;
     }
     
-#####################################################################################     
+###########################################################     
     
     public function get_categoriaMetodo(){        
         /**
@@ -497,5 +504,17 @@ class Documenta
         return $this->categoriaMetodo;
     }
     
-###########################################################       
+###########################################################     
+    
+public function get_autorMetodo(){        
+    /**
+     * Fornece array com o autor da função de terceiros
+     *
+     * @syntax $documenta->get_autorMetodo();
+    `*/
+    
+    return $this->autorMetodo;
+}
+
+###########################################################
 }
