@@ -72,7 +72,7 @@ if($acesso)
             br();
             
             $grid2 = new Grid();
-            $tabelasPessoa = ["tbcontatos","tbdependente","tbdocumentacao","tbformacao"];
+            $tabelasPessoa = ["tbdependente","tbdocumentacao","tbformacao"];
             foreach ($tabelasPessoa as $tt) {
                 $grid2->abreColuna(4);
                 tituloTable($tt);

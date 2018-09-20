@@ -120,7 +120,7 @@ if($acesso){
     $objeto->set_align(array("center","center","center","left","center","center","left","left"));
 
     $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,"pessoal","pessoal","pessoal"));
-    $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,"get_lotacao","get_cargo","get_emailPrincipalServidor"));
+    $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,"get_lotacao","get_cargo","get_emailIUenfServidor"));
     $objeto->set_funcao(array("statusUsuario",NULL,NULL,NULL,"datetime_to_php"));
     
     $objeto->set_botaoExcluir(FALSE);
