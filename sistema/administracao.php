@@ -314,6 +314,14 @@ if($acesso)
             $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Faltas do SigRH');
             $menu->add_item($botao);
+                        
+            # Contatos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Contatos');
+            $botao->set_url('?fase=contatos');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Importação da antiga tabela de contatos');
+            $menu->add_item($botao);
             $menu->show();
             break;
         
@@ -348,6 +356,52 @@ if($acesso)
             alert("Backup concluído! Acesse a pasta de backup para obter o arquivo.");
             loadPage('?');
             break;
+        
+    ########################################################################################
+        
+        case "contatos" :
+            titulo('Importação dos contatos');
+            
+            $select = 'SELECT idPessoa
+                         FROM tbpessoa
+                     ORDER BY 1 desc';
+                    
+            $row = $servidor->select($select);
+            
+            $contador = 1;
+            
+            # Inicia a tabela
+            echo "<table border=1>";
+
+            echo "<tr>";
+            echo "<th>#</th>";
+            echo "<th>idPessoa</th>";
+            echo "<th>Nome</th>";
+            echo "<th>telResidencial</th>";
+            echo "<th>telCelular</th>";
+            echo "<th>telRecados</th>";
+            echo "<th>emailUenf</th>";
+            echo "<th>emailPessoal</th>";
+            echo "</tr>";
+            
+            foreach ($row as $tt){
+                echo "<tr>";
+                echo "<td>$contador</td>";
+                echo "<td>$tt[0]</td>";
+                echo "<td>".$servidor->get_nomeidPessoa($tt[0])."</td>";
+                
+                $contatos = importaContatos($tt[0]);
+               
+                echo "<td>$contatos[0]</td>";                
+                echo "<td>$contatos[1]</td>";
+                echo "<td>$contatos[2]</td>";
+                echo "<td>$contatos[3]</td>";
+                echo "<td>$contatos[4]</td>";
+                echo "</tr>";
+                $contador++;
+            }
+            break;
+        
     }
     $grid1->fechaColuna();
     $grid1->fechaGrid();    
