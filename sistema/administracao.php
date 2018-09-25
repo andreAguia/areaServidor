@@ -362,44 +362,27 @@ if($acesso)
         case "contatos" :
             titulo('Importação dos contatos');
             
+            br(4);
+            aguarde('Importando ...');
+            
             $select = 'SELECT idPessoa
                          FROM tbpessoa
                      ORDER BY 1 desc';
                     
             $row = $servidor->select($select);
             
-            $contador = 1;
-            
-            # Inicia a tabela
-            echo "<table border=1>";
-
-            echo "<tr>";
-            echo "<th>#</th>";
-            echo "<th>idPessoa</th>";
-            echo "<th>Nome</th>";
-            echo "<th>telResidencial</th>";
-            echo "<th>telCelular</th>";
-            echo "<th>telRecados</th>";
-            echo "<th>emailUenf</th>";
-            echo "<th>emailPessoal</th>";
-            echo "</tr>";
-            
             foreach ($row as $tt){
-                echo "<tr>";
-                echo "<td>$contador</td>";
-                echo "<td>$tt[0]</td>";
-                echo "<td>".$servidor->get_nomeidPessoa($tt[0])."</td>";
-                
+                # Pega os contatos antigos
                 $contatos = importaContatos($tt[0]);
-               
-                echo "<td>$contatos[0]</td>";                
-                echo "<td>$contatos[1]</td>";
-                echo "<td>$contatos[2]</td>";
-                echo "<td>$contatos[3]</td>";
-                echo "<td>$contatos[4]</td>";
-                echo "</tr>";
-                $contador++;
+                
+                echo "idPessoa: ".$tt[0];
+                
+                # Grava na tabela tbpessoa
+                $campos = array("telResidencial","telCelular","telRecados","emailUenf","emailPessoal");
+                $valor = array($contatos[0],$contatos[1],$contatos[2],$contatos[3],$contatos[4]);                    
+                $servidor->gravar($campos,$valor,$tt[0],"tbpessoa","idPessoa");
             }
+            loadPage("?");
             break;
         
     }
