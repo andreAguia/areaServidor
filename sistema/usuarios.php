@@ -222,10 +222,10 @@ if($acesso){
             $botaoPermissao->set_url('?fase=exibePermissao&id='.$id);
             $menu1->add_link($botaoPermissao,"right");
 
-            # Alterar Senha
+            # Edita Nome
             $linkSenha = new Link("Editar Nome","?fase=editar&id=".$id);
             $linkSenha->set_class('button');
-            $linkSenha->set_title('Altera a senha do usuário logado');
+            $linkSenha->set_title('Altera o nome do usuario logado');
             $menu1->add_link($linkSenha,"right");
             
             # Senha Padrão
@@ -290,8 +290,8 @@ if($acesso){
             
                 # Pega os dados da combo
                 $parametroMulti = $intra->select('SELECT DISTINCT CONCAT(MONTH(data),"/",YEAR(data))
-                                                 FROM tblog
-                                                WHERE idusuario = '.$id.' ORDER BY YEAR(data) DESC,MONTH(data) DESC');
+                                                    FROM tblog
+                                                   WHERE idusuario = '.$id.' ORDER BY YEAR(data) DESC,MONTH(data) DESC');
                 
                 $parametro = array();
                 
