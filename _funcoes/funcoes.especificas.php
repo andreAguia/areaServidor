@@ -64,14 +64,14 @@ function exibeNomeTitle($idServidor){
         /**
          * Informa o idCidade na tabela tbcidade de uma cidade
          * 
-         * Usada na otina de importação de cidades
+         * Usada na rotina de importação de cidades
          */
         
         $pessoal = new Pessoal();
         
         $select = "SELECT idCidade "
                 . "  FROM tbcidade JOIN tbestado USING (idEstado)"
-                . " WHERE LCASE(TRIM(tbcidade.nome)) = '".strtolower(trim($cidade))."'"
+                . " WHERE LCASE(TRIM(tbcidade.nome)) = '".mb_strtolower(trim($cidade))."'"
                 . " ORDER BY proximidade, tbestado.nome, tbcidade.nome";
         
         $escolhida = $pessoal->select($select,FALSE);
