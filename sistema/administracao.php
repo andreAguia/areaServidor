@@ -321,7 +321,7 @@ if($acesso)
             $botao->set_url('?fase=contatos');
             $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da antiga tabela de contatos');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
             $menu->show();
             break;
         

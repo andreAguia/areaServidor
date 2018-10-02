@@ -33,13 +33,13 @@ class Gprojetos{
         $dadosProjetos = $intra->select($select);
         $numProjetos = $intra->count($select);
         
+        # Inicia o menu
+        $menu1 = new Menu();
+        $menu1->add_item('titulo1','Projetos','?','Cartões de Projetos');
+        $menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
+        
         # Verifica se tem projetos
         if($numProjetos>0){
-            # Inicia o menu
-            $menu1 = new Menu();
-            $menu1->add_item('titulo1','Projetos','?','Cartões de Projetos');
-            $menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
-        
             # Percorre o array 
             foreach ($dadosProjetos as $valor){
                 $numTarefa = $projeto->get_numeroTarefasPendentes($valor[0]);
@@ -50,10 +50,9 @@ class Gprojetos{
                     $texto = ">".$texto;
                 }
                 $menu1->add_item('link',$texto,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
-             }
-             
-             $menu1->show();
+            }
         }
+        $menu1->show();
     }
 
     ##########################################################
@@ -78,15 +77,16 @@ class Gprojetos{
         $projeto = new Projeto();
         $intra = new Intra();
         $dadosProjetos = $intra->select($select);
-        $numProjetos = $intra->count($select);
+        $numCadernos = $intra->count($select);
+        
+        # Inicia o menu
+        $menu1 = new Menu();
+        $menu1->add_item('titulo1','Cadernos');
+        $menu1->add_item('link','+ Novo Caderno','?fase=cadernoNovo');
         
         # Verifica se tem cadernos
-        if($numProjetos>0){
-            # Inicia o menu
-            $menu1 = new Menu();
-            $menu1->add_item('titulo1','Cadernos');
-            $menu1->add_item('link','+ Novo Caderno','?fase=cadernoNovo');
-        
+        if($numCadernos>0){
+            
             # Percorre o array 
             foreach ($dadosProjetos as $valor){
                 $numNotas = $projeto->get_numeroNotas($valor[0]);
@@ -97,10 +97,9 @@ class Gprojetos{
                     $texto = ">".$texto;
                 }
                 $menu1->add_item('link',$texto,'?fase=caderno&idCaderno='.$valor[0],$valor[2]);
-             }
-             
-             $menu1->show();
-        }
+            }
+        } 
+        $menu1->show();
     }
 
     ##########################################################
@@ -128,12 +127,14 @@ class Gprojetos{
         $dadosEtiquetas = $intra->select($select);
         $numEtiquetas = $intra->count($select);
 
+        # Inicia o menu
+        $menu1 = new Menu();
+        $menu1->add_item('titulo1','Etiquetas');
+        $menu1->add_item('link','+ Nova Etiqueta','?fase=etiquetaNova');
+        
         # Verifica se tem etiquetas
         if($numEtiquetas>0){
-            # Inicia o menu
-            $menu1 = new Menu();
-            $menu1->add_item('titulo1','Etiquetas');
-            $menu1->add_item('link','+ Nova Etiqueta','?fase=etiquetaNova');
+            
             # Percorre o array 
             foreach ($dadosEtiquetas as $valor) {
                 $numTarefa = $projeto->get_numeroTarefasEtiqueta($valor[0]);
@@ -143,12 +144,10 @@ class Gprojetos{
                 if($idEtiqueta == $valor[0]){
                     $texto = ">".$texto;
                 }
-
                 $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&idEtiqueta='.$valor[0],$valor[3]);
             }
-            
-            $menu1->show();
         }
+        $menu1->show();
     }
 
     ##########################################################
