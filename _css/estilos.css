@@ -296,17 +296,16 @@ table#tableTarefas th{
     font-weight: normal;
     font-size: 13px;
     color: #000;
-    border-bottom: 3px solid gray;    
+    border-bottom: 1px solid gray;    
 }
 
 table#tableTarefas caption {
     background-color: #fff;
     font-weight: normal;
-    color: #02548b;
-    font-size: 16px;
+    font-size: 13px;
     color: #000;
     text-align: left;
-    border-bottom: 3px solid gray;
+    border-bottom: 1px solid gray;
 }
 
 table#tableTarefas td{
