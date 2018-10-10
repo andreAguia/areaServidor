@@ -607,7 +607,7 @@ if($acesso){
             $arrayValores = array($tarefa,$descricao,$dataInicial,$dataFinal,$idProjeto,$pendente,$idEtiqueta,$conclusao,$noOrdem);
             
             # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");
+            $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetotarefa","idTarefa");
             if($hojeGet){
                 loadPage("?fase=hoje");
             }else{
