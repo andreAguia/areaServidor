@@ -322,6 +322,14 @@ if($acesso)
             $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da antiga tabela de contatos');
             #$menu->add_item($botao);
+            
+            # sispatri
+            $botao = new BotaoGrafico();
+            $botao->set_label('Sispatri');
+            $botao->set_url('?fase=sispatri');
+            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
+            $menu->add_item($botao);
             $menu->show();
             break;
         
@@ -383,6 +391,82 @@ if($acesso)
                 $servidor->gravar($campos,$valor,$tt[0],"tbpessoa","idPessoa");
             }
             loadPage("?");
+            break;
+            
+    ########################################################################################
+        
+        case "sispatri" :
+            botaoVoltar("?fase=importacao");
+            titulo('Insere o idServidor na Tabela do Sispatri');
+            
+            br();            
+            $select = 'SELECT idSispatri,
+                              nome,
+                              cpf
+                         FROM tbsispatri
+                     ORDER BY nome';
+                    
+            $row = $servidor->select($select);
+            
+            echo "<table>";
+            
+            echo "<tr>";
+            echo "<th>idSispatri</th>";
+            echo "<th>Nome</th>";
+            echo "<th>CPF</th>";
+            echo "<th>CPF Tratado</th>";
+            echo "<th>idServidor</th>";
+            
+            echo "</tr>";
+            
+            $contador = 0;
+                        
+            foreach ($row as $tt){
+                
+                echo "<tr>";
+                echo "<td>$tt[0]</td>";
+                echo "<td>$tt[1]</td>";
+                echo "<td>$tt[2]</td>";
+                
+                $novoCpf = $tt[2];
+                $len = strlen($novoCpf);
+                
+                $novoCpf = str_pad($novoCpf, 11 , "0", STR_PAD_LEFT);
+                
+                # CPF XXX.XXX.XXX-XX
+                
+                $parte1 = substr($novoCpf, 0,3);
+                $parte2 = substr($novoCpf, 3,3);
+                $parte3 = substr($novoCpf, 6,3);
+                $parte4 = substr($novoCpf, -2);
+                
+                $cpfFinalizado = "$parte1.$parte2.$parte3-$parte4";
+                
+                $select2 = "SELECT idPessoa
+                              FROM tbdocumentacao
+                             WHERE CPF = '$cpfFinalizado'";
+                    
+                $row2 = $servidor->select($select2,FALSE);
+                
+                if(is_null($row2[0])){
+                    echo "<td></td>";
+                    echo "<td></td>";
+                }else{
+                    echo "<td>$cpfFinalizado</td>";
+                    $idServidorPesquisado = $servidor->get_idServidoridPessoa($row2[0]);
+                    echo "<td>".$idServidorPesquisado."</td>";
+                    
+                    # Grava na tabela tbpessoa
+                    $campos = array("idServidor");
+                    $valor = array($idServidorPesquisado);                    
+                    $servidor->gravar($campos,$valor,$tt[0],"tbsispatri","idSispatri");
+                }
+                
+                echo "</tr>";
+            }
+            
+            echo "</table>";
+            #loadPage("?");
             break;
         
     }
