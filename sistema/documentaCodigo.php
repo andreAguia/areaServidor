@@ -79,29 +79,49 @@ if($acesso){
         br();
         echo '<dl>';
         
-        # Abre a pasta das Classes
-        $ponteiro  = opendir($pastaClasses);
-        while ($arquivo = readdir($ponteiro)) {
+        
+        // Diretório
+        $dir = $pastaClasses;
 
-            # Desconsidera os diretorios 
-            if($arquivo == ".." || $arquivo == "." || $arquivo == "exemplos"){
-                continue;
+        // Verificando a existência
+        if (is_dir($dir))
+        {
+            // Obtendo nome dos arquivos da(s) extensões especificadas
+            $Arquivos = glob("{$dir}/*.{php, html}", GLOB_BRACE);
+
+            // Verificando se houve resultado
+            if (is_array($Arquivos))
+            {
+                // Ordenando de forma ascendente (ASC)
+                sort($Arquivos);
+                
+                echo '<dl>';
+                // Imprimindo o nome dos arquivos
+                foreach ($Arquivos as $Imagem){
+                    
+                    $Imagem = basename($Imagem);
+                    
+                    # Divide o nome do arquivos
+                    $partesArquivo = explode('.',$Imagem);
+
+                    if($grupoarquivo <> $partesArquivo[0]){
+                        echo '<dt>'.ucfirst($partesArquivo[0]).'</dt>';
+                    
+                        $grupoarquivo = $partesArquivo[0];
+                    
+                        echo '<dd><a href="documentaClasse.php?sistema='.$fase.'&classe='.$partesArquivo[0].'.'.$partesArquivo[1].'">'.$partesArquivo[1].'</a></dd>';
+                    }else{
+                        echo '<dd><a href="documentaClasse.php?sistema='.$fase.'&classe='.$partesArquivo[0].'.'.$partesArquivo[1].'">'.$partesArquivo[1].'</a></dd>';
+                    }
+                }
+                echo '</dl>';
+
             }
 
-            # Divide o nome do arquivos
-            $partesArquivo = explode('.',$arquivo);
-
-            if($grupoarquivo <> $partesArquivo[0]){
-                echo '<dt>'.ucfirst($partesArquivo[0]).'</dt>';
-
-                $grupoarquivo = $partesArquivo[0];
-                echo '<dd><a href="documentaClasse.php?sistema='.$fase.'&classe='.$partesArquivo[0].'.'.$partesArquivo[1].'">'.$partesArquivo[1].'</a></dd>';
-            }else{
-                echo '<dd><a href="documentaClasse.php?sistema='.$fase.'&classe='.$partesArquivo[0].'.'.$partesArquivo[1].'">'.$partesArquivo[1].'</a></dd>';
-            }
         }
 
-        echo '</dl>';
+        
+        
     $callout->fecha();
     $grid2->fechaColuna(); // Coluna das classes
 

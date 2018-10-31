@@ -50,17 +50,32 @@ if($acesso){
         $linkBotao1->set_class('button');
         $linkBotao1->set_title('Volta para a página anterior');
         $linkBotao1->set_accessKey('V');
-    
+        
         # Botão codigo
         $linkBotao2 = new Link("Código","?sistema=$sistema&classe=$arquivoClasse&metodo=codigo");
-        $linkBotao2->set_class('button');
+        if($metodo == "codigo"){
+            $linkBotao2->set_class('disabled button');
+        }else{
+            $linkBotao2->set_class('button');
+        }
         $linkBotao2->set_title('Exibe o código fonte');
         $linkBotao2->set_accessKey('C');
+
+        # Botão Classe
+        $linkBotao3 = new Link("Classe","?sistema=$sistema&classe=$arquivoClasse");
+        if(is_null($metodo)){
+            $linkBotao3->set_class('disabled button');
+        }else{
+            $linkBotao3->set_class('button');
+        }
+        $linkBotao3->set_title('Exibe a Classe');
+        #$linkBotao3->set_accessKey('F');
 
         # Cria um menu
         $menu = new MenuBar();
         $menu->add_link($linkBotao1,"left");
         $menu->add_link($linkBotao2,"right");
+        $menu->add_link($linkBotao3,"right");
         $menu->show();
 
     $grid->fechaColuna();
@@ -109,6 +124,7 @@ if($acesso){
     hr();
     
     # Percorre as variáveis
+    p("Atributos","center","f11");
     
     if($numVariaveis > 0){
         for ($i=1; $i < $numVariaveis;$i++){
@@ -119,13 +135,15 @@ if($acesso){
     }
     
     # Percorre os métodos
+    p("Métodos","center","f11");
+    
     for ($i=1; $i <= $numMetodo;$i++){
         # link
         echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'&metodo='.$i.'" title="('.$visibilidadeMetodo[$i].') '.$descricaoMetodo[$i].'">';
         if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
-            span('<del>'.$nomeMetodo[$i].'</del>',$visibilidadeMetodo[$i]);
+            span('<del>'.$nomeMetodo[$i].'()</del>',$visibilidadeMetodo[$i]);
         }else{
-            span($nomeMetodo[$i],$visibilidadeMetodo[$i]);
+            span($nomeMetodo[$i].'()',$visibilidadeMetodo[$i]);
         }
         echo '</a>';
         br();
@@ -151,8 +169,9 @@ if($acesso){
             br(2);
 
             # Autor
-            if(!is_null($autorClasse))
+            if(!is_null($autorClasse)){
                 echo '<small>Autor: '.$autorClasse.'</small>';
+            }
 
             hr();
 
@@ -300,48 +319,7 @@ if($acesso){
                 }
             }            
             break;
-
-        case "codigo" :
-            echo '<pre>';
-
-            # Define o arquivo da classe
-            $arquivoExemplo = PASTA_CLASSES_GERAIS.rtrim($arquivoClasse).".php";
-
-            # Exibe o nome do arquivo
-            echo str_repeat("#", 80);
-            br();
-            echo '# Arquivo:'.$arquivoExemplo;
-            br();       
-            echo str_repeat("#", 80);
-            br(2);
-
-            # variável que conta o número da linha
-            $numLinha = 1;
-
-            # Verifica a existência do arquivo
-            if(file_exists($arquivoExemplo)){
-                $linesCodigo = file($arquivoExemplo);
-
-                # Percorre o arquivo e guarda os dados em um array
-                foreach ($linesCodigo as $linha) {
-                    $linha = htmlspecialchars($linha);
-
-                        # Exibe o número da linha
-                        echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinha)."</span> ";
-
-                        # Exibe o código
-                        echo $linha;
-
-                        # Incrementa o ~umero da linha
-                        $numLinha++;
-                }
-            }else{
-                echo "Arquivo de exemplo não encontrado";
-            }
-
-            echo '</pre>';
-            break;
-
+        
         default:
             ### Método
             $callout = new Callout();
@@ -435,7 +413,49 @@ if($acesso){
                 echo '</pre>';
                 br();
             }
-            break;     
+            break;
+            
+            case "codigo" :
+            echo '<pre>';
+
+            # Define o arquivo da classe
+            $arquivoExemplo = PASTA_CLASSES_GERAIS.rtrim($arquivoClasse).".php";
+
+            # Exibe o nome do arquivo
+            echo str_repeat("#", 80);
+            br();
+            echo '# Arquivo:'.$arquivoExemplo;
+            br();       
+            echo str_repeat("#", 80);
+            br(2);
+
+            # variável que conta o número da linha
+            $numLinha = 1;
+
+            # Verifica a existência do arquivo
+            if(file_exists($arquivoExemplo)){
+                $linesCodigo = file($arquivoExemplo);
+
+                # Percorre o arquivo e guarda os dados em um array
+                foreach ($linesCodigo as $linha) {
+                    $linha = htmlspecialchars($linha);
+
+                        # Exibe o número da linha
+                        echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinha)."</span> ";
+
+                        # Exibe o código
+                        echo $linha;
+
+                        # Incrementa o ~umero da linha
+                        $numLinha++;
+                }
+            }else{
+                echo "Arquivo de exemplo não encontrado";
+            }
+
+            echo '</pre>';
+            break;
+
     }
 
     $callout->fecha();
