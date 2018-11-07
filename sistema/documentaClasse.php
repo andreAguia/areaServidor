@@ -124,9 +124,8 @@ if($acesso){
     hr();
     
     # Percorre as variáveis
-    p("Atributos","center","f11");
-    
     if($numVariaveis > 0){
+        p("Atributos","center","f11");
         for ($i=1; $i < $numVariaveis;$i++){
             span($variaveisClasse[$i][1]." (".$variaveisClasse[$i][2].")",NULL,NULL,$variaveisClasse[$i][4]);
             br();
