@@ -77,7 +77,7 @@
                 p('Versão: '.VERSAO,'versao');
         $grid->fechaColuna();
         $grid->abreColuna(4);
-            p(BROWSER_NAME." - ".IP,'ip');
+            p(BROWSER_NAME." - ".IP,'ip');            
         $grid->fechaColuna();
         $grid->fechaGrid();
     }

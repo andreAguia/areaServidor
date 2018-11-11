@@ -90,8 +90,9 @@ if($acesso)
             $imagem = new Imagem(PASTA_FIGURAS.'lista.png',NULL,15,15);
             $botaoLot = new Button();
             $botaoLot->set_title("Listagem de lotações ativas");
-            $botaoLot->set_onClick("window.open('../../grh/grhRelatorios/lotacao.php','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
             $botaoLot->set_imagem($imagem);
+            $botaoLot->set_url('../../grh/grhRelatorios/lotacao.php');
+            $botaoLot->set_target("_blank");
             $menu1->add_link($botaoLot,"right");
             
             # Organograma
@@ -99,15 +100,17 @@ if($acesso)
             $botaoOrg = new Button();
             $botaoOrg->set_title("Exibe o Organograma da UENF");
             $botaoOrg->set_imagem($imagem3);
-            $botaoOrg->set_onClick("window.open('../../grh/_img/organograma.png','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=1000,height=700');");
+            $botaoOrg->set_url('../../grh/_img/organograma.png');
+            $botaoOrg->set_target("_blank");
             $menu1->add_link($botaoOrg,"right");
             
             # Relatórios
             $imagem = new Imagem(PASTA_FIGURAS.'print.png',NULL,15,15);
             $botaoRel = new Button();
             $botaoRel->set_title("Relatório dessa pesquisa");
-            $botaoRel->set_onClick("window.open('?fase=relatorio','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
             $botaoRel->set_imagem($imagem);
+            $botaoRel->set_url("?fase=relatorio");
+            $botaoRel->set_target("_blank");
             $menu1->add_link($botaoRel,"right");
             $menu1->show();
 

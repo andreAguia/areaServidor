@@ -60,7 +60,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Usuários');
             $botao->set_url('usuarios.php');
-            $botao->set_image(PASTA_FIGURAS.'usuarios.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'usuarios.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Gerencia os Usuários');
             $menu->add_item($botao);
 
@@ -68,7 +68,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Regras');
             $botao->set_url('regras.php');
-            $botao->set_image(PASTA_FIGURAS.'regras.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'regras.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Cadastro de Regras');
             $menu->add_item($botao);
 
@@ -76,7 +76,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Histórico');
             $botao->set_title('Histórico Geral do Sistema');
-            $botao->set_image(PASTA_FIGURAS.'historico.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'historico.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('historico.php');
             $menu->add_item($botao);
 
@@ -84,7 +84,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Acesso ao Sistema');
             $botao->set_title('Cadastro de computadores com acesso ao sistema');
-            $botao->set_image(PASTA_FIGURAS.'computador.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'computador.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('computador.php');
             $menu->add_item($botao);
             $menu->show();
@@ -106,7 +106,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('FrameWork');
             $botao->set_title('Documentação do Framework');
-            $botao->set_image(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('documentaCodigo.php?fase=Framework');
             $menu->add_item($botao);
 
@@ -114,7 +114,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Área do Servidor');
             $botao->set_title('Documentação da Área de Administração');
-            $botao->set_image(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('documentaCodigo.php?fase=areaServidor');
             $menu->add_item($botao);
 
@@ -122,7 +122,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Pessoal');
             $botao->set_title('Documentação do Sistema de Pessoal');
-            $botao->set_image(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('documentaCodigo.php?fase=Grh');
             $menu->add_item($botao);
             $menu->show();
@@ -144,7 +144,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Configurações');
             $botao->set_url('configuracao.php');
-            $botao->set_image(PASTA_FIGURAS.'configuracao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'configuracao.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
             $menu->add_item($botao);
 
@@ -152,7 +152,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Atualizações');
             $botao->set_url('atualizacao.php');
-            $botao->set_image(PASTA_FIGURAS.'atualizacao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'atualizacao.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Gerencia o cadastro de atualizações');
             $menu->add_item($botao);
             
@@ -160,7 +160,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Mensagens');
             $botao->set_title('Cadastro de Mensagens');
-            $botao->set_image(PASTA_FIGURAS.'mensagem.jpg',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'mensagem.jpg',$tamanhoImage,$tamanhoImage);
             $botao->set_url('mensagem.php');
             $menu->add_item($botao);
             
@@ -168,7 +168,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Projeto');
             $botao->set_title('Gestão de Projetos');
-            $botao->set_image(PASTA_FIGURAS.'projeto.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'projeto.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('projeto.php');
             $menu->add_item($botao);
             
@@ -189,7 +189,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Área do Servidor');
             $botao->set_title('Documentação do Banco de Dados da Área do Servidor');
-            $botao->set_image(PASTA_FIGURAS.'bdados.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'bdados.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('documentaBd.php?banco=areaservidor');
             $menu->add_item($botao);
 
@@ -197,7 +197,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Pessoal');
             $botao->set_title('Documentação do Banco de Dados do Sistema de Pessoal');
-            $botao->set_image(PASTA_FIGURAS.'bdados.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'bdados.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('documentaBd.php?banco=grh');
             $menu->add_item($botao);
             $menu->show();
@@ -218,7 +218,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Importação');
             $botao->set_title('Executa a rotina de importação');
-            $botao->set_image(PASTA_FIGURAS.'importacao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'importacao.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('?fase=importacao');
             $menu->add_item($botao);
 
@@ -227,7 +227,7 @@ if($acesso)
             $botao->set_label('PhpMyAdmin');
             $botao->set_title('Executa o PhpMyAdmin');
             $botao->set_target('_blank');
-            $botao->set_image(PASTA_FIGURAS.'mysql.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'mysql.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('http://127.0.0.1/phpmyadmin');
             $menu->add_item($botao);
 
@@ -235,7 +235,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Backup Manual');
             $botao->set_title('Executa um backup manual a qualquer tempo');
-            $botao->set_image(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('?fase=backup');
             $menu->add_item($botao);
             
@@ -243,7 +243,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Registros Órfãos');
             $botao->set_title('Faz varredura para encontrar registros órfãos');
-            $botao->set_image(PASTA_FIGURAS.'regOrf.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'regOrf.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('registroOrfao.php');
             $menu->add_item($botao);
             $menu->show();
@@ -264,7 +264,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('PHP Info');
             $botao->set_title('Informações sobre&#10;a versão do PHP');
-            $botao->set_image(PASTA_FIGURAS.'phpInfo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'phpInfo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('phpInfo.php');
             $menu->add_item($botao);
 
@@ -272,7 +272,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Web Server');
             $botao->set_title('Informações sobre&#10;o servidor web');
-            $botao->set_image(PASTA_FIGURAS.'webServer.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'webServer.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('infoWebServer.php');
             $menu->add_item($botao);
             $menu->show();
@@ -303,7 +303,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Férias');
             $botao->set_url('importacaoFerias.php');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Férias do SigRH');
             $menu->add_item($botao);
             
@@ -311,7 +311,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Faltas');
             $botao->set_url('importacaoFaltas.php');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Faltas do SigRH');
             $menu->add_item($botao);
                         
@@ -319,7 +319,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Contatos');
             $botao->set_url('?fase=contatos');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da antiga tabela de contatos');
             #$menu->add_item($botao);
             
@@ -327,7 +327,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Sispatri');
             $botao->set_url('?fase=sispatri');
-            $botao->set_image(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
             $menu->add_item($botao);
             $menu->show();

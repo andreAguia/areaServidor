@@ -150,7 +150,7 @@ if($acesso){
                 $botao = new BotaoGrafico();
                 $botao->set_label('Sistema de Pessoal');
                 $botao->set_url('../../grh/grhSistema/grh.php');
-                $botao->set_image(PASTA_FIGURAS.'sistemaPessoal.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_imagem(PASTA_FIGURAS.'sistemaPessoal.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_title('Acessa o Sistema de Pessoal');
                 $botao->set_accesskey('P');
                 $menu->add_item($botao);
@@ -161,7 +161,7 @@ if($acesso){
                     $botao = new BotaoGrafico();
                     $botao->set_label('Sistema de Processos');
                     $botao->set_url('processo.php');
-                    $botao->set_image(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
+                    $botao->set_imagem(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
                     $botao->set_title('Sistema de controle de processos');
                     $botao->set_target("_blank");
                     $menu->add_item($botao);
@@ -173,7 +173,7 @@ if($acesso){
                     $botao->set_label('Pastas Digitalizadas');
                     $botao->set_url('?fase=pastasDigitalizadas');
                     #$botao->set_url('pastaDigitalizada.php');
-                    $botao->set_image(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
+                    $botao->set_imagem(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
                     $botao->set_title('Sistema de controle de pastas digitalizadas');
                     $botao->set_accesskey('D');
                     $menu->add_item($botao);
@@ -195,21 +195,21 @@ if($acesso){
             $botao = new BotaoGrafico();
             $botao->set_label('Histórico de Licença');
             $botao->set_url('?fase=historicoLicenca');
-            $botao->set_image(PASTA_FIGURAS.'licenca.jpg',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'licenca.jpg',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Exibe o seu histórico de licenças e afastamentos');
             $menu->add_item($botao);
 
             $botao = new BotaoGrafico();
             $botao->set_label('Histórico de Férias');
             $botao->set_url('?fase=historicoFerias');
-            $botao->set_image(PASTA_FIGURAS.'ferias.jpg',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'ferias.jpg',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Exibe o seu histórico de férias');
             $menu->add_item($botao);
             
             $botao = new BotaoGrafico();
             $botao->set_label('Férias do seu Setor');
             $botao->set_url('?fase=feriasSetor');
-            $botao->set_image(PASTA_FIGURAS.'feriasSetor.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'feriasSetor.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Exibe as férias dos servidores do seu setor');
             $menu->add_item($botao);
 
@@ -229,7 +229,7 @@ if($acesso){
                 $botao = new BotaoGrafico();
                 $botao->set_label('Geral');
                 $botao->set_url('servidorGeral.php');
-                $botao->set_image(PASTA_FIGURAS.'admin.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_imagem(PASTA_FIGURAS.'admin.png',$tamanhoImage,$tamanhoImage);
                 $botao->set_title('Lista geral de servidores');
                 $menu->add_item($botao);
             }else{
@@ -239,21 +239,21 @@ if($acesso){
             $botao = new BotaoGrafico();
             $botao->set_label('por Lotação');
             $botao->set_url('servidorLotacao.php');
-            $botao->set_image(PASTA_FIGURAS.'computador.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'computador.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Lista de servidores por lotação');
             $menu->add_item($botao);
 
             $botao = new BotaoGrafico();
             $botao->set_label('por Cargo Efetivo');
             $botao->set_url('servidorCargo.php');
-            $botao->set_image(PASTA_FIGURAS.'cracha.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'cracha.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Lista de servidores por cargo efetivo');
             $menu->add_item($botao);
             
             $botao = new BotaoGrafico();
             $botao->set_label('por Cargo em Comissão');
             $botao->set_url('servidorCargoComissao.php');
-            $botao->set_image(PASTA_FIGURAS.'comissao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'comissao.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Lista de servidores por cargo em comissão');
             $menu->add_item($botao);
             $menu->show();
@@ -275,13 +275,13 @@ if($acesso){
             $botao = new BotaoGrafico();
             #$botao->set_label(SISTEMA_GRH);
             $botao->set_title('Portal do Sistema Integrado de Gestao de Recursos Humanos do Estado do Rio de Janeiro');
-            $botao->set_image(PASTA_FIGURAS."sigrh.png",$largura,$altura);      
+            $botao->set_imagem(PASTA_FIGURAS."sigrh.png",$largura,$altura);      
             $botao->set_url("http://www.entradasigrhn.rj.gov.br/");
             #$menu->add_item($botao);
 
             $botao = new BotaoGrafico();
             $botao->set_label("");
-            $botao->set_image(PASTA_FIGURAS."do.png",$largura,$altura);  
+            $botao->set_imagem(PASTA_FIGURAS."do.png",$largura,$altura);  
             $botao->set_url("http://www.imprensaoficial.rj.gov.br/portal/modules/profile/user.php?xoops_redirect=/portal/modules/content/index.php?id=21");
             $botao->set_title("Imprensa Oficial do Estado do Rio de Janeiro");
             $menu->add_item($botao);
@@ -289,21 +289,21 @@ if($acesso){
             $botao = new BotaoGrafico();
             #$botao->set_label(SISTEMA_GRH);
             $botao->set_title('Portal do Processo Digital');
-            $botao->set_image(PASTA_FIGURAS."processoDigital.png",$largura,$altura);     
+            $botao->set_imagem(PASTA_FIGURAS."processoDigital.png",$largura,$altura);     
             $botao->set_url("https://www.processodigital.rj.gov.br/");
             $menu->add_item($botao);
             
             $botao = new BotaoGrafico();
             #$botao->set_label(SISTEMA_GRH);
             $botao->set_title('Site da UENF');
-            $botao->set_image(PASTA_FIGURAS."uenf.jpg",$largura,$altura);       
+            $botao->set_imagem(PASTA_FIGURAS."uenf.jpg",$largura,$altura);       
             $botao->set_url("http://www.uenf.br/portal/index.php/br/");
             $menu->add_item($botao);
             
             $botao = new BotaoGrafico();
             #$botao->set_label(SISTEMA_GRH);
             $botao->set_title('Site da GRH');
-            $botao->set_image(PASTA_FIGURAS."GRH.png",$largura,$altura);  
+            $botao->set_imagem(PASTA_FIGURAS."GRH.png",$largura,$altura);  
             $botao->set_url("http://uenf.br/dga/grh/");
             $menu->add_item($botao);
 
@@ -778,7 +778,7 @@ if($acesso){
                         $botao->set_label($partesArquivo[0]);
                         $botao->set_url($achei.'/'.$arquivo);
                         $botao->set_target('_blank');
-                        $botao->set_image(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
+                        $botao->set_imagem(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
                         $menu->add_item($botao);
                         
                         $contador++;
@@ -836,7 +836,7 @@ if($acesso){
                         $botao->set_label($partesArquivo[0]);
                         $botao->set_url($achei.'/'.$arquivo);
                         $botao->set_target('_blank');
-                        $botao->set_image(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
+                        $botao->set_imagem(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
                         $menu->add_item($botao);
                     }
                 }

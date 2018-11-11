@@ -82,7 +82,7 @@ if($acesso) {
             $linkBotao1->set_accessKey('V');
             $menu1->add_link($linkBotao1,"left");
             
-            # Vagazs
+            # Vagas
             $linkBotao1 = new Link("Vagas","?fase=vagas");
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Voltar a página anterior');
@@ -92,8 +92,9 @@ if($acesso) {
             $imagem = new Imagem(PASTA_FIGURAS.'print.png',NULL,15,15);
             $botaoRel = new Button();
             $botaoRel->set_title("Relatório dessa pesquisa");
-            $botaoRel->set_onClick("window.open('?fase=relatorio','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
             $botaoRel->set_imagem($imagem);
+            $botaoRel->set_url("?fase=relatorio");
+            $botaoRel->set_target("_blank");
             $menu1->add_link($botaoRel,"right");
             $menu1->show();
 
@@ -226,8 +227,9 @@ if($acesso) {
             $imagem = new Imagem(PASTA_FIGURAS.'print.png',NULL,15,15);
             $botaoRel = new Button();
             $botaoRel->set_title("Relatório");
-            $botaoRel->set_onClick("window.open('../../grh/grhRelatorios/cargoComissaoAtivos.php','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
             $botaoRel->set_imagem($imagem);
+            $botaoRel->set_url('../../grh/grhRelatorios/cargoComissaoAtivos.php');
+            $botaoRel->set_target("_blank");
             $menu1->add_link($botaoRel,"right");
             $menu1->show();
             

@@ -118,7 +118,7 @@ if($acesso){
     $botao->set_label('');
     $botao->set_title('Movimentação do processo');
     $botao->set_url('?fase=movimentacao&idProcesso='.$idProcesso);
-    $botao->set_image(PASTA_FIGURAS.'movimentacao.png',20,20);
+    $botao->set_imagem(PASTA_FIGURAS.'movimentacao.png',20,20);
 
     # Coloca o objeto link na tabela			
     $objeto->set_link(array("","","",$botao));

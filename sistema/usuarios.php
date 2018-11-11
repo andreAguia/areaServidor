@@ -131,7 +131,7 @@ if($acesso){
     $botao->set_label('');
     $botao->set_title('Editar Usuário');
     $botao->set_url('?fase=exibeAtividades&id='.$id);
-    $botao->set_image(PASTA_FIGURAS.'bullet_edit.png',20,20);
+    $botao->set_imagem(PASTA_FIGURAS.'bullet_edit.png',20,20);
 
     # Coloca o objeto link na tabela			
     $objeto->set_link(array("","","","","","","","",$botao));
@@ -524,7 +524,7 @@ if($acesso){
                 $botao1->set_label('');
                 $botao1->set_title('Excluir essa permissão');
                 $botao1->set_url("?fase=excluirPermissao&id=$id&idPermissao=");
-                $botao1->set_image(PASTA_FIGURAS.'bullet_cross.png',20,20);
+                $botao1->set_imagem(PASTA_FIGURAS.'bullet_cross.png',20,20);
 
 
                 # Coloca o objeto link na tabela			
@@ -573,7 +573,7 @@ if($acesso){
                 $botao->set_label('');
                 $botao->set_title('Servidores com permissão a essa regra');
                 $botao->set_url("?fase=incluirPermissao&id=$id&idRegra=");
-                $botao->set_image(PASTA_FIGURAS.'adicionar.png',20,20);
+                $botao->set_imagem(PASTA_FIGURAS.'adicionar.png',20,20);
 
                 # Coloca o objeto link na tabela			
                 $tabela->set_link(array("","","",$botao));

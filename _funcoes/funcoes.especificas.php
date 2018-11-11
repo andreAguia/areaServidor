@@ -108,8 +108,8 @@ function get_dadosProcesso($tt){
     $painel->set_id("right");
     $painel->abre();
             
-        $link = new Link('Editar','processo.php?fase=editar&id='.$idProcesso);
-        $link->set_image(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
+        $link = new Link(NULL,'processo.php?fase=editar&id='.$idProcesso);
+        $link->set_imagem(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
         $link->set_title('Editar Processo');
         $link->show();
 
@@ -124,8 +124,8 @@ function get_dadosProcesso($tt){
             if($numMov == 0){
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 
-                $link = new Link('Excluir','processo.php?fase=excluir&id='.$idProcesso);
-                $link->set_image(PASTA_FIGURAS_GERAIS.'lixo.png',20,20);
+                $link = new Link(NULL,'processo.php?fase=excluir&id='.$idProcesso);
+                $link->set_imagem(PASTA_FIGURAS_GERAIS.'lixo.png',20,20);
                 $link->set_title('Excluir Processo');
                 $link->set_confirma('Deseja mesmo excluir?');
                 $link->show();
@@ -166,7 +166,7 @@ function verificaPasta($idServidorPesquisado){
     # Verifica se tem pasta desse servidor
     if(file_exists($achei)){        
         $link = new Link('Editar','?fase=pasta&idServidorPesquisado='.$idServidorPesquisado);
-        $link->set_image(PASTA_FIGURAS.'pastaDigitalizada.png',20,20);
+        $link->set_imagem(PASTA_FIGURAS.'pastaDigitalizada.png',20,20);
         $link->set_title("Pasta encontrada");
         $link->show();
     }

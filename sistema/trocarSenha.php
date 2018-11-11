@@ -28,7 +28,7 @@ if($acesso)
     
     # Começa uma nova página
     $page = new Page();
-    $page->set_jscript($senhaForte);
+    #$page->set_jscript($senhaForte);
     $page->iniciaPagina();	
 
     # Cabeçalho da Página

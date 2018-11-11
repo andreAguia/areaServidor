@@ -111,7 +111,7 @@ if($acesso){
     
     # Botão de exibição dos servidores com permissão a essa regra
     $botao = new Link(NULL,'processoMovimentacao.php?idProcesso=','Movimentação do Processo');
-    $botao->set_image(PASTA_FIGURAS.'movimentacao.png',20,20);
+    $botao->set_imagem(PASTA_FIGURAS.'movimentacao.png',20,20);
     $objeto->set_link(array(NULL,NULL,NULL,$botao));
 
     # Classe do banco de dados

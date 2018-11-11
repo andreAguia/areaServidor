@@ -227,7 +227,7 @@ if($acesso){
             # data
             $form = new Form('?fase=listar&idServidor='.$idServidor);
 
-            $controle = new Input('parametro','data','Entre com a data',1);
+            $controle = new Input('parametro','date','Entre com a data',1);
             $controle->set_size(30);
             $controle->set_title('Insira a data');
             $controle->set_valor($parametro);
