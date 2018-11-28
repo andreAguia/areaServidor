@@ -131,9 +131,10 @@ function __autoload($classe){
         include_once PASTA_CLASSES_GRH."/class.{$classe}.php";
     }
         
-    if (file_exists(PASTA_CLASSES_GRH."/interface.{$classe}.php"))
-        include_once PASTA_CLASSES_GRH."/interface.{$classe}.php";
+    if (file_exists(PASTA_CLASSES_GRH . "/interface.{$classe}.php")) {
+        include_once PASTA_CLASSES_GRH . "/interface.{$classe}.php";
     }
+}
 
 # Sobre o Sistema
 $intra = new Intra();

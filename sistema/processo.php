@@ -50,6 +50,10 @@ if($acesso){
     ################################################################
     # Nome do Modelo
     $objeto->set_nome('Sistema de Controle de Processos');
+    
+    # controle de pesquisa
+    $objeto->set_parametroLabel('Pesquisar');
+    $objeto->set_parametroValue($parametro);
 
     # select da lista
     $objeto->set_selectLista('SELECT data,
