@@ -125,7 +125,7 @@ switch ($fase){
                 # Envia um email informando
                 if($intra->get_variavel("emiteEmailAlerta")){
                     
-                    $assunto = "Alerta de Acesso ao Sistema de Pessoal";
+                    $assunto = "Tentativa de Login com usuario ($usuario) inexistente.";
                     
                     $mensagem = date("d-m-Y H:i:s");
                     $mensagem .= "<br/>";
@@ -137,14 +137,14 @@ switch ($fase){
                     $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
                     $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
                     $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
+                    $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
                     $mensagem .= "<br/>";
                     $mensagem .= str_repeat("-", 80)."<br/>";
                     $mensagem .= "Não responda esse email.";
                     
                     $mail = new EnviaEmail($assunto, $mensagem);
                     $mail->set_para("alat@uenf.br");
-                    $mail->set_deNome("Sistema de Pessoa - Alerta");
+                    $mail->set_deNome("Sistema de Pessoal");
                     $mail->envia();
                 }
                     
@@ -161,7 +161,7 @@ switch ($fase){
                 # Envia um email informando
                 if($intra->get_variavel("emiteEmailAlerta")){
                     
-                    $assunto = "Alerta de Acesso ao Sistema de Pessoal";
+                    $assunto = "Tentativa de Login com usuario ($usuario) bloqueado (com senha nula) no servidor.";
                     
                     $mensagem = date("d-m-Y H:i:s");
                     $mensagem .= "<br/>";
@@ -173,14 +173,14 @@ switch ($fase){
                     $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
                     $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
                     $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
+                    $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
                     $mensagem .= "<br/>";
                     $mensagem .= str_repeat("-", 80)."<br/>";
                     $mensagem .= "Não responda esse email.";
                     
                     $mail = new EnviaEmail($assunto, $mensagem);
                     $mail->set_para("alat@uenf.br");
-                    $mail->set_deNome("Sistema de Pessoa - Alerta");
+                    $mail->set_deNome("Sistema de Pessoal");
                     $mail->envia();
                 }
                 
@@ -197,7 +197,7 @@ switch ($fase){
                 # Envia um email informando
                 if($intra->get_variavel("emiteEmailAlerta")){
                     
-                    $assunto = "Alerta de Acesso ao Sistema de Pessoal";
+                    $assunto = "Tentativa de Login com usuario ($usuario) e com senha errada.";
                     
                     $mensagem = date("d-m-Y H:i:s");
                     $mensagem .= "<br/>";
@@ -209,14 +209,14 @@ switch ($fase){
                     $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
                     $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
                     $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
+                    $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
                     $mensagem .= "<br/>";
                     $mensagem .= str_repeat("-", 80)."<br/>";
                     $mensagem .= "Não responda esse email.";
                     
                     $mail = new EnviaEmail($assunto, $mensagem);
                     $mail->set_para("alat@uenf.br");
-                    $mail->set_deNome("Sistema de Pessoa - Alerta");
+                    $mail->set_deNome("Sistema de Pessoal");
                     $mail->envia();
                 }
                 
@@ -296,7 +296,7 @@ switch ($fase){
                 # Envia um email informando
                 if($intra->get_variavel("emiteEmailAlerta")){
                     
-                    $assunto = "Alerta de Acesso ao Sistema de Pessoal";
+                    $assunto = "Tentativa de Login com usuario ($usuario) em computador não autorizado.";
                     
                     $mensagem = date("d-m-Y H:i:s");
                     $mensagem .= "<br/>";
@@ -308,14 +308,14 @@ switch ($fase){
                     $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
                     $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
                     $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Qualquer dúvida entre em comtato com a GRH.";
+                    $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
                     $mensagem .= "<br/>";
                     $mensagem .= str_repeat("-", 80)."<br/>";
                     $mensagem .= "Não responda esse email.";
                     
                     $mail = new EnviaEmail($assunto, $mensagem);
                     $mail->set_para("alat@uenf.br");
-                    $mail->set_deNome("Sistema de Pessoa - Alerta");
+                    $mail->set_deNome("Sistema de Pessoal");
                     $mail->envia();
                 }
                 
@@ -339,7 +339,20 @@ switch ($fase){
         $grid = new Grid("center");
         $grid->abreColuna(6);
         
-        $img = new Imagem(PASTA_FIGURAS."parabens.jpg","Parabéns Servidor",'100%','100%');
+        # Define as várias imagens de parabéns que existem no diretório
+        $imagens = array("parabens.jpg",
+                         "parabens1.gif",
+                         "parabens2.gif",
+                         "parabens3.gif",
+                         "parabens4.gif",
+                         "parabens5.gif",
+                         "parabens6.gif",
+                         "parabens7.gif");
+        
+        # Escolhe aleatoriamente uma delas
+        $escolhida = array_rand($imagens);
+        
+        $img = new Imagem(PASTA_FIGURAS.$imagens[$escolhida],"Parabéns Servidor",'100%','100%');
         $img->show();        
         
         $grid->fechaColuna();
@@ -350,7 +363,7 @@ switch ($fase){
         $div = new Div("center");
         $div->abre();
         p('<h5>Querido Servidor, Feliz Aniversário !</h5>','center','center');
-        p('A DGA te deseja paz, alegrias, felicidades e muito sucesso.');
+        p('A GRH te deseja paz, alegrias, felicidades e muito sucesso.');
         $div->fecha();
         br(2);
         
