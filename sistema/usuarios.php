@@ -41,11 +41,7 @@ if($acesso){
     
     # Pega o parametro de pesquisa (se tiver)
     $parametroHistorico = post('historico');
-
-    # Ordem da tabela
-    $orderCampo = get('orderCampo');
-    $orderTipo = get('orderTipo');
-
+    
     # Começa uma nova página
     $page = new Page();			
     $page->iniciaPagina();
@@ -71,15 +67,6 @@ if($acesso){
     $objeto->set_parametroLabel('Pesquisar');
     $objeto->set_parametroValue($parametro);
 
-    # ordenação
-    if(is_null($orderCampo)){
-         $orderCampo = "1";
-    }
-
-    if(is_null($orderTipo)){
-        $orderTipo = 'asc';
-    }
-
     # select da lista
     $objeto->set_selectLista ('SELECT idUsuario,
                                       idUsuario,
@@ -93,7 +80,7 @@ if($acesso){
                                       idUsuario
                                  FROM tbusuario
                                 WHERE usuario LIKE "%'.$parametro.'%"
-                             ORDER BY '.$orderCampo.' '.$orderTipo);
+                             ORDER BY (senha = "") asc, 1 asc');
 
     # select do edita
     $objeto->set_selectEdita('SELECT usuario,
@@ -101,11 +88,6 @@ if($acesso){
                                      obs
                                 FROM tbusuario
                                WHERE idUsuario = '.$id);
-
-    # ordem da lista
-    $objeto->set_orderCampo($orderCampo);
-    $objeto->set_orderTipo($orderTipo);
-    $objeto->set_orderChamador('?fase=listar');
 
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
