@@ -49,8 +49,8 @@ NOME2="$CAMINHO""$DATA"_"$HORA.$BANCO"
 mysqldump -u $USUARIO -p$SENHA $BANCO > $NOME2
 
 # Compacta e junta os dois arquivos
-tar -zcf "$CAMINHO""$DATA"_"$HORA".tar $NOME1 $NOME2
+#tar -zcf "$CAMINHO""$DATA"_"$HORA".tar $NOME1 $NOME2
 
 # Apaga os arquivos originais nao compactados
-rm $NOME1
-rm $NOME2
+#rm $NOME1
+#rm $NOME2
