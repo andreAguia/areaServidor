@@ -4,11 +4,14 @@
 echo 'Executando backup'
 
 # Define os valores para conectar o banco de dados
-USUARIO="andre"
-SENHA="alat"
-
-#USUARIO="root"
-#SENHA="chewbacca"
+if [hostname -eq SGRHDES]
+then
+    USUARIO="andre"
+    SENHA="alat"
+else
+    USUARIO="root"
+    SENHA="chewbacca"
+fi
 
 # Define a string da data e hora
 ANO=$(date +%Y)
