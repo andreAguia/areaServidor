@@ -4,7 +4,7 @@
 echo 'Executando backup'
 
 # Define os valores para conectar o banco de dados
-if [hostname -eq "SGRHDES"]
+if [ hostname -eq "SGRHDES" ]
 then
     USUARIO="andre"
     SENHA="alat"
