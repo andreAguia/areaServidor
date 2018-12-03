@@ -4,7 +4,8 @@
 echo 'Executando backup'
 
 # Define os valores para conectar o banco de dados
-if [ hostname -eq grh1206 ]
+vv=$(hostname)
+if [ $vv == "grh1206" ]
 then
     USUARIO="root"
     SENHA="chewbacca"
