@@ -23,9 +23,9 @@
         if(($dia == 8)AND($mes == 3)){
             $imagem = new Imagem(PASTA_FIGURAS.'uenf_mulher.jpg','Dia Internacional da Mulher',190,60);
         }elseif(($mes == 12) AND ($dia < 26)){
-            $imagem = new Imagem(PASTA_FIGURAS.'uenf_natal.jpg','Feliz Natal',200,60);
+            $imagem = new Imagem(PASTA_FIGURAS.'uenf_natal.png','Feliz Natal',200,60);
         }else{
-            $imagem = new Imagem(PASTA_FIGURAS.'uenf.jpg','Uenf - Universidade do Norte Fluminense',190,60);
+            $imagem = new Imagem(PASTA_FIGURAS.'uenf.png','Uenf - Universidade do Norte Fluminense',190,60);
         }
 		
         $cabec = new Div('center');

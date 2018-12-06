@@ -31,7 +31,6 @@ $fase = get('fase');
 
 # Começa uma nova página
 $page = new Page();
-#$page->set_bodyOnLoad("abreDivId('divMensagemAguarde');");
 $page->iniciaPagina();
 
 # Cabeçalho
@@ -82,13 +81,25 @@ switch ($fase){
             $form->add_item($controle);
 
         $form->show();
-        $callout->fecha();        
-
+        $callout->fecha(); 
+        
+        # Verifica se tem imagem comemorativa
+        $dia = date("d");
+        $mes = date("m");
+        
+        if(($mes == 12) AND ($dia < 26)){
+            $imagem = new Imagem(PASTA_FIGURAS.'natal.gif','Boas Festas Servidor',603,143);
+            $imagem->show();
+            $pulo = 1;
+        }else{
+            $pulo = 6;
+        }
+                
         $grid->fechaColuna();
         $grid->fechaGrid();        
         
         # Mensagem do Dia 
-        br(6);
+        br($pulo);
         $grid = new Grid("center");
         $grid->abreColuna(8); 
         
