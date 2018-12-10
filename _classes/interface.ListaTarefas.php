@@ -95,9 +95,9 @@ class ListaTarefas{
         # Com Data (datado)
         if(!is_null($this->datado)){  // se tiver null exibe os dois
             if($this->datado){
-                $select.= ' AND dataInicial <> "0000-00-00"'; // Exibe os datados
+                $select.= ' AND dataInicial IS NOT NULL'; // Exibe os datados
             }else{
-                $select.= ' AND dataInicial = "0000-00-00"';  // Exibe os sem data
+                $select.= ' AND dataInicial IS NULL';  // Exibe os sem data
             }
         }
         
@@ -231,9 +231,9 @@ class ListaTarefas{
         # Com Data (datado)
         if(!is_null($this->datado)){  // se tiver null exibe os dois
             if($this->datado){
-                $select.= ' AND dataInicial <> "0000-00-00"'; // Exibe os datados
+                $select.= ' AND dataInicial IS NOT NULL'; // Exibe os datados
             }else{
-                $select.= ' AND dataInicial = "0000-00-00"';  // Exibe os sem data
+                $select.= ' AND dataInicial IS NULL';  // Exibe os sem data
             }
         }
         
