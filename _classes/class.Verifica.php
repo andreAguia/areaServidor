@@ -45,8 +45,9 @@ class Verifica
 
         # Verifica de o usuário logado tem permissão para essa rotina 
         if(!is_null($rotina)){
-            if(!($intra->verificaPermissao($idUsuario,$rotina)))
+            if(!($intra->verificaPermissao($idUsuario,$rotina))){
                 $acesso = FALSE;
+            }
         }
         
         /**
