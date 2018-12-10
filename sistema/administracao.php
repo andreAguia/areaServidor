@@ -31,6 +31,9 @@ if($acesso)
     # Cabeçalho
     AreaServidor::cabecalho();
     
+    # Zera sessions
+    set_session('categoria');   // sessio de pesquisa da rotina de configuraçoes
+    
     # Limita o tamanho da tela
     $grid1 = new Grid();
     $grid1->abreColuna(12);

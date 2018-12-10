@@ -24,7 +24,8 @@ if($acesso)
     $fase = get('fase','listar');
     
     # Varifica a Categoria
-    $categoria = get("categoria","Sistema");
+    $categoria = get("categoria",get_session('categoria',"Acesso"));
+    set_session('categoria',$categoria);
 
     # pega o id se tiver)
     $id = soNumeros(get('id'));
@@ -42,6 +43,33 @@ if($acesso)
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
+    
+    if($fase == "listar"){
+        # Limita o tamanho da tela
+        $grid = new Grid();
+        $grid->abreColuna(12);
+
+        # Botão voltar
+        $linkBotao1 = new Link("Voltar",'administracao.php');
+        $linkBotao1->set_class('button');
+        $linkBotao1->set_title('Volta para a página anterior');
+        $linkBotao1->set_accessKey('V');
+
+        # Código
+        $linkBotao2 = new Link("Incluir",'?fase=editar');
+        $linkBotao2->set_class('button');
+        $linkBotao2->set_title('Incluir uma nova variavel de configuraçao');
+        $linkBotao2->set_accessKey('I');
+
+        # Cria um menu
+        $menu = new MenuBar();
+        $menu->add_link($linkBotao1,"left");
+        $menu->add_link($linkBotao2,"right");
+        $menu->show();
+
+        $grid->fechaColuna();
+        $grid->fechaGrid();
+    }
 
     ################################################################
 
@@ -56,11 +84,13 @@ if($acesso)
     $objeto->set_voltarLista('administracao.php');
 
     # ordenação
-    if(is_null($orderCampo))
-            $orderCampo = 1;
+    if(is_null($orderCampo)){
+        $orderCampo = 1;
+    }
 
-    if(is_null($orderTipo))
-            $orderTipo = 'asc';
+    if(is_null($orderTipo)){
+        $orderTipo = 'asc';
+    }
 
     # select da lista
     $select = 'SELECT categoria,
@@ -91,6 +121,8 @@ if($acesso)
     $objeto->set_orderChamador('?fase=listar');
 
     # Caminhos
+    $objeto->set_botaoVoltarLista(FALSE);
+    $objeto->set_botaoIncluir(FALSE);
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
@@ -162,7 +194,7 @@ if($acesso)
             $grid = new Grid();
             $grid->abreColuna(2);
                 
-                $menu = new Menu();
+                $menu = new Menu("menuVertical2");
                 $result = $intra->select('SELECT distinct categoria, categoria
                                               FROM tbvariaveis                                
                                           ORDER BY 1');
