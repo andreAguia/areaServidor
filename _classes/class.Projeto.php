@@ -57,7 +57,7 @@ class Projeto{
     
         # Pega os projetos cadastrados
         $select = 'SELECT idCaderno,
-                          Caderno,
+                          caderno,
                           descricao
                      FROM tbprojetocaderno
                      WHERE idCaderno = '.$idCaderno;

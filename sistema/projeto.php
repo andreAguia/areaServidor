@@ -589,10 +589,10 @@ if($acesso){
             # Recuperando os valores
             $tarefa = post('tarefa');
             $descricao = post('descricao');
-            $dataInicial = post('dataInicial');
-            $dataFinal = post('dataFinal');
+            $dataInicial = vazioPraNulo(post('dataInicial'));
+            $dataFinal = vazioPraNulo(post('dataFinal'));
             $idProjeto = post('idProjeto');
-            $idEtiqueta = post('idEtiqueta');
+            $idEtiqueta = vazioPraNulo(post('idEtiqueta'));
             $pendente = post('pendente');
             $conclusao = post('conclusao');
             $noOrdem = post('noOrdem');
@@ -634,7 +634,7 @@ if($acesso){
             $arrayValores = array($pendente);
             
             # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetoTarefa","idTarefa");
+            $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetotarefa","idTarefa");
             
             if($hojeGet){
                 loadPage("?fase=hoje");
@@ -736,7 +736,7 @@ if($acesso){
             $arrayValores = array($etiqueta,$cor,$descricao);
             
             # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idEtiqueta,"tbprojetoEtiqueta","idEtiqueta");
+            $intra->gravar($arrayNome,$arrayValores,$idEtiqueta,"tbprojetoetiqueta","idEtiqueta");
             
             if(is_null($idEtiqueta)){
                 loadPage("?");

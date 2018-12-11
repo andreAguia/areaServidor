@@ -95,9 +95,9 @@ class ListaTarefas{
         # Com Data (datado)
         if(!is_null($this->datado)){  // se tiver null exibe os dois
             if($this->datado){
-                $select.= ' AND dataInicial <> "0000-00-00"'; // Exibe os datados
+                $select.= ' AND dataInicial IS NOT NULL'; // Exibe os datados
             }else{
-                $select.= ' AND dataInicial = "0000-00-00"';  // Exibe os sem data
+                $select.= ' AND dataInicial IS NULL';  // Exibe os sem data
             }
         }
         
@@ -126,7 +126,8 @@ class ListaTarefas{
         $numTarefas = $intra->count($select);
         
         # Botão do Tick
-        $botao1 = new BotaoGrafico();                    
+        $botao1 = new BotaoGrafico();
+        
         # o link para quando se é por projeto
         if(!is_null($this->projeto)){
             $botao1->set_url('?fase=mudaTarefa&idProjeto='.$this->projeto.'&idTarefa=');
@@ -231,9 +232,9 @@ class ListaTarefas{
         # Com Data (datado)
         if(!is_null($this->datado)){  // se tiver null exibe os dois
             if($this->datado){
-                $select.= ' AND dataInicial <> "0000-00-00"'; // Exibe os datados
+                $select.= ' AND dataInicial IS NOT NULL'; // Exibe os datados
             }else{
-                $select.= ' AND dataInicial = "0000-00-00"';  // Exibe os sem data
+                $select.= ' AND dataInicial IS NULL';  // Exibe os sem data
             }
         }
         

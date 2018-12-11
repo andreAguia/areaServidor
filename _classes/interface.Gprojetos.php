@@ -338,16 +338,16 @@ class Gprojetos{
     ###########################################################
     
     
-    public function showEtiqueta($idEtiqueta){
+    public function showEtiqueta($idEtiqueta = NULL){
     /**
      * Retorna o nome da etiqueta
      * 
-     * @param $idEtiqueta integer NULL o idProjeto
+     * @param $idEtiqueta integer NULL o idEtiqueta
      * 
      * @syntax $projeto->get_nomeProjeto([$idEtiqueta]);  
      */
     
-        # Pega os projetos cadastrados
+        # Pega as etiquetas cadastradas
         $select = 'SELECT etiqueta,
                           cor,
                           descricao
@@ -355,13 +355,17 @@ class Gprojetos{
                      WHERE idEtiqueta = '.$idEtiqueta;
         
         $intra = new Intra();
-        $row = $intra->select($select,false);
-        if(!is_null($row[0])){
-            label($row[0],$row[1],NULL,$row[2]);
-        }else{
-            echo "--";
-        }
         
+        if(is_null($idEtiqueta)){
+            echo "--";
+        }else{
+            $row = $intra->select($select,false);
+            if(!is_null($row[0])){
+                label($row[0],$row[1],NULL,$row[2]);
+            }else{
+                echo "--";
+            }
+        }
     }
            
     ###########################################################
