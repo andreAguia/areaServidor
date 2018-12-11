@@ -853,7 +853,7 @@ if($acesso){
             
             #$callout->fecha();
             $grid->fechaColuna();
-            $grid1->fechaGrid();
+            $grid->fechaGrid();
             
     #############################################################
         
