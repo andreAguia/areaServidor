@@ -126,7 +126,8 @@ class ListaTarefas{
         $numTarefas = $intra->count($select);
         
         # Botão do Tick
-        $botao1 = new BotaoGrafico();                    
+        $botao1 = new BotaoGrafico();
+        
         # o link para quando se é por projeto
         if(!is_null($this->projeto)){
             $botao1->set_url('?fase=mudaTarefa&idProjeto='.$this->projeto.'&idTarefa=');
