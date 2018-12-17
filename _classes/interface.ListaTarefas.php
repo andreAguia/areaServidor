@@ -69,21 +69,10 @@ class ListaTarefas{
         
         # Pega as tarefas
         $select = 'SELECT idTarefa,
-                          idTarefa,';
-        
-        # Retira o projeto do select quando for filtrado por projeto
-        if(is_null($this->projeto)){
-             $select.= ' idProjeto,';
-        }
-        
-        # Retira a etiqueta do select quando for filtrado por etiqueta
-        if(is_null($this->etiqueta)){
-             $select.= ' idEtiqueta,';
-        }
-                          
-        $select.= '  idTarefa,
-                     idTarefa
-                FROM tbprojetotarefa';
+                          idTarefa,
+                          idTarefa,
+                          idTarefa
+                     FROM tbprojetotarefa';
         
         # Pendente
         if($this->pendente){
@@ -163,36 +152,19 @@ class ListaTarefas{
             $tabela->set_titulo($this->titulo);
         }
         
-        $label = array("","Tarefa");
+        $label = array("","","");
         $align = array("center","left");
-        $classe = array(NULL,"Gprojetos");
-        $metodo = array(NULL,"showTarefa");
+        $width = array(5,80,15);
+        $classe = array(NULL,"Gprojetos","Gprojetos");
+        $metodo = array(NULL,"showTarefa","showData");
         $link = array($botao1);
-        
-        if(is_null($this->projeto)){
-            array_push($label,"Projeto");
-            array_push($align,"center");      
-            array_push($classe,"Gprojetos");
-            array_push($metodo,"showProjeto");
-        }
-        
-        if(is_null($this->etiqueta)){
-            array_push($label,"Etiqueta");
-            array_push($align,"center");
-            array_push($classe,"Gprojetos");
-            array_push($metodo,"showEtiqueta");
-        }
-        
-        array_push($label,"Data");
-        array_push($classe,"Gprojetos");
-        array_push($metodo,"showData"); 
                 
         $tabela->set_conteudo($tarefas);
-        $tabela->set_label($label);
-        $tabela->set_align($align);
+        $tabela->set_cabecalho($label,$width,$align);
         
         $tabela->set_classe($classe);
         $tabela->set_metodo($metodo);
+        $tabela->set_scroll(FALSE);
         
         # Coloca o objeto link na tabela	
         $tabela->set_idCampo("idTarefa");

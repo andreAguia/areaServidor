@@ -292,11 +292,7 @@ table#tableTarefas a{
 
 table#tableTarefas th{
     background-color:#fff;
-    text-align: center;
-    font-weight: normal;
-    font-size: 13px;
-    color: #000;
-    border-bottom: 1px solid gray;    
+    font-size: 1px;
 }
 
 table#tableTarefas caption {
@@ -305,7 +301,7 @@ table#tableTarefas caption {
     font-size: 13px;
     color: #000;
     text-align: left;
-    border-bottom: 1px solid gray;
+    padding: 0;
 }
 
 table#tableTarefas td{
@@ -320,6 +316,7 @@ table#tableTarefas tfoot td {
     color: #000;
     text-align: right;
     border-bottom: 0px;
+    font-size: 10px;
 }
 
 table#tableNotas{
@@ -383,6 +380,16 @@ pre#preNota{
     padding: 1em;
     border: 0px;
     border-radius: 0px;
+}
+
+span#projeto{
+    color: #076cba;
+    font-size: 10px;
+}
+
+span#etiqueta{
+    font-size: 10px;
+    color: #B00000;
 }
 
 /*******************************************

@@ -43,11 +43,11 @@ class Gprojetos{
             # Percorre o array 
             foreach ($dadosProjetos as $valor){
                 $numTarefa = $projeto->get_numeroTarefasPendentes($valor[0]);
-                $texto = $valor[1]." ($numTarefa)";
+                $texto = $valor[1]." $numTarefa";
                 
                 # Marca o item que está sendo editado
                 if($idProjeto == $valor[0]){
-                    $texto = ">".$texto;
+                    $texto = "> ".$texto;
                 }
                 $menu1->add_item('link',$texto,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
             }
@@ -94,7 +94,7 @@ class Gprojetos{
                 
                 # Marca o item que está sendo editado
                 if($idCaderno == $valor[0]){
-                    $texto = ">".$texto;
+                    $texto = "> ".$texto;
                 }
                 $menu1->add_item('link',$texto,'?fase=caderno&idCaderno='.$valor[0],$valor[2]);
             }
@@ -142,7 +142,7 @@ class Gprojetos{
 
                 # Marca o item que está sendo editado
                 if($idEtiqueta == $valor[0]){
-                    $texto = ">".$texto;
+                    $texto = "> ".$texto;
                 }
                 $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&idEtiqueta='.$valor[0],$valor[3]);
             }
@@ -276,7 +276,7 @@ class Gprojetos{
         #$menu1->add_item('titulo','Cronológico');
         
         if($fase == "hoje"){
-            $menu1->add_item('link','>Hoje','?fase=hoje','Exibe as tarefas para hoje');
+            $menu1->add_item('link','> Hoje','?fase=hoje','Exibe as tarefas para hoje');
         }else{
             $menu1->add_item('link','Hoje','?fase=hoje','Exibe as tarefas para hoje');
         }
@@ -369,21 +369,24 @@ class Gprojetos{
            
     ###########################################################
     
-    public function showTarefa($idTarefa){
+    public function showTarefa($idTarefa,$esconde = NULL){
     /**
-     * Retorna o nome da etiqueta
+     * Exibe a tarefa
      * 
-     * @param $idEtiqueta integer NULL o idProjeto
+     * @param $idTarefa integer NULL o $idTarefa
+     * @param $esconde  integer NULL NULL -> exibe o projeto e a etiqueta | 1 -> esconde Projeto | 2 -> esconde etiqueta
      * 
-     * @syntax $projeto->get_nomeProjeto([$idEtiqueta]);  
+     * @syntax $projeto->showTarefa($idTarefa);  
      */
     
         # Pega os projetos cadastrados
         $select = 'SELECT tarefa,
                           noOrdem,
-                          pendente
+                          pendente,
+                          idProjeto,
+                          idEtiqueta
                      FROM tbprojetotarefa
-                     WHERE idTarefa = '.$idTarefa;
+                    WHERE idTarefa = '.$idTarefa;
         
         $intra = new Intra();
         $row = $intra->select($select,false); 
@@ -410,16 +413,47 @@ class Gprojetos{
                 break;
         }
         
+        $projeto = new Projeto();
+        $nomeProjeto = $projeto->get_nomeProjeto($row[3]);
+        $nomeEtiqueta = $projeto->get_nomeEtiqueta($row[4]);        
+        
         # Verifica se está pendente
         if($row[2]){
             
             $link = new Link($row[0],'?fase=tarefaNova&idTarefa='.$idTarefa);
             $link->show();
+            br();
+            
+            # Verifica se esconde o projeto
+            if($esconde <> 1){
+                span($nomeProjeto,"projeto");
+                echo "&nbsp&nbsp&nbsp";
+            }
+            
+            if($esconde <> 2){
+                if(!is_null($nomeEtiqueta)){
+                    span($nomeEtiqueta,"etiqueta");
+                }
+            }            
             
         }else{
             
             $link = new Link(del($row[0]),'?fase=tarefaNova&idTarefa='.$idTarefa);
             $link->show();
+            
+            br();
+            
+            # Verifica se esconde o projeto
+            if($esconde <> 1){
+                span($nomeProjeto,"projeto");
+                echo " ";
+            }
+            
+            if($esconde <> 2){
+                if(!is_null($nomeEtiqueta)){
+                    label($nomeEtiqueta,"etiqueta");
+                }
+            }       
         }
     }
            

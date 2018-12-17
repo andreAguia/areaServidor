@@ -171,7 +171,7 @@ if($acesso)
             $botao = new BotaoGrafico();
             $botao->set_label('Projeto');
             $botao->set_title('Gestão de Projetos');
-            $botao->set_imagem(PASTA_FIGURAS.'projeto.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS.'atribuicoes.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('projeto.php');
             $menu->add_item($botao);
             

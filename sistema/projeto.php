@@ -103,41 +103,35 @@ if($acesso){
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(6);
+            $grid->abreColuna(8);
             
                 # Exibe o nome e a descrição
                 p($projetoPesquisado[1],'descricaoProjetoTitulo');
                 p($projetoPesquisado[2],'descricaoProjeto');
                 
             $grid->fechaColuna();
-            $grid->abreColuna(6);
+            $grid->abreColuna(4);
                 
                 # Menu
                 $menu1 = new MenuBar("small button-group");
                 
-                # Timeline
-                $link1 = new Link("Editar Projeto",'?fase=projetoNovo&idProjeto='.$idProjeto);
+                # Nova Tarefa
+                $link4 = new Link("+",'?fase=tarefaNova&idProjeto='.$idProjeto);
+                $link4->set_class('button');
+                $link4->set_title('Nova tarefa');
+                $menu1->add_link($link4,"right");
+                
+                # Editar
+                $link1 = new Link("Editar",'?fase=projetoNovo&idProjeto='.$idProjeto);
                 $link1->set_class('button');
                 $link1->set_title('Editar Projeto');
                 $menu1->add_link($link1,"right");
-                
-                # Timeline
-                $link2 = new Link("Timeline",'?fase=timeline&origem=projeto&idProjeto='.$idProjeto);
-                $link2->set_class('button');
-                $link2->set_title('Timeline');
-                $menu1->add_link($link2,"right");
                 
                 # Concluídas
                 $link3 = new Link("Concluídas",'?fase=projetoConcluidas&origem=nota&idProjeto='.$idProjeto);
                 $link3->set_class('button');
                 $link3->set_title('Concluídas');
                 $menu1->add_link($link3,"right");
-
-                # Nova Tarefa
-                $link4 = new Link("+",'?fase=tarefaNova&idProjeto='.$idProjeto);
-                $link4->set_class('button');
-                $link4->set_title('Nova tarefa');
-                $menu1->add_link($link4,"right");
                 
                 $menu1->show();
                 
@@ -747,7 +741,7 @@ if($acesso){
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(9);
+            $grid->abreColuna(12);
             
             $hoje = date("d/m/Y");
             
@@ -756,18 +750,9 @@ if($acesso){
                 p('Tarefas de todos os projetos agendadas para hoje (Incluindo as atrasadas) - '.$hoje,'descricaoProjeto');
                 
             $grid->fechaColuna();
-            $grid->abreColuna(3);
-            
-                # Exibe o link de Nova Tarefa
-                #$menu2 = new Menu();
-                #$menu2->add_item('link','+ Nova Tarefa','?fase=tarefaNova&idProjeto='.$idProjeto);
-                #$menu2->show();
-                
-            $grid->fechaColuna();
             $grid->fechaGrid(); 
             
             hr("projetosTarefas");
-            br();
             
             # Exibe as tarefas pendentes de hoje
             $lista = new ListaTarefas("Tarefas de Hoje");

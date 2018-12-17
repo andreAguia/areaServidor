@@ -229,15 +229,44 @@ class Projeto{
      * 
      * @syntax $projeto->get_nomeProjeto([$idProjeto]);  
      */
-    
-        # Pega os projetos cadastrados
-        $select = 'SELECT projeto
-                     FROM tbprojeto
-                     WHERE idProjeto = '.$idProjeto;
         
-        $intra = new Intra();
-        $row = $intra->select($select,false);
-        return $row[0];
+        if(is_null($idProjeto)){
+           return NULL; 
+        }else{
+            # Pega os projetos cadastrados
+            $select = 'SELECT projeto
+                         FROM tbprojeto
+                        WHERE idProjeto = '.$idProjeto;
+
+            $intra = new Intra();
+            $row = $intra->select($select,FALSE);
+            return $row[0];        
+        }
+    }
+           
+    ###########################################################
+    
+    public function get_nomeEtiqueta($idEtiqueta){
+    /**
+     * Retorna o nome da etiqueta informado
+     * 
+     * @param $idEtiqueta integer NULL a $idEtiqueta
+     * 
+     * @syntax $projeto->get_nomeEtiqueta([$idEtiqueta]);  
+     */
+    
+        if(is_null($idEtiqueta)){
+           return NULL; 
+        }else{
+            # Pega os projetos cadastrados
+            $select = 'SELECT etiqueta
+                         FROM tbprojetoetiqueta
+                        WHERE idEtiqueta = '.$idEtiqueta;
+
+            $intra = new Intra();
+            $row = $intra->select($select,FALSE);
+            return $row[0];
+        }
     }
            
     ###########################################################
