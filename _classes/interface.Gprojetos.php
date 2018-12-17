@@ -270,8 +270,7 @@ class Gprojetos{
     * 
     * @param $idProjeto integer NULL o id do projeto a sser ressaltado no menu informando que stá sendo editado.
     */    
-   
-        
+           
         # Inicia o menu
         $menu1 = new Menu();
         #$menu1->add_item('titulo','Cronológico');

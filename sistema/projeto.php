@@ -145,7 +145,6 @@ if($acesso){
             $grid->fechaGrid(); 
             
             hr("projetosTarefas");
-            br();
             
             # Exibe as tarefas pendentes com data
             $lista = new ListaTarefas("Tarefas Pendentes com Data");
@@ -183,7 +182,6 @@ if($acesso){
             $grid->fechaGrid(); 
             
             hr("projetosTarefas");
-            br();
             
             # Exibe as tarefas completatadas
             $lista = new ListaTarefas("Tarefas Concluídas");
@@ -278,7 +276,6 @@ if($acesso){
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
-            br();
             
             # Formulário
             $form = new Form('?fase=validaProjeto&idProjeto='.$idProjeto);        
@@ -378,7 +375,6 @@ if($acesso){
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
-            br();
             
             # Formulário
             $form = new Form('?fase=validaCaderno&idCaderno='.$idCaderno);        
@@ -457,7 +453,6 @@ if($acesso){
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
-            br();
             
             # Pega os dados da combo projeto
             $select = 'SELECT idProjeto,
@@ -673,7 +668,6 @@ if($acesso){
             $grid->fechaColuna(); 
             $grid->fechaGrid(); 
             hr("projetosTarefas");
-            br();
             
             # Formulário
             $form = new Form('?fase=validaEtiqueta&idEtiqueta='.$idEtiqueta);        
@@ -839,7 +833,6 @@ if($acesso){
             $grid->fechaColuna(); 
             $grid->fechaGrid(); 
             hr("projetosTarefas");
-            br();
             
             # Pega os dados da combo caderno
             $select = 'SELECT idCaderno,
@@ -955,8 +948,7 @@ if($acesso){
             $grid->fechaGrid();             
             
             hr("projetosTarefas");
-            br();
-            
+                        
             # Limita o tamanho da tela
             $grid = new Grid();
             $grid->abreColuna(4);
