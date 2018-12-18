@@ -186,7 +186,7 @@ class Gprojetos{
                 if($solicitante == $valor[0]){
                     $texto = "> ".$texto;
                 }
-                $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&etiqueta='.$valor[0]);
+                $menu1->add_item('link',$texto,'?fase=projetoSolicitante&solicitante='.$valor[0]);
             }
         }
         $menu1->show();
@@ -304,7 +304,7 @@ class Gprojetos{
 
     ##########################################################
     
-    public static function menuCronologico($fase){
+    public static function menuFazendo($fase){
     /**
     * Exibe o menu de projetos ativos.
     * 
@@ -318,9 +318,9 @@ class Gprojetos{
         #$menu1->add_item('titulo','Cronológico');
         
         if($fase == "hoje"){
-            $menu1->add_item('link','> Hoje','?fase=hoje','Exibe as tarefas para hoje');
+            $menu1->add_item('link','> Fazendo','?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');
         }else{
-            $menu1->add_item('link','Hoje','?fase=hoje','Exibe as tarefas para hoje');
+            $menu1->add_item('link','Fazendo','?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');
         }
         $menu1->show();
     }
@@ -488,17 +488,21 @@ class Gprojetos{
             $link->show();            
             br();
             
-            # Verifica se esconde o projeto
-            if($esconde <> 1){
-                span($nomeProjeto,"projeto");
-                echo " ";
-            }
+             # Projeto
+            span($nomeProjeto,"projeto");
             
-            if($esconde <> 2){
-                if(!is_null($nomeEtiqueta)){
-                    label($nomeEtiqueta,"etiqueta");
-                }
-            }       
+            
+            # Etiqueta
+            if(!is_null($row[4])){
+                echo "&nbsp&nbsp&nbsp";
+                span($row[4],"etiqueta");
+            } 
+            
+            # Solicitante
+            if(!is_null($row[5])){
+                echo "&nbsp&nbsp&nbsp";
+                span($row[5],"solicitante");
+            } 
         }
     }
            
