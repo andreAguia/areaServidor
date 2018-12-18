@@ -81,7 +81,7 @@ class Projeto{
         # Pega as notas
         $select = 'SELECT idNota,
                           idCaderno,
-                          idEtiqueta, 
+                          etiqueta, 
                           titulo,
                           nota
                      FROM tbprojetonota
@@ -140,21 +140,44 @@ class Projeto{
     
     ###########################################################
     
-    public function get_numeroTarefasEtiqueta($idEtiqueta){
+    public function get_numeroTarefasEtiqueta($etiqueta){
     /**
      * Retorna um inteiro com o número de tarefas pendentes de uma Etiqueta
      * 
-     * @param $idEtiqueta integer NULL o idEtiqueta 
+     * @param $etiqueta integer NULL o etiqueta 
      * 
      * @note usado no menu de etiquetas informando o número de tarefas no menu
      * 
-     * @syntax $projeto->get_numeroTarefasEtiqueta([$idEtiqueta]);  
+     * @syntax $projeto->get_numeroTarefasEtiqueta([$etiqueta]);  
      */
     
         # Pega os projetos cadastrados
         $select = 'SELECT idTarefa
                      FROM tbprojetotarefa
-                    WHERE pendente AND idEtiqueta = '.$idEtiqueta;
+                    WHERE pendente AND etiqueta = "'.$etiqueta.'"';
+        
+        $intra = new Intra();
+        $numTarefas = $intra->count($select);
+        return $numTarefas;
+    }
+    
+     ###########################################################
+    
+    public function get_numeroTarefasSolitante($solicitante){
+    /**
+     * Retorna um inteiro com o número de tarefas pendentes de uma Etiqueta
+     * 
+     * @param $etiqueta integer NULL o etiqueta 
+     * 
+     * @note usado no menu de etiquetas informando o número de tarefas no menu
+     * 
+     * @syntax $projeto->get_numeroTarefasEtiqueta([$etiqueta]);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT idTarefa
+                     FROM tbprojetotarefa
+                    WHERE pendente AND solicitante = "'.$solicitante.'"';
         
         $intra = new Intra();
         $numTarefas = $intra->count($select);
@@ -180,38 +203,14 @@ class Projeto{
                           dataInicial,
                           dataFinal,
                           pendente,
-                          idEtiqueta,
+                          etiqueta,
                           idProjeto,
-                          conclusao
+                          conclusao,
+                          status,
+                          solicitante
                      FROM tbprojetotarefa
                      WHERE idTarefa = '.$idTarefa.' 
                 ORDER BY noOrdem';
-        
-        $intra = new Intra();
-        
-        $row = $intra->select($select,false);
-        return $row;
-    }
-    
-    ###########################################################
-    
-    public function get_dadosEtiqueta($idEtiqueta){
-    /**
-     * Retorna um array com todos os dados de uma etiqueta específica
-     * 
-     * @param $idEtiqueta integer NULL o idEtiqueta 
-     * 
-     * @syntax $projeto->get_dadosEtiqueta($idEtiqueta);  
-     */
-    
-        # Pega os projetos cadastrados
-        $select = 'SELECT idEtiqueta,
-                          etiqueta,
-                          cor,
-                          descricao
-                     FROM tbprojetoetiqueta
-                     WHERE idEtiqueta = '.$idEtiqueta.' 
-                ORDER BY etiqueta';
         
         $intra = new Intra();
         
@@ -246,22 +245,22 @@ class Projeto{
            
     ###########################################################
     
-    public function get_nomeEtiqueta($idEtiqueta){
+    public function get_nomeEtiqueta($etiqueta){
     /**
      * Retorna o nome da etiqueta informado
      * 
-     * @param $idEtiqueta integer NULL a $idEtiqueta
+     * @param $etiqueta integer NULL a $etiqueta
      * 
-     * @syntax $projeto->get_nomeEtiqueta([$idEtiqueta]);  
+     * @syntax $projeto->get_nomeEtiqueta([$etiqueta]);  
      */
     
-        if(is_null($idEtiqueta)){
+        if(is_null($etiqueta)){
            return NULL; 
         }else{
             # Pega os projetos cadastrados
             $select = 'SELECT etiqueta
                          FROM tbprojetoetiqueta
-                        WHERE idEtiqueta = '.$idEtiqueta;
+                        WHERE etiqueta = '.$etiqueta;
 
             $intra = new Intra();
             $row = $intra->select($select,FALSE);

@@ -275,7 +275,7 @@ p#pCardNomeGrupo {
     font-size: 10px;
     margin: 0px;
     margin-left: 8px;
-    padding: 0;
+    padding: 0px;
     color:cadetblue;
 }
 
@@ -284,6 +284,7 @@ table#tableTarefas{
     border-spacing: 2pt;
     font-size: 13px;
     width: 100%;
+    margin: 0px;
 }
 
 table#tableTarefas a{
@@ -292,7 +293,10 @@ table#tableTarefas a{
 
 table#tableTarefas th{
     background-color:#fff;
-    font-size: 1px;
+    height: 0px;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
 }
 
 table#tableTarefas caption {
@@ -301,7 +305,9 @@ table#tableTarefas caption {
     font-size: 13px;
     color: #000;
     text-align: left;
-    padding: 0;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
 }
 
 table#tableTarefas td{
@@ -309,6 +315,7 @@ table#tableTarefas td{
    padding: 2px;
    border-bottom: 1px solid gray;
    color: #000;
+   font-size: 12px;
 }
 
 table#tableTarefas tfoot td {
@@ -317,12 +324,13 @@ table#tableTarefas tfoot td {
     text-align: right;
     border-bottom: 0px;
     font-size: 10px;
+    padding: 0px;
 }
 
 table#tableNotas{
     border-collapse: separate;
-    border-spacing: 2pt;
-    font-size: 13px;
+    border-spacing: 1pt;
+    font-size: 10px;
     width: 100%;
     padding: 0px;
     margin: 0px;
@@ -344,28 +352,28 @@ table#tableNotas caption {
     margin: 0px;
 }
 
-
 table#tableNotas td{
    background-color: #FFF;
    padding: 5px;
    border-bottom: #D7D7D7 solid 1px;
-   font-size: 15px;
+   font-size: 12px;
 }
 
 table#tableNotas a{
     color: #076cba;
 }
 
-table#tableNotas td:hover{
-    background-color: #E0E0E0;
+table#tableNotas a:hover{
+    color: darkgray;
 }
 
 table#tableNotas tfoot td {
     background-color: #FFF;
-    color: #076cba;
+    color: #000;
     text-align: right;
     border-bottom: 0px;
-    font-size: 11px;
+    font-size: 10px;
+    padding: 0px;
 }
 
 pre#preNota{    
@@ -389,7 +397,17 @@ span#projeto{
 
 span#etiqueta{
     font-size: 10px;
-    color: #B00000;
+    color: #ff6600;
+}
+
+span#solicitante{
+    font-size: 10px;
+    color: #8FBC8F;
+}
+
+span#numProjeto{
+    font-size: 9px;
+    color: #8a8a8a;
 }
 
 /*******************************************

@@ -97,7 +97,7 @@ class ListaTarefas{
                  
         # Etiquetas
         if(!is_null($this->etiqueta)){
-            $select.= ' AND idEtiqueta = '.$this->etiqueta;
+            $select.= ' AND etiqueta = "'.$this->etiqueta.'"';
         }
         
         # Projeto
@@ -124,7 +124,7 @@ class ListaTarefas{
 
         # o link para quando se é por etiqueta
         if(!is_null($this->etiqueta)){
-            $botao1->set_url('?fase=mudaTarefa&idEtiqueta='.$this->etiqueta.'&idTarefa=');
+            $botao1->set_url('?fase=mudaTarefa&etiqueta='.$this->etiqueta.'&idTarefa=');
         }
         
         # o link para quando se é de hoje
@@ -189,7 +189,7 @@ class ListaTarefas{
         $select = 'SELECT idTarefa,
                           tarefa,
                           idProjeto,
-                          idEtiqueta,
+                          etiqueta,
                           dataInicial,
                           dataFinal
                      FROM tbprojetotarefa';
@@ -217,7 +217,7 @@ class ListaTarefas{
                  
         # Etiquetas
         if(!is_null($this->etiqueta)){
-            $select.= ' AND idEtiqueta = '.$this->etiqueta;
+            $select.= ' AND etiqueta = '.$this->etiqueta;
         }
         
         # Projeto

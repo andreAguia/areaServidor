@@ -43,7 +43,7 @@ class Gprojetos{
             # Percorre o array 
             foreach ($dadosProjetos as $valor){
                 $numTarefa = $projeto->get_numeroTarefasPendentes($valor[0]);
-                $texto = $valor[1]." $numTarefa";
+                $texto = $valor[1]." <span id='numProjeto'>$numTarefa</span>";
                 
                 # Marca o item que está sendo editado
                 if($idProjeto == $valor[0]){
@@ -90,7 +90,7 @@ class Gprojetos{
             # Percorre o array 
             foreach ($dadosProjetos as $valor){
                 $numNotas = $projeto->get_numeroNotas($valor[0]);
-                $texto = $valor[1]." ($numNotas)";
+                $texto = $valor[1]." <span id='numProjeto'>$numNotas</span>";
                 
                 # Marca o item que está sendo editado
                 if($idCaderno == $valor[0]){
@@ -104,7 +104,7 @@ class Gprojetos{
 
     ##########################################################
     
-    public static function menuEtiquetas($idEtiqueta = NULL){
+    public static function menuEtiquetas($etiqueta = NULL){
     /**
     * Exibe o menu de projetos ativos.
     * 
@@ -114,11 +114,9 @@ class Gprojetos{
     */    
    
         # Pega os projetos cadastrados
-        $select = 'SELECT idEtiqueta,
-                          etiqueta,
-                          cor,
-                          descricao
-                     FROM tbprojetoetiqueta
+        $select = 'SELECT distinct etiqueta
+                     FROM tbprojetotarefa
+                    WHERE etiqueta is not null
                      ORDER BY etiqueta';
         
         # Acessa o banco de dados
@@ -130,7 +128,6 @@ class Gprojetos{
         # Inicia o menu
         $menu1 = new Menu();
         $menu1->add_item('titulo1','Etiquetas');
-        $menu1->add_item('link','+ Nova Etiqueta','?fase=etiquetaNova');
         
         # Verifica se tem etiquetas
         if($numEtiquetas>0){
@@ -138,13 +135,58 @@ class Gprojetos{
             # Percorre o array 
             foreach ($dadosEtiquetas as $valor) {
                 $numTarefa = $projeto->get_numeroTarefasEtiqueta($valor[0]);
-                $texto = $valor[1]." ($numTarefa)";
+                $texto = $valor[0]." <span id='numProjeto'>$numTarefa</span>";
 
                 # Marca o item que está sendo editado
-                if($idEtiqueta == $valor[0]){
+                if($etiqueta == $valor[0]){
                     $texto = "> ".$texto;
                 }
-                $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&idEtiqueta='.$valor[0],$valor[3]);
+                $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&etiqueta='.$valor[0]);
+            }
+        }
+        $menu1->show();
+    }
+
+    ##########################################################
+    
+    public static function menuSolicitante($solicitante = NULL){
+    /**
+    * Exibe o menu de solicitantes.
+    * 
+    * @syntax Gprojetos::Gprojetos;
+    * 
+    * @param $idProjeto integer NULL o id do projeto a sser ressaltado no menu informando que stá sendo editado.
+    */    
+   
+        # Pega os projetos cadastrados
+        $select = 'SELECT distinct solicitante
+                     FROM tbprojetotarefa
+                    WHERE solicitante is not null
+                     ORDER BY solicitante';
+        
+        # Acessa o banco de dados
+        $projeto = new Projeto();
+        $intra = new Intra();
+        $dadosSolicitantes = $intra->select($select);
+        $numSolicitantes = $intra->count($select);
+
+        # Inicia o menu
+        $menu1 = new Menu();
+        $menu1->add_item('titulo1','Solicitantes');
+        
+        # Verifica se tem etiquetas
+        if($numSolicitantes>0){
+            
+            # Percorre o array 
+            foreach ($dadosSolicitantes as $valor) {
+                $numTarefa = $projeto->get_numeroTarefasSolitante($solicitante);
+                $texto = $valor[0]." <span id='numProjeto'>$numTarefa</span>";
+
+                # Marca o item que está sendo editado
+                if($solicitante == $valor[0]){
+                    $texto = "> ".$texto;
+                }
+                $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&etiqueta='.$valor[0]);
             }
         }
         $menu1->show();
@@ -337,13 +379,13 @@ class Gprojetos{
     ###########################################################
     
     
-    public function showEtiqueta($idEtiqueta = NULL){
+    public function showEtiqueta($etiqueta = NULL){
     /**
      * Retorna o nome da etiqueta
      * 
-     * @param $idEtiqueta integer NULL o idEtiqueta
+     * @param $etiqueta integer NULL o etiqueta
      * 
-     * @syntax $projeto->get_nomeProjeto([$idEtiqueta]);  
+     * @syntax $projeto->get_nomeProjeto([$etiqueta]);  
      */
     
         # Pega as etiquetas cadastradas
@@ -351,11 +393,11 @@ class Gprojetos{
                           cor,
                           descricao
                      FROM tbprojetoetiqueta
-                     WHERE idEtiqueta = '.$idEtiqueta;
+                     WHERE etiqueta = '.$etiqueta;
         
         $intra = new Intra();
         
-        if(is_null($idEtiqueta)){
+        if(is_null($etiqueta)){
             echo "--";
         }else{
             $row = $intra->select($select,false);
@@ -369,7 +411,7 @@ class Gprojetos{
            
     ###########################################################
     
-    public function showTarefa($idTarefa,$esconde = NULL){
+    public function showTarefa($idTarefa){
     /**
      * Exibe a tarefa
      * 
@@ -384,7 +426,8 @@ class Gprojetos{
                           noOrdem,
                           pendente,
                           idProjeto,
-                          idEtiqueta
+                          etiqueta,
+                          solicitante
                      FROM tbprojetotarefa
                     WHERE idTarefa = '.$idTarefa;
         
@@ -414,8 +457,7 @@ class Gprojetos{
         }
         
         $projeto = new Projeto();
-        $nomeProjeto = $projeto->get_nomeProjeto($row[3]);
-        $nomeEtiqueta = $projeto->get_nomeEtiqueta($row[4]);        
+        $nomeProjeto = $projeto->get_nomeProjeto($row[3]);        
         
         # Verifica se está pendente
         if($row[2]){
@@ -424,23 +466,26 @@ class Gprojetos{
             $link->show();
             br();
             
-            # Verifica se esconde o projeto
-            if($esconde <> 1){
-                span($nomeProjeto,"projeto");
-                echo "&nbsp&nbsp&nbsp";
-            }
+            # Projeto
+            span($nomeProjeto,"projeto");
             
-            if($esconde <> 2){
-                if(!is_null($nomeEtiqueta)){
-                    span($nomeEtiqueta,"etiqueta");
-                }
-            }            
+            
+            # Etiqueta
+            if(!is_null($row[4])){
+                echo "&nbsp&nbsp&nbsp";
+                span($row[4],"etiqueta");
+            } 
+            
+            # Solicitante
+            if(!is_null($row[5])){
+                echo "&nbsp&nbsp&nbsp";
+                span($row[5],"solicitante");
+            } 
             
         }else{
             
             $link = new Link(del($row[0]),'?fase=tarefaNova&idTarefa='.$idTarefa);
-            $link->show();
-            
+            $link->show();            
             br();
             
             # Verifica se esconde o projeto
@@ -463,9 +508,9 @@ class Gprojetos{
     /**
      * Retorna o nome da etiqueta
      * 
-     * @param $idEtiqueta integer NULL o idProjeto
+     * @param $etiqueta integer NULL o idProjeto
      * 
-     * @syntax $projeto->get_nomeProjeto([$idEtiqueta]);  
+     * @syntax $projeto->get_nomeProjeto([$etiqueta]);  
      */
     
        
