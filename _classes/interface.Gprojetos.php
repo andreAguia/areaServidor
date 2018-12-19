@@ -162,7 +162,7 @@ class Gprojetos{
         $select = 'SELECT distinct solicitante
                      FROM tbprojetotarefa
                     WHERE solicitante is not null
-                     ORDER BY solicitante';
+                 ORDER BY solicitante';
         
         # Acessa o banco de dados
         $projeto = new Projeto();
@@ -179,7 +179,7 @@ class Gprojetos{
             
             # Percorre o array 
             foreach ($dadosSolicitantes as $valor) {
-                $numTarefa = $projeto->get_numeroTarefasSolitante($solicitante);
+                $numTarefa = $projeto->get_numeroTarefasSolitante($valor[0]);
                 $texto = $valor[0]." <span id='numProjeto'>$numTarefa</span>";
 
                 # Marca o item que está sendo editado

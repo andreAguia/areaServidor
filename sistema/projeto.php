@@ -83,14 +83,14 @@ if($acesso){
     # Menu de Projetos
     Gprojetos::menuProjetosAtivos($idProjeto);
     
-    # Menu de Cadernos
-    Gprojetos::menuCadernos($idCaderno);
-    
     # Menu de Etiquetas
     Gprojetos::menuEtiquetas($etiqueta);
     
     # Menu de Solicitantes
     Gprojetos::menuSolicitante($solicitante);
+    
+    # Menu de Cadernos
+    Gprojetos::menuCadernos($idCaderno);
 
     $grid->fechaColuna();
     
@@ -187,7 +187,7 @@ if($acesso){
             $lista->set_etiqueta($etiqueta);
             $lista->show();
             
-           # Exibe as tarefas a fazer
+            # Exibe as tarefas a fazer
             $lista = new ListaTarefas("a Fazer");
             $lista->set_status("a fazer");
             $lista->set_etiqueta($etiqueta);
@@ -210,24 +210,23 @@ if($acesso){
             p($solicitante,'descricaoProjetoTitulo');            
             hr("projetosTarefas");
             
-            # Exibe as tarefas pendentes com data
-            $lista = new ListaTarefas("Tarefas Pendentes com Data");
+            # Exibe as tarefas Fazendo
+            $lista = new ListaTarefas("Fazendo");
+            $lista->set_status("fazendo");
             $lista->set_solicitante($solicitante);
-            $lista->set_datado(TRUE);
             $lista->show();
             
-            # Exibe as tarefas pendentes sem data
-            $lista = new ListaTarefas("Tarefas Pendentes sem Data");
+            # Exibe as tarefas a fazer
+            $lista = new ListaTarefas("a Fazer");
+            $lista->set_status("a fazer");
             $lista->set_solicitante($solicitante);
-            $lista->set_datado(FALSE);
             $lista->show();
             
             # Exibe as tarefas completatadas
-            $lista = new ListaTarefas("Tarefas Concluídas");
+            $lista = new ListaTarefas("Feito");
             $lista->set_solicitante($solicitante);
-            $lista->set_datado(NULL);
             $lista->set_pendente(FALSE);
-            $lista->show();  
+            $lista->show();
             break;
                  
         ###########################################################      
