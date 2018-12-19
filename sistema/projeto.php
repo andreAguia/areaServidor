@@ -119,9 +119,8 @@ if($acesso){
             $grid->abreColuna(8);
             
                 # Exibe o nome e a descrição
-                p($projetoPesquisado[1],'descricaoProjetoTitulo');
-                p($projetoPesquisado[2],'descricaoProjeto');
-                
+                p($projetoPesquisado[1],'descricaoProjetoTitulo',NULL,$projetoPesquisado[2]);
+                                
             $grid->fechaColuna();
             $grid->abreColuna(4);
                 
@@ -141,7 +140,7 @@ if($acesso){
                 $menu1->add_link($link1,"right");
                 
                 $menu1->show();
-                
+            
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             
@@ -248,7 +247,7 @@ if($acesso){
             # Nome do projeto
             $grid = new Grid();
             $grid->abreColuna(12);
-                p($titulo,"f18");
+                p($titulo,'descricaoProjetoTitulo');
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
@@ -347,7 +346,7 @@ if($acesso){
             # Nome do projeto
             $grid = new Grid();
             $grid->abreColuna(12);
-                p($titulo,"f18");
+                p($titulo,'descricaoProjetoTitulo');
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             hr("projetosTarefas");
@@ -424,10 +423,26 @@ if($acesso){
             
             # Nome do projeto
             $grid = new Grid();
-            $grid->abreColuna(12);
-                p($projeto->get_nomeProjeto($idProjeto)." - ".$titulo,"f14");
+            $grid->abreColuna(8);
+                p($titulo,'descricaoProjetoTitulo');                                
             $grid->fechaColuna();
-            $grid->fechaGrid(); 
+            $grid->abreColuna(4);
+                if(!is_null($idTarefa)){
+                    # Menu
+                    $menu1 = new MenuBar("small button-group");
+
+                    # Editar
+                    $link1 = new Link("Excluir",'?fase=TarefaExcluir&idTarefa='.$idTarefa);
+                    $link1->set_class('button');
+                    $link1->set_title('Editar Projeto');
+                    $link1->set_confirma('Deseja mesmo excluir ?');
+                    $menu1->add_link($link1,"right");
+
+                    $menu1->show();
+                }
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            
             hr("projetosTarefas");
             
             # Pega os dados da combo projeto
