@@ -53,7 +53,7 @@ if($acesso){
     $grid->abreColuna(12);
     
     # Cabeçalho
-    AreaServidor::cabecalho();
+    #AreaServidor::cabecalho();
 
     # Define o botão voltar de acordo com a rotina
     if($fase == 'ínicial'){
