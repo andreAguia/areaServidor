@@ -636,10 +636,9 @@ if($acesso){
             
             $grid->abreColuna($col2P,$col2M,$col2L);
                         
-            # Exibe as tarefas pendentes de hoje
+            # Exibe as tarefas fazendo
             $lista = new ListaTarefas("Fazendo");
             $lista->set_status("fazendo");
-            $lista->set_datado(TRUE);
             $lista->show();
             
             $grid->fechaColuna();

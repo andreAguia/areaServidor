@@ -14,7 +14,6 @@ class ListaTarefas{
     private $pendente = TRUE;
     private $datado = NULL;
     private $status = NULL;
-    private $hoje = FALSE;      // Somente as tarefas até hoje
     
      
     ###########################################################
@@ -132,8 +131,8 @@ class ListaTarefas{
         }
         
         # o link para quando se é de hoje
-        if($this->hoje){
-            $botao1->set_url('?fase=mudaTarefa&hoje=TRUE&idTarefa=');
+        if($this->status == "fazendo"){
+            $botao1->set_url('?fase=mudaTarefa&status=fazendo&idTarefa=');
         }
         
         # Verifica qual simbolo vai colocar

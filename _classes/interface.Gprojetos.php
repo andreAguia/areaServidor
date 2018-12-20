@@ -317,7 +317,7 @@ class Gprojetos{
         $menu1 = new Menu();
         #$menu1->add_item('titulo','Cronológico');
         
-        if($fase == "hoje"){
+        if($fase == "fazendo"){
             $menu1->add_item('link','> Fazendo','?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');
         }else{
             $menu1->add_item('link','Fazendo','?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');
