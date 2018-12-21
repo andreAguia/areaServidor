@@ -141,7 +141,7 @@ class Gprojetos{
                 if($etiqueta == $valor[0]){
                     $texto = "> ".$texto;
                 }
-                $menu1->add_item('link',$texto,'?fase=projetoEtiqueta&etiqueta='.$valor[0]);
+                $menu1->add_item('link',$texto,'?fase=etiqueta&etiqueta='.$valor[0]);
             }
         }
         $menu1->show();
@@ -186,7 +186,7 @@ class Gprojetos{
                 if($solicitante == $valor[0]){
                     $texto = "> ".$texto;
                 }
-                $menu1->add_item('link',$texto,'?fase=projetoSolicitante&solicitante='.$valor[0]);
+                $menu1->add_item('link',$texto,'?fase=solicitante&solicitante='.$valor[0]);
             }
         }
         $menu1->show();
@@ -242,21 +242,33 @@ class Gprojetos{
             echo '<nav aria-label="Grupos" role="navigation">';
             echo '<ul class="breadcrumbs">';
             
-            echo '<li>';
-            $link = new Link("Todos","?");
-            $link->set_title("Exibe todos os Projetos ativos");
-            $link->show();
-            echo '</li>';
-            
-            # Percorre o array 
-            foreach ($dadosGrupos as $grupoValor){
-               
+            if(is_null($grupo)){
                 echo '<li>';
-                $link = new Link($grupoValor[0],"?grupo=".$grupoValor[0]);
-                $link->set_title("Exibe os Projetos ativos do grupo ".$grupoValor[0]);
+                echo "<span class='show-for-sr'>Current: </span>";
+                echo "Todos";
+                echo '</li>';
+            }else{
+                echo '<li>';
+                $link = new Link("Todos","?");
+                $link->set_title("Exibe todos os Projetos ativos");
                 $link->show();
                 echo '</li>';
-                
+            }
+            
+            # Percorre o array 
+            foreach ($dadosGrupos as $grupoValor){                
+                if($grupo == $grupoValor[0]){
+                    echo '<li>';
+                    echo "<span class='show-for-sr'>Current: </span>";
+                    echo $grupoValor[0];
+                    echo '</li>';
+                }else{
+                    echo '<li>';
+                    $link = new Link($grupoValor[0],"?grupo=".$grupoValor[0]);
+                    $link->set_title("Exibe os Projetos ativos do grupo ".$grupoValor[0]);
+                    $link->show();
+                    echo '</li>';
+                }                
             }
 
             echo '</ul>';
@@ -411,7 +423,7 @@ class Gprojetos{
            
     ###########################################################
     
-    public function showTarefa($idTarefa){
+    public function showTarefa($tarefa){
     /**
      * Exibe a tarefa
      * 
@@ -421,6 +433,10 @@ class Gprojetos{
      * @syntax $projeto->showTarefa($idTarefa);  
      */
     
+        # Pega os dados
+        $partes = explode(":",$tarefa);
+        $idTerefa = $parte[0];
+
         # Pega os projetos cadastrados
         $select = 'SELECT tarefa,
                           noOrdem,
@@ -468,8 +484,7 @@ class Gprojetos{
             
             # Projeto
             span($nomeProjeto,"projeto");
-            
-            
+                        
             # Etiqueta
             if(!is_null($row[4])){
                 echo "&nbsp&nbsp&nbsp";
@@ -490,8 +505,7 @@ class Gprojetos{
             
              # Projeto
             span($nomeProjeto,"projeto");
-            
-            
+                        
             # Etiqueta
             if(!is_null($row[4])){
                 echo "&nbsp&nbsp&nbsp";

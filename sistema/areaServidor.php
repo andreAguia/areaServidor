@@ -100,44 +100,11 @@ if($acesso){
             # Cria Grid
             $grid = new Grid();
             
-            # Define os tamanho do grid
-            $tamanhoGrid1 = 0;
-            $tamanhoGrid2 = 0;
-            $tamanhoGrid3 = 0;
-            $tamanhoGrid4 = 12;
-            
-            ### GRID 1
-            # Se exibe o icone do sistema de pessoal
-            if(Verifica::acesso($idUsuario,2)){
-                $tamanhoGrid1 = $tamanhoGrid1+3;
-            }
-            
-            # Se exibe o icone do sistema de processos
-            if(Verifica::acesso($idUsuario,5)){
-                $tamanhoGrid1 = $tamanhoGrid1+3;
-            }
-            
-            ### GRID 2
-            # O tamanho do grid 2 depende do tamanho do grid 1
-            if($tamanhoGrid1 > 0){
-                $tamanhoGrid2 = 12 - $tamanhoGrid1;
-            }else{
-                $tamanhoGrid2 = 6;
-            }
-            
-            ### GRID 3
-            # O grid 3 será na mesma linha do grid 2 se não tiver o grid 1 
-            if($tamanhoGrid1 > 0){
-                $tamanhoGrid3 = 12;
-            }else{
-                $tamanhoGrid3 = 6;
-            }
-            
             # Verifica se usuário tem permissão de acesso a algum sistema
             if(Verifica::acesso($idUsuario,2)){
                 
                 # Cria coluna para o menu de sistemas
-                $grid->abreColuna($tamanhoGrid1);
+                $grid->abreColuna(12,12,6);
 
                 # Título
                 tituloTable('Sistemas');
@@ -186,7 +153,7 @@ if($acesso){
         
         ################################################################
            
-            $grid->abreColuna($tamanhoGrid2);
+            $grid->abreColuna(12,12,6);
             tituloTable('Sobre o Servidor');
             br(); 
 
@@ -219,7 +186,7 @@ if($acesso){
             
         ################################################################
 
-            $grid->abreColuna($tamanhoGrid3);
+            $grid->abreColuna(12);
             tituloTable('Servidores da Universidade');
             br(); 
             
@@ -263,7 +230,7 @@ if($acesso){
         ##########################################################
         
             # links externos
-            $grid->abreColuna($tamanhoGrid4);
+            $grid->abreColuna(12);
             
             tituloTable('Links Externos');
             br(); 

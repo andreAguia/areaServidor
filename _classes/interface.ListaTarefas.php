@@ -65,12 +65,26 @@ class ListaTarefas{
      * Exibe a lista
      * 
      */
-        # Define a data de hoje
-        $hoje = date("d/m/Y");
+        # Monta a string para retorno da rotina
+        # Etiqueta
+        if(!is_null($this->etiqueta)){
+            $retorno = "&fase=etiqueta&etiqueta=".$this->etiqueta;
+        }
+        
+        # Solicitante
+        if(!is_null($this->solicitante)){
+            $retorno = "&fase=solicitante&solicitante=".$this->solicitante;
+        }
+        
+        # Projeto
+        if(!is_null($this->projeto)){
+            $retorno = "&fase=Projeto&projeto=".$this->projeto;
+        } 
+        
         
         # Pega as tarefas
-        $select = 'SELECT idTarefa,
-                          idTarefa,
+        $select = 'SELECT idTarefa, 
+                          CONCAT(idTarefa,":","'.$retorno.'"),
                           idTarefa,
                           idTarefa
                      FROM tbprojetotarefa';
@@ -81,7 +95,6 @@ class ListaTarefas{
         }else{
             $select.= ' WHERE NOT pendente';
         }
-        
         
         # Etiquetas
         if(!is_null($this->etiqueta)){
@@ -98,7 +111,7 @@ class ListaTarefas{
             $select.= ' AND idProjeto = '.$this->projeto;
         }
         
-        # Projeto
+        # status
         if(!is_null($this->status)){
             $select.= ' AND status = "'.$this->status.'"';
         }
@@ -126,11 +139,11 @@ class ListaTarefas{
         }
         
         # o link para quando se é por solicitante
-        if(!is_null($this->etiqueta)){
+        if(!is_null($this->solicitante)){
             $botao1->set_url('?fase=mudaTarefa&solicitante='.$this->solicitante.'&idTarefa=');
         }
         
-        # o link para quando se é de hoje
+        # o link para quando se é fazendo
         if($this->status == "fazendo"){
             $botao1->set_url('?fase=mudaTarefa&status=fazendo&idTarefa=');
         }
@@ -141,11 +154,6 @@ class ListaTarefas{
         }else{
             $botao1->set_imagem(PASTA_FIGURAS.'tickCheio.png',20,20);
         }
-        
-        # Botão de editar
-        $botao2 = new BotaoGrafico();
-        $botao2->set_url('?fase=tarefaNova&idTarefa=');
-        $botao2->set_imagem(PASTA_FIGURAS_GERAIS.'bullet_edit.png',20,20);
         
         # Inicia a tabela
         $tabela = new Tabela("tableTarefas");

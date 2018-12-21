@@ -12,9 +12,9 @@ $idUsuario = NULL;
 include ("_config.php");
 
 # Define o grid
-$col1P = 4;
-$col1M = 3;
-$col1L = 2;
+$col1P = 5;
+$col1M = 4;
+$col1L = 3;
 
 $col2P = 12 - $col1P;
 $col2M = 12 - $col1M;
@@ -40,7 +40,7 @@ if($acesso){
     $solicitante = get('solicitante');
     $idNota = get('idNota');
     $grupo = get('grupo');
-    $hojeGet = get('hoje');
+    $statusGet = get('status');
     
     $origem = get('origem');
     
@@ -95,7 +95,13 @@ if($acesso){
     $grid->fechaColuna();
     
     switch ($fase){
+        
+#############################################################################################################################
+#   Inicial
+#############################################################################################################################
+        
         case "ínicial" :
+            # Exibe a tela inicial dos cartões de projeto
             
             $grid->abreColuna($col2P,$col2M,$col2L);
             
@@ -105,10 +111,32 @@ if($acesso){
             $grid->fechaColuna();
             $grid->fechaGrid();    
             break;
+        
+#############################################################################################################################
+#   Fazendo
+############################################################################################################################# 
+        
+        case "fazendo" :
+            # Exibe a lista de tarefas com status fazendo
             
-        ###########################################################
+            $grid->abreColuna($col2P,$col2M,$col2L);
+                        
+            # Exibe as tarefas fazendo
+            $lista = new ListaTarefas("Fazendo");
+            $lista->set_status("fazendo");
+            $lista->show();
             
-        case "projeto" :            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+            
+#############################################################################################################################
+#   Projeto
+#############################################################################################################################
+            
+        case "projeto" :
+            # Exibe as tarefas de um determinado projeto
+            
             $grid->abreColuna($col2P,$col2M,$col2L);
             
             # Pega os dados do projeto pesquisado
@@ -119,7 +147,7 @@ if($acesso){
             $grid->abreColuna(8);
             
                 # Exibe o nome e a descrição
-                p($projetoPesquisado[1],'descricaoProjetoTitulo',NULL,$projetoPesquisado[2]);
+                p("Projeto: ".$projetoPesquisado[1],'descricaoProjetoTitulo',NULL,$projetoPesquisado[2]);
                                 
             $grid->fechaColuna();
             $grid->abreColuna(4);
@@ -169,68 +197,11 @@ if($acesso){
             $grid->fechaColuna();
             $grid->fechaGrid();    
             break;
-                 
-        ###########################################################
-            
-        case "projetoEtiqueta" :
-            
-            $grid->abreColuna($col2P,$col2M,$col2L);
-            
-            # Exibe o nome e a descrição
-            p($etiqueta,'descricaoProjetoTitulo');            
-            hr("projetosTarefas");
-            
-            # Exibe as tarefas Fazendo
-            $lista = new ListaTarefas("Fazendo");
-            $lista->set_status("fazendo");
-            $lista->set_etiqueta($etiqueta);
-            $lista->show();
-            
-            # Exibe as tarefas a fazer
-            $lista = new ListaTarefas("a Fazer");
-            $lista->set_status("a fazer");
-            $lista->set_etiqueta($etiqueta);
-            $lista->show();
-            
-            # Exibe as tarefas completatadas
-            $lista = new ListaTarefas("Feito");
-            $lista->set_etiqueta($etiqueta);
-            $lista->set_pendente(FALSE);
-            $lista->show();  
-            break;
-                 
-        ###########################################################
-            
-        case "projetoSolicitante" :
-            
-            $grid->abreColuna($col2P,$col2M,$col2L);
-            
-            # Exibe o nome e a descrição
-            p($solicitante,'descricaoProjetoTitulo');            
-            hr("projetosTarefas");
-            
-            # Exibe as tarefas Fazendo
-            $lista = new ListaTarefas("Fazendo");
-            $lista->set_status("fazendo");
-            $lista->set_solicitante($solicitante);
-            $lista->show();
-            
-            # Exibe as tarefas a fazer
-            $lista = new ListaTarefas("a Fazer");
-            $lista->set_status("a fazer");
-            $lista->set_solicitante($solicitante);
-            $lista->show();
-            
-            # Exibe as tarefas completatadas
-            $lista = new ListaTarefas("Feito");
-            $lista->set_solicitante($solicitante);
-            $lista->set_pendente(FALSE);
-            $lista->show();
-            break;
-                 
-        ###########################################################      
+        
+    ###########################################################      
             
          case "projetoNovo" :
+            # Inclui um projeto novo ou edita um já existente
              
             $grid->abreColuna($col2P,$col2M,$col2L);
              
@@ -308,9 +279,10 @@ if($acesso){
             $grid->fechaGrid();    
             break;
                         
-        ###########################################################
+    ###########################################################
             
         case "validaProjeto" :
+            # Valida um projeto digitado 
             
             # Recuperando os valores
             $projeto = post('projeto');
@@ -327,85 +299,12 @@ if($acesso){
             loadPage("?");
             break;
         
-        ###########################################################   
-            
-         case "cadernoNovo" :
-             
-            $grid->abreColuna($col2P,$col2M,$col2L);
-             
-            # Verifica se é incluir ou editar
-            if(!is_null($idCaderno)){
-                # Pega os dados 
-                $dados = $projeto->get_dadosCaderno($idCaderno);
-                $titulo = "Editar";
-            }else{
-                $dados = array(NULL,NULL,NULL,NULL);
-                $titulo = "Novo Caderno";
-            }
-             
-            # Nome do projeto
-            $grid = new Grid();
-            $grid->abreColuna(12);
-                p($titulo,'descricaoProjetoTitulo');
-            $grid->fechaColuna();
-            $grid->fechaGrid(); 
-            hr("projetosTarefas");
-            
-            # Formulário
-            $form = new Form('?fase=validaCaderno&idCaderno='.$idCaderno);        
-                    
-            # caderno
-            $controle = new Input('caderno','texto','Nome do Caderno:',1);
-            $controle->set_size(50);
-            $controle->set_linha(1);
-            $controle->set_required(TRUE);
-            $controle->set_autofocus(TRUE);
-            $controle->set_placeholder('Nome do Caderno');
-            $controle->set_title('O nome do Caderno a ser criado');
-            $controle->set_valor($dados[1]);
-            $form->add_item($controle);
-            
-            # descrição
-            $controle = new Input('descricao','textarea','Descrição:',1);
-            $controle->set_size(array(80,5));
-            $controle->set_linha(2);
-            $controle->set_title('A descrição detalhda do caderno');
-            $controle->set_placeholder('Descrição');
-            $controle->set_valor($dados[2]);
-            $form->add_item($controle);
-            
-            # submit
-            $controle = new Input('submit','submit');
-            $controle->set_valor('Salvar');
-            $controle->set_linha(4);
-            $form->add_item($controle);
-            
-            $form->show();
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();    
-            break;
-                        
-        ###########################################################
-            
-        case "validaCaderno" :
-            
-            # Recuperando os valores
-            $caderno = post('caderno');
-            $descricao = post('descricao');
-            
-            # Cria arrays para gravação
-            $arrayNome = array("caderno","descricao");
-            $arrayValores = array($caderno,$descricao);
-            
-            # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idCaderno,"tbprojetocaderno","idCaderno");
-            loadPage("?");
-            break;
-        
-        ###########################################################    
-            
+#############################################################################################################################
+#   Tarefa
+#############################################################################################################################
+
         case "tarefaNova" :
+            # Inclui uma tarefa nova ou edita uma já existente
                         
             $grid->abreColuna($col2P,$col2M,$col2L);
             
@@ -417,7 +316,7 @@ if($acesso){
                 $etiqueta = $dados[7];
                 $idProjeto = $dados[8];
             }else{
-                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
                 $titulo = "Nova Tarefa";
             }
             
@@ -433,7 +332,7 @@ if($acesso){
 
                     # Editar
                     $link1 = new Link("Excluir",'?fase=TarefaExcluir&idTarefa='.$idTarefa);
-                    $link1->set_class('button');
+                    $link1->set_class('alert button');
                     $link1->set_title('Editar Projeto');
                     $link1->set_confirma('Deseja mesmo excluir ?');
                     $menu1->add_link($link1,"right");
@@ -455,7 +354,7 @@ if($acesso){
             array_unshift($comboProjeto, array(NULL,NULL)); # Adiciona o valor de nulo
             
             # Formuário
-            $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa.'&hoje='.$hojeGet);        
+            $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa.'&status='.$statusGet);        
                     
             # tarefa
             $controle = new Input('tarefa','textarea','Tarefa:',1);
@@ -560,9 +459,10 @@ if($acesso){
             $grid->fechaGrid();    
             break;
                         
-        ###########################################################
+    ###########################################################
             
         case "validaTarefa" :
+            # Valida uma terefa já digitada
             
             # Recuperando os valores
             $tarefa = post('tarefa');
@@ -588,16 +488,17 @@ if($acesso){
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetotarefa","idTarefa");
-            if($hojeGet){
-                loadPage("?fase=hoje");
+            if($status == "fazendo"){
+                loadPage("?fase=fazendo");
             }else{
                 loadPage("?fase=projeto&idProjeto=".$idProjeto);
             }
             break;
         
-        ###########################################################  
+    ###########################################################  
         
         case "mudaTarefa" :
+            # Muda somente o campo pendente TRUE or FALSE
             
             # Pega os dados da tarefa
             $valor = $projeto->get_dadosTarefa($idTarefa);
@@ -616,140 +517,104 @@ if($acesso){
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetotarefa","idTarefa");
             
-            if($hojeGet){
-                loadPage("?fase=hoje");
+            if($statusGet == "fazendo"){
+                loadPage("?fase=fazendo");
             }else{            
             
-                if(is_null($idProjeto)){
-                    loadPage("?fase=projetoEtiqueta&etiqueta=".$etiqueta);
+                # Volta para as tarefas de projeto
+                if(!is_null($idProjeto)){
+                    loadPage("?fase=projeto&idProjeto=".$idProjeto);                    
                 }
 
-                if(is_null($etiqueta)){
-                    loadPage("?fase=projeto&idProjeto=".$idProjeto);
+                # Volta para as tarefas de etiquetas
+                if(!is_null($etiqueta)){
+                    loadPage("?fase=etiqueta&etiqueta=".$etiqueta);
+                }
+                
+                # Volta para as tarefas de solicitante
+                if(!is_null($solicitante)){
+                    loadPage("?fase=solicitante&solicitante=".$solicitante);
                 }
             }
             break;
             
-        ###########################################################
+    ###########################################################  
+        
+        case "TarefaExcluir" :
+            # Exclui tarefa
             
-        case "fazendo" :
-            
-            $grid->abreColuna($col2P,$col2M,$col2L);
-                        
-            # Exibe as tarefas fazendo
-            $lista = new ListaTarefas("Fazendo");
-            $lista->set_status("fazendo");
-            $lista->show();
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();    
-            break;
-                 
-        ###########################################################   
-            
-        case "notaNova" :
-             
-            $grid->abreColuna($col2P,$col2M,$col2L);
-             
-            # Verifica se é incluir ou editar
-            if(!is_null($idNota)){
-                # Pega os dados dessa nota
-                $dados = $projeto->get_dadosNota($idNota);
-                $titulo = "Editar Nota";
-            }else{
-                $dados = array(NULL,NULL,NULL,NULL,NULL);
-                $titulo = "Nova Nota";
-            } 
-             
-            # Titulo
-            $grid = new Grid();
-            $grid->abreColuna(12);
-                p($titulo,"f18");
-            $grid->fechaColuna(); 
-            $grid->fechaGrid(); 
-            hr("projetosTarefas");
-            
-            # Pega os dados da combo caderno
-            $select = 'SELECT idCaderno,
-                              caderno
-                         FROM tbprojetocaderno
-                     ORDER BY caderno';
-            
-            $comboCaderno = $intra->select($select);
-            array_unshift($comboCaderno, array(NULL,NULL)); # Adiciona o valor de nulo
-            
-            # Formuário
-            $form = new Form('?fase=validaNota&idNota='.$idNota);        
-                    
-            # Título
-            $controle = new Input('titulo','texto','Título:',1);
-            $controle->set_size(100);
-            $controle->set_linha(1);
-            $controle->set_col(8);
-            $controle->set_required(TRUE);
-            $controle->set_autofocus(TRUE);
-            $controle->set_title('Título da nota');
-            $controle->set_valor($dados[3]);
-            $form->add_item($controle);
-            
-            # idProjeto
-            $controle = new Input('idCaderno','combo','Caderno:',1);
-            $controle->set_size(20);
-            $controle->set_linha(1);
-            $controle->set_col(4);
-            $controle->set_array($comboCaderno);
-            if(is_null($idNota)){
-                $controle->set_valor($idCaderno);
-            }else{
-                $controle->set_valor($dados[1]);
-            }
-            $form->add_item($controle);  
-                                    
-            # nota            
-            $controle = new Input('nota','textarea','Descrição:',1);
-            $controle->set_size(array(80,15));
-            $controle->set_linha(2);
-            $controle->set_col(12);
-            $controle->set_title('Corpo da nota');
-            $controle->set_valor($dados[4]);
-            $form->add_item($controle);
-            
-            # submit
-            $controle = new Input('submit','submit');
-            $controle->set_valor('Salvar');
-            $controle->set_linha(3);
-            $form->add_item($controle);
-            
-            $form->show();
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();    
-            break;
-                        
-        ###########################################################
-            
-        case "validaNota" :
-            
-            # Recuperando os valores
-            $titulo = post('titulo');
-            $caderno = post('idCaderno');
-            $nota = post('nota');
-                      
-            # Cria arrays para gravação
-            $arrayNome = array("titulo","idCaderno","nota");
-            $arrayValores = array($titulo,$caderno,$nota);
-            
-            # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");
-            
-            if(is_null($idNota)){
-                loadPage("?fase=caderno&idCaderno=$caderno");
-            }else{
-                loadPage("?fase=caderno&idCaderno=$caderno&idNota=$idNota");
-            }
+            # Conecta com o banco de dados
+            $intra->set_tabela("tbprojetotarefa");	# a tabela
+            $intra->set_idCampo("idtarefa");    	# o nome do campo id
+            $intra->excluir($idTarefa);
+            loadPage("?");
             break;
         
-        ###########################################################    
+#############################################################################################################################
+#   Etiqueta
+#############################################################################################################################
+        
+        case "etiqueta" :
+            
+            $grid->abreColuna($col2P,$col2M,$col2L);
+            
+            # Exibe o nome e a descrição
+            p("Etiqueta: ".$etiqueta,'descricaoProjetoTitulo');            
+            hr("projetosTarefas");
+            
+            # Exibe as tarefas Fazendo
+            $lista = new ListaTarefas("Fazendo");
+            $lista->set_status("fazendo");
+            $lista->set_etiqueta($etiqueta);
+            $lista->show();
+            
+            # Exibe as tarefas a fazer
+            $lista = new ListaTarefas("a Fazer");
+            $lista->set_status("a fazer");
+            $lista->set_etiqueta($etiqueta);
+            $lista->show();
+            
+            # Exibe as tarefas completatadas
+            $lista = new ListaTarefas("Feito");
+            $lista->set_etiqueta($etiqueta);
+            $lista->set_pendente(FALSE);
+            $lista->show();  
+            break;
+                 
+#############################################################################################################################
+#   Solicitante
+#############################################################################################################################
+            
+        case "solicitante" :
+            
+            $grid->abreColuna($col2P,$col2M,$col2L);
+            
+            # Exibe o nome e a descrição
+            p("Solicitante: ".$solicitante,'descricaoProjetoTitulo');            
+            hr("projetosTarefas");
+            
+            # Exibe as tarefas Fazendo
+            $lista = new ListaTarefas("Fazendo");
+            $lista->set_status("fazendo");
+            $lista->set_solicitante($solicitante);
+            $lista->show();
+            
+            # Exibe as tarefas a fazer
+            $lista = new ListaTarefas("a Fazer");
+            $lista->set_status("a fazer");
+            $lista->set_solicitante($solicitante);
+            $lista->show();
+            
+            # Exibe as tarefas completatadas
+            $lista = new ListaTarefas("Feito");
+            $lista->set_solicitante($solicitante);
+            $lista->set_pendente(FALSE);
+            $lista->show();
+            break;
+                 
+#############################################################################################################################
+#   Caderno
+#############################################################################################################################
             
         case "caderno" :
              
@@ -880,6 +745,188 @@ if($acesso){
             
             $grid->fechaColuna();
             $grid->fechaGrid();   
+            break;
+            
+    ###########################################################
+            
+        case "cadernoNovo" :
+             
+            $grid->abreColuna($col2P,$col2M,$col2L);
+             
+            # Verifica se é incluir ou editar
+            if(!is_null($idCaderno)){
+                # Pega os dados 
+                $dados = $projeto->get_dadosCaderno($idCaderno);
+                $titulo = "Editar";
+            }else{
+                $dados = array(NULL,NULL,NULL,NULL);
+                $titulo = "Novo Caderno";
+            }
+             
+            # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(12);
+                p($titulo,'descricaoProjetoTitulo');
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            hr("projetosTarefas");
+            
+            # Formulário
+            $form = new Form('?fase=validaCaderno&idCaderno='.$idCaderno);        
+                    
+            # caderno
+            $controle = new Input('caderno','texto','Nome do Caderno:',1);
+            $controle->set_size(50);
+            $controle->set_linha(1);
+            $controle->set_required(TRUE);
+            $controle->set_autofocus(TRUE);
+            $controle->set_placeholder('Nome do Caderno');
+            $controle->set_title('O nome do Caderno a ser criado');
+            $controle->set_valor($dados[1]);
+            $form->add_item($controle);
+            
+            # descrição
+            $controle = new Input('descricao','textarea','Descrição:',1);
+            $controle->set_size(array(80,5));
+            $controle->set_linha(2);
+            $controle->set_title('A descrição detalhda do caderno');
+            $controle->set_placeholder('Descrição');
+            $controle->set_valor($dados[2]);
+            $form->add_item($controle);
+            
+            # submit
+            $controle = new Input('submit','submit');
+            $controle->set_valor('Salvar');
+            $controle->set_linha(4);
+            $form->add_item($controle);
+            
+            $form->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+                        
+    ###########################################################
+            
+        case "validaCaderno" :
+            
+            # Recuperando os valores
+            $caderno = post('caderno');
+            $descricao = post('descricao');
+            
+            # Cria arrays para gravação
+            $arrayNome = array("caderno","descricao");
+            $arrayValores = array($caderno,$descricao);
+            
+            # Grava	
+            $intra->gravar($arrayNome,$arrayValores,$idCaderno,"tbprojetocaderno","idCaderno");
+            loadPage("?");
+            break;
+        
+#############################################################################################################################
+#   Nota
+#############################################################################################################################
+            
+        case "notaNova" :
+             
+            $grid->abreColuna($col2P,$col2M,$col2L);
+             
+            # Verifica se é incluir ou editar
+            if(!is_null($idNota)){
+                # Pega os dados dessa nota
+                $dados = $projeto->get_dadosNota($idNota);
+                $titulo = "Editar Nota";
+            }else{
+                $dados = array(NULL,NULL,NULL,NULL,NULL);
+                $titulo = "Nova Nota";
+            } 
+             
+            # Titulo
+            $grid = new Grid();
+            $grid->abreColuna(12);
+                p($titulo,"f18");
+            $grid->fechaColuna(); 
+            $grid->fechaGrid(); 
+            hr("projetosTarefas");
+            
+            # Pega os dados da combo caderno
+            $select = 'SELECT idCaderno,
+                              caderno
+                         FROM tbprojetocaderno
+                     ORDER BY caderno';
+            
+            $comboCaderno = $intra->select($select);
+            array_unshift($comboCaderno, array(NULL,NULL)); # Adiciona o valor de nulo
+            
+            # Formuário
+            $form = new Form('?fase=validaNota&idNota='.$idNota);        
+                    
+            # Título
+            $controle = new Input('titulo','texto','Título:',1);
+            $controle->set_size(100);
+            $controle->set_linha(1);
+            $controle->set_col(8);
+            $controle->set_required(TRUE);
+            $controle->set_autofocus(TRUE);
+            $controle->set_title('Título da nota');
+            $controle->set_valor($dados[3]);
+            $form->add_item($controle);
+            
+            # idProjeto
+            $controle = new Input('idCaderno','combo','Caderno:',1);
+            $controle->set_size(20);
+            $controle->set_linha(1);
+            $controle->set_col(4);
+            $controle->set_array($comboCaderno);
+            if(is_null($idNota)){
+                $controle->set_valor($idCaderno);
+            }else{
+                $controle->set_valor($dados[1]);
+            }
+            $form->add_item($controle);  
+                                    
+            # nota            
+            $controle = new Input('nota','textarea','Descrição:',1);
+            $controle->set_size(array(80,15));
+            $controle->set_linha(2);
+            $controle->set_col(12);
+            $controle->set_title('Corpo da nota');
+            $controle->set_valor($dados[4]);
+            $form->add_item($controle);
+            
+            # submit
+            $controle = new Input('submit','submit');
+            $controle->set_valor('Salvar');
+            $controle->set_linha(3);
+            $form->add_item($controle);
+            
+            $form->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+                        
+        ###########################################################
+            
+        case "validaNota" :
+            
+            # Recuperando os valores
+            $titulo = post('titulo');
+            $caderno = post('idCaderno');
+            $nota = post('nota');
+                      
+            # Cria arrays para gravação
+            $arrayNome = array("titulo","idCaderno","nota");
+            $arrayValores = array($titulo,$caderno,$nota);
+            
+            # Grava	
+            $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");
+            
+            if(is_null($idNota)){
+                loadPage("?fase=caderno&idCaderno=$caderno");
+            }else{
+                loadPage("?fase=caderno&idCaderno=$caderno&idNota=$idNota");
+            }
             break;
                         
         ###########################################################
