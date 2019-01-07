@@ -58,7 +58,8 @@ class Projeto{
         # Pega os projetos cadastrados
         $select = 'SELECT idCaderno,
                           caderno,
-                          descricao
+                          descricao,
+                          grupo
                      FROM tbprojetocaderno
                      WHERE idCaderno = '.$idCaderno;
         
@@ -81,7 +82,6 @@ class Projeto{
         # Pega as notas
         $select = 'SELECT idNota,
                           idCaderno,
-                          etiqueta, 
                           titulo,
                           nota
                      FROM tbprojetonota

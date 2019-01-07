@@ -238,9 +238,10 @@ hr#projetosTarefas{
 }
 
 p#descricaoProjeto {
-    font-size: 12px;
+    font-size: 11px;
     margin: 0;
     padding-bottom: 5px;
+    font-style: italic;
 }
 
 p#descricaoProjetoTitulo {
@@ -257,6 +258,8 @@ div#card {
 
 hr#hrCard {
     margin-top: 2px;
+    margin-bottom: 5px;
+    padding: 0;
 }
 
 p#pCardNumTarefas {
@@ -409,6 +412,17 @@ span#solicitante{
 span#numProjeto{
     font-size: 9px;
     color: #8a8a8a;
+}
+
+a#editaNota{
+    font-size: 10px;
+    color: #8a8a8a;
+}
+
+div#divEditaNota{
+    float: right;
+    margin-top: -15px;
+    margin-right: -5px;
 }
 
 /*******************************************

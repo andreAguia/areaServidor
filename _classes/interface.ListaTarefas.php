@@ -12,7 +12,6 @@ class ListaTarefas{
     private $solicitante = NULL;
     private $projeto = NULL;
     private $pendente = TRUE;
-    private $datado = NULL;
     private $status = NULL;
     
      
@@ -65,26 +64,8 @@ class ListaTarefas{
      * Exibe a lista
      * 
      */
-        # Monta a string para retorno da rotina
-        # Etiqueta
-        if(!is_null($this->etiqueta)){
-            $retorno = "&fase=etiqueta&etiqueta=".$this->etiqueta;
-        }
-        
-        # Solicitante
-        if(!is_null($this->solicitante)){
-            $retorno = "&fase=solicitante&solicitante=".$this->solicitante;
-        }
-        
-        # Projeto
-        if(!is_null($this->projeto)){
-            $retorno = "&fase=Projeto&projeto=".$this->projeto;
-        } 
-        
-        
         # Pega as tarefas
         $select = 'SELECT idTarefa, 
-                          CONCAT(idTarefa,":","'.$retorno.'"),
                           idTarefa,
                           idTarefa
                      FROM tbprojetotarefa';
@@ -127,32 +108,13 @@ class ListaTarefas{
         
         # Botão do Tick
         $botao1 = new BotaoGrafico();
-        
-        # o link para quando se é por projeto
-        if(!is_null($this->projeto)){
-            $botao1->set_url('?fase=mudaTarefa&idProjeto='.$this->projeto.'&idTarefa=');
-        }
-
-        # o link para quando se é por etiqueta
-        if(!is_null($this->etiqueta)){
-            $botao1->set_url('?fase=mudaTarefa&etiqueta='.$this->etiqueta.'&idTarefa=');
-        }
-        
-        # o link para quando se é por solicitante
-        if(!is_null($this->solicitante)){
-            $botao1->set_url('?fase=mudaTarefa&solicitante='.$this->solicitante.'&idTarefa=');
-        }
-        
-        # o link para quando se é fazendo
-        if($this->status == "fazendo"){
-            $botao1->set_url('?fase=mudaTarefa&status=fazendo&idTarefa=');
-        }
-        
+        $botao1->set_url('?fase=mudaTarefa&idTarefa=');
+                
         # Verifica qual simbolo vai colocar
         if($this->pendente){
-            $botao1->set_imagem(PASTA_FIGURAS.'tickVazio.png',20,20);
+            $botao1->set_imagem(PASTA_FIGURAS.'tickVazio.png',15,15);
         }else{
-            $botao1->set_imagem(PASTA_FIGURAS.'tickCheio.png',20,20);
+            $botao1->set_imagem(PASTA_FIGURAS.'tickCheio.png',15,15);
         }
         
         # Inicia a tabela
@@ -163,16 +125,15 @@ class ListaTarefas{
             $tabela->set_titulo($this->titulo);
         }
         
-        $label = array("","");
+        $label = array("","","");
         $align = array("center","left");
-        $width = array(5,95);
-        $classe = array(NULL,"Gprojetos");
-        $metodo = array(NULL,"showTarefa");
+        $width = array(5,90,5);
+        $classe = array(NULL,"Gprojetos","Gprojetos");
+        $metodo = array(NULL,"showTarefa","showPrioridade");
         $link = array($botao1);
                 
         $tabela->set_conteudo($tarefas);
         $tabela->set_cabecalho($label,$width,$align);
-        
         $tabela->set_classe($classe);
         $tabela->set_metodo($metodo);
         $tabela->set_scroll(FALSE);

@@ -91,46 +91,6 @@ if($acesso)
             $botao->set_url('computador.php');
             $menu->add_item($botao);
             $menu->show();
-            br();
-            $grid2->fechaColuna();
-            
-            ############################################
-
-            # Documentação
-            $grid2->abreColuna(12,6);            
-            tituloTable('Documentação do Sistema');
-            
-            $fieldset = new Fieldset('Codigo');
-            $fieldset->abre();
-
-            $menu = new MenuGrafico(4);
-
-            # Framework
-            $botao = new BotaoGrafico();
-            $botao->set_label('FrameWork');
-            $botao->set_title('Documentação do Framework');
-            $botao->set_imagem(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('documentaCodigo.php?fase=Framework');
-            $menu->add_item($botao);
-
-            # Administração
-            $botao = new BotaoGrafico();
-            $botao->set_label('Área do Servidor');
-            $botao->set_title('Documentação da Área de Administração');
-            $botao->set_imagem(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('documentaCodigo.php?fase=areaServidor');
-            $menu->add_item($botao);
-
-            # Sistema de Pessoal
-            $botao = new BotaoGrafico();
-            $botao->set_label('Pessoal');
-            $botao->set_title('Documentação do Sistema de Pessoal');
-            $botao->set_imagem(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('documentaCodigo.php?fase=Grh');
-            $menu->add_item($botao);
-            $menu->show();
-            
-            $fieldset->fecha();
             
             $grid2->fechaColuna();
             
@@ -167,27 +127,43 @@ if($acesso)
             $botao->set_url('mensagem.php');
             $menu->add_item($botao);
             
-            # Cadastro de Mensagens
-            $botao = new BotaoGrafico();
-            $botao->set_label('Projeto');
-            $botao->set_title('Gestão de Projetos');
-            $botao->set_imagem(PASTA_FIGURAS.'atribuicoes.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('projeto.php');
-            $menu->add_item($botao);
-            
             $menu->show();
             br();
             $grid2->fechaColuna();
             
             ############################################
 
-            # Servidor
-            $grid2->abreColuna(12,6);
-            $fieldset = new Fieldset('Banco de Dados');
-            $fieldset->abre();
-            
-            $menu = new MenuGrafico(4);
+            # Documentação
+            $grid2->abreColuna(12,6);            
+            tituloTable('Documentação do Sistema');
+            br();
 
+            $menu = new MenuGrafico(5);
+
+            # Framework
+            $botao = new BotaoGrafico();
+            $botao->set_label('FrameWork');
+            $botao->set_title('Documentação do Framework');
+            $botao->set_imagem(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentaCodigo.php?fase=Framework');
+            $menu->add_item($botao);
+
+            # Administração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Área do Servidor');
+            $botao->set_title('Documentação da Área de Administração');
+            $botao->set_imagem(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentaCodigo.php?fase=areaServidor');
+            $menu->add_item($botao);
+
+            # Sistema de Pessoal
+            $botao = new BotaoGrafico();
+            $botao->set_label('Pessoal');
+            $botao->set_title('Documentação do Sistema de Pessoal');
+            $botao->set_imagem(PASTA_FIGURAS.'code.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentaCodigo.php?fase=Grh');
+            $menu->add_item($botao);
+            
             # Administração
             $botao = new BotaoGrafico();
             $botao->set_label('Área do Servidor');
@@ -204,12 +180,41 @@ if($acesso)
             $botao->set_url('documentaBd.php?banco=grh');
             $menu->add_item($botao);
             $menu->show();
+            br();
             
-            $fieldset->fecha();
             $grid2->fechaColuna();
             
             ############################################
 
+            # Projetos
+            $grid2->abreColuna(12,6);
+            tituloTable('Gestão de Projetos');
+            br(); 
+
+            $menu = new MenuGrafico(4);
+
+            # Variáveis de Configuração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Tarefas');
+            $botao->set_url('projeto.php');
+            $botao->set_imagem(PASTA_FIGURAS.'atribuicoes.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Sistema de gestão de tarefas');
+            $menu->add_item($botao);
+
+            # Cadastro de Atualizações
+            $botao = new BotaoGrafico();
+            $botao->set_label('Notas');
+            $botao->set_url('projetoNota.php');
+            $botao->set_imagem(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Sistema de notas dos sistemas');
+            $menu->add_item($botao);
+            
+            $menu->show();
+            br();
+            $grid2->fechaColuna();
+            
+            ############################################
+            
             # Banco de dados
             $grid2->abreColuna(12,6);
             tituloTable('Feramentas para o Banco de Dados');

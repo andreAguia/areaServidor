@@ -11,38 +11,89 @@ $idUsuario = NULL;
 # Configuração
 include ("_config.php");
 
-# Define o grid
-$col1P = 5;
-$col1M = 4;
-$col1L = 3;
-
-$col2P = 12 - $col1P;
-$col2M = 12 - $col1M;
-$col2L = 12 - $col1L;
-
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso){    
+if($acesso){
+    
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
     $projeto = new Projeto();
 
     # Verifica a fase do programa
-    $fase = get('fase','ínicial');
+    $fase = get('fase','fazendo');
     
-    # Pega os ids quando se é necessário
-    $idProjeto = get('idProjeto');
-    $idCaderno = get('idCaderno');
+    # Determina as sessions e o botão voltar conforme a fase
+    switch ($fase){
+        case "ínicial" :
+            $voltar = 'administracao.php';
+            break;
+        
+        case "cartaoProjeto":
+            set_session('idProjeto');
+            set_session('etiqueta');
+            set_session('solicitante');
+            set_session('fazendo',FALSE);
+            $voltar = 'administracao.php';
+            break;
+        
+        case "fazendo":
+            set_session('idProjeto');
+            set_session('etiqueta');
+            set_session('solicitante');
+            set_session('fazendo',TRUE);
+            $voltar = 'administracao.php';
+            break;
+        
+        case "projeto":
+            set_session('etiqueta');
+            set_session('solicitante');
+            set_session('fazendo',FALSE);
+            $voltar = '?';
+            break;
+        
+        case "projetoNovo":
+            set_session('idProjeto');
+            set_session('etiqueta');
+            set_session('solicitante');
+            set_session('fazendo',FALSE);
+            break;
+        
+        case "projetoEditar":
+            $voltar = '?fase=projeto';
+            break;
+        
+        case "etiqueta":
+            set_session('idProjeto');
+            set_session('solicitante');
+            set_session('fazendo',FALSE);
+            $voltar = '?';
+            break;
+        
+        case "solicitante":
+            set_session('idProjeto');
+            set_session('etiqueta');
+            set_session('fazendo',FALSE);
+            $voltar = '?';
+            break;
+        
+        case "tarefaNova":
+            $voltar = '?fase=verificaVolta';
+            break;
+        
+        default :
+            $voltar = 'administracao.php';
+            break;
+    }
+    
+    # Pega os ids quando se é necessário de acordo com a fase
+    $idProjeto = get('idProjeto',get_session('idProjeto'));
+    $etiqueta = get('etiqueta',get_session('etiqueta'));
+    $solicitante = get('solicitante',get_session('solicitante'));
+    $fazendo = get_session('fazendo');
     $idTarefa = get('idTarefa');
-    $etiqueta = get('etiqueta');
-    $solicitante = get('solicitante');
-    $idNota = get('idNota');
     $grupo = get('grupo');
-    $statusGet = get('status');
-    
-    $origem = get('origem');
     
     # Começa uma nova página
     $page = new Page();
@@ -52,65 +103,55 @@ if($acesso){
     $grid = new Grid();
     $grid->abreColuna(12);
     
-    # Cabeçalho
-    #AreaServidor::cabecalho();
+    # Cria um menu
+    $menu1 = new MenuBar("small button-group");
 
-    # Define o botão voltar de acordo com a rotina
-    if($fase == 'ínicial'){
-        botaoVoltar('administracao.php');
-    }else{
-        switch ($origem){
-            case NULL :
-                botaoVoltar('?');
-                break;
-            
-            case "projeto" :
-            case "nota" :   
-                botaoVoltar('?fase=projeto&idProjeto='.$idProjeto);
-                break;
-        }
-    }
+    # Sair da Área do Servidor
+    $linkVoltar = new Link("Voltar",$voltar);
+    $linkVoltar->set_class('button');
+    $linkVoltar->set_title('Voltar a página anterior');    
+    $menu1->add_link($linkVoltar,"left");
+    
+    # Fazendo
+    $linkSenha = new Link("Fazendo","?fase=fazendo");
+    $linkSenha->set_class('button success');
+    $linkSenha->set_title('Exibe as Tarefas que estão sendo feitas');
+    $menu1->add_link($linkSenha,"right");
+
+    $menu1->show();
+    
+    # Título do sistema
     titulo("Sistema de Gestão de Projetos");
     br();
+    
+    # Define o grid
+    $col1P = 5;
+    $col1M = 4;
+    $col1L = 3;
+
+    $col2P = 12 - $col1P;
+    $col2M = 12 - $col1M;
+    $col2L = 12 - $col1L;
     
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna($col1P,$col1M,$col1L);
     
     # Menu Cronológico
-    Gprojetos::menuFazendo($fase);
+    #Gprojetos::menuFazendo($fase);
 
     # Menu de Projetos
     Gprojetos::menuProjetosAtivos($idProjeto);
-    
+
     # Menu de Etiquetas
     Gprojetos::menuEtiquetas($etiqueta);
-    
+
     # Menu de Solicitantes
-    Gprojetos::menuSolicitante($solicitante);
-    
-    # Menu de Cadernos
-    Gprojetos::menuCadernos($idCaderno);
+    Gprojetos::menuSolicitante($solicitante);        
 
     $grid->fechaColuna();
     
-    switch ($fase){
-        
-#############################################################################################################################
-#   Inicial
-#############################################################################################################################
-        
-        case "ínicial" :
-            # Exibe a tela inicial dos cartões de projeto
-            
-            $grid->abreColuna($col2P,$col2M,$col2L);
-            
-            # Menu de Projetos
-            Gprojetos::cartoesProjetosAtivos($grupo);  
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();    
-            break;
+    switch ($fase){        
         
 #############################################################################################################################
 #   Fazendo
@@ -137,6 +178,9 @@ if($acesso){
         case "projeto" :
             # Exibe as tarefas de um determinado projeto
             
+            # joga para session o idProjeto
+            set_session('idProjeto',$idProjeto);
+            
             $grid->abreColuna($col2P,$col2M,$col2L);
             
             # Pega os dados do projeto pesquisado
@@ -147,7 +191,8 @@ if($acesso){
             $grid->abreColuna(8);
             
                 # Exibe o nome e a descrição
-                p("Projeto: ".$projetoPesquisado[1],'descricaoProjetoTitulo',NULL,$projetoPesquisado[2]);
+                p("Projeto: ".$projetoPesquisado[1],'descricaoProjetoTitulo');
+                p($projetoPesquisado[2],'descricaoProjeto');
                                 
             $grid->fechaColuna();
             $grid->abreColuna(4);
@@ -156,16 +201,10 @@ if($acesso){
                 $menu1 = new MenuBar("small button-group");
                 
                 # Nova Tarefa
-                $link4 = new Link("+",'?fase=tarefaNova&idProjeto='.$idProjeto);
-                $link4->set_class('button');
+                $link4 = new Link("+",'?fase=tarefaNova');
+                $link4->set_class('button secondary');
                 $link4->set_title('Nova tarefa');
                 $menu1->add_link($link4,"right");
-                
-                # Editar
-                $link1 = new Link("Editar",'?fase=projetoNovo&idProjeto='.$idProjeto);
-                $link1->set_class('button');
-                $link1->set_title('Editar Projeto');
-                $menu1->add_link($link1,"right");
                 
                 $menu1->show();
             
@@ -190,7 +229,6 @@ if($acesso){
             # Exibe as tarefas completatadas
             $lista = new ListaTarefas("Feito");
             $lista->set_projeto($idProjeto);
-            $lista->set_datado(NULL);
             $lista->set_pendente(FALSE);
             $lista->show();
             
@@ -201,6 +239,7 @@ if($acesso){
     ###########################################################      
             
          case "projetoNovo" :
+         case "projetoEditar" :
             # Inclui um projeto novo ou edita um já existente
              
             $grid->abreColuna($col2P,$col2M,$col2L);
@@ -296,7 +335,25 @@ if($acesso){
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idProjeto,"tbprojeto","idProjeto");
-            loadPage("?");
+            
+            if(is_null($idProjeto)){
+                set_session('idProjeto',$intra->get_lastId());
+            }
+            loadPage("?fase=cartaoProjeto&grupo=".$grupo);
+            break;
+            
+    ###########################################################
+            
+            case "cartaoProjeto" :
+            # Exibe a tela inicial dos cartões de projeto
+            
+            $grid->abreColuna($col2P,$col2M,$col2L);
+            
+            # Menu de Projetos
+            Gprojetos::cartoesProjetosAtivos($grupo);  
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
             break;
         
 #############################################################################################################################
@@ -354,7 +411,7 @@ if($acesso){
             array_unshift($comboProjeto, array(NULL,NULL)); # Adiciona o valor de nulo
             
             # Formuário
-            $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa.'&status='.$statusGet);        
+            $form = new Form('?fase=validaTarefa&idTarefa='.$idTarefa);        
                     
             # tarefa
             $controle = new Input('tarefa','textarea','Tarefa:',1);
@@ -379,12 +436,32 @@ if($acesso){
             }else{
                 $controle->set_valor($dados[8]);
             }
-            $form->add_item($controle);   
+            $form->add_item($controle);
+            
+            # etiqueta
+            $controle = new Input('etiqueta','texto','Etiqueta:',1);
+            $controle->set_size(20);
+            $controle->set_linha(3);
+            $controle->set_col(6);
+            $controle->set_placeholder('Etiqueta');
+            $controle->set_title('Uma etiqueta para ajudar na busca');
+            $controle->set_valor($dados[7]);
+            $form->add_item($controle);
+            
+            # solicitante
+            $controle = new Input('solicitante','texto','Solicitante:',1);
+            $controle->set_size(20);
+            $controle->set_linha(3);
+            $controle->set_col(6);
+            $controle->set_placeholder('Solicitante');
+            $controle->set_title('O Solicitante');
+            $controle->set_valor($dados[11]);
+            $form->add_item($controle);
             
             # descrição
             $controle = new Input('descricao','textarea','Descrição:',1);
-            $controle->set_size(array(80,4));
-            $controle->set_linha(3);
+            $controle->set_size(array(80,3));
+            $controle->set_linha(4);
             $controle->set_title('A descrição detalhda do tarefa');
             $controle->set_placeholder('Descrição da tarefa');
             $controle->set_valor($dados[2]);
@@ -411,31 +488,12 @@ if($acesso){
             $controle->set_array(array(array(0,"Nenhuma"),array(1,"Média"),array(2,"Alta"),array(3,"Urgente")));
             $controle->set_valor($dados[3]);
             $form->add_item($controle);
-            
-            # etiqueta
-            $controle = new Input('etiqueta','texto','Etiqueta:',1);
-            $controle->set_size(20);
-            $controle->set_linha(7);
-            $controle->set_col(6);
-            $controle->set_placeholder('Etiqueta');
-            $controle->set_title('Uma etiqueta para ajudar na busca');
-            $controle->set_valor($dados[7]);
-            $form->add_item($controle);
-            
-            # solicitante
-            $controle = new Input('solicitante','texto','Solicitante:',1);
-            $controle->set_size(20);
-            $controle->set_linha(7);
-            $controle->set_col(6);
-            $controle->set_placeholder('Solicitante');
-            $controle->set_title('O Solicitante');
-            $controle->set_valor($dados[11]);
-            $form->add_item($controle);
-            
+                                    
             # conclusao
             $controle = new Input('conclusao','textarea','Conclusão:',1);
-            $controle->set_size(array(80,4));
-            $controle->set_linha(8);
+            $controle->set_size(array(80,3));
+            $controle->set_linha(6);
+            $controle->set_placeholder('O que foi feito para colcluir');
             $controle->set_title('O que foi feito para colcluir');
             $controle->set_valor($dados[9]);
             $form->add_item($controle);
@@ -443,7 +501,7 @@ if($acesso){
             # pendente
             $controle = new Input('pendente','hidden','',1);
             $controle->set_size(20);
-            $controle->set_linha(6);
+            $controle->set_linha(7);
             $controle->set_valor($dados[6]);
             $form->add_item($controle);     
             
@@ -488,11 +546,9 @@ if($acesso){
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetotarefa","idTarefa");
-            if($status == "fazendo"){
-                loadPage("?fase=fazendo");
-            }else{
-                loadPage("?fase=projeto&idProjeto=".$idProjeto);
-            }
+            
+            # Verifica para onde volta
+            loadPage("?fase=verificaVolta");
             break;
         
     ###########################################################  
@@ -517,25 +573,8 @@ if($acesso){
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idTarefa,"tbprojetotarefa","idTarefa");
             
-            if($statusGet == "fazendo"){
-                loadPage("?fase=fazendo");
-            }else{            
-            
-                # Volta para as tarefas de projeto
-                if(!is_null($idProjeto)){
-                    loadPage("?fase=projeto&idProjeto=".$idProjeto);                    
-                }
-
-                # Volta para as tarefas de etiquetas
-                if(!is_null($etiqueta)){
-                    loadPage("?fase=etiqueta&etiqueta=".$etiqueta);
-                }
-                
-                # Volta para as tarefas de solicitante
-                if(!is_null($solicitante)){
-                    loadPage("?fase=solicitante&solicitante=".$solicitante);
-                }
-            }
+            # Verifica para onde volta
+            loadPage("?fase=verificaVolta");
             break;
             
     ###########################################################  
@@ -547,7 +586,9 @@ if($acesso){
             $intra->set_tabela("tbprojetotarefa");	# a tabela
             $intra->set_idCampo("idtarefa");    	# o nome do campo id
             $intra->excluir($idTarefa);
-            loadPage("?");
+            
+            # Verifica para onde volta
+            loadPage("?fase=verificaVolta");
             break;
         
 #############################################################################################################################
@@ -555,6 +596,9 @@ if($acesso){
 #############################################################################################################################
         
         case "etiqueta" :
+            
+            # joga para session a etiqueta
+            set_session('etiqueta',$etiqueta);
             
             $grid->abreColuna($col2P,$col2M,$col2L);
             
@@ -587,6 +631,9 @@ if($acesso){
             
         case "solicitante" :
             
+            # joga para session o solicitante
+            set_session('solicitante',$solicitante);
+            
             $grid->abreColuna($col2P,$col2M,$col2L);
             
             # Exibe o nome e a descrição
@@ -611,325 +658,32 @@ if($acesso){
             $lista->set_pendente(FALSE);
             $lista->show();
             break;
-                 
-#############################################################################################################################
-#   Caderno
-#############################################################################################################################
-            
-        case "caderno" :
-             
-            # Area das notas
-           $grid->abreColuna($col2P,$col2M,$col2L);
-            
-            # Nome do projeto
-            $grid = new Grid();
-            $grid->abreColuna(8);
-            
-                # Exibe o nome e a descrição
-                $dados = $projeto->get_dadosCaderno($idCaderno);
-                p($dados[1],'descricaoProjetoTitulo');
-                p($dados[2],'descricaoProjeto');
-                
-            $grid->fechaColuna();
-            $grid->abreColuna(4);
-                
-                # Menu
-                $menu1 = new MenuBar("small button-group");
-
-                # Nova Nota
-                $link4 = new Link("+",'?fase=notaNova&idCaderno='.$idCaderno);
-                $link4->set_class('button');
-                $link4->set_title('Nova Nota');
-                $menu1->add_link($link4,"right");
-                
-                # Editar
-                $link1 = new Link("Editar",'?fase=cadernoNovo&idCaderno='.$idCaderno);
-                $link1->set_class('button');
-                $link1->set_title('Editar Projeto');
-                $menu1->add_link($link1,"right");
-                
-                $menu1->show();
-                
-            $grid->fechaColuna();
-            $grid->fechaGrid();             
-            
-            hr("projetosTarefas");
-                        
-            # Limita o tamanho da tela
-            $grid = new Grid();
-            $grid->abreColuna(3);
-            
-                # Exibe as notas
-                #$painel = new Callout();
-                #$painel->abre();
-            
-                # Pega as notas
-                $select = 'SELECT idNota
-                             FROM tbprojetonota
-                            WHERE idcaderno = '.$idCaderno.' ORDER BY titulo';
-
-                # Acessa o banco
-                $intra = new Intra();
-                $notas = $intra->select($select);
-                $numNotas = $intra->count($select);
-
-                # Inicia a tabela
-                $tabela = new Tabela("tableNotas");
-                #$tabela->set_titulo("Notas");
-
-                $tabela->set_conteudo($notas);
-                $tabela->set_label(array(""));
-                $tabela->set_classe(array("Gprojetos"));
-                $tabela->set_metodo(array("showNota"));
-                $tabela->set_align(array("left"));
-                
-                if($numNotas > 0){
-                    $tabela->show();
-                }else{
-                    #tituloTable("Notas");
-                    br();
-                    p("Clique em + para acrescentar uma nota","f14","center");
-                    br(3);
-                }
-                
-                #$painel->fecha();
-            
-            $grid->fechaColuna();
-            
-            # Área da nota editada
-            $grid->abreColuna(9);
-            
-            # Pega os dados dessa nota
-            if(!is_null($idNota)){
-                $dados = $projeto->get_dadosNota($idNota);
-            
-                # Exibe a nota
-                $painel = new Callout();
-                $painel->abre();
-                    $grid = new Grid();
-                    $grid->abreColuna(10);
-                        p($dados[3],'descricaoProjetoTitulo');
-                    $grid->fechaColuna();
-                    $grid->abreColuna(2);
-
-                        # Menu
-                        $menu1 = new MenuBar("small button-group");
-
-                        # Nova Nota
-                        $link = new Link("Editar",'?fase=notaNova&origem=nota&idNota='.$idNota);
-                        $link->set_class('button');
-                        $link->set_title('Editar Nota');
-                        $menu1->add_link($link,"right");
-
-                        $menu1->show();
-
-                    $grid->fechaColuna();
-                    $grid->fechaGrid();
-                
-                        hr("projetosTarefas");
-                        echo "<pre id='preNota'>".$dados[4]."</pre>";
-                        
-                $painel->fecha();
-            }else{
-                $painel = new Callout();
-                $painel->abre();
-                    br(3);
-                    p("Nenhuma nota selecionada","f14","center");
-                    br(3);
-                $painel->fecha();
-                
-            }
-
-            $grid->fechaColuna();
-            $grid->fechaGrid();   
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();   
-            break;
-            
-    ###########################################################
-            
-        case "cadernoNovo" :
-             
-            $grid->abreColuna($col2P,$col2M,$col2L);
-             
-            # Verifica se é incluir ou editar
-            if(!is_null($idCaderno)){
-                # Pega os dados 
-                $dados = $projeto->get_dadosCaderno($idCaderno);
-                $titulo = "Editar";
-            }else{
-                $dados = array(NULL,NULL,NULL,NULL);
-                $titulo = "Novo Caderno";
-            }
-             
-            # Nome do projeto
-            $grid = new Grid();
-            $grid->abreColuna(12);
-                p($titulo,'descricaoProjetoTitulo');
-            $grid->fechaColuna();
-            $grid->fechaGrid(); 
-            hr("projetosTarefas");
-            
-            # Formulário
-            $form = new Form('?fase=validaCaderno&idCaderno='.$idCaderno);        
-                    
-            # caderno
-            $controle = new Input('caderno','texto','Nome do Caderno:',1);
-            $controle->set_size(50);
-            $controle->set_linha(1);
-            $controle->set_required(TRUE);
-            $controle->set_autofocus(TRUE);
-            $controle->set_placeholder('Nome do Caderno');
-            $controle->set_title('O nome do Caderno a ser criado');
-            $controle->set_valor($dados[1]);
-            $form->add_item($controle);
-            
-            # descrição
-            $controle = new Input('descricao','textarea','Descrição:',1);
-            $controle->set_size(array(80,5));
-            $controle->set_linha(2);
-            $controle->set_title('A descrição detalhda do caderno');
-            $controle->set_placeholder('Descrição');
-            $controle->set_valor($dados[2]);
-            $form->add_item($controle);
-            
-            # submit
-            $controle = new Input('submit','submit');
-            $controle->set_valor('Salvar');
-            $controle->set_linha(4);
-            $form->add_item($controle);
-            
-            $form->show();
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();    
-            break;
-                        
-    ###########################################################
-            
-        case "validaCaderno" :
-            
-            # Recuperando os valores
-            $caderno = post('caderno');
-            $descricao = post('descricao');
-            
-            # Cria arrays para gravação
-            $arrayNome = array("caderno","descricao");
-            $arrayValores = array($caderno,$descricao);
-            
-            # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idCaderno,"tbprojetocaderno","idCaderno");
-            loadPage("?");
-            break;
-        
-#############################################################################################################################
-#   Nota
-#############################################################################################################################
-            
-        case "notaNova" :
-             
-            $grid->abreColuna($col2P,$col2M,$col2L);
-             
-            # Verifica se é incluir ou editar
-            if(!is_null($idNota)){
-                # Pega os dados dessa nota
-                $dados = $projeto->get_dadosNota($idNota);
-                $titulo = "Editar Nota";
-            }else{
-                $dados = array(NULL,NULL,NULL,NULL,NULL);
-                $titulo = "Nova Nota";
-            } 
-             
-            # Titulo
-            $grid = new Grid();
-            $grid->abreColuna(12);
-                p($titulo,"f18");
-            $grid->fechaColuna(); 
-            $grid->fechaGrid(); 
-            hr("projetosTarefas");
-            
-            # Pega os dados da combo caderno
-            $select = 'SELECT idCaderno,
-                              caderno
-                         FROM tbprojetocaderno
-                     ORDER BY caderno';
-            
-            $comboCaderno = $intra->select($select);
-            array_unshift($comboCaderno, array(NULL,NULL)); # Adiciona o valor de nulo
-            
-            # Formuário
-            $form = new Form('?fase=validaNota&idNota='.$idNota);        
-                    
-            # Título
-            $controle = new Input('titulo','texto','Título:',1);
-            $controle->set_size(100);
-            $controle->set_linha(1);
-            $controle->set_col(8);
-            $controle->set_required(TRUE);
-            $controle->set_autofocus(TRUE);
-            $controle->set_title('Título da nota');
-            $controle->set_valor($dados[3]);
-            $form->add_item($controle);
-            
-            # idProjeto
-            $controle = new Input('idCaderno','combo','Caderno:',1);
-            $controle->set_size(20);
-            $controle->set_linha(1);
-            $controle->set_col(4);
-            $controle->set_array($comboCaderno);
-            if(is_null($idNota)){
-                $controle->set_valor($idCaderno);
-            }else{
-                $controle->set_valor($dados[1]);
-            }
-            $form->add_item($controle);  
-                                    
-            # nota            
-            $controle = new Input('nota','textarea','Descrição:',1);
-            $controle->set_size(array(80,15));
-            $controle->set_linha(2);
-            $controle->set_col(12);
-            $controle->set_title('Corpo da nota');
-            $controle->set_valor($dados[4]);
-            $form->add_item($controle);
-            
-            # submit
-            $controle = new Input('submit','submit');
-            $controle->set_valor('Salvar');
-            $controle->set_linha(3);
-            $form->add_item($controle);
-            
-            $form->show();
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();    
-            break;
                         
         ###########################################################
             
-        case "validaNota" :
+        case "verificaVolta" :
             
-            # Recuperando os valores
-            $titulo = post('titulo');
-            $caderno = post('idCaderno');
-            $nota = post('nota');
-                      
-            # Cria arrays para gravação
-            $arrayNome = array("titulo","idCaderno","nota");
-            $arrayValores = array($titulo,$caderno,$nota);
+            # Se é projeto
+            if(!is_null($idProjeto)){
+                loadPage("?fase=projeto");
+            }
             
-            # Grava	
-            $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");
+            # Se é etiqueta
+            if(!is_null($etiqueta)){
+                loadPage("?fase=etiqueta");
+            }
             
-            if(is_null($idNota)){
-                loadPage("?fase=caderno&idCaderno=$caderno");
-            }else{
-                loadPage("?fase=caderno&idCaderno=$caderno&idNota=$idNota");
+            # Se é solicitante
+            if(!is_null($solicitante)){
+                loadPage("?fase=solicitante");
+            }
+            
+            # Se é fazendo
+            if($fazendo){
+                loadPage("?fase=fazendo");
             }
             break;
-                        
-        ###########################################################
+            
     }
     
     $grid->fechaColuna();

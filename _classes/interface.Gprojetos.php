@@ -15,9 +15,22 @@ class Gprojetos{
     * 
     * @syntax Gprojetos::Gprojetos;
     * 
-    * @param $idProjeto integer NULL o id do projeto a sser ressaltado no menu informando que stá sendo editado.
+    * @param $idProjeto integer NULL o id do projeto a ser ressaltado no menu informando que stá sendo editado.
     */    
-   
+        
+        # Acessa o banco de dados
+        $projeto = new Projeto();
+        $intra = new Intra();
+        
+        # Exibe menu de grupos
+        $select1 = "SELECT DISTINCT grupo
+                     FROM tbprojeto
+                     WHERE ativo
+                     ORDER BY grupo";
+        
+        $dadosGrupos = $intra->select($select1);
+        $numGrupos = $intra->count($select1);
+        
         # Pega os projetos cadastrados
         $select = 'SELECT idProjeto,
                           projeto,
@@ -27,32 +40,49 @@ class Gprojetos{
                      WHERE ativo
                   ORDER BY projeto';
         
-        # Acessa o banco de dados
-        $projeto = new Projeto();
-        $intra = new Intra();
-        $dadosProjetos = $intra->select($select);
         $numProjetos = $intra->count($select);
         
         # Inicia o menu
         $menu1 = new Menu();
-        $menu1->add_item('titulo1','Projetos','?','Cartões de Projetos');
-        $menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
-        
-        # Verifica se tem projetos
-        if($numProjetos>0){
-            # Percorre o array 
-            foreach ($dadosProjetos as $valor){
-                $numTarefa = $projeto->get_numeroTarefasPendentes($valor[0]);
-                $texto = $valor[1]." <span id='numProjeto'>$numTarefa</span>";
+        $menu1->add_item('titulo1','Projetos');
+        #$menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
                 
-                # Marca o item que está sendo editado
-                if($idProjeto == $valor[0]){
-                    $texto = "> ".$texto;
-                }
-                $menu1->add_item('link',$texto,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
-            }
+        # Verifica se tem projetos
+        if($numProjetos > 0){
+            foreach ($dadosGrupos as $valor1){
+                
+                $menu1->add_item('titulo2',$valor1[0],"?fase=cartaoProjeto&grupo=".$valor1[0]);
+                #$menu1->add_item('titulo1','Projetos','?fase=cartaoProjeto','Cartões de Projetos');
+                #$menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
+                
+                
+                # Pega os projetos cadastrados
+                $select3 = 'SELECT idProjeto,
+                                  projeto,
+                                  descricao,
+                                  grupo
+                             FROM tbprojeto
+                             WHERE ativo AND grupo = "'.$valor1[0].'"
+                          ORDER BY projeto';
+
+                $dadosProjetos = $intra->select($select3);
+                
+                # Percorre o array 
+                foreach ($dadosProjetos as $valor){
+                    
+                    $numTarefa = $projeto->get_numeroTarefasPendentes($valor[0]);
+                    $texto = $valor[1]." <span id='numProjeto'>$numTarefa</span>";
+
+                    # Marca o item que está sendo editado
+                    if($idProjeto == $valor[0]){
+                        $texto = "> ".$texto;
+                    }
+                    $menu1->add_item('link',$texto,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
+                }                
+            }            
         }
         $menu1->show();
+        
     }
 
     ##########################################################
@@ -66,6 +96,18 @@ class Gprojetos{
     * @param $idPCaderno integer NULL o id do caderno a sser ressaltado no menu informando que stá sendo editado.
     */    
    
+        # Acessa o banco de dados
+        $projeto = new Projeto();
+        $intra = new Intra();
+        
+        # Exibe menu de grupos
+        $select1 = "SELECT DISTINCT grupo
+                     FROM tbprojetocaderno
+                     ORDER BY grupo";
+        
+        $dadosGrupos = $intra->select($select1);
+        $numGrupos = $intra->count($select1);
+        
         # Pega os projetos cadastrados
         $select = 'SELECT idCaderno,
                           caderno,
@@ -73,32 +115,66 @@ class Gprojetos{
                      FROM tbprojetocaderno
                   ORDER BY caderno';
         
-        # Acessa o banco de dados
-        $projeto = new Projeto();
-        $intra = new Intra();
         $dadosProjetos = $intra->select($select);
         $numCadernos = $intra->count($select);
         
         # Inicia o menu
         $menu1 = new Menu();
-        $menu1->add_item('titulo1','Cadernos');
-        $menu1->add_item('link','+ Novo Caderno','?fase=cadernoNovo');
-        
-        # Verifica se tem cadernos
-        if($numCadernos>0){
-            
-            # Percorre o array 
-            foreach ($dadosProjetos as $valor){
-                $numNotas = $projeto->get_numeroNotas($valor[0]);
-                $texto = $valor[1]." <span id='numProjeto'>$numNotas</span>";
+        $menu1->add_item('titulo1','Cadernos','?');
+        #$menu1->add_item('link','+ Novo Caderno','?fase=cadernoNovo');
                 
-                # Marca o item que está sendo editado
-                if($idCaderno == $valor[0]){
-                    $texto = "> ".$texto;
-                }
-                $menu1->add_item('link',$texto,'?fase=caderno&idCaderno='.$valor[0],$valor[2]);
-            }
-        } 
+        # Verifica se tem cadernos
+        if($numCadernos > 0){
+            foreach ($dadosGrupos as $valor1){
+                
+                $menu1->add_item('titulo2',$valor1[0]);
+                #$menu1->add_item('titulo1','Projetos','?fase=cartaoProjeto','Cartões de Projetos');
+                #$menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
+                
+                
+                # Pega os projetos cadastrados
+                $select3 = 'SELECT idCaderno,
+                                   caderno,
+                                   descricao
+                              FROM tbprojetocaderno
+                             WHERE grupo = "'.$valor1[0].'"
+                          ORDER BY caderno';
+
+                $dadosProjetos = $intra->select($select3);
+                
+                # Percorre o array 
+                foreach ($dadosProjetos as $valor){
+                    $numNotas = $projeto->get_numeroNotas($valor[0]);
+                    $texto = $valor[1]." <span id='numProjeto'>$numNotas</span>";
+
+                    # Marca o item que está sendo editado
+                    if($idCaderno == $valor[0]){
+                        $texto = "> ".$texto;
+                        $menu1->add_item('link',$texto,'?fase=caderno&idCaderno='.$valor[0],$valor[2]);                        
+                    }else{
+                        $menu1->add_item('link',$texto,'?fase=caderno&idCaderno='.$valor[0],$valor[2]);
+                    }
+                    
+                    # Pega as notas
+                    $select = 'SELECT idNota,
+                                      titulo
+                                 FROM tbprojetonota
+                                WHERE idcaderno = '.$valor[0].' ORDER BY titulo';
+
+                    # Acessa o banco
+                    $notas = $intra->select($select);
+                    $numNotas = $intra->count($select);
+
+                    # Incluir nota
+                    #$menu1->add_item('sublink','+ Nova Nota','?fase=notaNova');
+
+                    # Percorre as notas 
+                    foreach($notas as $tituloNotas){
+                        $menu1->add_item('sublink',$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0]);
+                    }
+                }           
+            }            
+        }
         $menu1->show();
     }
 
@@ -224,57 +300,6 @@ class Gprojetos{
         $dadosProjetos = $intra->select($select);
         $numProjetos = $intra->count($select);
         
-        # Título
-        tituloTable("Projetos Ativos");
-        br();
-        
-        # Exibe menu de grupos
-        $select2 = "SELECT DISTINCT grupo
-                     FROM tbprojeto
-                     WHERE ativo
-                     ORDER BY grupo";
-        
-        $dadosGrupos = $intra->select($select2);
-        $numGrupos = $intra->count($select2);
-        
-        if($numGrupos>0){
-            # Inicia o grid
-            echo '<nav aria-label="Grupos" role="navigation">';
-            echo '<ul class="breadcrumbs">';
-            
-            if(is_null($grupo)){
-                echo '<li>';
-                echo "<span class='show-for-sr'>Current: </span>";
-                echo "Todos";
-                echo '</li>';
-            }else{
-                echo '<li>';
-                $link = new Link("Todos","?");
-                $link->set_title("Exibe todos os Projetos ativos");
-                $link->show();
-                echo '</li>';
-            }
-            
-            # Percorre o array 
-            foreach ($dadosGrupos as $grupoValor){                
-                if($grupo == $grupoValor[0]){
-                    echo '<li>';
-                    echo "<span class='show-for-sr'>Current: </span>";
-                    echo $grupoValor[0];
-                    echo '</li>';
-                }else{
-                    echo '<li>';
-                    $link = new Link($grupoValor[0],"?grupo=".$grupoValor[0]);
-                    $link->set_title("Exibe os Projetos ativos do grupo ".$grupoValor[0]);
-                    $link->show();
-                    echo '</li>';
-                }                
-            }
-
-            echo '</ul>';
-            echo '</nav>';
-        }
-        
         # Verifica se tem projetos
         if($numProjetos>0){
             # Inicia o grid
@@ -287,16 +312,23 @@ class Gprojetos{
                 $card = new Callout($valor[4],"card");
                 $card->abre();
                 
-                        $link = new Link($valor[1],'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
-                        $link->set_id("aCardNomeProjeto");
-                        $link->set_title("Exibe os Projetos ativos do grupo ".$grupoValor[0]);
+                    $div = new Div("divEditaNota");
+                    $div->abre();
+                        $link = new Link("Editar",'?fase=projetoEditar&idProjeto='.$valor[0],"Edita Projeto: ".$valor[1]);
+                        $link->set_id("editaNota");
                         $link->show();
-                        
-                        #p($valor[1],"pCardNomeProjeto");             // Nome do projeto
-                        p(strtoupper($valor[3]),"pCardNomeGrupo");    // Grupo
+                    $div->fecha();        
+                
+                    $link = new Link($valor[1],'?fase=projeto&idProjeto='.$valor[0],"Projeto: ".$valor[1]);
+                    $link->set_id("aCardNomeProjeto");
+                    $link->show();
+
+                    #p($valor[1],"pCardNomeProjeto");             // Nome do projeto
+                    p(strtoupper($valor[3]),"pCardNomeGrupo");    // Grupo
                     
                     hr("hrCard");
-                    p($valor[2],"f12");   // descrição
+                    p($valor[2],"descricaoProjeto");   // descrição
+                    br();
                     
                     $numTarefaPendentes = $projeto->get_numeroTarefasPendentes($valor[0]);
                     $numTarefaConcluidas = $projeto->get_numeroTarefasConcluidas($valor[0]);
@@ -316,13 +348,91 @@ class Gprojetos{
 
     ##########################################################
     
+    public static function cartoesCadernos(){
+    /**
+    * Exibe o os cadernos ativo em forma de cartões
+    * 
+    * @syntax Gprojetos::Gprojetos;
+    */    
+   
+        # Pega os projetos cadastrados
+        $select = 'SELECT idCaderno,
+                          caderno,
+                          descricao,
+                          grupo
+                     FROM tbprojetocaderno
+                 ORDER BY caderno';
+        
+        # Acessa o banco de dados
+        $projeto = new Projeto();
+        $intra = new Intra();
+        $dadosCaderno = $intra->select($select);
+        $numCadernos = $intra->count($select);
+        
+        # Verifica se tem cadernos
+        if($numCadernos > 0){
+            # Inicia o grid
+            $grid = new Grid();
+            
+            # Percorre o array 
+            foreach ($dadosCaderno as $valor){
+                
+                $grid->abreColuna(12,6,4);
+                $card = new Callout("secondary","card");
+                $card->abre();
+                
+                    $div = new Div("divEditaNota");
+                    $div->abre();
+                        $link = new Link("Editar",'?fase=cadernoNovo&idCaderno='.$valor[0],"Edita caderno: ".$valor[1]);
+                        $link->set_id("editaNota");
+                        $link->show();
+                    $div->fecha();  
+                
+                    $link = new Link($valor[1],'?fase=caderno&idCaderno='.$valor[0],"Caderno: ".$valor[1]);
+                    $link->set_id("aCardNomeProjeto");
+                    $link->show(); 
+                    
+                    p(strtoupper($valor[3]),"pCardNomeGrupo");    // Grupo
+                
+                    hr("hrCard");
+                    p($valor[2],"descricaoProjeto");   // descrição
+                    br();
+                    
+                    
+                    $numNotas = $projeto->get_numeroNotas($valor[0]);
+                    
+                    if($numNotas > 0){
+                    
+                        $select2 = 'SELECT titulo
+                                     FROM tbprojetonota
+                                    WHERE idCaderno = '.$valor[0].'  
+                                   ORDER BY nota';
+
+                        $nomeNota = $intra->select($select2);
+
+                        # Percorre o array 
+                        foreach ($nomeNota as $valor2){
+                            p($valor2[0],"pCardNumTarefas");
+                        }
+                    }
+                    
+                    p("Notas: ".$numNotas,"pCardNumTarefas");
+                    
+                $card->fecha();
+                $grid->fechaColuna();
+            }
+             
+            $grid->fechaGrid();
+        }
+    }
+
+    ##########################################################
+    
     public static function menuFazendo($fase){
     /**
     * Exibe o menu de projetos ativos.
     * 
     * @syntax Gprojetos::Gprojetos;
-    * 
-    * @param $idProjeto integer NULL o id do projeto a sser ressaltado no menu informando que stá sendo editado.
     */    
            
         # Inicia o menu
@@ -330,7 +440,7 @@ class Gprojetos{
         #$menu1->add_item('titulo','Cronológico');
         
         if($fase == "fazendo"){
-            $menu1->add_item('link','> Fazendo','?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');
+            $menu1->add_item('link','> Fazendo','?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');            
         }else{
             $menu1->add_item('link','Fazendo','?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');
         }
@@ -423,7 +533,7 @@ class Gprojetos{
            
     ###########################################################
     
-    public function showTarefa($tarefa){
+    public function showTarefa($idTarefa){
     /**
      * Exibe a tarefa
      * 
@@ -432,10 +542,6 @@ class Gprojetos{
      * 
      * @syntax $projeto->showTarefa($idTarefa);  
      */
-    
-        # Pega os dados
-        $partes = explode(":",$tarefa);
-        $idTerefa = $parte[0];
 
         # Pega os projetos cadastrados
         $select = 'SELECT tarefa,
@@ -448,29 +554,7 @@ class Gprojetos{
                     WHERE idTarefa = '.$idTarefa;
         
         $intra = new Intra();
-        $row = $intra->select($select,false); 
-        $tamanho = 20;
-        
-        # Exibe a prioridade
-        switch ($row[1]){
-            case 1 :
-                $figura = new Imagem(PASTA_FIGURAS.'prioridadeMedia.png','Prioridade Média',$tamanho,$tamanho);
-                $figura->show();
-                echo " ";
-                break;
-            
-            case 2 :
-                $figura = new Imagem(PASTA_FIGURAS.'prioridadeAlta.png','Prioridade Média',$tamanho,$tamanho);
-                $figura->show();
-                echo " ";
-                break;
-            
-            case 3 :
-                $figura = new Imagem(PASTA_FIGURAS.'prioridadeUrgente.png','Prioridade Média',$tamanho,$tamanho);
-                $figura->show();
-                echo " ";
-                break;
-        }
+        $row = $intra->select($select,false);
         
         $projeto = new Projeto();
         $nomeProjeto = $projeto->get_nomeProjeto($row[3]);        
@@ -483,18 +567,18 @@ class Gprojetos{
             br();
             
             # Projeto
-            span($nomeProjeto,"projeto");
+            span($nomeProjeto,"projeto",NULL,"Projeto");
                         
             # Etiqueta
             if(!is_null($row[4])){
                 echo "&nbsp&nbsp&nbsp";
-                span($row[4],"etiqueta");
+                span($row[4],"etiqueta",NULL,"Etiqueta");
             } 
             
             # Solicitante
             if(!is_null($row[5])){
                 echo "&nbsp&nbsp&nbsp";
-                span($row[5],"solicitante");
+                span($row[5],"solicitante",NULL,"Solicitante");
             } 
             
         }else{
@@ -504,19 +588,58 @@ class Gprojetos{
             br();
             
              # Projeto
-            span($nomeProjeto,"projeto");
+            span($nomeProjeto,"projeto",NULL,"Projeto");
                         
             # Etiqueta
             if(!is_null($row[4])){
                 echo "&nbsp&nbsp&nbsp";
-                span($row[4],"etiqueta");
+                span($row[4],"etiqueta",NULL,"Etiqueta");
             } 
             
             # Solicitante
             if(!is_null($row[5])){
                 echo "&nbsp&nbsp&nbsp";
-                span($row[5],"solicitante");
+                span($row[5],"solicitante",NULL,"Solicitante");
             } 
+        }
+    }
+           
+    ###########################################################
+    
+    public function showPrioridade($idTarefa){
+    /**
+     * Exibe a prioridade de uma tarefa
+     * 
+     * @param $idTarefa integer NULL o $idTarefa
+     * 
+     * @syntax $projeto->showPrioridade($idTarefa);  
+     */
+    
+        # Pega os projetos cadastrados
+        $select = 'SELECT noOrdem
+                     FROM tbprojetotarefa
+                    WHERE idTarefa = '.$idTarefa;
+        
+        $intra = new Intra();
+        $row = $intra->select($select,false); 
+        $tamanho = 20;
+        
+        # Exibe a prioridade
+        switch ($row[0]){
+            case 1 :
+                $figura = new Imagem(PASTA_FIGURAS.'prioridadeMedia.png','Prioridade Média',$tamanho,$tamanho);
+                $figura->show();
+                break;
+            
+            case 2 :
+                $figura = new Imagem(PASTA_FIGURAS.'prioridadeAlta.png','Prioridade Média',$tamanho,$tamanho);
+                $figura->show();
+                break;
+            
+            case 3 :
+                $figura = new Imagem(PASTA_FIGURAS.'prioridadeUrgente.png','Prioridade Média',$tamanho,$tamanho);
+                $figura->show();
+                break;
         }
     }
            
