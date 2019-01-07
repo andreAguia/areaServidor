@@ -292,6 +292,7 @@ if($acesso){
             $controle->set_col(6);
             $controle->set_placeholder('Grupo');
             $controle->set_title('O nome agrupamento do Projeto');
+            $controle->set_plm(TRUE);
             $controle->set_valor($dados[3]);
             $form->add_item($controle);
             
@@ -326,7 +327,7 @@ if($acesso){
             # Recuperando os valores
             $projeto = post('projeto');
             $descricao = post('descricao');
-            $grupo = post('grupo');
+            $grupo = plm(post('grupo'));
             $cor = post('cor');
             
             # Cria arrays para gravação
