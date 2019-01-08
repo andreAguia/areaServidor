@@ -35,7 +35,8 @@ class Projeto{
         $select = 'SELECT idProjeto,
                           projeto,
                           descricao,
-                          grupo
+                          grupo,
+                          cor
                      FROM tbprojeto
                      WHERE idProjeto = '.$idProjeto;
         
@@ -59,7 +60,8 @@ class Projeto{
         $select = 'SELECT idCaderno,
                           caderno,
                           descricao,
-                          grupo
+                          grupo,
+                          cor
                      FROM tbprojetocaderno
                      WHERE idCaderno = '.$idCaderno;
         

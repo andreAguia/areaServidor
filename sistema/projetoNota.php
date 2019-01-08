@@ -41,23 +41,33 @@ if($acesso){
     $idCaderno = get('idCaderno',get_session('idCaderno'));
     $idNota = get('idNota',get_session('idNota'));
     set_session('idCaderno',$idCaderno);
+    $grupo = get('grupo');
     
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
     
+    # Cabeçalho da Página
+    AreaServidor::cabecalho();
+        
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
     
     # Cria um menu
-    $menu1 = new MenuBar("small button-group");
+    $menu1 = new MenuBar("button-group");
 
     # Sair da Área do Servidor
     $linkVoltar = new Link("Voltar",$voltar);
     $linkVoltar->set_class('button');
     $linkVoltar->set_title('Voltar a página anterior');    
     $menu1->add_link($linkVoltar,"left");
+    
+    # Novo Caderno
+    $linkSenha = new Link("Novo Caderno","?fase=cadernoNovo");
+    $linkSenha->set_class('button');
+    $linkSenha->set_title('Cria novo Caderno');
+    $menu1->add_link($linkSenha,"right");
 
     $menu1->show();
     
@@ -150,7 +160,7 @@ if($acesso){
                 $dados = $projeto->get_dadosCaderno($idCaderno);
                 $titulo = "Editar";
             }else{
-                $dados = array(NULL,NULL,NULL,NULL);
+                $dados = array(NULL,NULL,NULL,NULL,NULL);
                 $titulo = "Novo Caderno";
             }
              
@@ -189,9 +199,22 @@ if($acesso){
             $controle = new Input('grupo','texto','Nome do agrupamento:',1);
             $controle->set_size(50);
             $controle->set_linha(3);
+            $controle->set_col(6);
             $controle->set_placeholder('Grupo');
-            $controle->set_title('O nome agrupamento do Projeto');
+            $controle->set_title('O nome agrupamento do Caderno');
+            $controle->set_plm(TRUE);
             $controle->set_valor($dados[3]);
+            $form->add_item($controle);
+            
+            # cor
+            $controle = new Input('cor','combo','Cor:',1);
+            $controle->set_size(10);
+            $controle->set_col(6);
+            $controle->set_linha(3);
+            $controle->set_title('A cor do cartão');
+            $controle->set_placeholder('Cor');
+            $controle->set_array(array("secondary","primary","success","warning","alert"));
+            $controle->set_valor($dados[4]);
             $form->add_item($controle);
             
             # submit
@@ -214,10 +237,11 @@ if($acesso){
             $caderno = post('caderno');
             $descricao = post('descricao');
             $grupo = post('grupo');
+            $cor = post('cor');
             
             # Cria arrays para gravação
-            $arrayNome = array("caderno","descricao","grupo");
-            $arrayValores = array($caderno,$descricao,$grupo);
+            $arrayNome = array("caderno","descricao","grupo","cor");
+            $arrayValores = array($caderno,$descricao,$grupo,$cor);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idCaderno,"tbprojetocaderno","idCaderno");
@@ -233,7 +257,7 @@ if($acesso){
             $grid->abreColuna($col2P,$col2M,$col2L);
             
             # Menu de Projetos
-            Gprojetos::cartoesCadernos();  
+            Gprojetos::cartoesCadernos($grupo);  
             
             $grid->fechaColuna();
             $grid->fechaGrid();    

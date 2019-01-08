@@ -58,6 +58,7 @@ if($acesso){
             set_session('etiqueta');
             set_session('solicitante');
             set_session('fazendo',FALSE);
+            $voltar = '?';
             break;
         
         case "projetoEditar":
@@ -99,18 +100,27 @@ if($acesso){
     $page = new Page();
     $page->iniciaPagina();
     
+    # Cabeçalho da Página
+    AreaServidor::cabecalho();
+    
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
     
     # Cria um menu
-    $menu1 = new MenuBar("small button-group");
+    $menu1 = new MenuBar("button-group");
 
     # Sair da Área do Servidor
     $linkVoltar = new Link("Voltar",$voltar);
     $linkVoltar->set_class('button');
     $linkVoltar->set_title('Voltar a página anterior');    
     $menu1->add_link($linkVoltar,"left");
+    
+    # Novo Projeto
+    $linkSenha = new Link("Novo Projeto","?fase=projetoNovo");
+    $linkSenha->set_class('button');
+    $linkSenha->set_title('Cria novo projeto');
+    $menu1->add_link($linkSenha,"right");
     
     # Fazendo
     $linkSenha = new Link("Fazendo","?fase=fazendo");
@@ -138,7 +148,7 @@ if($acesso){
     $grid->abreColuna($col1P,$col1M,$col1L);
     
     # Menu Cronológico
-    #Gprojetos::menuFazendo($fase);
+    Gprojetos::menuFazendo($fase);
 
     # Menu de Projetos
     Gprojetos::menuProjetosAtivos($idProjeto);

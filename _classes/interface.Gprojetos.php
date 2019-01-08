@@ -120,14 +120,14 @@ class Gprojetos{
         
         # Inicia o menu
         $menu1 = new Menu();
-        $menu1->add_item('titulo1','Cadernos','?');
+        $menu1->add_item('titulo1','Cadernos');
         #$menu1->add_item('link','+ Novo Caderno','?fase=cadernoNovo');
                 
         # Verifica se tem cadernos
         if($numCadernos > 0){
             foreach ($dadosGrupos as $valor1){
                 
-                $menu1->add_item('titulo2',$valor1[0]);
+                $menu1->add_item('titulo2',$valor1[0],"?fase=cartaoCaderno&grupo=".$valor1[0]);
                 #$menu1->add_item('titulo1','Projetos','?fase=cartaoProjeto','Cartões de Projetos');
                 #$menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
                 
@@ -166,7 +166,7 @@ class Gprojetos{
                     $numNotas = $intra->count($select);
 
                     # Incluir nota
-                    #$menu1->add_item('sublink','+ Nova Nota','?fase=notaNova');
+                    $menu1->add_item('sublink','+ Nova Nota','?fase=notaNova');
 
                     # Percorre as notas 
                     foreach($notas as $tituloNotas){
@@ -348,7 +348,7 @@ class Gprojetos{
 
     ##########################################################
     
-    public static function cartoesCadernos(){
+    public static function cartoesCadernos($grupo = NULL){
     /**
     * Exibe o os cadernos ativo em forma de cartões
     * 
@@ -359,10 +359,16 @@ class Gprojetos{
         $select = 'SELECT idCaderno,
                           caderno,
                           descricao,
-                          grupo
-                     FROM tbprojetocaderno
-                 ORDER BY caderno';
+                          grupo,
+                          cor
+                     FROM tbprojetocaderno';
         
+        if(!is_null($grupo)){
+            $select .= ' WHERE grupo = "'.$grupo.'"';
+        }
+        
+        $select .= ' ORDER BY caderno';
+                
         # Acessa o banco de dados
         $projeto = new Projeto();
         $intra = new Intra();
@@ -378,7 +384,7 @@ class Gprojetos{
             foreach ($dadosCaderno as $valor){
                 
                 $grid->abreColuna(12,6,4);
-                $card = new Callout("secondary","card");
+                $card = new Callout($valor[4],"card");
                 $card->abre();
                 
                     $div = new Div("divEditaNota");

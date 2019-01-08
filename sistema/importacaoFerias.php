@@ -112,8 +112,9 @@ if($acesso){
             if(file_exists($arquivo)){
                 $lines = file($arquivo);
                 
-                # Inicia contador
+                # Inicia variáveis
                 $contador = 0;
+                $erro = 0;
                 
                 # Inicia a Tabela
                 echo "<table border=1>";
@@ -123,6 +124,7 @@ if($acesso){
                 echo "<th>Nome</th>";
                 echo "<th>Ano Exercicio</th>";
                 echo "<th>Data Inicial</th>";
+                echo "<th>Data Final</th>";
                 echo "<th>Dias</th>";
                 echo "<th>Obs</th>";
                 echo "</tr>";
@@ -134,34 +136,59 @@ if($acesso){
                     $parte = explode(",",$linha);
                     
                     # Pega os dados
-                    $idFuncional = $parte[0];                                               // IdFuncional
+                    $idFuncional = $parte[0];           // IdFuncional
+                    $nomeImportado = $parte[1];         // Nome
+                    $dtInicial = $parte[2];             // Data Inicial
+                    $dtFinal = $parte[3];               // Data Final
+                    $dtInicialAquisitivo = $parte[4];   // Data Inicial Aquisitivo
+                    $dtFinalAquisitivo = $parte[5];     // Data Final Aquisitivo
+                    
+                    # Dados Tratados
                     $idServidor = $pessoal->get_idServidoridFuncional($idFuncional);        // IdServidor
                     $nome = $pessoal->get_nome($idServidor);                                // Nome
-                    $dtInicial = $parte[1];                                                 // Data Inicial
-                    $dtFinal = $parte[2];                                                   // Data final
-                    $numDias = dataDif($dtInicial, $dtFinal);
-                    $anoExercicio = year($parte[3]);
+                    $numDias = dataDif($dtInicial, $dtFinal) + 1;
+                    $anoExercicio = year($dtInicialAquisitivo);
                     $obs = "";
                     
+                    # Verifica erros
+                    # Ano Exercício
+                    if($anoExercicio <> $anoImportacao){
+                        $obs .= "Não é o ano desejado !!! Será ignorado na importação.";
+                        $erro++;
+                    }
+                    
+                    # Nome
+                    if(plm($nomeImportado) <> retiraAcento(plm($nome))){
+                        $obs .= "Nome diferente !!!";
+                    }
+                                        
                     $contador++;
                     echo "<tr>";
-                    echo "<td>".$contador."</td>";
+                    echo "<td>$contador</td>";
                     echo "<td>$idServidor</td>";
-                    echo "<td>$nome</td>";
+                    echo "<td>$nome<br/>$nomeImportado</td>";
                     echo "<td>$anoExercicio</td>";
                     echo "<td>$dtInicial</td>";
+                    echo "<td>$dtFinal</td>";
                     echo "<td>$numDias</td>";
                     echo "<td>$obs</td>";
-                    echo "</tr>";
-                    
+                    echo "</tr>";                    
                 }
                 
                 echo "</table>";
                
                 echo "Registros analisados: ".$contador;
+                br();
+                echo "$erro Erro(s) encontrados";
+                br();
+                echo $contador - $erro." registros prontos para serem importados";
                 
                 br(2);
-                echo "Podemos fazer a importação";
+                if($erro == 0){
+                    echo "Podemos fazer a importação";
+                }else{
+                    echo "Podemos fazer a importação, mas os $erro registros com problemas serão ignorados.";
+                }
                 
                 br(2);
                 # Botão importar
@@ -182,7 +209,7 @@ if($acesso){
         case "aguarda" :
             titulo('Importando ...');
             br(4);
-            aguarde("Importando férias $anoImportacao.");
+            aguarde("Importando férias $anoImportacao");
 
             loadPage('?fase=importa');
             break;
@@ -207,41 +234,49 @@ if($acesso){
             if(file_exists($arquivo)){
                 $lines = file($arquivo);
                 
-                # Inicia contador
+                # Inicia Variáveis
                 $contador = 0;
+                $ignorados = 0;
 
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($lines as $linha) {
+                    
                     $linha = htmlspecialchars($linha);
 
-                    $parte = explode(";",$linha);
+                    $parte = explode(",",$linha);
                     
-                    # Pega o id Funcional a partir da matrícula
-                    $idServidor = $parte[0];
+                    # Pega os dados
+                    $idFuncional = $parte[0];           // IdFuncional
+                    $nomeImportado = $parte[1];         // Nome
+                    $dtInicial = $parte[2];             // Data Inicial
+                    $dtFinal = $parte[3];               // Data Final
+                    $dtInicialAquisitivo = $parte[4];   // Data Inicial Aquisitivo
+                    $dtFinalAquisitivo = $parte[5];     // Data Final Aquisitivo
                     
-                    # Pega o nome
-                    $nome = $pessoal->get_nome($idServidor);
+                    # Dados Tratados
+                    $idServidor = $pessoal->get_idServidoridFuncional($idFuncional);        // IdServidor
+                    $nome = $pessoal->get_nome($idServidor);                                // Nome
+                    $numDias = dataDif($dtInicial, $dtFinal) + 1;
+                    $anoExercicio = year($dtInicialAquisitivo);
                     
-                    # Data Inicial
-                    $dtInicial = $parte[1];
-                    
-                    # Ano Exercicio
-                    $anoExercicio = $parte[2];
-                    
-                    # Obs
-                    $obs = $parte[3];
-                    
-                    # Numero de dias
-                    $numDias = $parte[4];
-                    
-                    # Grava na tabela
-                    $campos = array("idServidor","dtInicial","anoExercicio","numDias","status");
-                    $valor = array($idServidor,date_to_bd($dtInicial),$anoExercicio,$numDias,"fruída");                    
-                    $pessoal->gravar($campos,$valor,NULL,"tbferias","idFerias",FALSE);
-                    $contador++;
+                    if($anoExercicio == $anoImportacao){
+                        # Grava na tabela
+                        $campos = array("idServidor","dtInicial","anoExercicio","numDias","status");
+                        $valor = array($idServidor,date_to_bd($dtInicial),$anoExercicio,$numDias,"fruída");                    
+                        $pessoal->gravar($campos,$valor,NULL,"tbferias","idFerias",FALSE);
+                        $contador++;
+                    }else{
+                        $ignorados++;
+                    }
                 }
                
+                # Rotina que altera fruída para Solicitada e vice versa
+                $pessoal->mudaStatusFeriasSolicitadaFruida();
+                
+                # Informa sobre a importação
                 echo "Registros importados: ".$contador;
+                br();
+                echo $ignorados." registros ignorados por não serem do ano desejado.";
             }else{
                 echo "Arquivo de Férias não encontrado";
             }
