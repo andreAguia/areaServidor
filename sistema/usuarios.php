@@ -80,7 +80,7 @@ if($acesso){
                                       idUsuario
                                  FROM tbusuario
                                 WHERE usuario LIKE "%'.$parametro.'%"
-                             ORDER BY (senha = "") asc, 1 asc');
+                             ORDER BY (senha is NULL) asc, 1 asc');
 
     # select do edita
     $objeto->set_selectEdita('SELECT usuario,
