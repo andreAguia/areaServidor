@@ -293,6 +293,7 @@ table#tableTarefas{
 
 table#tableTarefas a{
     color: #000;
+    font-size: 14px;
 }
 
 table#tableTarefas th{

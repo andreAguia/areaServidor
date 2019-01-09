@@ -127,7 +127,7 @@ class ListaTarefas{
         
         $label = array("","","");
         $align = array("center","left");
-        $width = array(5,90,5);
+        $width = array(5,85,10);
         $classe = array(NULL,"Gprojetos","Gprojetos");
         $metodo = array(NULL,"showTarefa","showPrioridade");
         $link = array($botao1);
