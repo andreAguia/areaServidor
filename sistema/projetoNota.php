@@ -47,9 +47,7 @@ if($acesso){
     # Verifica se a nota é do caderno editado
     if(!is_null($idNota)){
         $dadosNota = $projeto->get_dadosNota($idNota);
-        echo $dadosNota[1];br();
-        echo $idCaderno;br();
-        echo $idNota;
+        
         # Se não for apaga o idNota
         if($dadosNota[1] <> $idCaderno){
             set_session('idNota');
@@ -100,6 +98,10 @@ if($acesso){
     $col2M = 12 - $col1M;
     $col2L = 12 - $col1L;
     
+    # Título
+    titulo("Sistema de Notas");
+    br();
+    
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna($col1P,$col1M,$col1L);
@@ -137,21 +139,17 @@ if($acesso){
 #############################################################################################################################
             
         case "caderno" :
-             
-           # Area das notas
-           $grid->abreColuna($col2P,$col2M,$col2L);
+                         
+            # Area das notas
+            $grid->abreColuna($col2P,$col2M,$col2L);
+            
+            $painel = new Callout();
+            $painel->abre(); 
             
             # Pega os dados dessa nota
             if(!is_null($idNota)){
                 # Pega os Dados
                 $dados = $projeto->get_dadosNota($idNota);
-                
-                # Título
-                tituloTable("Nota: ".$dados[2]);
-                br();
-                
-                $painel = new Callout();
-                $painel->abre();
                 
                 # Exibe a nota
                 $grid = new Grid();
@@ -176,11 +174,13 @@ if($acesso){
 
                 hr("projetosTarefas");
                 echo "<pre id='preNota'>".$dados[3]."</pre>";
-                $painel->fecha();    
+                  
             }else{               
                 br(3);
-                p("Nenhuma Nota Selecionada","f14","center");                
+                p("Nenhuma Nota Selecionada","f14","center");  
+                br(3);
             }
+            $painel->fecha();  
             
             $grid->fechaColuna();
             $grid->fechaGrid();   
@@ -293,8 +293,6 @@ if($acesso){
             # Exibe a tela inicial dos cartões de Cadernos
             
             $grid->abreColuna($col2P,$col2M,$col2L);
-            tituloTable("Estante: ".$grupo);
-            br();
             
             # Menu de Projetos
             Gprojetos::cartoesCadernos($grupo);  

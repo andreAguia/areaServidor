@@ -58,7 +58,7 @@ if($acesso)
             $grid2 = new Grid();
 
             # Gestão de Usuários
-            $grid2->abreColuna(12,6);
+            $grid2->abreColuna(12,12,6);
             tituloTable('Gestão de Usuários');
             br(); 
 
@@ -95,14 +95,15 @@ if($acesso)
             $botao->set_imagem(PASTA_FIGURAS.'computador.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('computador.php');
             $menu->add_item($botao);
-            $menu->show();
             
+            $menu->show();
+            br(); 
             $grid2->fechaColuna();
             
             ############################################
 
             # Sistema
-            $grid2->abreColuna(12,6);
+            $grid2->abreColuna(12,12,6);
             tituloTable('Sistema');
             br(); 
 
@@ -139,7 +140,7 @@ if($acesso)
             ############################################
 
             # Documentação
-            $grid2->abreColuna(12,6);            
+            $grid2->abreColuna(12,12,6);       
             tituloTable('Documentação do Sistema');
             br();
 
@@ -192,7 +193,7 @@ if($acesso)
             ############################################
 
             # Projetos
-            $grid2->abreColuna(12,6);
+            $grid2->abreColuna(12,12,6);
             tituloTable('Gestão de Projetos');
             br(); 
 
@@ -221,7 +222,7 @@ if($acesso)
             ############################################
             
             # Banco de dados
-            $grid2->abreColuna(12,6);
+            $grid2->abreColuna(12,12,6);
             tituloTable('Feramentas para o Banco de Dados');
             br();
 
@@ -267,7 +268,7 @@ if($acesso)
             ############################################
             
             # Servidor
-            $grid2->abreColuna(12,6);
+            $grid2->abreColuna(12,12,6);
             tituloTable('Servidor');
             br();
 

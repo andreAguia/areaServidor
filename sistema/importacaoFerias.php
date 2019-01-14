@@ -253,8 +253,10 @@ if($acesso){
                     $dtInicialAquisitivo = $parte[4];   // Data Inicial Aquisitivo
                     $dtFinalAquisitivo = $parte[5];     // Data Final Aquisitivo
                     
+                    # IdServidor ## Problema aqui !!! Pega o primeiro que acha e não o idServidor atual ativo
+                    $idServidor = $pessoal->get_idServidoridFuncional($idFuncional);   
+                    
                     # Dados Tratados
-                    $idServidor = $pessoal->get_idServidoridFuncional($idFuncional);        // IdServidor
                     $nome = $pessoal->get_nome($idServidor);                                // Nome
                     $numDias = dataDif($dtInicial, $dtFinal) + 1;
                     $anoExercicio = year($dtInicialAquisitivo);

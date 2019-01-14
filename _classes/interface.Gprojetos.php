@@ -51,7 +51,7 @@ class Gprojetos{
         if($numProjetos > 0){
             foreach ($dadosGrupos as $valor1){
                 
-                $menu1->add_item('titulo2',$valor1[0],"?fase=cartaoProjeto&grupo=".$valor1[0]);
+                $menu1->add_item('titulo2',"<i class='fi-book'></i> ".$valor1[0],"?fase=cartaoProjeto&grupo=".$valor1[0]);
                 #$menu1->add_item('titulo1','Projetos','?fase=cartaoProjeto','Cartões de Projetos');
                 #$menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
                 
@@ -75,9 +75,10 @@ class Gprojetos{
 
                     # Marca o item que está sendo editado
                     if($idProjeto == $valor[0]){
-                        $texto = "> ".$texto;
+                        $menu1->add_item('link',"<i class='fi-list-bullet'></i> <b>".$texto."</b>",'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
+                    }else{
+                        $menu1->add_item('link',"<i class='fi-list-bullet'></i> ".$texto,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
                     }
-                    $menu1->add_item('link',$texto,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
                 }                
             }            
         }
@@ -220,9 +221,10 @@ class Gprojetos{
 
                 # Marca o item que está sendo editado
                 if($etiqueta == $valor[0]){
-                    $texto = "> ".$texto;
+                    $menu1->add_item('link',"<i class='fi-price-tag'></i> <b>".$texto.'</b>','?fase=etiqueta&etiqueta='.$valor[0]);
+                }else{
+                    $menu1->add_item('link',"<i class='fi-price-tag'></i> ".$texto,'?fase=etiqueta&etiqueta='.$valor[0]);
                 }
-                $menu1->add_item('link',$texto,'?fase=etiqueta&etiqueta='.$valor[0]);
             }
         }
         $menu1->show();
@@ -255,7 +257,7 @@ class Gprojetos{
         $menu1 = new Menu();
         $menu1->add_item('titulo1','Solicitantes');
         
-        # Verifica se tem etiquetas
+        # Verifica se tem solicitante
         if($numSolicitantes>0){
             
             # Percorre o array 
@@ -265,9 +267,10 @@ class Gprojetos{
 
                 # Marca o item que está sendo editado
                 if($solicitante == $valor[0]){
-                    $texto = "> ".$texto;
+                    $menu1->add_item('link',"<i class='fi-torso'></i> <b>".$texto."</b>",'?fase=solicitante&solicitante='.$valor[0]);
+                }else{
+                    $menu1->add_item('link',"<i class='fi-torso'></i> ".$texto,'?fase=solicitante&solicitante='.$valor[0]);
                 }
-                $menu1->add_item('link',$texto,'?fase=solicitante&solicitante='.$valor[0]);
             }
         }
         $menu1->show();
