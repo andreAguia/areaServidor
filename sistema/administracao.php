@@ -41,6 +41,11 @@ if($acesso)
     switch ($fase){	
         # Exibe o Menu Inicial
         case "menu" :
+            # Apaga as session do sistema de projetos e notas
+             $idNota = get('idNota',get_session('idNota'));
+            set_session('idNota');
+            set_session('idCaderno');
+    
             botaoVoltar('areaServidor.php');
             titulo('Administração');
             br();

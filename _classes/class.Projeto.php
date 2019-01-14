@@ -85,7 +85,8 @@ class Projeto{
         $select = 'SELECT idNota,
                           idCaderno,
                           titulo,
-                          nota
+                          nota,
+                          numOrdem
                      FROM tbprojetonota
                      WHERE idNota = '.$idNota;
         

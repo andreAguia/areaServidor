@@ -22,7 +22,7 @@ if($acesso){
     $projeto = new Projeto();
 
     # Verifica a fase do programa
-    $fase = get('fase','cartaoCaderno');
+    $fase = get('fase','inicial');
     
     # Determina as sessions e o botão voltar conforme a fase
     switch ($fase){
@@ -40,7 +40,27 @@ if($acesso){
     # Pega os ids quando se é necessário de acordo com a fase
     $idCaderno = get('idCaderno',get_session('idCaderno'));
     $idNota = get('idNota',get_session('idNota'));
+    
+    # Passa para Session o que veio do get
     set_session('idCaderno',$idCaderno);
+    
+    # Verifica se a nota é do caderno editado
+    if(!is_null($idNota)){
+        $dadosNota = $projeto->get_dadosNota($idNota);
+        echo $dadosNota[1];br();
+        echo $idCaderno;br();
+        echo $idNota;
+        # Se não for apaga o idNota
+        if($dadosNota[1] <> $idCaderno){
+            set_session('idNota');
+            $idNota = NULL;
+        }else{
+            set_session('idNota',$idNota);
+        }
+        
+    }
+    
+    # Pega a estante (grupo)
     $grupo = get('grupo');
     
     # Começa uma nova página
@@ -71,10 +91,6 @@ if($acesso){
 
     $menu1->show();
     
-    # Título do sistema
-    titulo("Sistema de Gestão de Projetos - Notas");
-    br();
-    
     # Define o grid
     $col1P = 5;
     $col1M = 4;
@@ -89,32 +105,54 @@ if($acesso){
     $grid->abreColuna($col1P,$col1M,$col1L);
     
     # Menu de Cadernos
-    Gprojetos::menuCadernos($idCaderno);
+    Gprojetos::menuCadernos($idCaderno,$idNota);
     
     $grid->fechaColuna();
     
     switch ($fase){ 
+        
+#############################################################################################################################
+#   Inicial
+#############################################################################################################################
+        
+        case "inicial" :
+            $grid->abreColuna($col2P,$col2M,$col2L);
+            
+            $painel = new Callout();
+            $painel->abre();
+                            
+            br(5);
+            p("Sistema de Gestão Hierárquica de Notas","f20","center");
+            p("Versão 0.1","f16","center");
+            br(5);
+
+            $painel->fecha(); 
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            break;
                  
 #############################################################################################################################
 #   Caderno
 #############################################################################################################################
             
         case "caderno" :
-            
-            # joga para session o caderno
-            set_session('idCaderno',$idCaderno);
-            set_session('idNota',$idNota);
              
            # Area das notas
            $grid->abreColuna($col2P,$col2M,$col2L);
             
             # Pega os dados dessa nota
             if(!is_null($idNota)){
+                # Pega os Dados
+                $dados = $projeto->get_dadosNota($idNota);
+                
+                # Título
+                tituloTable("Nota: ".$dados[2]);
+                br();
+                
                 $painel = new Callout();
                 $painel->abre();
                 
-                $dados = $projeto->get_dadosNota($idNota);
-            
                 # Exibe a nota
                 $grid = new Grid();
                 $grid->abreColuna(10);
@@ -196,12 +234,12 @@ if($acesso){
             $form->add_item($controle);
             
             # grupo
-            $controle = new Input('grupo','texto','Nome do agrupamento:',1);
+            $controle = new Input('grupo','texto','Estante:',1);
             $controle->set_size(50);
             $controle->set_linha(3);
             $controle->set_col(6);
             $controle->set_placeholder('Grupo');
-            $controle->set_title('O nome agrupamento do Caderno');
+            $controle->set_title('O nome da estante');
             $controle->set_plm(TRUE);
             $controle->set_valor($dados[3]);
             $form->add_item($controle);
@@ -255,6 +293,8 @@ if($acesso){
             # Exibe a tela inicial dos cartões de Cadernos
             
             $grid->abreColuna($col2P,$col2M,$col2L);
+            tituloTable("Estante: ".$grupo);
+            br();
             
             # Menu de Projetos
             Gprojetos::cartoesCadernos($grupo);  
@@ -306,7 +346,7 @@ if($acesso){
             $controle = new Input('titulo','texto','Título:',1);
             $controle->set_size(100);
             $controle->set_linha(1);
-            $controle->set_col(6);
+            $controle->set_col(5);
             $controle->set_required(TRUE);
             $controle->set_autofocus(TRUE);
             $controle->set_title('Título da nota');
@@ -317,14 +357,23 @@ if($acesso){
             $controle = new Input('idCaderno','combo','Caderno:',1);
             $controle->set_size(20);
             $controle->set_linha(1);
-            $controle->set_col(6);
+            $controle->set_col(5);
             $controle->set_array($comboCaderno);
             if(is_null($idNota)){
                 $controle->set_valor($idCaderno);
             }else{
                 $controle->set_valor($dados[1]);
             }
-            $form->add_item($controle);  
+            $form->add_item($controle);
+            
+            # Título
+            $controle = new Input('numOrdem','texto','Ordem:',1);
+            $controle->set_size(5);
+            $controle->set_linha(1);
+            $controle->set_col(2);
+            $controle->set_title('Ordem da nota na lista');
+            $controle->set_valor($dados[4]);
+            $form->add_item($controle);
                                     
             # nota            
             $controle = new Input('nota','textarea','Descrição:',1);
@@ -355,10 +404,11 @@ if($acesso){
             $titulo = post('titulo');
             $caderno = post('idCaderno');
             $nota = post('nota');
+            $numOrdem = post('numOrdem');
                       
             # Cria arrays para gravação
-            $arrayNome = array("titulo","idCaderno","nota");
-            $arrayValores = array($titulo,$caderno,$nota);
+            $arrayNome = array("titulo","idCaderno","nota","numOrdem");
+            $arrayValores = array($titulo,$caderno,$nota,$numOrdem);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");

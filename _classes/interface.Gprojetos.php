@@ -87,7 +87,7 @@ class Gprojetos{
 
     ##########################################################
     
-    public static function menuCadernos($idCaderno = NULL){
+    public static function menuCadernos($idCaderno = NULL,$idNota = NULL){
     /**
     * Exibe o menu de cadernos.
     * 
@@ -126,8 +126,8 @@ class Gprojetos{
         # Verifica se tem cadernos
         if($numCadernos > 0){
             foreach ($dadosGrupos as $valor1){
-                
-                $menu1->add_item('titulo2',$valor1[0],"?fase=cartaoCaderno&grupo=".$valor1[0]);
+                # Grupos
+                $menu1->add_item('titulo2',"<i class='fi-results'></i> ".$valor1[0],"?fase=cartaoCaderno&grupo=".$valor1[0],"Estante: ".$valor1[0]);
                 #$menu1->add_item('titulo1','Projetos','?fase=cartaoProjeto','Cartões de Projetos');
                 #$menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
                 
@@ -146,32 +146,37 @@ class Gprojetos{
                 foreach ($dadosProjetos as $valor){
                     $numNotas = $projeto->get_numeroNotas($valor[0]);
                     $texto = $valor[1]." <span id='numProjeto'>$numNotas</span>";
+                    $linkNovo = "<a href='?fase=notaNova' title='Nova nota'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge secondary'><i class='fi-plus'></i></span></a>";
 
                     # Marca o item que está sendo editado
                     if($idCaderno == $valor[0]){
-                        $texto = "> ".$texto;
-                        $menu1->add_item('link',$texto,'?fase=caderno&idCaderno='.$valor[0],$valor[2]);                        
+                        $menu1->add_item('link',"<i class='fi-book'></i><b> ".$texto."</b>".$linkNovo,'?fase=caderno&idCaderno='.$valor[0],"Caderno: ".$valor[1]);
+
+                        # Pega as notas
+                        $select = 'SELECT idNota,
+                                          titulo
+                                     FROM tbprojetonota
+                                    WHERE idcaderno = '.$valor[0].' ORDER BY numOrdem,titulo';
+
+                        # Acessa o banco
+                        $notas = $intra->select($select);
+                        $numNotas = $intra->count($select);
+
+                        # Incluir nota
+                        #$menu1->add_item('sublink','+ Nova Nota','?fase=notaNova');
+
+                        # Percorre as notas 
+                        foreach($notas as $tituloNotas){
+                            if($idNota == $tituloNotas[0]){
+                                $menu1->add_item('sublink',"<i class='fi-page'></i><b> ".$tituloNotas[1].'</b>','?fase=caderno&idNota='.$tituloNotas[0]);
+                            }else{
+                                $menu1->add_item('sublink',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0]);
+                            }
+                        }
                     }else{
-                        $menu1->add_item('link',$texto,'?fase=caderno&idCaderno='.$valor[0],$valor[2]);
+                        $menu1->add_item('link',"<i class='fi-book'></i> ".$texto,'?fase=caderno&idCaderno='.$valor[0],"Caderno: ".$valor[1]);
                     }
                     
-                    # Pega as notas
-                    $select = 'SELECT idNota,
-                                      titulo
-                                 FROM tbprojetonota
-                                WHERE idcaderno = '.$valor[0].' ORDER BY titulo';
-
-                    # Acessa o banco
-                    $notas = $intra->select($select);
-                    $numNotas = $intra->count($select);
-
-                    # Incluir nota
-                    $menu1->add_item('sublink','+ Nova Nota','?fase=notaNova');
-
-                    # Percorre as notas 
-                    foreach($notas as $tituloNotas){
-                        $menu1->add_item('sublink',$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0]);
-                    }
                 }           
             }            
         }
