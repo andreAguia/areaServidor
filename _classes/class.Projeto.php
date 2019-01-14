@@ -36,7 +36,8 @@ class Projeto{
                           projeto,
                           descricao,
                           grupo,
-                          cor
+                          cor,
+                          numOrdem
                      FROM tbprojeto
                      WHERE idProjeto = '.$idProjeto;
         

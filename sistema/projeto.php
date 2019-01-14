@@ -107,6 +107,8 @@ if($acesso){
     $grid = new Grid();
     $grid->abreColuna(12);
     
+    p("<i class='fi-list'></i>",'f48');
+    
     # Cria um menu
     $menu1 = new MenuBar("button-group");
 
@@ -211,9 +213,9 @@ if($acesso){
                 $menu1 = new MenuBar("small button-group");
                 
                 # Nova Tarefa
-                $link4 = new Link("+",'?fase=tarefaNova');
+                $link4 = new Link("Editar",'?fase=projetoEditar&idProjeto='.$idProjeto);
                 $link4->set_class('button secondary');
-                $link4->set_title('Nova tarefa');
+                $link4->set_title('Editar Projeto');
                 $menu1->add_link($link4,"right");
                 
                 $menu1->show();
@@ -299,7 +301,7 @@ if($acesso){
             $controle = new Input('grupo','texto','Nome do agrupamento:',1);
             $controle->set_size(50);
             $controle->set_linha(3);
-            $controle->set_col(6);
+            $controle->set_col(5);
             $controle->set_placeholder('Grupo');
             $controle->set_title('O nome agrupamento do Projeto');
             $controle->set_plm(TRUE);
@@ -309,12 +311,21 @@ if($acesso){
             # cor
             $controle = new Input('cor','combo','Cor:',1);
             $controle->set_size(10);
-            $controle->set_col(6);
+            $controle->set_col(5);
             $controle->set_linha(3);
             $controle->set_title('A cor da etiqueta');
             $controle->set_placeholder('Cor');
             $controle->set_array(array("secondary","primary","success","warning","alert"));
             $controle->set_valor($dados[2]);
+            $form->add_item($controle);
+            
+            # numOrdem
+            $controle = new Input('numOrdem','texto','Ordem:',1);
+            $controle->set_size(5);
+            $controle->set_linha(3);
+            $controle->set_col(2);
+            $controle->set_title('O numero de ordem');
+            $controle->set_valor($dados[5]);
             $form->add_item($controle);
             
             # submit
@@ -339,10 +350,11 @@ if($acesso){
             $descricao = post('descricao');
             $grupo = plm(post('grupo'));
             $cor = post('cor');
+            $numOrdem = post('numOrdem');
             
             # Cria arrays para gravação
-            $arrayNome = array("projeto","descricao","ativo","grupo","cor");
-            $arrayValores = array($projeto,$descricao,1,$grupo,$cor);
+            $arrayNome = array("projeto","descricao","ativo","grupo","cor","numOrdem");
+            $arrayValores = array($projeto,$descricao,1,$grupo,$cor,$numOrdem);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idProjeto,"tbprojeto","idProjeto");

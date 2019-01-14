@@ -63,7 +63,7 @@ class Gprojetos{
                                   grupo
                              FROM tbprojeto
                              WHERE ativo AND grupo = "'.$valor1[0].'"
-                          ORDER BY projeto';
+                          ORDER BY numOrdem, projeto';
 
                 $dadosProjetos = $intra->select($select3);
                 
@@ -72,10 +72,11 @@ class Gprojetos{
                     
                     $numTarefa = $projeto->get_numeroTarefasPendentes($valor[0]);
                     $texto = $valor[1]." <span id='numProjeto'>$numTarefa</span>";
+                    $linkNovo = "<a href='?fase=tarefaNova' title='Nova tarefa'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge secondary'><i class='fi-plus'></i></span></a>";
 
                     # Marca o item que está sendo editado
                     if($idProjeto == $valor[0]){
-                        $menu1->add_item('link',"<i class='fi-list-bullet'></i> <b>".$texto."</b>",'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
+                        $menu1->add_item('link',"<i class='fi-list-bullet'></i> <b>".$texto."</b>".$linkNovo,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
                     }else{
                         $menu1->add_item('link',"<i class='fi-list-bullet'></i> ".$texto,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
                     }
