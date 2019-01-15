@@ -98,16 +98,19 @@ if($acesso){
     
     # Começa uma nova página
     $page = new Page();
-    $page->iniciaPagina();
-    
-    # Cabeçalho da Página
-    AreaServidor::cabecalho();
+    $page->iniciaPagina(); 
     
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
     
-    p("<i class='fi-list'></i>",'f48');
+    
+    echo '<div class="title-bar">
+            <button class="menu-icon show-for-small-only" type="button" onclick="abreFechaDivId(\'menuSuspenso\');"></button>
+            <div class="title-bar-title">Sistema de Gestão de Projetos</div>
+          </div>';
+    
+    br();
     
     # Cria um menu
     $menu1 = new MenuBar("button-group");
@@ -130,14 +133,10 @@ if($acesso){
     $linkSenha->set_title('Exibe as Tarefas que estão sendo feitas');
     $menu1->add_link($linkSenha,"right");
 
-    $menu1->show();
-    
-    # Título do sistema
-    titulo("Sistema de Gestão de Projetos");
-    br();
+    #$menu1->show();
     
     # Define o grid
-    $col1P = 5;
+    $col1P = 0;
     $col1M = 4;
     $col1L = 3;
 
@@ -147,7 +146,11 @@ if($acesso){
     
     # Limita o tamanho da tela
     $grid = new Grid();
+    
     $grid->abreColuna($col1P,$col1M,$col1L);
+    
+    $div = new Div(NULL,"hide-for-small-only");
+    $div->abre();
     
     # Menu Cronológico
     Gprojetos::menuFazendo($fase);
@@ -159,7 +162,9 @@ if($acesso){
     Gprojetos::menuEtiquetas($etiqueta);
 
     # Menu de Solicitantes
-    Gprojetos::menuSolicitante($solicitante);        
+    Gprojetos::menuSolicitante($solicitante);   
+    
+    $div->fecha();
 
     $grid->fechaColuna();
     
@@ -218,12 +223,18 @@ if($acesso){
                 $link4->set_title('Editar Projeto');
                 $menu1->add_link($link4,"right");
                 
+                $link5 = new Link("<i class='fi-plus'></i>",'?fase=tarefaNova');
+                $link5->set_class('button secondary');
+                $link5->set_title('Nova Tarefa');
+                $menu1->add_link($link5,"right");
+                
                 $menu1->show();
             
             $grid->fechaColuna();
             $grid->fechaGrid(); 
             
             hr("projetosTarefas");
+            br();
             
             # Exibe as tarefas pendentes fazendo
             $lista = new ListaTarefas("Fazendo");
@@ -398,31 +409,27 @@ if($acesso){
             }else{
                 $dados = array(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
                 $titulo = "Nova Tarefa";
+            }            
+                           
+            # Menu
+            $menu1 = new MenuBar("small button-group");
+
+            # Voltar
+            $link1 = new Link("Voltar",$voltar);
+            $link1->set_class('button');
+            $link1->set_title('Voltar Sem Salvar');
+            $menu1->add_link($link1,"left");
+
+            if(!is_null($idTarefa)){
+                # Excluir
+                $link1 = new Link("Excluir",'?fase=TarefaExcluir&idTarefa='.$idTarefa);
+                $link1->set_class('alert button');
+                $link1->set_title('Excluir Tarefa');
+                $link1->set_confirma('Deseja mesmo excluir ?');
+                $menu1->add_link($link1,"right");
             }
-            
-            # Nome do projeto
-            $grid = new Grid();
-            $grid->abreColuna(8);
-                p($titulo,'descricaoProjetoTitulo');                                
-            $grid->fechaColuna();
-            $grid->abreColuna(4);
-                if(!is_null($idTarefa)){
-                    # Menu
-                    $menu1 = new MenuBar("small button-group");
 
-                    # Editar
-                    $link1 = new Link("Excluir",'?fase=TarefaExcluir&idTarefa='.$idTarefa);
-                    $link1->set_class('alert button');
-                    $link1->set_title('Editar Projeto');
-                    $link1->set_confirma('Deseja mesmo excluir ?');
-                    $menu1->add_link($link1,"right");
-
-                    $menu1->show();
-                }
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-            
-            hr("projetosTarefas");
+            $menu1->show();
             
             # Pega os dados da combo projeto
             $select = 'SELECT idProjeto,
@@ -526,12 +533,12 @@ if($acesso){
             $controle->set_size(20);
             $controle->set_linha(7);
             $controle->set_valor($dados[6]);
-            $form->add_item($controle);     
+            $form->add_item($controle); 
             
             # submit
             $controle = new Input('submit','submit');
             $controle->set_valor('Salvar');
-            $controle->set_linha(7);
+            $controle->set_linha(8);
             $form->add_item($controle);
             
             $form->show();
@@ -708,6 +715,24 @@ if($acesso){
             break;
             
     }
+            
+    $div = new Div("menuSuspenso","show-for-small-only");
+    $div->abre();
+    br();
+    
+    # Menu Cronológico
+    Gprojetos::menuFazendo($fase);
+
+    # Menu de Projetos
+    Gprojetos::menuProjetosAtivos($idProjeto);
+
+    # Menu de Etiquetas
+    Gprojetos::menuEtiquetas($etiqueta);
+
+    # Menu de Solicitantes
+    Gprojetos::menuSolicitante($solicitante);   
+    
+    $div->fecha();
     
     $grid->fechaColuna();
     $grid->fechaGrid();  

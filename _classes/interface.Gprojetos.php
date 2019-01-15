@@ -51,7 +51,7 @@ class Gprojetos{
         if($numProjetos > 0){
             foreach ($dadosGrupos as $valor1){
                 
-                $menu1->add_item('titulo2',"<i class='fi-book'></i> ".$valor1[0],"?fase=cartaoProjeto&grupo=".$valor1[0]);
+                $menu1->add_item('titulo2',"<i class='fi-book'></i> ".$valor1[0],"?fase=cartaoProjeto&grupo=".$valor1[0],$valor1[0]);
                 #$menu1->add_item('titulo1','Projetos','?fase=cartaoProjeto','Cartões de Projetos');
                 #$menu1->add_item('link','+ Novo Projeto','?fase=projetoNovo');
                 
@@ -72,11 +72,10 @@ class Gprojetos{
                     
                     $numTarefa = $projeto->get_numeroTarefasPendentes($valor[0]);
                     $texto = $valor[1]." <span id='numProjeto'>$numTarefa</span>";
-                    $linkNovo = "<a href='?fase=tarefaNova' title='Nova tarefa'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge secondary'><i class='fi-plus'></i></span></a>";
 
-                    # Marca o item que está sendo editado
+                    # Marca o item que está sendo editadoFramework
                     if($idProjeto == $valor[0]){
-                        $menu1->add_item('link',"<i class='fi-list-bullet'></i> <b>".$texto."</b>".$linkNovo,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
+                        $menu1->add_item('link',"<i class='fi-list-bullet'></i> <b>".$texto."</b>",'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
                     }else{
                         $menu1->add_item('link',"<i class='fi-list-bullet'></i> ".$texto,'?fase=projeto&idProjeto='.$valor[0],$valor[2]);
                     }
@@ -452,12 +451,12 @@ class Gprojetos{
            
         # Inicia o menu
         $menu1 = new Menu();
-        #$menu1->add_item('titulo','Cronológico');
+        $menu1->add_item('titulo1','Status');
         
         if($fase == "fazendo"){
-            $menu1->add_item('link','> Fazendo','?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');            
+            $menu1->add_item('titulo2',"<b>Fazendo</b>",'?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');            
         }else{
-            $menu1->add_item('link','Fazendo','?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');
+            $menu1->add_item('titulo2',"Fazendo",'?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');
         }
         $menu1->show();
     }

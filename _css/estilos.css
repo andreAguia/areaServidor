@@ -426,6 +426,14 @@ div#divEditaNota{
     margin-right: -5px;
 }
 
+div#menuSuspenso{
+    display: none;
+    position: absolute;
+    top: 50px;
+    height: 100%;
+    background-color: #f9f9f9;
+    border:#f0f0f0 thin solid;
+}
 /*******************************************
  * Sistema de controle de processos
  *******************************************/
