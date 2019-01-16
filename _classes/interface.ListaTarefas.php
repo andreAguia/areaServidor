@@ -13,6 +13,7 @@ class ListaTarefas{
     private $projeto = NULL;
     private $pendente = TRUE;
     private $status = NULL;
+    private $pesquisa = NULL;
     
      
     ###########################################################
@@ -97,7 +98,12 @@ class ListaTarefas{
             $select.= ' AND status = "'.$this->status.'"';
         }
         
-        $select .=' ORDER BY dataInicial, noOrdem desc';
+        # pesquisa
+        if(!is_null($this->pesquisa)){
+            $select.= ' AND tarefa LIKE "%'.$this->pesquisa.'%"';
+        }
+        
+        $select .=' ORDER BY noOrdem desc';
         
         #echo $select;
         
@@ -144,6 +150,11 @@ class ListaTarefas{
         
         if($numTarefas > 0){
             $tabela->show();
+        }else{
+            if(!is_null($this->pesquisa)){
+                br(3);
+                p("Nenhuma Tarefa Encontrada !","center");
+            }
         }
     }
     

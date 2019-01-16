@@ -434,6 +434,11 @@ div#menuSuspenso{
     background-color: #f9f9f9;
     border:#f0f0f0 thin solid;
 }
+
+div#campoPesquisa{
+    padding-left: 10px;
+    padding-right: 20px;
+}
 /*******************************************
  * Sistema de controle de processos
  *******************************************/

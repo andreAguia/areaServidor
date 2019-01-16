@@ -152,6 +152,27 @@ if($acesso){
     $div = new Div(NULL,"hide-for-small-only");
     $div->abre();
     
+    $menu1 = new Menu();
+    $menu1->add_item('titulo1','Pesquisar');
+    $menu1->show();
+    
+    $div2 = new Div("campoPesquisa");
+    $div2->abre();
+    
+    $form = new Form('?fase=pesquisa');
+    
+    $controle = new Input('parametro','texto');
+    $controle->set_size(30);
+    $controle->set_linha(1);
+    $controle->set_col(10);
+    $controle->set_placeholder('Pesquisar');
+    $controle->set_title('Pesquisar');
+    $controle->set_onChange('formPadrao.submit();');
+    $form->add_item($controle);    
+        
+    $form->show();
+    $div2->fecha();
+    
     # Menu Cronológico
     Gprojetos::menuFazendo($fase);
 
@@ -182,6 +203,26 @@ if($acesso){
             # Exibe as tarefas fazendo
             $lista = new ListaTarefas("Fazendo");
             $lista->set_status("fazendo");
+            $lista->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+        
+#############################################################################################################################
+#   Pesquisa
+############################################################################################################################# 
+        
+        case "pesquisa" :
+            # Exibe a lista de tarefas com status fazendo
+            
+            $grid->abreColuna($col2P,$col2M,$col2L);
+            
+            $parametro = post("parametro");
+            
+            # Exibe as tarefas fazendo
+            $lista = new ListaTarefas("Pesquisa: ".$parametro);
+            $lista->set_pesquisa($parametro);
             $lista->show();
             
             $grid->fechaColuna();
@@ -718,7 +759,27 @@ if($acesso){
             
     $div = new Div("menuSuspenso","show-for-small-only");
     $div->abre();
-    br();
+    
+    $menu1 = new Menu();
+    $menu1->add_item('titulo1','Pesquisar');
+    $menu1->show();
+    
+    $div2 = new Div("campoPesquisa");
+    $div2->abre();
+    
+    $form = new Form('?fase=pesquisa');
+    
+    $controle = new Input('parametro','texto');
+    $controle->set_size(30);
+    $controle->set_linha(1);
+    $controle->set_col(10);
+    $controle->set_placeholder('Pesquisar');
+    $controle->set_title('Pesquisar');
+    $controle->set_onChange('formPadrao.submit();');
+    $form->add_item($controle);    
+        
+    $form->show();
+    $div2->fecha();
     
     # Menu Cronológico
     Gprojetos::menuFazendo($fase);
