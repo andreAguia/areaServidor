@@ -451,14 +451,14 @@ class Gprojetos{
            
         # Inicia o menu
         $menu1 = new Menu();
-        $menu1->add_item('titulo1','Status');
+        $menu1->add_item('titulo1','Principal');
         
+        # Fazendo
         if($fase == "fazendo"){
             $menu1->add_item('titulo2',"<b>Fazendo</b>",'?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');            
         }else{
             $menu1->add_item('titulo2',"Fazendo",'?fase=fazendo','Exibe as tarefas que estao sendo feitas atualmente');
         }
-        $menu1->show();
     }
 
     ###########################################################
