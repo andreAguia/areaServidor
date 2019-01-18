@@ -102,8 +102,7 @@ if($acesso){
     
     # Limita o tamanho da tela
     $grid = new Grid();
-    $grid->abreColuna(12);
-    
+    $grid->abreColuna(12);    
     
     echo '<div class="title-bar">
             <button class="menu-icon show-for-small-only" type="button" onclick="abreFechaDivId(\'menuSuspenso\');"></button>
@@ -145,8 +144,7 @@ if($acesso){
     $col2L = 12 - $col1L;
     
     # Limita o tamanho da tela
-    $grid = new Grid();
-    
+    $grid = new Grid();    
     $grid->abreColuna($col1P,$col1M,$col1L);
     
     $div = new Div(NULL,"hide-for-small-only");

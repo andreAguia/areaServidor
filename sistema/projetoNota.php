@@ -65,12 +65,16 @@ if($acesso){
     $page = new Page();
     $page->iniciaPagina();
     
-    # Cabeçalho da Página
-    AreaServidor::cabecalho();
-        
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
+    
+    echo '<div class="title-bar">
+            <button class="menu-icon show-for-small-only" type="button" onclick="abreFechaDivId(\'menuSuspenso\');"></button>
+            <div class="title-bar-title">Sistema de Notas</div>
+          </div>';
+    
+    br();
     
     # Cria um menu
     $menu1 = new MenuBar("button-group");
@@ -87,10 +91,10 @@ if($acesso){
     $linkSenha->set_title('Cria novo Caderno');
     $menu1->add_link($linkSenha,"right");
 
-    $menu1->show();
+    #$menu1->show();
     
     # Define o grid
-    $col1P = 5;
+    $col1P = 0;
     $col1M = 4;
     $col1L = 3;
 
@@ -98,17 +102,17 @@ if($acesso){
     $col2M = 12 - $col1M;
     $col2L = 12 - $col1L;
     
-    # Título
-    titulo("Sistema de Notas");
-    br();
-    
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna($col1P,$col1M,$col1L);
     
+    $div = new Div(NULL,"hide-for-small-only");
+    $div->abre();
+    
     # Menu de Cadernos
     Gprojetos::menuCadernos($idCaderno,$idNota);
     
+    $div->fecha();
     $grid->fechaColuna();
     
     switch ($fase){ 
@@ -416,6 +420,14 @@ if($acesso){
                         
         ###########################################################
     }
+    
+    $div = new Div("menuSuspenso","show-for-small-only");
+    $div->abre();
+    
+    # Menu de Cadernos
+    Gprojetos::menuCadernos($idCaderno,$idNota);
+    
+    $div->fecha();
     
     $grid->fechaColuna();
     $grid->fechaGrid();  
