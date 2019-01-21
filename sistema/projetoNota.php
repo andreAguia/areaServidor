@@ -27,13 +27,13 @@ if($acesso){
     # Determina as sessions e o botão voltar conforme a fase
     switch ($fase){
         
-        case "cadernoNovo":
+        case "cadernoNovo" :
             set_session('idCaderno');
-            $voltar = '?';
             break;
         
-        default :
-            $voltar = 'administracao.php';
+        case "menuCaderno" :
+            set_session('idCaderno');
+            set_session('idNota');
             break;
     }
     
@@ -76,23 +76,6 @@ if($acesso){
     
     br();
     
-    # Cria um menu
-    $menu1 = new MenuBar("button-group");
-
-    # Sair da Área do Servidor
-    $linkVoltar = new Link("Voltar",$voltar);
-    $linkVoltar->set_class('button');
-    $linkVoltar->set_title('Voltar a página anterior');    
-    $menu1->add_link($linkVoltar,"left");
-    
-    # Novo Caderno
-    $linkSenha = new Link("Novo Caderno","?fase=cadernoNovo");
-    $linkSenha->set_class('button');
-    $linkSenha->set_title('Cria novo Caderno');
-    $menu1->add_link($linkSenha,"right");
-
-    #$menu1->show();
-    
     # Define o grid
     $col1P = 0;
     $col1M = 4;
@@ -128,8 +111,9 @@ if($acesso){
             $painel->abre();
                             
             br(5);
-            p("Sistema de Gestão Hierárquica de Notas","f20","center");
+            p("Sistema de Gestão de Notas","f20","center");
             p("Versão 0.1","f16","center");
+            p("Autor: André Águia","f14","center");
             br(5);
 
             $painel->fecha(); 
@@ -141,8 +125,8 @@ if($acesso){
 #############################################################################################################################
 #   Caderno
 #############################################################################################################################
-            
-        case "caderno" :
+        
+        case "menuCaderno" :
                          
             # Area das notas
             $grid->abreColuna($col2P,$col2M,$col2L);
@@ -150,40 +134,170 @@ if($acesso){
             $painel = new Callout();
             $painel->abre(); 
             
-            # Pega os dados dessa nota
-            if(!is_null($idNota)){
-                # Pega os Dados
-                $dados = $projeto->get_dadosNota($idNota);
+            # Pega os projetos cadastrados
+            $select = 'SELECT idCaderno,
+                              caderno,
+                              descricao
+                         FROM tbprojetocaderno
+                      ORDER BY caderno';
+
+            $dadosCaderno = $intra->select($select);
+            $numCadernos = $intra->count($select);
+            
+            $grid = new Grid();
+            $grid->abreColuna(10);
+                p('Cadernos','descricaoProjetoTitulo');
+            $grid->fechaColuna();
+            $grid->abreColuna(2);
+            
+            # Menu
+            $menu1 = new MenuBar("small button-group");
+
+            # Nova Nota
+            $link = new Link("Novo",'?fase=cadernoNovo');
+            $link->set_class('button secondary');
+            $link->set_title('Novo Caderno');
+            $menu1->add_link($link,"right");
+
+            $menu1->show();
+
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+
+            hr("projetosTarefas");
+            br();
+        
+            # Inicia o menu
+            $menu1 = new Menu();
+            
+            # Verifica se tem cadernos
+            if($numCadernos > 0){
                 
-                # Exibe a nota
-                $grid = new Grid();
-                $grid->abreColuna(10);
-                    p($dados[2],'descricaoProjetoTitulo');
-                $grid->fechaColuna();
-                $grid->abreColuna(2);
+                # Percorre o array 
+                foreach ($dadosCaderno as $valor){
+                    $numNotas = $projeto->get_numeroNotas($valor[0]);
+                    $texto = $valor[1]." <span id='numProjeto'>$numNotas</span>";                
 
-                    # Menu
-                    $menu1 = new MenuBar("small button-group");
+                    $menu1->add_item('titulo2',"<i class='fi-book'></i> ".$texto,'?fase=caderno&idCaderno='.$valor[0],"Caderno: ".$valor[1]);                    
+                }           
 
-                    # Nova Nota
-                    $link = new Link("Editar",'?fase=notaNova&idNota='.$idNota);
-                    $link->set_class('button secondary');
-                    $link->set_title('Editar Nota');
-                    $menu1->add_link($link,"right");
-
-                    $menu1->show();
-
-                $grid->fechaColuna();
-                $grid->fechaGrid();
-
-                hr("projetosTarefas");
-                echo "<pre id='preNota'>".$dados[3]."</pre>";
-                  
-            }else{               
-                br(3);
-                p("Nenhuma Nota Selecionada","f14","center");  
-                br(3);
             }
+            $menu1->show();
+            $painel->fecha();  
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();   
+            break;
+            
+    ###########################################################        
+            
+    case "dadosCaderno" :
+                         
+            # Area das notas
+            $grid->abreColuna($col2P,$col2M,$col2L);
+            
+            $painel = new Callout();
+            $painel->abre(); 
+            
+            # Pega os projetos cadastrados
+            $select = 'SELECT idCaderno,
+                              caderno,
+                              descricao
+                         FROM tbprojetocaderno
+                        WHERE idCaderno = '.$idCaderno;
+
+            $dadosCaderno = $intra->select($select,false);
+            $numCadernos = $intra->count($select);
+            
+            $grid = new Grid();
+            $grid->abreColuna(10);
+                p($dadosCaderno[1],'descricaoProjetoTitulo');
+            $grid->fechaColuna();
+            $grid->abreColuna(2);
+            
+            # Menu
+            $menu1 = new MenuBar("small button-group");
+
+            # Nova Nota
+            $link = new Link("Editar",'?fase=cadernoEditar');
+            $link->set_class('button secondary');
+            $link->set_title('Edita Caderno');
+            $menu1->add_link($link,"right");
+
+            $menu1->show();
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+
+            hr("projetosTarefas");
+            p($dadosCaderno[2],'descricaoProjeto');
+                        
+            # Pega as notas
+            $select = 'SELECT idNota,
+                              titulo
+                         FROM tbprojetonota
+                        WHERE idcaderno = '.$idCaderno.' ORDER BY numOrdem,titulo';
+
+            # Acessa o banco
+            $notas = $intra->select($select);
+            $numNotas = $intra->count($select);
+            
+            # Inicia o Manu de Notas
+            $menu2 = new Menu();
+            $menu2->add_item('titulo2','Notas');
+
+            # Incluir nota
+            $menu2->add_item('sublink','+ Nova Nota','?fase=notaNova');
+
+            # Percorre as notas 
+            foreach($notas as $tituloNotas){
+                $menu2->add_item('link',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0]);
+            }
+            
+            $menu2->show();
+            
+            $painel->fecha();  
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();   
+            break;
+            
+    ###########################################################
+            
+        case "caderno" :
+                         
+            # Area das notas
+            $grid->abreColuna($col2P,$col2M,$col2L);
+            
+            $painel = new Callout();
+            $painel->abre();
+            
+            # Pega os Dados
+            $dados = $projeto->get_dadosNota($idNota);
+
+            # Exibe a nota
+            $grid = new Grid();
+            $grid->abreColuna(10);
+                p($dados[2],'descricaoProjetoTitulo');
+            $grid->fechaColuna();
+            $grid->abreColuna(2);
+
+                # Menu
+                $menu1 = new MenuBar("small button-group");
+
+                # Nova Nota
+                $link = new Link("Editar",'?fase=notaNova&idNota='.$idNota);
+                $link->set_class('button secondary');
+                $link->set_title('Editar Nota');
+                $menu1->add_link($link,"right");
+
+                $menu1->show();
+
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+
+            hr("projetosTarefas");
+            echo "<pre id='preNota'>".$dados[3]."</pre>";
+            
             $painel->fecha();  
             
             $grid->fechaColuna();
@@ -193,7 +307,8 @@ if($acesso){
     ###########################################################
             
         case "cadernoNovo" :
-             
+        case "cadernoEditar" :
+            
             $grid->abreColuna($col2P,$col2M,$col2L);
              
             # Verifica se é incluir ou editar
@@ -237,28 +352,6 @@ if($acesso){
             $controle->set_valor($dados[2]);
             $form->add_item($controle);
             
-            # grupo
-            $controle = new Input('grupo','texto','Estante:',1);
-            $controle->set_size(50);
-            $controle->set_linha(3);
-            $controle->set_col(6);
-            $controle->set_placeholder('Grupo');
-            $controle->set_title('O nome da estante');
-            $controle->set_plm(TRUE);
-            $controle->set_valor($dados[3]);
-            $form->add_item($controle);
-            
-            # cor
-            $controle = new Input('cor','combo','Cor:',1);
-            $controle->set_size(10);
-            $controle->set_col(6);
-            $controle->set_linha(3);
-            $controle->set_title('A cor do cartão');
-            $controle->set_placeholder('Cor');
-            $controle->set_array(array("secondary","primary","success","warning","alert"));
-            $controle->set_valor($dados[4]);
-            $form->add_item($controle);
-            
             # submit
             $controle = new Input('submit','submit');
             $controle->set_valor('Salvar');
@@ -278,12 +371,10 @@ if($acesso){
             # Recuperando os valores
             $caderno = post('caderno');
             $descricao = post('descricao');
-            $grupo = post('grupo');
-            $cor = post('cor');
             
             # Cria arrays para gravação
-            $arrayNome = array("caderno","descricao","grupo","cor");
-            $arrayValores = array($caderno,$descricao,$grupo,$cor);
+            $arrayNome = array("caderno","descricao");
+            $arrayValores = array($caderno,$descricao);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idCaderno,"tbprojetocaderno","idCaderno");
