@@ -139,7 +139,7 @@ class Gprojetos{
                     $numNotas = $intra->count($select);
 
                     # Incluir nota
-                    $menu1->add_item('sublink','+ Nova Nota','?fase=notaNova');
+                    #$menu1->add_item('sublink','+ Nova Nota','?fase=notaNova');
 
                     # Percorre as notas 
                     foreach($notas as $tituloNotas){

@@ -214,6 +214,12 @@ if($acesso){
             $link->set_class('button secondary');
             $link->set_title('Edita Caderno');
             $menu1->add_link($link,"right");
+            
+            # Nova Nota
+            $link = new Link("Nova Nota",'?fase=notaNova');
+            $link->set_class('button success');
+            $link->set_title('Edita Caderno');
+            $menu1->add_link($link,"right");
 
             $menu1->show();
             $div->fecha();
@@ -232,6 +238,7 @@ if($acesso){
             p($dadosCaderno[1],'descricaoProjetoTitulo');
             p($dadosCaderno[2],'descricaoProjeto');
             hr("projetosTarefas");
+            br();
                         
             # Pega as notas
             $select = 'SELECT idNota,
@@ -246,15 +253,14 @@ if($acesso){
             
             # Inicia o Manu de Notas
             $menu2 = new Menu();
-            $menu2->add_item('titulo2','Notas');
-
-            # Incluir nota
-            $menu2->add_item('sublink','+ Nova Nota','?fase=notaNova');
 
             # Percorre as notas 
             foreach($notas as $tituloNotas){
                 $menu2->add_item('link',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0],$tituloNotas[2]);
             }
+            
+            # Incluir nota
+            #$menu2->add_item('sublink','+ Nova Nota','?fase=notaNova');
             
             $menu2->show();
             
@@ -425,7 +431,7 @@ if($acesso){
                 $dados = $projeto->get_dadosNota($idNota);
                 $titulo = "Editar Nota";
             }else{
-                $dados = array(NULL,NULL,NULL,NULL,NULL);
+                $dados = array(NULL,NULL,NULL,NULL,NULL,NULL);
                 $titulo = "Nova Nota";
             } 
              
