@@ -495,7 +495,7 @@ if($acesso){
             $form->add_item($controle);
                                     
             # nota            
-            $controle = new Input('nota','textarea','Descrição:',1);
+            $controle = new Input('nota','textarea','Nota:',1);
             $controle->set_size(array(80,15));
             $controle->set_linha(2);
             $controle->set_col(12);
