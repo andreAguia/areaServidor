@@ -136,7 +136,22 @@ if($acesso){
             $grid->abreColuna($col2P,$col2M,$col2L);
             
             $painel = new Callout();
-            $painel->abre(); 
+            $painel->abre();
+            
+            # Menu
+            $div = new Div('divEditaNota2');
+            $div->abre();
+            
+            $menu1 = new MenuBar("small button-group");
+
+            # Novo Caderno
+            $link = new Link("Novo",'?fase=cadernoNovo');
+            $link->set_class('button secondary');
+            $link->set_title('Novo Caderno');
+            $menu1->add_link($link,"right");
+
+            $menu1->show();
+            $div->fecha();
             
             # Pega os projetos cadastrados
             $select = 'SELECT idCaderno,
@@ -148,26 +163,8 @@ if($acesso){
             $dadosCaderno = $intra->select($select);
             $numCadernos = $intra->count($select);
             
-            $grid = new Grid();
-            $grid->abreColuna(10);
-                p('Cadernos','descricaoProjetoTitulo');
-            $grid->fechaColuna();
-            $grid->abreColuna(2);
-            
-            # Menu
-            $menu1 = new MenuBar("small button-group");
-
-            # Nova Nota
-            $link = new Link("Novo",'?fase=cadernoNovo');
-            $link->set_class('button secondary');
-            $link->set_title('Novo Caderno');
-            $menu1->add_link($link,"right");
-
-            $menu1->show();
-
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-
+            # Caderno
+            p('Cadernos','descricaoProjetoTitulo');
             hr("projetosTarefas");
             br();
         
@@ -216,9 +213,9 @@ if($acesso){
             $menu1->add_link($link,"right");
             
             # Nova Nota
-            $link = new Link("Nova Nota",'?fase=notaNova');
-            $link->set_class('button success');
-            $link->set_title('Edita Caderno');
+            $link = new Link("<i class='fi-plus'></i>",'?fase=notaNova');
+            $link->set_class('button secondary');
+            $link->set_title('Nova Nota');
             $menu1->add_link($link,"right");
 
             $menu1->show();
@@ -251,18 +248,25 @@ if($acesso){
             $notas = $intra->select($select);
             $numNotas = $intra->count($select);
             
-            # Inicia o Manu de Notas
-            $menu2 = new Menu();
+            if($numNotas > 0){
+                # Inicia o Manu de Notas
+                $menu2 = new Menu();
 
-            # Percorre as notas 
-            foreach($notas as $tituloNotas){
-                $menu2->add_item('link',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0],$tituloNotas[2]);
+                # Percorre as notas 
+                foreach($notas as $tituloNotas){
+                    $menu2->add_item('link',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0],$tituloNotas[2]);
+                }
+
+                # Incluir nota
+                #$menu2->add_item('sublink','+ Nova Nota','?fase=notaNova');
+
+                $menu2->show();
+                br();
+            }else{
+                br(2);
+                p("Não há notas cadastradas !!","f14","center");
+                br(3);
             }
-            
-            # Incluir nota
-            #$menu2->add_item('sublink','+ Nova Nota','?fase=notaNova');
-            
-            $menu2->show();
             
             $painel->fecha();  
             

@@ -32,7 +32,7 @@ if($acesso)
     AreaServidor::cabecalho();
     
     # Zera sessions
-    set_session('categoria');   // sessio de pesquisa da rotina de configuraçoes
+    set_session('categoria');   // session de pesquisa da rotina de configuraçoes
     
     # Limita o tamanho da tela
     $grid1 = new Grid();
@@ -42,7 +42,6 @@ if($acesso)
         # Exibe o Menu Inicial
         case "menu" :
             # Apaga as session do sistema de projetos e notas
-             $idNota = get('idNota',get_session('idNota'));
             set_session('idNota');
             set_session('idCaderno');
     
@@ -205,6 +204,7 @@ if($acesso)
             $botao->set_url('projeto.php');
             $botao->set_imagem(PASTA_FIGURAS.'atribuicoes.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Sistema de gestão de tarefas');
+            $botao->set_target("_blank");
             $menu->add_item($botao);
 
             # Cadastro de Atualizações
@@ -213,6 +213,7 @@ if($acesso)
             $botao->set_url('projetoNota.php');
             $botao->set_imagem(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Sistema de notas dos sistemas');
+            $botao->set_target("_blank");
             $menu->add_item($botao);
             
             $menu->show();
