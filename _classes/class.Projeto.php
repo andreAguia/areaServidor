@@ -86,7 +86,8 @@ class Projeto{
                           idCaderno,
                           titulo,
                           nota,
-                          numOrdem
+                          numOrdem,
+                          descricao
                      FROM tbprojetonota
                      WHERE idNota = '.$idNota;
         

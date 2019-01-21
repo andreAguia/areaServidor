@@ -129,7 +129,8 @@ class Gprojetos{
 
                     # Pega as notas
                     $select = 'SELECT idNota,
-                                      titulo
+                                      titulo,
+                                      descricao
                                  FROM tbprojetonota
                                 WHERE idcaderno = '.$valor[0].' ORDER BY numOrdem,titulo';
 
@@ -143,9 +144,9 @@ class Gprojetos{
                     # Percorre as notas 
                     foreach($notas as $tituloNotas){
                         if($idNota == $tituloNotas[0]){
-                            $menu1->add_item('link',"<i class='fi-page'></i><b> ".$tituloNotas[1].'</b>','?fase=caderno&idNota='.$tituloNotas[0]);
+                            $menu1->add_item('link',"<i class='fi-page'></i><b> ".$tituloNotas[1].'</b>','?fase=caderno&idNota='.$tituloNotas[0],$tituloNotas[2]);
                         }else{
-                            $menu1->add_item('link',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0]);
+                            $menu1->add_item('link',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0],$tituloNotas[2]);
                         }
                     }
                 }else{

@@ -237,7 +237,8 @@ if($acesso){
                         
             # Pega as notas
             $select = 'SELECT idNota,
-                              titulo
+                              titulo,
+                              descricao
                          FROM tbprojetonota
                         WHERE idcaderno = '.$idCaderno.' ORDER BY numOrdem,titulo';
 
@@ -254,7 +255,7 @@ if($acesso){
 
             # Percorre as notas 
             foreach($notas as $tituloNotas){
-                $menu2->add_item('link',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0]);
+                $menu2->add_item('link',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0],$tituloNotas[2]);
             }
             
             $menu2->show();
@@ -300,7 +301,7 @@ if($acesso){
             $grid->fechaGrid();
 
             hr("projetosTarefas");
-            echo "<pre id='preNota'>".$dados[3]."</pre>";
+            p($dados[5],'descricaoProjeto');
             
             $painel->fecha();  
             
@@ -483,6 +484,15 @@ if($acesso){
             $controle->set_title('Ordem da nota na lista');
             $controle->set_valor($dados[4]);
             $form->add_item($controle);
+            
+            # descricao            
+            $controle = new Input('descricao','textarea','Descrição:',1);
+            $controle->set_size(array(80,2));
+            $controle->set_linha(2);
+            $controle->set_col(12);
+            $controle->set_title('Breve Descrição da nota');
+            $controle->set_valor($dados[5]);
+            $form->add_item($controle);
                                     
             # nota            
             $controle = new Input('nota','textarea','Descrição:',1);
@@ -514,10 +524,11 @@ if($acesso){
             $caderno = post('idCaderno');
             $nota = post('nota');
             $numOrdem = post('numOrdem');
+            $descricao = post('descricao');
                       
             # Cria arrays para gravação
-            $arrayNome = array("titulo","idCaderno","nota","numOrdem");
-            $arrayValores = array($titulo,$caderno,$nota,$numOrdem);
+            $arrayNome = array("titulo","idCaderno","nota","numOrdem","descricao");
+            $arrayValores = array($titulo,$caderno,$nota,$numOrdem,$descricao);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");
