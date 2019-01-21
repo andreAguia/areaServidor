@@ -201,7 +201,22 @@ if($acesso){
             $grid->abreColuna($col2P,$col2M,$col2L);
             
             $painel = new Callout();
-            $painel->abre(); 
+            $painel->abre();
+            
+            # Menu
+            $div = new Div('divEditaNota2');
+            $div->abre();
+            
+            $menu1 = new MenuBar("small button-group");
+
+            # Nova Nota
+            $link = new Link("Editar",'?fase=cadernoEditar');
+            $link->set_class('button secondary');
+            $link->set_title('Edita Caderno');
+            $menu1->add_link($link,"right");
+
+            $menu1->show();
+            $div->fecha();
             
             # Pega os projetos cadastrados
             $select = 'SELECT idCaderno,
@@ -213,27 +228,10 @@ if($acesso){
             $dadosCaderno = $intra->select($select,false);
             $numCadernos = $intra->count($select);
             
-            $grid = new Grid();
-            $grid->abreColuna(10);
-                p($dadosCaderno[1],'descricaoProjetoTitulo');
-            $grid->fechaColuna();
-            $grid->abreColuna(2);
-            
-            # Menu
-            $menu1 = new MenuBar("small button-group");
-
-            # Nova Nota
-            $link = new Link("Editar",'?fase=cadernoEditar');
-            $link->set_class('button secondary');
-            $link->set_title('Edita Caderno');
-            $menu1->add_link($link,"right");
-
-            $menu1->show();
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-
-            hr("projetosTarefas");
+            # Caderno
+            p($dadosCaderno[1],'descricaoProjetoTitulo');
             p($dadosCaderno[2],'descricaoProjeto');
+            hr("projetosTarefas");
                         
             # Pega as notas
             $select = 'SELECT idNota,
@@ -276,32 +274,30 @@ if($acesso){
             $painel = new Callout();
             $painel->abre();
             
+            # Menu
+            $div = new Div('divEditaNota2');
+            $div->abre();
+            
+            $menu1 = new MenuBar("small button-group");
+
+            # Nova Nota
+            $link = new Link("Editar",'?fase=editaNota&idNota='.$idNota);
+            $link->set_class('button secondary');
+            $link->set_title('Editar Nota');
+            $menu1->add_link($link,"right");
+
+            $menu1->show();
+            $div->fecha();
+            
             # Pega os Dados
             $dados = $projeto->get_dadosNota($idNota);
 
             # Exibe a nota
-            $grid = new Grid();
-            $grid->abreColuna(10);
-                p($dados[2],'descricaoProjetoTitulo');
-            $grid->fechaColuna();
-            $grid->abreColuna(2);
-
-                # Menu
-                $menu1 = new MenuBar("small button-group");
-
-                # Nova Nota
-                $link = new Link("Editar",'?fase=editaNota&idNota='.$idNota);
-                $link->set_class('button secondary');
-                $link->set_title('Editar Nota');
-                $menu1->add_link($link,"right");
-
-                $menu1->show();
-
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-
-            hr("projetosTarefas");
+            p($dados[2],'descricaoProjetoTitulo');
             p($dados[5],'descricaoProjeto');
+            hr("projetosTarefas");
+            
+            echo "<pre id='preNota'>".$dados[3]."</pre>";
             
             $painel->fecha();  
             

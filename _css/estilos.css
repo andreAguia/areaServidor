@@ -426,6 +426,12 @@ div#divEditaNota{
     margin-right: -5px;
 }
 
+div#divEditaNota2{
+    float: right;
+    margin-top: 0px;
+    margin-right: -5px;
+}
+
 div#menuSuspenso{
     display: none;
     position: absolute;
