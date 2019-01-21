@@ -31,6 +31,10 @@ if($acesso){
             set_session('idCaderno');
             break;
         
+        case "notaNova" :
+            set_session('idNota');
+            break;
+        
         case "menuCaderno" :
             set_session('idCaderno');
             set_session('idNota');
@@ -139,7 +143,7 @@ if($acesso){
                               caderno,
                               descricao
                          FROM tbprojetocaderno
-                      ORDER BY caderno';
+                      ORDER BY numOrdem, caderno';
 
             $dadosCaderno = $intra->select($select);
             $numCadernos = $intra->count($select);
@@ -285,7 +289,7 @@ if($acesso){
                 $menu1 = new MenuBar("small button-group");
 
                 # Nova Nota
-                $link = new Link("Editar",'?fase=notaNova&idNota='.$idNota);
+                $link = new Link("Editar",'?fase=editaNota&idNota='.$idNota);
                 $link->set_class('button secondary');
                 $link->set_title('Editar Nota');
                 $menu1->add_link($link,"right");
@@ -335,12 +339,22 @@ if($acesso){
             # caderno
             $controle = new Input('caderno','texto','Nome do Caderno:',1);
             $controle->set_size(50);
+            $controle->set_col(10);
             $controle->set_linha(1);
             $controle->set_required(TRUE);
             $controle->set_autofocus(TRUE);
             $controle->set_placeholder('Nome do Caderno');
             $controle->set_title('O nome do Caderno a ser criado');
             $controle->set_valor($dados[1]);
+            $form->add_item($controle);
+            
+            # numOrdem
+            $controle = new Input('numOrdem','texto','Ordem:',1);
+            $controle->set_size(5);
+            $controle->set_linha(1);
+            $controle->set_col(2);
+            $controle->set_title('Ordem do caderno na lista');
+            $controle->set_valor($dados[3]);
             $form->add_item($controle);
             
             # descrição
@@ -351,6 +365,8 @@ if($acesso){
             $controle->set_placeholder('Descrição');
             $controle->set_valor($dados[2]);
             $form->add_item($controle);
+            
+            
             
             # submit
             $controle = new Input('submit','submit');
@@ -371,10 +387,11 @@ if($acesso){
             # Recuperando os valores
             $caderno = post('caderno');
             $descricao = post('descricao');
+            $numOrdem = post('numOrdem');
             
             # Cria arrays para gravação
-            $arrayNome = array("caderno","descricao");
-            $arrayValores = array($caderno,$descricao);
+            $arrayNome = array("caderno","descricao","numOrdem");
+            $arrayValores = array($caderno,$descricao,$numOrdem);
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idCaderno,"tbprojetocaderno","idCaderno");
@@ -395,14 +412,13 @@ if($acesso){
             $grid->fechaColuna();
             $grid->fechaGrid();    
             break;
-            
-            break;
         
 #############################################################################################################################
 #   Nota
 #############################################################################################################################
             
         case "notaNova" :
+        case "editaNota" :    
              
             $grid->abreColuna($col2P,$col2M,$col2L);
              
@@ -459,7 +475,7 @@ if($acesso){
             }
             $form->add_item($controle);
             
-            # Título
+            # numOrdem
             $controle = new Input('numOrdem','texto','Ordem:',1);
             $controle->set_size(5);
             $controle->set_linha(1);
@@ -505,6 +521,12 @@ if($acesso){
             
             # Grava	
             $intra->gravar($arrayNome,$arrayValores,$idNota,"tbprojetonota","idNota");
+            
+            # Pega o id quando for inclusão
+            if(is_null($idNota)){
+                $idnota = $intra->get_lastId();
+                set_session('idNota',$idnota);
+            }
             
             loadPage("?fase=caderno");
             break;

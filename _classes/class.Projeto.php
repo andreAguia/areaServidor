@@ -60,7 +60,8 @@ class Projeto{
         # Pega os projetos cadastrados
         $select = 'SELECT idCaderno,
                           caderno,
-                          descricao
+                          descricao,
+                          numOrdem
                      FROM tbprojetocaderno
                      WHERE idCaderno = '.$idCaderno;
         

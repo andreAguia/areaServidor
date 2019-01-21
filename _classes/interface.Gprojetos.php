@@ -106,7 +106,7 @@ class Gprojetos{
                           caderno,
                           descricao
                      FROM tbprojetocaderno
-                  ORDER BY caderno';
+                  ORDER BY numOrdem,caderno';
         
         $dadosCaderno = $intra->select($select);
         $numCadernos = $intra->count($select);
