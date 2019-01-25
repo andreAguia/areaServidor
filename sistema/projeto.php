@@ -507,15 +507,32 @@ if($acesso){
             }
             $form->add_item($controle);
             
+            # Pega as etiquetas cadastradas
+            $select = 'SELECT distinct etiqueta
+                         FROM tbprojetotarefa
+                        WHERE etiqueta is not null
+                         ORDER BY etiqueta';
+
+            $dadosEtiquetas = $intra->select($select);
+                        
             # etiqueta
             $controle = new Input('etiqueta','texto','Etiqueta:',1);
             $controle->set_size(20);
             $controle->set_linha(3);
             $controle->set_col(6);
             $controle->set_placeholder('Etiqueta');
+            $controle->set_datalist($dadosEtiquetas);
             $controle->set_title('Uma etiqueta para ajudar na busca');
             $controle->set_valor($dados[7]);
             $form->add_item($controle);
+            
+            # Pega as etiquetas cadastradas
+            $select = 'SELECT distinct solicitante
+                         FROM tbprojetotarefa
+                        WHERE solicitante is not null
+                         ORDER BY solicitante';
+            
+            $dadosSolicitantes = $intra->select($select);
             
             # solicitante
             $controle = new Input('solicitante','texto','Solicitante:',1);
@@ -524,6 +541,7 @@ if($acesso){
             $controle->set_col(6);
             $controle->set_placeholder('Solicitante');
             $controle->set_title('O Solicitante');
+            $controle->set_datalist($dadosSolicitantes);
             $controle->set_valor($dados[11]);
             $form->add_item($controle);
             

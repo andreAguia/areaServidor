@@ -170,7 +170,7 @@ class Gprojetos{
     * @param $idProjeto integer NULL o id do projeto a sser ressaltado no menu informando que stá sendo editado.
     */    
    
-        # Pega os projetos cadastrados
+        # Pega as etiquetas cadastradas
         $select = 'SELECT distinct etiqueta
                      FROM tbprojetotarefa
                     WHERE etiqueta is not null
