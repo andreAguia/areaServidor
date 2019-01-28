@@ -523,7 +523,11 @@ if($acesso){
             $controle->set_placeholder('Etiqueta');
             $controle->set_datalist($dadosEtiquetas);
             $controle->set_title('Uma etiqueta para ajudar na busca');
-            $controle->set_valor($dados[7]);
+            if(is_null($idTarefa)){
+                $controle->set_valor($etiqueta);
+            }else{
+                $controle->set_valor($dados[7]);
+            }
             $form->add_item($controle);
             
             # Pega as etiquetas cadastradas
@@ -542,7 +546,11 @@ if($acesso){
             $controle->set_placeholder('Solicitante');
             $controle->set_title('O Solicitante');
             $controle->set_datalist($dadosSolicitantes);
-            $controle->set_valor($dados[11]);
+            if(is_null($idTarefa)){
+                $controle->set_valor($solicitante);
+            }else{
+                $controle->set_valor($dados[11]);
+            }
             $form->add_item($controle);
             
             # descrição
@@ -689,9 +697,28 @@ if($acesso){
             
             $grid->abreColuna($col2P,$col2M,$col2L);
             
-            # Exibe o nome e a descrição
-            p("Etiqueta: ".$etiqueta,'descricaoProjetoTitulo');            
-            hr("projetosTarefas");
+            $grid = new Grid();
+            $grid->abreColuna(8);
+            
+                # Exibe o nome e a descrição
+                p("Etiqueta: ".$etiqueta,'descricaoProjetoTitulo');            
+                hr("projetosTarefas");
+                                
+            $grid->fechaColuna();
+            $grid->abreColuna(4);
+                
+                # Menu
+                $menu1 = new MenuBar("small button-group");
+                
+                $link5 = new Link("<i class='fi-plus'></i>",'?fase=tarefaNova');
+                $link5->set_class('button secondary');
+                $link5->set_title('Nova Tarefa');
+                $menu1->add_link($link5,"right");
+                
+                $menu1->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();             
             
             # Exibe as tarefas Fazendo
             $lista = new ListaTarefas("Fazendo");
@@ -723,9 +750,28 @@ if($acesso){
             
             $grid->abreColuna($col2P,$col2M,$col2L);
             
-            # Exibe o nome e a descrição
-            p("Solicitante: ".$solicitante,'descricaoProjetoTitulo');            
-            hr("projetosTarefas");
+            $grid = new Grid();
+            $grid->abreColuna(8);
+            
+                # Exibe o nome e a descrição
+                p("Solicitante: ".$solicitante,'descricaoProjetoTitulo');            
+                hr("projetosTarefas");
+                                
+            $grid->fechaColuna();
+            $grid->abreColuna(4);
+                
+                # Menu
+                $menu1 = new MenuBar("small button-group");
+                
+                $link5 = new Link("<i class='fi-plus'></i>",'?fase=tarefaNova');
+                $link5->set_class('button secondary');
+                $link5->set_title('Nova Tarefa');
+                $menu1->add_link($link5,"right");
+                
+                $menu1->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();
             
             # Exibe as tarefas Fazendo
             $lista = new ListaTarefas("Fazendo");
