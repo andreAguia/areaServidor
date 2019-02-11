@@ -534,13 +534,14 @@ class Gprojetos{
      * @syntax $projeto->showTarefa($idTarefa);  
      */
 
-        # Pega os projetos cadastrados
+        # Pega as tarefas
         $select = 'SELECT tarefa,
                           noOrdem,
                           pendente,
                           idProjeto,
                           etiqueta,
-                          solicitante
+                          solicitante,
+                          descricao
                      FROM tbprojetotarefa
                     WHERE idTarefa = '.$idTarefa;
         
@@ -553,7 +554,7 @@ class Gprojetos{
         # Verifica se está pendente
         if($row[2]){
             
-            $link = new Link($row[0],'?fase=tarefaNova&idTarefa='.$idTarefa);
+            $link = new Link($row[0],'?fase=exibeTarefa&idTarefa='.$idTarefa,$row[6]);
             $link->show();
             br();
             

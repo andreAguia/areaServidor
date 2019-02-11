@@ -79,6 +79,10 @@ if($acesso){
             $voltar = '?';
             break;
         
+        case "exibeTarefa":
+            $voltar = '?fase=verificaVolta';
+            break;
+        
         case "tarefaNova":
             $voltar = '?fase=verificaVolta';
             break;
@@ -247,7 +251,8 @@ if($acesso){
             $grid->abreColuna(8);
             
                 # Exibe o nome e a descrição
-                p("Projeto: ".$projetoPesquisado[1],'descricaoProjetoTitulo');
+                p("Projeto:","pDescricaoTag");
+                p($projetoPesquisado[1],'descricaoProjetoTitulo');
                 p($projetoPesquisado[2],'descricaoProjeto');
                                 
             $grid->fechaColuna();
@@ -433,6 +438,95 @@ if($acesso){
 #   Tarefa
 #############################################################################################################################
 
+        case "exibeTarefa" :
+            # Exibe as tarefas e subtarefas
+            
+            $grid->abreColuna($col2P,$col2M,$col2L);
+            
+            # Nome do projeto
+            $grid = new Grid();
+            $grid->abreColuna(8);
+            
+                # Pega os dados dessa tarefa
+                $dados = $projeto->get_dadosTarefa($idTarefa);
+
+                # Preenche as variáveis
+                $exibeTarefa = $dados[1];            
+                $exibeNomeProjeto = $projeto->get_nomeProjeto($dados[8]);
+
+                p("Tarefa:","pDescricaoTag");
+                p($exibeTarefa,"pExibeTarefa");
+
+                # Projeto
+                span($exibeNomeProjeto,"projeto",NULL,"Projeto");
+
+                # Etiqueta
+                if(!is_null($dados[7])){
+                    echo "&nbsp&nbsp&nbsp";
+                    span($dados[7],"etiqueta",NULL,"Etiqueta");
+                } 
+
+                # Solicitante
+                if(!is_null($dados[11])){
+                    echo "&nbsp&nbsp&nbsp";
+                    span($dados[11],"solicitante",NULL,"Solicitante");
+                }
+                                
+            $grid->fechaColuna();
+            $grid->abreColuna(4);
+                
+                # Menu
+                $menu1 = new MenuBar("small button-group");
+                
+                # Voltar
+                $link4 = new Link("<i class='fi-arrow-left'></i>",$voltar);
+                $link4->set_class('button secondary');
+                $link4->set_title('Voltar');
+                $menu1->add_link($link4,"right");
+                
+                # Editar
+                $link4 = new Link("<i class='fi-pencil'></i>",'?fase=tarefaNova&idTarefa='.$idTarefa);
+                $link4->set_class('button secondary');
+                $link4->set_title('Editar Tarefa');
+                $menu1->add_link($link4,"right");
+                
+                # Nova Sub Tarefa
+                $link5 = new Link("<i class='fi-plus'></i>",'?fase=subtarefaNova');
+                $link5->set_class('button secondary');
+                $link5->set_title('Nova Sub-Tarefa');
+                $menu1->add_link($link5,"right");
+                
+                $menu1->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid(); 
+            
+            hr("hrCard");
+            
+            if(!vazio($dados[2])){
+                p("Descrição:","pDescricaoTag");
+                p($dados[2],"pDescricao");
+                hr("hrCard");
+            }
+            
+            
+            p("SubTarefas:","pDescricaoTag");
+            
+            br(2);
+            
+            hr("hrCard");
+            
+            if(!vazio($dados[9])){
+                p("Conclusão:","pDescricaoTag");
+                p($dados[9],"pDescricao");
+                hr("hrCard");
+            }
+                        
+            $grid->fechaColuna();
+            $grid->fechaGrid();    
+            break;
+        
+###########################################################        
         case "tarefaNova" :
             # Inclui uma tarefa nova ou edita uma já existente
                         
@@ -453,19 +547,26 @@ if($acesso){
             # Menu
             $menu1 = new MenuBar("small button-group");
 
-            # Voltar
-            $link1 = new Link("Voltar",$voltar);
-            $link1->set_class('button');
-            $link1->set_title('Voltar Sem Salvar');
-            $menu1->add_link($link1,"left");
-
             if(!is_null($idTarefa)){
+                
+                # Voltar
+                $link1 = new Link("Voltar",'?fase=exibeTarefa&idTarefa='.$idTarefa);
+                $link1->set_class('button');
+                $link1->set_title('Voltar Sem Salvar');
+                $menu1->add_link($link1,"left");        
+                        
                 # Excluir
                 $link1 = new Link("Excluir",'?fase=TarefaExcluir&idTarefa='.$idTarefa);
                 $link1->set_class('alert button');
                 $link1->set_title('Excluir Tarefa');
                 $link1->set_confirma('Deseja mesmo excluir ?');
                 $menu1->add_link($link1,"right");
+            }else{
+                 # Voltar
+                $link1 = new Link("Voltar",$voltar);
+                $link1->set_class('button');
+                $link1->set_title('Voltar Sem Salvar');
+                $menu1->add_link($link1,"left");
             }
 
             $menu1->show();
