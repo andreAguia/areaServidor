@@ -126,7 +126,7 @@ if($acesso){
     # Percorre as variáveis
     if($numVariaveis > 0){
         p("Atributos","center","f11");
-        for ($i=1; $i < $numVariaveis;$i++){
+        for ($i=0; $i < $numVariaveis;$i++){
             span($variaveisClasse[$i][1]." (".$variaveisClasse[$i][2].")",NULL,NULL,$variaveisClasse[$i][4]);
             br();
         }
@@ -181,12 +181,6 @@ if($acesso){
 
                 # Percorre as notas
                 for ($i = 0; $i < $qtdadeNotaClasse; $i++) {
-
-                    echo 'Nota: ';
-
-                    if($qtdadeNotaClasse > 1){
-                        echo ($i+1);
-                    }
 
                     # Exibe a nota
                     $callout = new Callout("warning");
@@ -370,12 +364,6 @@ if($acesso){
 
                 # Percorre as notas
                 for ($i = 0; $i < $qtdadeNotaMetodo; $i++) {
-
-                    echo 'Nota: ';
-
-                    if($qtdadeNotaMetodo > 1){
-                        echo ($i+1);
-                    }
 
                     # Exibe a nota
                     $callout = new Callout("warning");

@@ -103,7 +103,7 @@ class Documenta
                 if ((stristr($line, "@deprecated")) AND ($this->numMetodo == 0))
                     $this->deprecatedClasse = TRUE;
 
-                # Nome do grupo de variáveis
+                # Grupo de variáveis
                 if ((stristr($line, "@group")) AND ($this->numMetodo == 0)){
                     $posicao = stripos($line,'@');
                     $grupo = substr($line, $posicao+6);
