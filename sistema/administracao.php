@@ -322,13 +322,21 @@ if($acesso)
             $botao->set_title('Importação da Tabela de Férias do SigRH');
             $menu->add_item($botao);
             
+            # Progressão e Enquadramento
+            $botao = new BotaoGrafico();
+            $botao->set_label('Progressão e Enquadramento');
+            $botao->set_url('importaProgressao.php');
+            $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Importação da Tabela de Progressão e enquadramento');
+            $menu->add_item($botao);
+            
             # Faltas
             $botao = new BotaoGrafico();
             $botao->set_label('Faltas');
             $botao->set_url('importacaoFaltas.php');
             $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Faltas do SigRH');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
                         
             # Contatos
             $botao = new BotaoGrafico();
@@ -344,7 +352,7 @@ if($acesso)
             $botao->set_url('?fase=sispatri');
             $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
             $menu->show();
             break;
         
