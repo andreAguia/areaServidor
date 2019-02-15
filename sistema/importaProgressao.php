@@ -149,13 +149,15 @@ if($acesso){
                     $idServidor = $pessoal->get_idServidor($MATR);
                     $nome = $pessoal->get_nome($idServidor);
                     
-                    if(is_null($nome)){
-                        $problema++;
-                    }
-                                        
                     $contador++;
                     
-                    echo "<tr>";
+                    if(is_null($nome)){
+                        $problema++;
+                        echo "<tr id='logExclusao'>";
+                    }else{
+                        echo "<tr>";
+                    }
+                    
                     echo "<td id='center'>$contador</td>";
                     echo "<td id='left'>Matrícula: $MATR<br/>IdServidor: $idServidor<br/>Nome: $nome</td>";
                     echo "<td id='center'>$DT</td>";
