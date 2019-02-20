@@ -158,9 +158,23 @@ if($acesso){
                         echo "<tr>";
                     }
                     
+                    # Define a data limite da admissão do primeiro servidor concursado
+                    $dtPrimeiro = date_to_bd("01/06/1998");
+                    $dtComparacao = date_to_bd($DT);
+                    
+                    # Verifica se a data é anterior a do primeiro servidor concursado
+                    if(!vazio($DT)){
+                        if($dtComparacao < $dtPrimeiro){
+                            $tt = "ANTES de 01/06/1998";
+                        }else{
+                            $tt = NULL;
+                        }
+                    }
+                        
+                    
                     echo "<td id='center'>$contador</td>";
                     echo "<td id='left'>Matrícula: $MATR<br/>IdServidor: $idServidor<br/>Nome: $nome</td>";
-                    echo "<td id='center'>$DT</td>";
+                    echo "<td id='center'>$DT<br/>$tt</td>";
                     echo "<td id='center'>$SAL</td>";
                     echo "<td id='center'>$CLASS</td>";
                     echo "<td id='center'>$CARGO</td>";
