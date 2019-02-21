@@ -434,17 +434,56 @@ if($acesso)
                 }
                 $diretorio->close();
             }
+            
+            # Cria títulos de ordenação
+            $ano = NULL;
+            $anoAnterior = NULL;
+            $mes = NULL;
+            $mesAnterio = NULL;
 
             if(isset($arrayArquivos)){
+                # Limita ainda mais
+                $grid = new Grid("center");
+                $grid->abreColuna(10);
+            
                 # Classificar os arquivos para a Ordem Crescente
-                krsort($arrayArquivos, SORT_STRING);
+                rsort($arrayArquivos, SORT_STRING);
 
                 # Mostra a listagem dos Arquivos
-                echo "<pre>";
                 foreach($arrayArquivos as $valorArquivos){
-                    echo '<a href=/_backup/'.$valorArquivos.'>'.$valorArquivos.'</a><br />';
+                    # Pega o ano do arquivo
+                    $ano = substr($valorArquivos, 0,4);
+                    $mes = substr($valorArquivos, 5,2);
+                    $dia = substr($valorArquivos, 8,2);
+                    $hora = substr($valorArquivos, 11,2);
+                    $minuto = substr($valorArquivos, 14,2);
+                    $segundo = substr($valorArquivos, 17,2);
+                    
+                    # Compara se já teve título do ano
+                    if($ano <> $anoAnterior){
+                        $anoAnterior = $ano;
+                        tituloTable($ano);
+                        br();
+                    }
+                    
+                    # Compara se já teve título do mês
+                    if($mes <> $mesAnterio){
+                        $mesAnterio = $mes;
+                        $grid = new Grid();
+                        $grid->abreColuna(8);
+                        tituloTable(get_nomeMes($mes));
+                        $grid->fechaColuna();
+                        $grid->fechaGrid();
+                        br();
+                    }
+                    
+                    
+                    echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
                 }
-                echo "</pre>";
+                
+                $grid->fechaColuna();
+                $grid->fechaGrid();
+                
             }else{
                 br(3);
                 p("Não existe nenhum arquivo de backup!","center");
