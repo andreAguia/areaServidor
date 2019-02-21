@@ -40,7 +40,7 @@ DATA="$ANO.$MES.$DIA"
 #CAMINHO="/var/www/backup/$ANO/$MES/"
 
 # Caminho
-CAMINHO="/var/www/backup/"
+CAMINHO="/var/www/html/_backup/"
 
 # Executa o backup no banco do GRH
 BANCO="grh"

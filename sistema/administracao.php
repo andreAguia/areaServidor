@@ -245,14 +245,6 @@ if($acesso)
             $botao->set_imagem(PASTA_FIGURAS.'mysql.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('http://127.0.0.1/phpmyadmin');
             $menu->add_item($botao);
-
-            # Backup Manual
-            $botao = new BotaoGrafico();
-            $botao->set_label('Backup Manual');
-            $botao->set_title('Executa um backup manual a qualquer tempo');
-            $botao->set_imagem(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('?fase=backup');
-            $menu->add_item($botao);
             
             # Registros órfãos
             $botao = new BotaoGrafico();
@@ -289,6 +281,34 @@ if($acesso)
             $botao->set_title('Informações sobre&#10;o servidor web');
             $botao->set_imagem(PASTA_FIGURAS.'webServer.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('infoWebServer.php');
+            $menu->add_item($botao);
+            $menu->show();
+            br();
+            $grid2->fechaColuna();
+            
+            ############################################
+            
+            # Backup
+            $grid2->abreColuna(12,12,6);
+            tituloTable('Backup');
+            br();
+
+            $menu = new MenuGrafico(4);
+
+            # Backup Manual
+            $botao = new BotaoGrafico();
+            $botao->set_label('Backup Manual');
+            $botao->set_title('Executa um backup manual a qualquer tempo');
+            $botao->set_imagem(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('?fase=backup');
+            $menu->add_item($botao);
+
+            # Diretório de Backup
+            $botao = new BotaoGrafico();
+            $botao->set_label('Pasta de Backup');
+            $botao->set_title('Exibe a pasta de backup');
+            $botao->set_imagem(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('?fase=pastaBackup');
             $menu->add_item($botao);
             $menu->show();
             br();
@@ -386,6 +406,75 @@ if($acesso)
         case "backup3" :
             alert("Backup concluído! Acesse a pasta de backup para obter o arquivo.");
             loadPage('?');
+            break;
+        
+    ########################################################################################
+        
+        case "pastaBackup" :
+            # Limita o tamanho da tela
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            
+            # Cria um menu
+            $menu = new MenuBar();
+
+            # Botão voltar
+            $linkBotao1 = new Link("Voltar",'?');
+            $linkBotao1->set_class('button');
+            $linkBotao1->set_title('Volta para a página anterior');
+            $linkBotao1->set_accessKey('V');
+            $menu->add_link($linkBotao1,"left");
+
+            # Código
+            $linkBotao2 = new Link("Incluir",'?fase=editar');
+            $linkBotao2->set_class('button');
+            $linkBotao2->set_title('Incluir uma nova variavel de configuraçao');
+            $linkBotao2->set_accessKey('I');
+            #$menu->add_link($linkBotao2,"right");
+            
+            $menu->show();
+            
+            # Título
+            tituloTable('Pasta de Backup');
+            br();
+            
+            # Executa o backup no Linux
+            #$output = shell_exec('ls ../../_backup');
+            #echo "<pre>$output</pre>";
+            
+            # Define a pasta
+            $pasta = '/var/www/html/_backup/';
+
+            
+            if(is_dir($pasta)){
+             $diretorio = dir($pasta);
+
+                # Percorre os arquivos
+                while($arquivo = $diretorio->read()){
+                    
+                    # Retira os diretórios
+                    if($arquivo <> '..' AND $arquivo <> '.'){
+                        
+                        # Cria um Array com todos os Arquivos encontrados
+                        $arrayArquivos[] = $arquivo;
+                    }
+                }
+                $diretorio->close();
+            }
+
+            # Classificar os arquivos para a Ordem Crescente
+            ksort($arrayArquivos, SORT_STRING);
+
+            # Mostra a listagem dos Arquivos
+            echo "<pre>";
+            foreach($arrayArquivos as $valorArquivos){
+                echo '<a href=/_backup/'.$valorArquivos.'>'.$valorArquivos.'</a><br />';
+            }
+            echo "</pre>";
+
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            
             break;
         
     ########################################################################################
