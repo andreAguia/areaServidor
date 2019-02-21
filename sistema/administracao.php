@@ -228,6 +228,14 @@ if($acesso)
             br();
 
             $menu = new MenuGrafico(4);
+            
+            # Backup
+            $botao = new BotaoGrafico();
+            $botao->set_label('Backup');
+            $botao->set_title('Acessa a área de backup');
+            $botao->set_imagem(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('?fase=pastaBackup');
+            $menu->add_item($botao);
 
             # Importação
             $botao = new BotaoGrafico();
@@ -281,34 +289,6 @@ if($acesso)
             $botao->set_title('Informações sobre&#10;o servidor web');
             $botao->set_imagem(PASTA_FIGURAS.'webServer.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('infoWebServer.php');
-            $menu->add_item($botao);
-            $menu->show();
-            br();
-            $grid2->fechaColuna();
-            
-            ############################################
-            
-            # Backup
-            $grid2->abreColuna(12,12,6);
-            tituloTable('Backup');
-            br();
-
-            $menu = new MenuGrafico(4);
-
-            # Backup Manual
-            $botao = new BotaoGrafico();
-            $botao->set_label('Backup Manual');
-            $botao->set_title('Executa um backup manual a qualquer tempo');
-            $botao->set_imagem(PASTA_FIGURAS.'backup.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('?fase=backup');
-            $menu->add_item($botao);
-
-            # Diretório de Backup
-            $botao = new BotaoGrafico();
-            $botao->set_label('Pasta de Backup');
-            $botao->set_title('Exibe a pasta de backup');
-            $botao->set_imagem(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_url('?fase=pastaBackup');
             $menu->add_item($botao);
             $menu->show();
             br();
@@ -400,12 +380,7 @@ if($acesso)
             # Grava no log a atividade
             $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);
 
-            loadPage('?fase=backup3');
-            break;
-        
-        case "backup3" :
-            alert("Backup concluído! Acesse a pasta de backup para obter o arquivo.");
-            loadPage('?');
+            loadPage('?fase=pastaBackup');
             break;
         
     ########################################################################################
@@ -426,11 +401,10 @@ if($acesso)
             $menu->add_link($linkBotao1,"left");
 
             # Código
-            $linkBotao2 = new Link("Incluir",'?fase=editar');
+            $linkBotao2 = new Link("Backup Manual",'?fase=backup');
             $linkBotao2->set_class('button');
-            $linkBotao2->set_title('Incluir uma nova variavel de configuraçao');
-            $linkBotao2->set_accessKey('I');
-            #$menu->add_link($linkBotao2,"right");
+            $linkBotao2->set_title('Backup manual do banco de dados');            
+            $menu->add_link($linkBotao2,"right");
             
             $menu->show();
             
@@ -444,7 +418,6 @@ if($acesso)
             
             # Define a pasta
             $pasta = '/var/www/html/_backup/';
-
             
             if(is_dir($pasta)){
              $diretorio = dir($pasta);
@@ -462,15 +435,20 @@ if($acesso)
                 $diretorio->close();
             }
 
-            # Classificar os arquivos para a Ordem Crescente
-            ksort($arrayArquivos, SORT_STRING);
+            if(isset($arrayArquivos)){
+                # Classificar os arquivos para a Ordem Crescente
+                krsort($arrayArquivos, SORT_STRING);
 
-            # Mostra a listagem dos Arquivos
-            echo "<pre>";
-            foreach($arrayArquivos as $valorArquivos){
-                echo '<a href=/_backup/'.$valorArquivos.'>'.$valorArquivos.'</a><br />';
+                # Mostra a listagem dos Arquivos
+                echo "<pre>";
+                foreach($arrayArquivos as $valorArquivos){
+                    echo '<a href=/_backup/'.$valorArquivos.'>'.$valorArquivos.'</a><br />';
+                }
+                echo "</pre>";
+            }else{
+                br(3);
+                p("Não existe nenhum arquivo de backup!","center");
             }
-            echo "</pre>";
 
             $grid->fechaColuna();
             $grid->fechaGrid();
