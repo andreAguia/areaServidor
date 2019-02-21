@@ -148,6 +148,7 @@ if($acesso){
                     # Dados Tratados
                     $idServidor = $pessoal->get_idServidor($MATR);
                     $nome = $pessoal->get_nome($idServidor);
+                    $perfil = $pessoal->get_perfil($idServidor);
                     
                     $contador++;
                     
@@ -170,10 +171,9 @@ if($acesso){
                             $tt = NULL;
                         }
                     }
-                        
                     
                     echo "<td id='center'>$contador</td>";
-                    echo "<td id='left'>Matrícula: $MATR<br/>IdServidor: $idServidor<br/>Nome: $nome</td>";
+                    echo "<td id='left'>Matrícula: $MATR<br/>IdServidor: $idServidor<br/>Nome: $nome<br/>Perfil: $perfil</td>";
                     echo "<td id='center'>$DT<br/>$tt</td>";
                     echo "<td id='center'>$SAL</td>";
                     echo "<td id='center'>$CLASS</td>";

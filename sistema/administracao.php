@@ -460,7 +460,7 @@ if($acesso)
                     $segundo = substr($valorArquivos, 17,2);
                     
                     # Compara se já teve título do ano
-                    if($ano <> $anoAnterior){
+                    if($ano <> $anoAnterior){http://localhost/areaServidor/sistema/administracao.php?fase=pastaBackup
                         $anoAnterior = $ano;
                         tituloTable($ano);
                         br();
@@ -468,6 +468,7 @@ if($acesso)
                     
                     # Compara se já teve título do mês
                     if($mes <> $mesAnterio){
+                        br();
                         $mesAnterio = $mes;
                         $grid = new Grid();
                         $grid->abreColuna(8);
