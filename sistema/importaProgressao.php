@@ -107,7 +107,9 @@ if($acesso){
             # Abre o banco de dados
             $pessoal = new Pessoal();
             
-            $problema = 0;
+            $problemaNome = 0;
+            $problemaData = 0;
+            $problemaPerfil = 0;
 
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
@@ -122,6 +124,7 @@ if($acesso){
                 echo "<tr>";
                 echo "<th>#</th>";
                 echo "<th>MATR</th>";
+                echo "<th>Perfil</th>";
                 echo "<th>DT</th>";
                 echo "<th>SAL</th>";
                 echo "<th>CLASS</th>";
@@ -151,30 +154,43 @@ if($acesso){
                     $perfil = $pessoal->get_perfil($idServidor);
                     $dtAdmissao = $pessoal->get_dtAdmissao($idServidor);
                     
-                    $contador++;
-                    
-                    if(is_null($nome)){
-                        $problema++;
-                        echo "<tr id='logExclusao'>";
-                    }else{
-                        echo "<tr>";
-                    }
-                    
                     # Define a data limite da admissão do primeiro servidor concursado
                     $dtPrimeiro = date_to_bd("01/06/1998");
                     $dtComparacao = date_to_bd($DT);
+                    
+                    # Inicia a linha
+                    echo "<tr";
                     
                     # Verifica se a data é anterior a do primeiro servidor concursado
                     if(!vazio($DT)){
                         if($dtComparacao < $dtPrimeiro){
                             $tt = "ANTES de 01/06/1998";
+                            $problemaData++;
+                            continue;
                         }else{
                             $tt = NULL;
                         }
                     }
                     
+                    # Verifica se é estatutário ou celetista
+                    if(($perfil <> "Estatutário") AND ($perfil <> "Celetista") AND ($perfil <> "Cedido")){
+                        echo " id='logExclusao'";
+                        $problemaPerfil++;
+                    }
+                    
+                    # Verifica se o servidor existe no sistema novo
+                    if(is_null($nome)){
+                        $problemaNome++;
+                        echo " id='logExclusao'";
+                    }
+                    
+                    echo">";
+                    
+                    $contador++;
+                    
                     echo "<td id='center'>$contador</td>";
-                    echo "<td id='left'>Matrícula: $MATR<br/>IdServidor: $idServidor<br/>Nome: $nome<br/>Perfil: $perfil<br/>Admissão: $dtAdmissao</td>";
+                    echo "<td id='left'>Matrícula: $MATR<br/>IdServidor: $idServidor<br/>Nome: $nome<br/>Admissão: $dtAdmissao</td>";
+                    echo "<td id='center'>$perfil</td>";
                     echo "<td id='center'>$DT<br/>$tt</td>";
                     echo "<td id='center'>$SAL</td>";
                     echo "<td id='center'>$CLASS</td>";
@@ -190,9 +206,11 @@ if($acesso){
                 echo "Registros analisados: ".$contador;
                 br();
                 
-                echo "$problema Erro(s) encontrados";
+                echo "$problemaNome Erro(s) no nome encontrados";
                 br();
-                echo $contador - $problema." registros prontos para serem importados";
+                echo "$problemaData Registros com data anterior a 01/06/1998";
+                br();
+                echo "$problemaPerfil Registros de não estatutérios e não celetistas";
                 
                 /*
                 br(2);
