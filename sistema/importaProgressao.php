@@ -110,7 +110,8 @@ if($acesso){
             $problemaNome = 0;
             $problemaData = 0;
             $problemaPerfil = 0;
-
+            $problemaAdmissao = 0;
+            
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
                 $lines = file($arquivo);
@@ -151,7 +152,7 @@ if($acesso){
                     # Dados Tratados
                     $idServidor = $pessoal->get_idServidor($MATR);
                     $nome = $pessoal->get_nome($idServidor);
-                    $perfil = $pessoal->get_perfil($idServidor);
+                    $perfil = $pessoal->get_idPerfil($idServidor);
                     $dtAdmissao = $pessoal->get_dtAdmissao($idServidor);
                     
                     # Define a data limite da admissão do primeiro servidor concursado
@@ -161,7 +162,11 @@ if($acesso){
                     # Inicia a linha
                     echo "<tr";
                     
-                    # Verifica se a data é anterior a do primeiro servidor concursado
+                    ############################################################################################
+                    
+                    # Retira servidor com admissão  anterior a 01/06/1998
+                    # Data do primeiro servidor concursado
+                    
                     if(!vazio($DT)){
                         if($dtComparacao < $dtPrimeiro){
                             $tt = "ANTES de 01/06/1998";
@@ -172,11 +177,17 @@ if($acesso){
                         }
                     }
                     
-                    # Verifica se é estatutário ou celetista
-                    if(($perfil <> "Estatutário") AND ($perfil <> "Celetista") AND ($perfil <> "Cedido")){
-                        echo " id='logExclusao'";
+                    ############################################################################################
+                    
+                    # Retira os servidores não estatutários, não celetistas e não cedidos
+                    
+                    if(($perfil <> 1) AND ($perfil <> 4) AND ($perfil <> 2)){
+                        #echo " id='logExclusao'";
                         $problemaPerfil++;
+                        continue;
                     }
+                    
+                    ############################################################################################
                     
                     # Verifica se o servidor existe no sistema novo
                     if(is_null($nome)){
@@ -184,21 +195,46 @@ if($acesso){
                         echo " id='logExclusao'";
                     }
                     
+                    ############################################################################################
+                    
+                    # Servidor sem data da progressão será assumido a data da admissão
+                    if(vazio($DT)){
+                        echo " id='senhaOk'";
+                        $tt = "Sem data de início.<br/>Assumindo a data de admissão:<br/>".$dtAdmissao;
+                        $DT = $dtAdmissao;
+                    }
+                    
+                    ############################################################################################
+                    
+                    # Verifica se a data da progressão é anterior a de admissão
+                    if(date_to_bd($DT) < date_to_bd($dtAdmissao)){
+                        $problemaAdmissao++;
+                        echo " id='logExclusao'";
+                    }
+                    
+                    ############################################################################################
+                    
+                    # Define o plano de Cargos ativo na data da progressão
+                    $plano = new PlanoCargos();
+                    $idPlano = $plano->get_planoVigente($DT);
+                    $planoVigente = $plano->get_dadosPlano($idPlano);
+                    
+                    ############################################################################################
+                    
                     echo">";
                     
                     $contador++;
                     
                     echo "<td id='center'>$contador</td>";
                     echo "<td id='left'>Matrícula: $MATR<br/>IdServidor: $idServidor<br/>Nome: $nome<br/>Admissão: $dtAdmissao</td>";
-                    echo "<td id='center'>$perfil</td>";
-                    echo "<td id='center'>$DT<br/>$tt</td>";
+                    echo "<td id='center'>".$pessoal->get_nomePerfil($perfil)."</td>";
+                    echo "<td id='center'>$DT<br/>$tt<br/>$planoVigente[0]</td>";
                     echo "<td id='center'>$SAL</td>";
                     echo "<td id='center'>$CLASS</td>";
                     echo "<td id='center'>$CARGO</td>";
                     echo "<td id='center'>$PERC</td>";
                     #echo "<td>$OBS</td>";
-                    echo "</tr>";     
-                    echo "</tr>";
+                    echo "</tr>"; 
                 }
                 
                 echo "</table>";
@@ -206,11 +242,13 @@ if($acesso){
                 echo "Registros analisados: ".$contador;
                 br();
                 
-                echo "$problemaNome Erro(s) no nome encontrados";
+                echo "$problemaNome Registros com nome não encontrado no sistema novo";
                 br();
                 echo "$problemaData Registros com data anterior a 01/06/1998";
                 br();
                 echo "$problemaPerfil Registros de não estatutérios e não celetistas";
+                br();
+                echo "$problemaAdmissao Registros com progressão/Enquadramento antes de ser admitido";
                 
                 /*
                 br(2);
