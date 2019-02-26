@@ -111,6 +111,7 @@ if($acesso){
             $problemaData = 0;
             $problemaPerfil = 0;
             $problemaAdmissao = 0;
+            $problemaSalario =0;
             
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
@@ -154,6 +155,12 @@ if($acesso){
                     $nome = $pessoal->get_nome($idServidor);
                     $perfil = $pessoal->get_idPerfil($idServidor);
                     $dtAdmissao = $pessoal->get_dtAdmissao($idServidor);
+                    
+                    # Trata a Classe
+                    $CL1 = substr($CLASS,-1);
+                    $len = strlen($CLASS);
+                    $CL2 = substr($CLASS,0,$len-1);
+                    $CLASS2 = $CL2."-".$CL1;
                     
                     # Define a data limite da admissão do primeiro servidor concursado
                     $dtPrimeiro = date_to_bd("01/06/1998");
@@ -214,6 +221,8 @@ if($acesso){
                     
                     ############################################################################################
                     
+                    echo ">";
+                    
                     # Define o plano de Cargos ativo na data da progressão
                     $plano = new PlanoCargos();
                     $idPlano = $plano->get_planoVigente($DT);
@@ -221,7 +230,14 @@ if($acesso){
                     
                     ############################################################################################
                     
-                    echo">";
+                    # Informa o salário da classe e o plano indicados
+                    $salario = $plano->get_salarioClasse($idPlano, $CLASS2);
+                    
+                    # Conta quantos registros não encontrou salário compatível
+                    if(vazio($salario)){
+                        $problemaSalario++;
+                        $salario = "NÃO ENCONTRADO";
+                    }
                     
                     $contador++;
                     
@@ -229,8 +245,8 @@ if($acesso){
                     echo "<td id='left'>Matrícula: $MATR<br/>IdServidor: $idServidor<br/>Nome: $nome<br/>Admissão: $dtAdmissao</td>";
                     echo "<td id='center'>".$pessoal->get_nomePerfil($perfil)."</td>";
                     echo "<td id='center'>$DT<br/>$tt<br/>$planoVigente[0]</td>";
-                    echo "<td id='center'>$SAL</td>";
-                    echo "<td id='center'>$CLASS</td>";
+                    echo "<td id='center'>$salario</td>";
+                    echo "<td id='center'>$CLASS<br/>$CLASS2</td>";
                     echo "<td id='center'>$CARGO</td>";
                     echo "<td id='center'>$PERC</td>";
                     #echo "<td>$OBS</td>";
@@ -249,6 +265,8 @@ if($acesso){
                 echo "$problemaPerfil Registros de não estatutérios e não celetistas";
                 br();
                 echo "$problemaAdmissao Registros com progressão/Enquadramento antes de ser admitido";
+                br();
+                echo "$problemaSalario Registros sem encontrar valor do salario";
                 
                 /*
                 br(2);
