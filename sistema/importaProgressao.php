@@ -77,7 +77,7 @@ if($acesso){
 
         case "analisa" :
             
-            # Define o arquivo a ser importado
+            # Arquivo a ser importado
             $arquivo = "../importacao/fen005.csv";
             
             # Cria um menu
@@ -111,7 +111,7 @@ if($acesso){
             $problemaData = 0;
             $problemaPerfil = 0;
             $problemaAdmissao = 0;
-            $problemaSalario =0;
+            $problemaSalario = 0;
             
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
@@ -312,10 +312,10 @@ if($acesso){
         
         case "importa" :
 
-            # Define o arquivo a ser importado
-            $arquivo = "../importacao/$anoImportacao.csv";
+            # Arquivo a ser importado
+            $arquivo = "../importacao/fen005.csv";
 
-            titulo('Importação da tabela de Férias $anoImportacao');
+            titulo('Importação da tabela de Progressão & Enquadramento');
 
             # Cria um painel
             $painel = new Callout();
@@ -323,14 +323,20 @@ if($acesso){
             
             # Abre o banco de dados
             $pessoal = new Pessoal();
+            
+            $problemaNome = 0;
+            $problemaData = 0;
+            $problemaPerfil = 0;
+            $problemaAdmissao = 0;
+            $problemaSalario = 0;
 
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
                 $lines = file($arquivo);
                 
-                # Inicia Variáveis
+                # Inicia variáveis
                 $contador = 0;
-                $ignorados = 0;
+                $erro = 0;
 
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($lines as $linha) {
@@ -340,43 +346,148 @@ if($acesso){
                     $parte = explode(",",$linha);
                     
                     # Pega os dados
-                    $idFuncional = $parte[0];           // IdFuncional
-                    $nomeImportado = $parte[1];         // Nome
-                    $dtInicial = $parte[2];             // Data Inicial
-                    $dtFinal = $parte[3];               // Data Final
-                    $dtInicialAquisitivo = $parte[4];   // Data Inicial Aquisitivo
-                    $dtFinalAquisitivo = $parte[5];     // Data Final Aquisitivo
-                    
-                    # IdServidor ## Problema aqui !!! Pega o primeiro que acha e não o idServidor atual ativo
-                    $idServidor = $pessoal->get_idServidoridFuncional($idFuncional);   
+                    $MATR = $parte[0];
+                    $DT = $parte[1];
+                    $SAL = $parte[2];
+                    $CLASS = $parte[3];
+                    $CARGO = $parte[4];
+                    $PERC = $parte[5];
+                    #$OBS = $parte[6];
                     
                     # Dados Tratados
-                    $nome = $pessoal->get_nome($idServidor);                                // Nome
-                    $numDias = dataDif($dtInicial, $dtFinal) + 1;
-                    $anoExercicio = year($dtInicialAquisitivo);
+                    $idServidor = $pessoal->get_idServidor($MATR);
+                    $nome = $pessoal->get_nome($idServidor);
+                    $perfil = $pessoal->get_idPerfil($idServidor);
+                    $dtAdmissao = $pessoal->get_dtAdmissao($idServidor);
+                    $idTpProgressao = 9;    // Tipo importado
+                    $obs = NULL;
                     
-                    if($anoExercicio == $anoImportacao){
-                        # Grava na tabela
-                        $campos = array("idServidor","dtInicial","anoExercicio","numDias","status");
-                        $valor = array($idServidor,date_to_bd($dtInicial),$anoExercicio,$numDias,"fruída");                    
-                        $pessoal->gravar($campos,$valor,NULL,"tbferias","idFerias",FALSE);
-                        $contador++;
-                    }else{
-                        $ignorados++;
+                    # Trata a Classe
+                    $CL1 = substr($CLASS,-1);
+                    $len = strlen($CLASS);
+                    $CL2 = substr($CLASS,0,$len-1);
+                    $CLASS2 = $CL2."-".$CL1;
+                    
+                    # Define a data limite da admissão do primeiro servidor concursado
+                    $dtPrimeiro = date_to_bd("01/06/1998");
+                    $dtComparacao = date_to_bd($DT);
+                    
+                    ############################################################################################
+                    
+                    # Retira servidor com admissão  anterior a 01/06/1998
+                    # Data do primeiro servidor concursado
+                    
+                    if(!vazio($DT)){
+                        if($dtComparacao < $dtPrimeiro){
+                            $tt = "ANTES de 01/06/1998";
+                            $problemaData++;
+                            continue;
+                        }else{
+                            $tt = NULL;
+                        }
                     }
-                }
-               
-                # Rotina que altera fruída para Solicitada e vice versa
-                $pessoal->mudaStatusFeriasSolicitadaFruida();
+                    
+                    ############################################################################################
+                    
+                    # Retira os servidores não estatutários, não celetistas e não cedidos
+                    
+                    if(($perfil <> 1) AND ($perfil <> 4) AND ($perfil <> 2)){
+                        #echo " id='logExclusao'";
+                        $problemaPerfil++;
+                        continue;
+                    }
+                    
+                    ############################################################################################
+                    
+                    # Verifica se o servidor existe no sistema novo
+                    if(is_null($nome)){
+                        $problemaNome++;
+                    }
+                    
+                    ############################################################################################
+                    
+                    # Servidor sem data da progressão será assumido a data da admissão
+                    if(vazio($DT)){
+                        $obs .= "Sem data de início. Assumindo a data de admissão: ".$dtAdmissao."<br/>";
+                        $DT = $dtAdmissao;
+                    }
+                    
+                    ############################################################################################
+                    
+                    # Verifica se a data da progressão é anterior a de admissão
+                    if(date_to_bd($DT) < date_to_bd($dtAdmissao)){
+                        $problemaAdmissao++;
+                        $obs .= "Servidor Admitido em $dtAdmissao.<br/>";
+                    }
+                    
+                    ############################################################################################
+                    
+                    # Define o plano de Cargos ativo na data da progressão
+                    $plano = new PlanoCargos();
+                    $idPlano = $plano->get_planoVigente($DT,$idServidor);
+                    $planoVigente = $plano->get_dadosPlano($idPlano);
+                    
+                    ############################################################################################
+                    
+                    # Informa o salário da classe e o plano indicados
+                    $salario = $plano->get_salarioClasse($idPlano, $CLASS2);
+                    $idClasse = $plano->get_idClasse($idPlano, $CLASS2);
+                    
+                    # Conta quantos registros não encontrou salário compatível
+                    if(vazio($salario)){
+                        
+                        # Verifica se matrícula é menor que 1000
+                        if($MATR < 1000){
+                            
+                            # Verifica se a data é entre agosto / 2001 e janeiro / 2002
+                            $dtInicial = "01/08/2001";
+                            $dtFinal = "01/01/2002";
+                            
+                            if(entre($DT,$dtInicial,$dtFinal)){
+                                $CLASS2 = $CLASS."-1";
+                                $salario = $plano->get_salarioClasse($idPlano, $CLASS2);
+                                $idClasse = $plano->get_idClasse($idPlano, $CLASS2);
+                                $obs .= "Faixa $CLASS foi acrescentada -1 por causa do servidor ser matrícula menor que 1000 no período entre agosto / 2001 e janeiro / 2002.";
+                            }
+                        }
+                    }
+                    
+                    # Verfica de novo Pois a análise de cima pode ter resolvido
+                    if(vazio($salario)){    
+                        $problemaSalario++;
+                        $obs .= "Valor $CLASS não encontrado no plano de cargos $planoVigente[0].";
+                        $CLASS2 = "-";
+                    }
+                    
+                    $contador++;
+                    
+                ############################################
+                    
+                    # Grava na tabela
+                    $campos = array("idServidor","idTpProgressao","idClasse","dtInicial","obs");
+                    $valor = array($idServidor,$idTpProgressao,$idClasse,date_to_bd($DT),$obs);                    
+                    $pessoal->gravar($campos,$valor,NULL,"tbprogressao","idProgressao",FALSE);
+                    
+                }############################################
                 
                 # Informa sobre a importação
-                echo "Registros importados: ".$contador;
+                echo "Registros analisados: ".$contador;
                 br();
-                echo $ignorados." registros ignorados por não serem do ano desejado.";
+                
+                echo "$problemaNome Registros com nome não encontrado no sistema novo";
+                br();
+                echo "$problemaData Registros com data anterior a 01/06/1998";
+                br();
+                echo "$problemaPerfil Registros de não estatutérios e não celetistas";
+                br();
+                echo "$problemaAdmissao Registros com progressão/Enquadramento antes de ser admitido";
+                br();
+                echo "$problemaSalario Registros sem encontrar valor do salario";
             }else{
-                echo "Arquivo de Férias não encontrado";
+                echo "Arquivo não encontrado";
             }
             br(2);
+            
             # Botão voltar
             $linkBotao1 = new Link("Voltar",'?');
             $linkBotao1->set_class('button');
@@ -392,4 +503,6 @@ if($acesso){
     $grid->fechaColuna();
     $grid->fechaGrid();        
     $page->terminaPagina();
+}else{
+    loadPage("login.php");
 }
