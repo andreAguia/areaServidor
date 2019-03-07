@@ -8,8 +8,8 @@
 class Doc extends Bd{
     private $servidor = "localhost";        // servidor
     private $usuario = "root";              // usuário
-    #private $senha = "chewbacca";           // senha
-    private $senha = NULL;           // senha
+    private $senha = "chewbacca";           // senha
+    #private $senha = NULL;           // senha
     private $banco = "information_schema";  // nome do banco
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela

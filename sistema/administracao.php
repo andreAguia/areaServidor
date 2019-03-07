@@ -311,7 +311,7 @@ if($acesso)
             # Define o tamanho do ícone
             $tamanhoImage = 60;
 
-            $menu = new MenuGrafico(5);
+            #$menu = new MenuGrafico(5);
             br();
             
             # Férias
@@ -320,7 +320,7 @@ if($acesso)
             $botao->set_url('importacaoFerias.php');
             $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Férias do SigRH');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
             
             # Progressão e Enquadramento
             $botao = new BotaoGrafico();
@@ -328,7 +328,7 @@ if($acesso)
             $botao->set_url('importaProgressao.php');
             $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Progressão e enquadramento');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
             
             # Faltas
             $botao = new BotaoGrafico();
@@ -353,7 +353,7 @@ if($acesso)
             $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
             #$menu->add_item($botao);
-            $menu->show();
+            #$menu->show();
             break;
         
 ########################################################################################
@@ -374,9 +374,42 @@ if($acesso)
             break;
 
         case "backup2" :
+            
+            # Define o nome do arquivo
+            $pedaco1 = date("Y.m.d");
+            $pedaco2 = date("H:i:s");
+            $arquivo = $pedaco1."_".$pedaco2;
+            
             # Executa o backup no Linux
-            shell_exec("./executaBackup");
+            shell_exec("./executaBackup $arquivo");
+            
+            # Envia o arquivo por email
+            $pedaco1 = date_to_php($pedaco1,".");
+            
+            $assunto = "Backup Manual de ".$pedaco1." as ".$pedaco2;
+            
+            $mensagem =  "Este é um email automático. Não é necessário respondê-lo.";
+            $mensagem .= "<br/><br/>";
+            $mensagem .=  "Backup manual realizado.";
+            $mensagem .= "<br/>";
+            $mensagem .= str_repeat("-", 80)."<br/>";
+            $mensagem .= "Este email contém, em anexo, os arquivos do backup<br/>";
+            $mensagem .= "manual efetuado no dia $pedaco1 as $pedaco2.<br/>";
+            $mensagem .= str_repeat("-", 80)."<br/>";
+            $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
 
+            $mail = new EnviaEmail($assunto, $mensagem);
+            $mail->set_para("alat@uenf.br");
+            $mail->set_deNome("Sistema de Pessoal");
+            
+            $arquivo = $arquivo.'.tar';
+            
+            #$caminho = '../../_backup/';            
+            $caminho = '/var/www/html/_backup/';
+            $mail->set_anexo($caminho.$arquivo);
+            
+            $mail->envia();
+            
             # Grava no log a atividade
             $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);
 

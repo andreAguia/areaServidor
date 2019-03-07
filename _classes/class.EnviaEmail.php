@@ -162,7 +162,7 @@ class EnviaEmail
         
         # Anexo
         foreach ($this->anexo as $anexo){
-             $mail->AddAttachment($anexo);  // Insere um anexo 
+            $mail->AddAttachment($anexo);  // Insere um anexo 
         }
         
         # Envia

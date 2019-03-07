@@ -9,51 +9,33 @@ if [ $vv == "grh1206" ]
 then
     USUARIO="root"
     SENHA="chewbacca"
+elif [ $vv == "alat-pc" ]
+then
+    USUARIO="root"
+    SENHA="chewbacca"
 else
     USUARIO="andre"
     SENHA="alat"
 fi
 
-# Define a string da data e hora
-ANO=$(date +%Y)
-MES=$(date +%m)
-DIA=$(date +%d)
-HORA=$(date +%T)
-DATA="$ANO.$MES.$DIA"
-
-# Vai para a pasta raiz
-#cd /
-
-# Caminha até a var
-#cd /var
-
-# Redefine permissao
-#CHMOD 777 -R www
-
-# Vai para pasta de backup
-#cd /var/www/backup
-
-# Cria a pasta
-#mkdir -p "$ANO/$MES/"
-
-# Caminho
-#CAMINHO="/var/www/backup/$ANO/$MES/"
-
 # Caminho
 CAMINHO="/var/www/html/_backup/"
 
+# Arquivo
+ARQUIVO=$1
+
 # Executa o backup no banco do GRH
 BANCO="grh"
-NOME1="$CAMINHO""$DATA"_"$HORA.$BANCO"
+NOME1="$CAMINHO""$ARQUIVO.$BANCO"
 mysqldump -u $USUARIO -p$SENHA $BANCO > $NOME1
 
 # Executa o backup no banco do AREASERVIDOR
 BANCO="areaservidor"
-NOME2="$CAMINHO""$DATA"_"$HORA.$BANCO"
+NOME2="$CAMINHO""$ARQUIVO.$BANCO"
 mysqldump -u $USUARIO -p$SENHA $BANCO > $NOME2
 
 # Compacta e junta os dois arquivos
-tar -zcf "$CAMINHO""$DATA"_"$HORA".tar $NOME1 $NOME2
+tar -zcf "$CAMINHO""$ARQUIVO".tar $NOME1 $NOME2
 
 # Apaga os arquivos originais nao compactados
 rm $NOME1

@@ -66,7 +66,6 @@ if($acesso){
 
     $select = "SELECT TABLE_NAME,
                       TABLE_COMMENT,
-                      TABLE_TYPE,
                       ENGINE,
                       TABLE_ROWS,
                       AVG_ROW_LENGTH,
@@ -75,7 +74,7 @@ if($acesso){
                  FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$banco'"; 
     $conteudo = $servico->select($select);
     
-    $label = array("Nome","Descrição","Tipo","Motor","Num. Registros","Tamanho Médio","Tamanho Total","AI");
+    $label = array("Nome","Descrição","Motor","Num. Registros","Tamanho Médio","Tamanho Total","Auto Incremento");
     #$function = array("datetime_to_php",NULL,NULL,NULL,"get_nome");
     $align = array("left","left");
 
