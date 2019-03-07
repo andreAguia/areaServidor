@@ -259,8 +259,13 @@ switch ($fase){
                     # Verifica se foi feito backup hoje
                     if($hoje <> $backupData){
                         
-                        # Executa o backup no servidor linux
-                        shell_exec("./executaBackup");
+                        # Define o nome do arquivo
+                        $pedaco1 = date("Y.m.d");
+                        $pedaco2 = date("H:i:s");
+                        $arquivo = $pedaco1."_".$pedaco2;
+
+                        # Executa o backup no Linux
+                        shell_exec("./executaBackup $arquivo");
                         
                         # Atualiza a data do último backup
                         $intra->set_variavel("backupData",$hoje);

@@ -472,18 +472,19 @@ if($acesso)
             $ano = NULL;
             $anoAnterior = NULL;
             $mes = NULL;
-            $mesAnterio = NULL;
+            $mesAnterior = NULL;
 
             if(isset($arrayArquivos)){
                 # Limita ainda mais
                 $grid = new Grid("center");
-                $grid->abreColuna(10);
+                $grid->abreColuna(12);
             
                 # Classificar os arquivos para a Ordem Crescente
                 rsort($arrayArquivos, SORT_STRING);
 
                 # Mostra a listagem dos Arquivos
                 foreach($arrayArquivos as $valorArquivos){
+                    
                     # Pega o ano do arquivo
                     $ano = substr($valorArquivos, 0,4);
                     $mes = substr($valorArquivos, 5,2);
@@ -493,22 +494,37 @@ if($acesso)
                     $segundo = substr($valorArquivos, 17,2);
                     
                     # Compara se já teve título do ano
-                    if($ano <> $anoAnterior){http://localhost/areaServidor/sistema/administracao.php?fase=pastaBackup
+                    if($ano <> $anoAnterior){
+                        
+                        # Fecha o fieldset se não for o primeiro
+                        if(!is_null($anoAnterior)){
+                            $field->fecha();
+                            
+                            $grid->fechaColuna();
+                            $grid->fechaGrid();
+                        }
+                        
                         $anoAnterior = $ano;
                         tituloTable($ano);
-                        br();
+                        
+                        $grid = new Grid("center");                        
                     }
                     
                     # Compara se já teve título do mês
-                    if($mes <> $mesAnterio){
-                        br();
-                        $mesAnterio = $mes;
-                        $grid = new Grid();
-                        $grid->abreColuna(8);
-                        tituloTable(get_nomeMes($mes));
-                        $grid->fechaColuna();
-                        $grid->fechaGrid();
-                        br();
+                    if($mes <> $mesAnterior){
+                        
+                        # Fecha o fieldset se não for o primeiro
+                        if(!is_null($mesAnterior)){
+                            $field->fecha();
+                            $grid->fechaColuna();
+                        }
+                    
+                        $mesAnterior = $mes;                                                
+                        $grid->abreColuna(3);
+                        
+                        $field = new Fieldset(get_nomeMes($mes));
+                        $field->set_class('fieldset');
+                        $field->abre();
                     }
                     
                     

@@ -33,8 +33,8 @@ class EnviaEmail
     /**
      * Método Construtor
      * 
-     * @param $idUsuario string $idUsuario do servidor logado
-     * @param $rotina integer codigo numérico da rotina a ser verificada
+     * @param $assunto  string NULL O assunto do email
+     * @param $mensagem string NULL A mensagem a ser enviada
      */
     
     public function __construct($assunto,$mensagem)
@@ -118,16 +118,40 @@ class EnviaEmail
          * Emite email com o arquivo de backup em anexo
          * 
          * @syntax $this->emiteEmail();
+         * 
          */
+        
+        # Inicia a classe PHPMailer
+        $mail = new PHPMailer();
 
-        $mail = new PHPMailer();    // Inicia a classe PHPMailer
-
-        # Servidor de email
-        $mail->IsSMTP();                        // Define que a mensagem será SMTP
-        $mail->SMTPAuth = true;                 // Usa autenticação SMTP? (opcional)
-        $mail->SMTPSecure = 'ssl';              // SSL REQUERIDO pelo GMail
-        $mail->Host = 'smtp.gmail.com';         // SMTP utilizado
-        $mail->Port = 465;                      // A porta deverá estar aberta em seu servidor
+        # Define que a mensagem será SMTP
+        $mail->IsSMTP();
+        
+        // Enable SMTP debugging
+        // 0 = off (for production use)
+        // 1 = client messages
+        // 2 = client and server messages
+        $mail->SMTPDebug = 2;
+        
+        // Ask for HTML-friendly debug output
+        $mail->Debugoutput = 'html';
+        
+        // Set the hostname of the mail server
+        $mail->Host = 'smtp.gmail.com';
+        
+        // use
+        // $mail->Host = gethostbyname('smtp.gmail.com');
+        // if your network does not support SMTP over IPv6
+        
+        // Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
+        $mail->Port = 587;
+        
+        // Set the encryption system to use - ssl (deprecated) or tls
+        $mail->SMTPSecure = 'tls';
+        #$mail->SMTPSecure = 'ssl';              // SSL REQUERIDO pelo GMail
+        
+        // Whether to use SMTP authentication
+        $mail->SMTPAuth = true;      // A porta deverá estar aberta em seu servidor
 
         # Do email institucional
         $mail->Username = $this->nomeUsuario;   // Usuário do servidor SMTP
