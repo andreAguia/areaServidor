@@ -37,6 +37,8 @@ $page->iniciaPagina();
 AreaServidor::cabecalho("Login do Sistema");
 br(2);
 
+################################################################################
+
 switch ($fase){
     case "":
         # Limpando todas as sessions
@@ -113,6 +115,8 @@ switch ($fase){
         $grid->fechaColuna();
         $grid->fechaGrid(); 
         break;
+        
+################################################################################
 
     case "valida":
         # Valida o Login
@@ -133,34 +137,11 @@ switch ($fase){
                 # Grava no log a atividade
                 $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') inexistente ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
                 
-                # Envia um email informando
-                if($intra->get_variavel("emiteEmailAlerta")){
-                    
-                    $assunto = "Tentativa de Login com usuario ($usuario) inexistente.";
-                    
-                    $mensagem = date("d-m-Y H:i:s");
-                    $mensagem .= "<br/>";
-                    $mensagem .= "Tentativa de Login com usuário ($usuario) inexistente.";
-                    $mensagem .= "<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Porque estou recebendo esste email?";
-                    $mensagem .= "<br/><br/>";
-                    $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
-                    $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
-                    $mensagem .= "<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Não responda esse email.";
-                    
-                    $mail = new EnviaEmail($assunto, $mensagem);
-                    $mail->set_para("alat@uenf.br");
-                    $mail->set_deNome("Sistema de Pessoal");
-                    $mail->envia();
-                }
-                    
+                # Retorna a página de login
                 loadPage('login.php');
                 break;
+            
+            ##################################################
             
             case 1: // Login Incorreto: Senha nula no servidor
                 # Informa o Erro
@@ -168,35 +149,12 @@ switch ($fase){
                 
                 # Grava no log a atividade
                 $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') bloqueado (com senha nula) no servidor ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
-                
-                # Envia um email informando
-                if($intra->get_variavel("emiteEmailAlerta")){
-                    
-                    $assunto = "Tentativa de Login com usuario ($usuario) bloqueado (com senha nula) no servidor.";
-                    
-                    $mensagem = date("d-m-Y H:i:s");
-                    $mensagem .= "<br/>";
-                    $mensagem .= "Tentativa de Login com usuário ($usuario) bloqueado (com senha nula) no servidor.";
-                    $mensagem .= "<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Porque estou recebendo esste email?";
-                    $mensagem .= "<br/><br/>";
-                    $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
-                    $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
-                    $mensagem .= "<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Não responda esse email.";
-                    
-                    $mail = new EnviaEmail($assunto, $mensagem);
-                    $mail->set_para("alat@uenf.br");
-                    $mail->set_deNome("Sistema de Pessoal");
-                    $mail->envia();
-                }
-                
+                                
+                # Retorna a página de login
                 loadPage('login.php');
                 break;
+            
+            ##################################################
             
             case 2: // Login Incorreto: Senha Errada
                 # Informa o Erro
@@ -204,37 +162,14 @@ switch ($fase){
                 
                 # Grava no log a atividade
                 $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') e com senha errada. ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
-                
-                # Envia um email informando
-                if($intra->get_variavel("emiteEmailAlerta")){
-                    
-                    $assunto = "Tentativa de Login com usuario ($usuario) e com senha errada.";
-                    
-                    $mensagem = date("d-m-Y H:i:s");
-                    $mensagem .= "<br/>";
-                    $mensagem .="Tentativa de Login com usuário ($usuario) e com senha errada.";
-                    $mensagem .= "<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Porque estou recebendo esste email?";
-                    $mensagem .= "<br/><br/>";
-                    $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
-                    $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
-                    $mensagem .= "<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Não responda esse email.";
-                    
-                    $mail = new EnviaEmail($assunto, $mensagem);
-                    $mail->set_para("alat@uenf.br");
-                    $mail->set_deNome("Sistema de Pessoal");
-                    $mail->envia();
-                }
-                
+                                
+                # Retorna a página de login
                 loadPage('login.php');
                 break;
+            
+            ##################################################
 
-            Case 3: // Login Correto
+            case 3: // Login Correto
                 # Pega o idUsuario
                 $idUsuario = $intra->get_idUsuario($usuario);
                 
@@ -247,43 +182,28 @@ switch ($fase){
                 # Grava no log a atividade
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
 
+                # Verifica a data do último backup
+                $backupData = $intra->get_variavel("backupData");
+
+                # Pega a data de hoje
+                $hoje = date("d/m/Y");       
+                
                 # Executa o backup
-                if($intra->get_variavel("backupAutomatico")){
-                    
-                    # Verifica a data do último backup
-                    $backupData = $intra->get_variavel("backupData");
-                    
-                    # Pega a data de hoje
-                    $hoje = date("d/m/Y");                              
-
-                    # Verifica se foi feito backup hoje
-                    if($hoje <> $backupData){
-                        
-                        # Define o nome do arquivo
-                        $pedaco1 = date("Y.m.d");
-                        $pedaco2 = date("H:i:s");
-                        $arquivo = $pedaco1."_".$pedaco2;
-
-                        # Executa o backup no Linux
-                        shell_exec("./executaBackup $arquivo");
-                        
-                        # Atualiza a data do último backup
-                        $intra->set_variavel("backupData",$hoje);
-
-                        # Grava no log a atividade
-                        $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup automático realizado',NULL,NULL,6);
+                if(($intra->get_variavel("backupAutomatico")) AND ($hoje <> $backupData)){
+                        loadPage('?fase=backup1');
+                }else{                
+                    # Verifica se o servidor está aniversariando hoje
+                    if($pessoal->aniversariante($idServidor)){
+                        loadPage('?fase=parabens');
+                    }else{
+                        loadPage('areaServidor.php');
                     }
                 }
-                
-                # Verifica se o servidor está aniversariando hoje
-                if($pessoal->aniversariante($idServidor)){
-                    loadPage('?fase=parabens');
-                }else{
-                    loadPage('areaServidor.php');
-                }
                 break;
-            
-            Case 4: // Senha Padrão
+                
+            ##################################################
+                
+            case 4: // Senha Padrão
                 # altera a senha de início
                 alert('Sua Senha não é Segura !! Favor Alterar !');
                 
@@ -302,6 +222,8 @@ switch ($fase){
                 loadPage('trocarSenha.php?'); 
                 break;
             
+            ##################################################
+            
             case 5: // Computador Não Autorizado
                 # Informa o Erro
                 alert('Este Computador não está autorizado a acessar o sistema! Entre em contato com o administrador do sistema.');
@@ -309,38 +231,17 @@ switch ($fase){
                 # Grava no log a atividade
                 $intra->registraLog(NULL,date("Y-m-d H:i:s"),'Tentativa de Login com usuário ('.$usuario.') em Computador não autorizado ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')',NULL,NULL,5);
                 
-                # Envia um email informando
-                if($intra->get_variavel("emiteEmailAlerta")){
-                    
-                    $assunto = "Tentativa de Login com usuario ($usuario) em computador não autorizado.";
-                    
-                    $mensagem = date("d-m-Y H:i:s");
-                    $mensagem .= "<br/>";
-                    $mensagem .="Tentativa de Login com usuário ($usuario) em computador não autorizado.";
-                    $mensagem .= "<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Porque estou recebendo esste email?";
-                    $mensagem .= "<br/><br/>";
-                    $mensagem .= "Você está recebendo esse email por estar cadastrado <br/>";
-                    $mensagem .= "como administrador no sistema de Pessoal da GRH da UENF.<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
-                    $mensagem .= "<br/>";
-                    $mensagem .= str_repeat("-", 80)."<br/>";
-                    $mensagem .= "Não responda esse email.";
-                    
-                    $mail = new EnviaEmail($assunto, $mensagem);
-                    $mail->set_para("alat@uenf.br");
-                    $mail->set_deNome("Sistema de Pessoal");
-                    $mail->envia();
-                }
-                
+                # Retorna a página de login
                 loadPage('login.php');
                 break;
+            
+            ##################################################
         }
         break;
+    
+################################################################################
 
-    Case "parabens":
+    case "parabens":
         # Acesso ao sistema GRH
         $pagina = 'areaServidor.php';
         if(Verifica::acesso($idUsuario,2)){
@@ -402,6 +303,96 @@ switch ($fase){
 
         $grid->fechaColuna();
         $grid->fechaGrid();
+        break;
+        
+################################################################################
+        
+    case "backup1":
+        
+        aguarde();
+        br();
+
+        # Limita a tela
+        $grid1 = new Grid("center");
+        $grid1->abreColuna(10);
+            
+            p("Você foi o primeiro a fazer login no sistema hoje!","center");
+            p("O sistema está programado a fazer backup no primeiro login do dia!","center");
+            p("Aguarde um pouco. Isso não irá demorar!!","center");
+            p("Fazendo o backup ...","center");
+            
+            $div = new Div("center");
+            $div->abre();
+            
+            $figura = new Imagem(PASTA_FIGURAS.'cafe.png','Vê se faz café de macho !!',100,100);
+            $figura->show();
+            
+            $div->fecha();
+            
+            br(); 
+            p("Aproveite esse instante para fazer o café !!","center");
+        $grid1->fechaColuna();
+        $grid1->fechaGrid();
+       
+        loadPage('?fase=backup2');
+        break;
+    
+    case "backup2":
+
+        # Define o nome do arquivo
+        $pedaco1 = date("Y.m.d");
+        $pedaco2 = date("H:i:s");
+        $arquivo = $pedaco1."_".$pedaco2;
+
+        # Executa o backup no Linux
+        shell_exec("./executaBackup $arquivo");
+
+        # Envia o arquivo por email
+        $pedaco1 = date_to_php($pedaco1,".");
+
+        $assunto = "Backup de ".$pedaco1." as ".$pedaco2;
+
+        $mensagem =  "Este é um email automático. Não é necessário respondê-lo.";
+        $mensagem .= "<br/><br/>";
+        $mensagem .= "Backup automático realizado.";
+        $mensagem .= "<br/>";
+        $mensagem .= str_repeat("-", 80)."<br/>";
+        $mensagem .= "Este email contém, em anexo, os arquivos do backup<br/><br/>";
+        $mensagem .= "Data: $pedaco1<br/>";
+        $mensagem .= "Hora: $pedaco2<br/>";
+        $mensagem .= str_repeat("-", 80)."<br/>";
+        $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
+
+        $mail = new EnviaEmail($assunto, $mensagem);
+        $mail->set_para("alat@uenf.br");
+        $mail->set_deNome("Sistema de Pessoal");
+
+        $arquivo = $arquivo.'.tar';
+
+        #$caminho = '../../_backup/';            
+        $caminho = '/var/www/html/_backup/';
+        $mail->set_anexo($caminho.$arquivo);
+
+        $mail->envia();
+        
+        # Pega a data de hoje
+        $hoje = date("d/m/Y");    
+
+        # Atualiza a data do último backup
+        $intra->set_variavel("backupData",$hoje);
+        
+        # Pega o idServidor
+        $idServidor = $intra->get_idServidor($idUsuario);
+
+        # Grava no log a atividade
+        $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup automático realizado',NULL,NULL,6);
+        
+        # Verifica se o servidor está aniversariando hoje
+        if($pessoal->aniversariante($idServidor)){
+            loadPage('?fase=parabens');
+        }else{
+            loadPage('areaServidor.php');
+        }
         break;
 }
 

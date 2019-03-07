@@ -386,15 +386,16 @@ if($acesso)
             # Envia o arquivo por email
             $pedaco1 = date_to_php($pedaco1,".");
             
-            $assunto = "Backup Manual de ".$pedaco1." as ".$pedaco2;
+            $assunto = "Backup de ".$pedaco1." as ".$pedaco2;
             
             $mensagem =  "Este é um email automático. Não é necessário respondê-lo.";
             $mensagem .= "<br/><br/>";
-            $mensagem .=  "Backup manual realizado.";
+            $mensagem .= "Backup manual realizado.";
             $mensagem .= "<br/>";
             $mensagem .= str_repeat("-", 80)."<br/>";
-            $mensagem .= "Este email contém, em anexo, os arquivos do backup<br/>";
-            $mensagem .= "manual efetuado no dia $pedaco1 as $pedaco2.<br/>";
+            $mensagem .= "Este email contém, em anexo, os arquivos do backup<br/><br/>";
+            $mensagem .= "Data: $pedaco1<br/>";
+            $mensagem .= "Hora: $pedaco2<br/>";
             $mensagem .= str_repeat("-", 80)."<br/>";
             $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
 
