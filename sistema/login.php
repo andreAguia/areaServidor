@@ -190,7 +190,7 @@ switch ($fase){
                 
                 # Executa o backup
                 if(($intra->get_variavel("backupAutomatico")) AND ($hoje <> $backupData)){
-                        loadPage('?fase=backup1');
+                    loadPage('?fase=backup1');
                 }else{                
                     # Verifica se o servidor está aniversariando hoje
                     if($pessoal->aniversariante($idServidor)){
