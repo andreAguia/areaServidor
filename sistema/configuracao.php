@@ -14,8 +14,8 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){
+    
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
@@ -144,6 +144,14 @@ if($acesso)
 
     # Tipo de label do formulário
     $objeto->set_formlabelTipo(1);
+    
+    # Pega as etiquetas cadastradas
+    $select = 'SELECT distinct categoria
+                 FROM tbvariaveis
+                WHERE categoria is not null
+                 ORDER BY categoria';
+
+    $dadosCategoria = $intra->select($select);
 
     # Campos para o formulario
     $objeto->set_campos(array(
@@ -151,6 +159,7 @@ if($acesso)
                                 'label' => 'Categoria:',
                                 'tipo' => 'texto',
                                 'required' => TRUE,
+                                'datalist' => $dadosCategoria,
                                 'size' => 50,
                                 'title' => 'Categoria da Variável.',
                                 'autofocus' => TRUE,
@@ -177,7 +186,6 @@ if($acesso)
                                 'tipo' => 'texto',
                                 'size' => 90,
                                 'title' => 'Valor da Variável.',
-                                'required' => TRUE,
                                 'col' => 12,
                                 'linha' => 3),	 	 	 	 	 	 
                     ));

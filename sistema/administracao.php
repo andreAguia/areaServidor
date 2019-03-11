@@ -375,44 +375,10 @@ if($acesso)
 
         case "backup2" :
             
-            # Define o nome do arquivo
-            $pedaco1 = date("Y.m.d");
-            $pedaco2 = date("H:i:s");
-            $arquivo = $pedaco1."_".$pedaco2;
-            
-            # Executa o backup no Linux
-            shell_exec("./executaBackup $arquivo");
-            
-            # Envia o arquivo por email
-            $pedaco1 = date_to_php($pedaco1,".");
-            
-            $assunto = "Backup de ".$pedaco1." as ".$pedaco2;
-            
-            $mensagem =  "Este é um email automático. Não é necessário respondê-lo.";
-            $mensagem .= "<br/><br/>";
-            $mensagem .= "Backup manual realizado.";
-            $mensagem .= "<br/>";
-            $mensagem .= str_repeat("-", 80)."<br/>";
-            $mensagem .= "Este email contém, em anexo, os arquivos do backup<br/><br/>";
-            $mensagem .= "Data: $pedaco1<br/>";
-            $mensagem .= "Hora: $pedaco2<br/>";
-            $mensagem .= str_repeat("-", 80)."<br/>";
-            $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
-
-            $mail = new EnviaEmail($assunto, $mensagem);
-            $mail->set_para("alat@uenf.br");
-            $mail->set_deNome("Sistema de Pessoal");
-            
-            $arquivo = $arquivo.'.tar';
-            
-            #$caminho = '../../_backup/';            
-            $caminho = '/var/www/html/_backup/';
-            $mail->set_anexo($caminho.$arquivo);
-            
-            $mail->envia();
-            
-            # Grava no log a atividade
-            $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Backup manual realizado',NULL,NULL,6);
+            # Realiza o backup
+            $backup = new BackupBancoDados($idUsuario);
+            $backup->set_tipo(2);
+            $backup->executa();
 
             loadPage('?fase=pastaBackup');
             break;
@@ -481,7 +447,7 @@ if($acesso)
                 $grid->abreColuna(12);
             
                 # Classificar os arquivos para a Ordem Crescente
-                rsort($arrayArquivos, SORT_STRING);
+                sort($arrayArquivos, SORT_STRING);
 
                 # Mostra a listagem dos Arquivos
                 foreach($arrayArquivos as $valorArquivos){

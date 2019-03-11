@@ -37,8 +37,7 @@ class EnviaEmail
      * @param $mensagem string NULL A mensagem a ser enviada
      */
     
-    public function __construct($assunto,$mensagem)
-    {       
+    public function __construct($assunto,$mensagem){       
         $this->mensagem = $mensagem;
         $this->assunto = $assunto;
     }
@@ -49,8 +48,7 @@ class EnviaEmail
      * Método set_de
      */
     
-    public function set_de($de)
-    {  
+    public function set_de($de){  
         $this->de = $de; 
     }
         
@@ -60,20 +58,17 @@ class EnviaEmail
      * Método set_deNome
      */
     
-    public function set_deNome($deNome)
-    {  
+    public function set_deNome($deNome){  
         $this->deNome = $deNome; 
     }
         
     ###########################################################
-    
-    
+        
     /**
      * Método set_para
      */
     
-    public function set_para($para)
-    {  
+    public function set_para($para){  
         $this->para[] = $para; 
     }
         
@@ -83,8 +78,7 @@ class EnviaEmail
      * Método set_comCopia
      */
     
-    public function set_comCopia($comCopia)
-    {  
+    public function set_comCopia($comCopia){  
         $this->comCopia[] = $comCopia; 
     }
         
@@ -94,8 +88,7 @@ class EnviaEmail
      * Método set_comCopiaOculta
      */
     
-    public function set_comCopiaOculta($comCopiaOculta)
-    {  
+    public function set_comCopiaOculta($comCopiaOculta){  
         $this->comCopiaOculta[] = $comCopiaOculta;
     }
         
@@ -105,8 +98,7 @@ class EnviaEmail
      * Método set_anexo
      */
     
-    public function set_anexo($anexo)
-    {  
+    public function set_anexo($anexo){  
         $this->anexo[] = $anexo;
     }
     
@@ -126,6 +118,9 @@ class EnviaEmail
 
         # Define que a mensagem será SMTP
         $mail->IsSMTP();
+        
+        # Define charset
+        $mail->CharSet = 'UTF-8';
         
         // Enable SMTP debugging
         // 0 = off (for production use)
@@ -167,13 +162,13 @@ class EnviaEmail
         }
         
         # Com Cópia
-        foreach ($this->comCopia as $destinatario){
-             $mail->AddCC($destinatario, NULL);
+        foreach ($this->comCopia as $copia){
+             $mail->AddCC($copia, NULL);
         }
         
         # Com Cópia Oculta
-        foreach ($this->comCopiaOculta as $destinatario){
-             $mail->AddBCC($destinatario, NULL);
+        foreach ($this->comCopiaOculta as $oculta){
+             $mail->AddBCC($oculta, NULL);
         }
 
         # Mensagem
@@ -198,7 +193,7 @@ class EnviaEmail
 
         # Exibe uma mensagem de resultado
         if (!$enviado) {
-            alert("Não foi possível enviar o e-mail. $mail->ErrorInfo");
+            alert("Não foi possível enviar o e-mail.\n $mail->ErrorInfo");
         }
     }
 }
