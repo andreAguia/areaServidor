@@ -310,7 +310,7 @@ switch ($fase){
     case "backup1":
         
         aguarde();
-        br();
+        br(2);
 
         # Limita a tela
         $grid1 = new Grid("center");
@@ -320,7 +320,7 @@ switch ($fase){
             p("O sistema está programado a fazer backup no primeiro login do dia!","center");
             p("Aguarde um pouco. Isso não irá demorar!!","center");
             p("Fazendo o backup ...","center");
-            
+                        
             $div = new Div("center");
             $div->abre();
             
@@ -342,6 +342,9 @@ switch ($fase){
         # Realiza backup
         $backup = new BackupBancoDados($idUsuario);
         $backup->executa();
+        
+        # Pega o idServidor
+        $idServidor = $intra->get_idServidor($idUsuario);
         
         # Verifica se o servidor está aniversariando hoje
         if($pessoal->aniversariante($idServidor)){
