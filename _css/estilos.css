@@ -49,6 +49,62 @@ dd{
     margin-left: 20px;
 }
 
+hr#documentacao{
+    padding: 0px;
+    margin: 5px 0px 5px 0px;
+}
+
+p#documentaAtributos{
+    padding: 0px;
+    margin: 0px;
+    font-size: 13px;
+    text-align: left;
+}
+
+a#documentaMetodo{
+    padding: 0px;
+    margin: 0px;
+    font-size: 13px;
+    text-align: left;
+    color: #000;
+}
+
+p#documentacaoDescricaoClasse{
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    text-align: left;
+}
+
+p#documentacaoAutor{
+    padding: 0px;
+    margin: 0px;
+    font-size: 12px;
+    text-align: left;
+}
+
+p#documentacaoNota{
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    text-align: left;
+}
+
+p#documentacaoDeprecated{
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    text-align: left;
+}
+
+p#documentacaoVisibilidadeMetodo{
+    padding: 0px;
+    margin: 0px;
+    font-size: 11px;
+    text-align: left;
+    margin-top: -15px;
+}
+
 /*******************************************
  * Histórico de cargos em Comissão
  *******************************************/

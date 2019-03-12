@@ -90,7 +90,7 @@ if($acesso){
     $callout->abre();
 
     # Inicia a documentação
-    $doc = new Documenta($pasta.$arquivoClasse.".php","classe");
+    $doc = new DocumentaClasse($pasta.$arquivoClasse.".php","classe");
 
     # Pega os dados da classe
     $nomeClasse = $doc->get_nomeClasse();
@@ -115,41 +115,78 @@ if($acesso){
     $exemploMetodo = $doc->get_exemploMetodo();
 
     # Classe
-    echo '<h4>';
+    echo '<h5>';
     echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'">';
     echo $nomeClasse;
     echo '</a>';
-    echo '</h4>';
+    echo '</h5>';
     
-    hr();
+    hr("documentacao");
     
     # Percorre as variáveis
     if($numVariaveis > 0){
-        p("Atributos","center","f11");
         for ($i=0; $i < $numVariaveis;$i++){
-            span($variaveisClasse[$i][1]." (".$variaveisClasse[$i][2].")",NULL,NULL,$variaveisClasse[$i][4]);
-            br();
+            
+            # Identifica o sinal da visibilidade
+            switch ($variaveisClasse[$i][0]){
+                case "private":
+                    $sinal = "-";
+                    break;
+                
+                case "public":
+                    $sinal = "+";
+                    break;
+                
+                case "protected":
+                    $sinal = "#";
+                    break;
+            }
+            
+            p($sinal." ".$variaveisClasse[$i][1]." (".$variaveisClasse[$i][2].")","documentaAtributos",NULL,$variaveisClasse[$i][4]);
         }
-        hr();
+        hr("documentacao");
     }
     
-    # Percorre os métodos
-    p("Métodos","center","f11");
-    
+    # Percorre os métodos    
     for ($i=1; $i <= $numMetodo;$i++){
-        # link
-        echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'&metodo='.$i.'" title="('.$visibilidadeMetodo[$i].') '.$descricaoMetodo[$i].'">';
-        if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
-            span('<del>'.$nomeMetodo[$i].'()</del>',$visibilidadeMetodo[$i]);
-        }else{
-            span($nomeMetodo[$i].'()',$visibilidadeMetodo[$i]);
+        
+        # Identifica o sinal da visibilidade
+        switch ($visibilidadeMetodo[$i]){
+            case "private":
+                $sinal = "-";
+                break;
+
+            case "public":
+                $sinal = "+";
+                break;
+
+            case "protected":
+                $sinal = "#";
+                break;
         }
-        echo '</a>';
+        
+        # Verifica se é deprecated
+        if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
+            echo "<del>";
+        }
+            
+        # link
+        $link = new Link($sinal." ".$nomeMetodo[$i]."()","?sistema=$sistema&classe=$arquivoClasse&metodo=$i");
+        $link->set_title($descricaoMetodo[$i]);
+        $link->set_id("documentaMetodo");
+        $link->show();
         br();
+        
+        # fecha o depricated
+        if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
+            echo "</del>";
+        }
     }
-    #echo "</table>";
+    
     $callout->fecha();
     $grid2->fechaColuna();
+    
+################################################################################    
 
     # Coluna da documentação detalhada
     $grid2->abreColuna(8,9);
@@ -164,15 +201,16 @@ if($acesso){
             echo '<h4>'.$nomeClasse.'</h4>';
 
             # Decrição
-            echo $descricaoClasse;
-            br(2);
+            p($descricaoClasse,"documentacaoDescricaoClasse");
+            br();
 
             # Autor
             if(!is_null($autorClasse)){
-                echo '<small>Autor: '.$autorClasse.'</small>';
+                p('Autor: '.$autorClasse,"documentacaoAutor");
             }
 
-            hr();
+            hr("documentacao");
+            br();
 
             # Nota
             if(!is_null($notaClasse)){
@@ -185,7 +223,7 @@ if($acesso){
                     # Exibe a nota
                     $callout = new Callout("warning");
                     $callout->abre();
-                        echo $notaClasse[$i];
+                        p($notaClasse[$i],"documentacaoNota");
                     $callout->fecha();
                 }
             }
@@ -194,68 +232,21 @@ if($acesso){
             if($deprecatedClasse){
                 $callout = new Callout("alert");
                 $callout->abre();
-                    echo '<h6>DEPRECATED</h6> Esta classe deverá ser descontiuada nas próximas versões.<br/>Seu uso é desaconselhado.';
+                    p('<h6>DEPRECATED</h6> Esta classe deverá ser descontiuada nas próximas versões.<br/>Seu uso é desaconselhado.',"p#documentacaoDeprecated");
                 $callout->fecha();
             }
 
             # Variáveis da Classe
             if($numVariaveis > 0){
-                echo 'Variáveis da Classe:';
-                br();
-                $novoArray = NULL;      // Armazena a tabela
-                $grupoAnterior = NULL;  // Guarda o nome do grupo anterior
-                $grupo = 0;             // Qual grupo será exibido
-
-                foreach ($variaveisClasse as $vc){
-                    if($vc[0] == "group"){
-                        if($grupo == 0){
-                            $grupoAnterior = $vc[1];
-                            $grupo++;
-                        }elseif($grupo > 0) {
-                            echo $grupoAnterior;
-                            br();
-
-                            if($grupo == 1){
-                                array_shift($novoArray);
-                            }
-
-                            $tabela = new Tabela();
-                            $tabela->set_conteudo($novoArray);
-                            $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
-                            $tabela->set_align(array("center","center","center","center","left"));
-                            $tabela->set_width(array(10,10,10,10,60));
-                            $tabela->show(); 
-
-                            $grupoAnterior = $vc[1];
-                            $novoArray = NULL;
-                            $grupo++;
-                        }                 
-                    }else{
-                        $novoArray[] = $vc;
-                    }   
-                }
+                p('Variáveis da Classe:',"documentacaoDescricaoClasse");
                 
-                # Exibe a lista de variáveis quando não se definiu grupos    
-                if($grupo == 0){        
-                    $tabela = new Tabela();
-                    array_shift($variaveisClasse);     
-                    $tabela->set_conteudo($variaveisClasse);
-                    $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
-                    $tabela->set_align(array("center","center","center","center","left"));
-                    $tabela->set_width(array(10,10,10,10,60));
-                    $tabela->show();
-                }else{
-                    # Exibe o último grupo de variáveis
-                    echo $grupoAnterior;
-                    br();
-                    $tabela = new Tabela();
-                    #array_shift($variaveisClasse);     
-                    $tabela->set_conteudo($novoArray);
-                    $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
-                    $tabela->set_align(array("center","center","center","center","left"));
-                    $tabela->set_width(array(10,10,10,10,60));
-                    $tabela->show(); 
-                }            
+                # Gera a tabela
+                $tabela = new Tabela();
+                $tabela->set_conteudo($variaveisClasse);
+                $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
+                $tabela->set_align(array("center","center","center","center","left"));
+                $tabela->set_width(array(10,10,10,10,60));
+                $tabela->show();
             }
 
             # Exemplo
@@ -267,7 +258,7 @@ if($acesso){
                 if(file_exists($arquivoExemplo)){
 
                     # Exibe o exemplo
-                    echo 'Exemplo:';
+                    p('Exemplo:',"documentacaoDescricaoClasse");
                     echo '<pre>';
 
                     # Variável que conta o número da linha
@@ -281,7 +272,7 @@ if($acesso){
                         $linha = htmlspecialchars($linha);
 
                         # Exibe o número da linha
-                        echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinhaExemplo)."</span> ";
+                        #echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinhaExemplo)."</span> ";
 
                         # Exibe o código
                         echo $linha;
@@ -294,7 +285,7 @@ if($acesso){
                     br();
 
                     # Roda o exemplo
-                    echo 'O exemplo acima exibirá o seguinte resultado:';
+                    p('O exemplo acima exibirá o seguinte resultado:',"documentacaoDescricaoClasse");
                     
                     # Cria borda para o exemplo
                     $calloutExemplo = new Callout();
@@ -317,32 +308,30 @@ if($acesso){
             ### Método
             $callout = new Callout();
             $callout->abre();
+            
+            # Visibilidade
+            p($visibilidadeMetodo[$metodo],"documentacaoVisibilidadeMetodo");
 
             # Nome
-            echo '<h5> Método '.$nomeMetodo[$metodo].'</h5>';
-
-            # Visibilidade
-            echo '<small>('.$visibilidadeMetodo[$metodo].')</small>';
-
+            echo '<h4> Método '.$nomeMetodo[$metodo].'</h4>';
+            
             # Descrição
-            br(2);
-            echo $descricaoMetodo[$metodo];
+            p($descricaoMetodo[$metodo],"documentacaoDescricaoClasse");
+
+            hr("documentacao");
+            br();
 
             # Deprecated        
-            if((isset($deprecatedMetodo[$metodo])) AND ($deprecatedMetodo[$metodo])) {
-                br(2);
-
-                $callout1 = new Callout();
-                $callout1->abre("alert");
-                    echo '<h6>DEPRECATED</h6> Este método deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.';
-                $callout1->fecha();
+            if((isset($deprecatedMetodo[$metodo])) AND ($deprecatedMetodo[$metodo])){
+                $callout = new Callout("alert");
+                $callout->abre();
+                    p('<h6>DEPRECATED</h6> Este método deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.',"p#documentacaoDeprecated");
+                $callout->fecha();
             }
-
-            hr();
 
             # Syntax do método
             if(isset($syntaxMetodo[$metodo])){
-                echo 'Sintaxe:';
+                p('Sintaxe:',"documentacaoDescricaoClasse");
                 echo '<pre>'.$syntaxMetodo[$metodo].'</pre>';
                 p('Parâmetros entre [ ] são opcionais.','right','f10');
             }
@@ -368,14 +357,14 @@ if($acesso){
                     # Exibe a nota
                     $callout = new Callout("warning");
                     $callout->abre();
-                        echo $notaMetodo[$metodo][$i];
+                        p($notaMetodo[$metodo][$i],"documentacaoNota");
                     $callout->fecha();
                 }
             }
 
             # Parâmetros de um método
             if(isset($parametrosMetodo[$metodo])){
-                echo 'Parâmetros:';
+                p('Parâmetros:',"documentacaoDescricaoClasse");
 
                 $tabela = new Tabela();
                 #array_shift($lista);     
@@ -388,7 +377,7 @@ if($acesso){
 
             # Exemplo
             if(isset($exemploMetodo[$metodo])){
-                echo 'Exemplo:';
+                p('Exemplo:',"documentacaoDescricaoClasse");
                 echo '<pre>';
                 $linesExample = file(PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploMetodo[$metodo]));
 
