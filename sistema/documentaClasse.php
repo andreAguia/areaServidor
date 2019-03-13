@@ -114,12 +114,10 @@ if($acesso){
     $parametrosMetodo = $doc->get_parametrosMetodo();
     $exemploMetodo = $doc->get_exemploMetodo();
 
-    # Classe
-    echo '<h5>';
+    # Classe    
     echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'">';
-    echo $nomeClasse;
+    p($nomeClasse,"documentacaoNomeClasse");
     echo '</a>';
-    echo '</h5>';
     
     hr("documentacao");
     
@@ -142,7 +140,7 @@ if($acesso){
                     break;
             }
             
-            p($sinal." ".$variaveisClasse[$i][1]." (".$variaveisClasse[$i][2].")","documentaAtributos",NULL,$variaveisClasse[$i][4]);
+            p($sinal." <b>".$variaveisClasse[$i][1].":</b> ".$variaveisClasse[$i][2],"documentaAtributos",NULL,"(".$variaveisClasse[$i][0].") ".$variaveisClasse[$i][4]);
         }
         hr("documentacao");
     }
@@ -172,7 +170,7 @@ if($acesso){
             
         # link
         $link = new Link($sinal." ".$nomeMetodo[$i]."()","?sistema=$sistema&classe=$arquivoClasse&metodo=$i");
-        $link->set_title($descricaoMetodo[$i]);
+        $link->set_title("(".$visibilidadeMetodo[$i].") ".$descricaoMetodo[$i]);
         $link->set_id("documentaMetodo");
         $link->show();
         br();
@@ -198,11 +196,10 @@ if($acesso){
             $callout->abre();
 
             # Nome
-            echo '<h4>'.$nomeClasse.'</h4>';
+            p($nomeClasse,"documentacaoNomeClassePrincipal");
 
             # Decrição
             p($descricaoClasse,"documentacaoDescricaoClasse");
-            br();
 
             # Autor
             if(!is_null($autorClasse)){
