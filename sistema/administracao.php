@@ -23,6 +23,9 @@ if($acesso)
     # Verifica a fase do programa
     $fase = get('fase','menu'); # Qual a fase
     $metodo = get('sistema');	# Qual o sistema. Usado na rotina de Documentação
+    
+    $parametroAno = post('parametroAno',get_session('parametroAno',date("Y")));
+    set_session('parametroAno',$parametroAno);
 
     # Começa uma nova página
     $page = new Page();
@@ -390,6 +393,8 @@ if($acesso)
             $grid = new Grid();
             $grid->abreColuna(12);
             
+            ##############################
+            
             # Cria um menu
             $menu = new MenuBar();
 
@@ -400,13 +405,34 @@ if($acesso)
             $linkBotao1->set_accessKey('V');
             $menu->add_link($linkBotao1,"left");
 
-            # Código
+            # Formulário de Pesquisa
+            $form = new Form('?fase=pastaBackup'); 
+
+            # Cria um array com os anos possíveis
+            $anoAtual = date('Y');
+            $anoInicial = $anoAtual-1;
+            $anoExercicio = array($anoInicial,$anoAtual);
+
+            $controle = new Input('parametroAno','combo');
+            $controle->set_size(50);
+            $controle->set_title('Filtra por Ano exercício');
+            $controle->set_array($anoExercicio);
+            $controle->set_valor($parametroAno);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_id("controlePesquisa");
+            $form->add_item($controle);
+            $menu->add_link($form,"left");
+            
+            # Backup Manual
             $linkBotao2 = new Link("Backup Manual",'?fase=backup');
             $linkBotao2->set_class('button');
             $linkBotao2->set_title('Backup manual do banco de dados');            
             $menu->add_link($linkBotao2,"right");
             
             $menu->show();
+            
+            ##############################
             
             # Título
             tituloTable('Pasta de Backup');
@@ -436,8 +462,6 @@ if($acesso)
             }
             
             # Cria títulos de ordenação
-            $ano = NULL;
-            $anoAnterior = NULL;
             $mes = NULL;
             $mesAnterior = NULL;
 
@@ -448,6 +472,8 @@ if($acesso)
             
                 # Classificar os arquivos para a Ordem Crescente
                 sort($arrayArquivos, SORT_STRING);
+                
+                $grid = new Grid("center");    
 
                 # Mostra a listagem dos Arquivos
                 foreach($arrayArquivos as $valorArquivos){
@@ -459,24 +485,7 @@ if($acesso)
                     $hora = substr($valorArquivos, 11,2);
                     $minuto = substr($valorArquivos, 14,2);
                     $segundo = substr($valorArquivos, 17,2);
-                    
-                    # Compara se já teve título do ano
-                    if($ano <> $anoAnterior){
-                        
-                        # Fecha o fieldset se não for o primeiro
-                        if(!is_null($anoAnterior)){
-                            $field->fecha();
-                            
-                            $grid->fechaColuna();
-                            $grid->fechaGrid();
-                        }
-                        
-                        $anoAnterior = $ano;
-                        tituloTable($ano);
-                        
-                        $grid = new Grid("center");                        
-                    }
-                    
+                                        
                     # Compara se já teve título do mês
                     if($mes <> $mesAnterior){
                         
@@ -494,8 +503,9 @@ if($acesso)
                         $field->abre();
                     }
                     
-                    
-                    echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
+                    if($ano == $parametroAno){
+                        echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
+                    }
                 }
                 
                 $grid->fechaColuna();
