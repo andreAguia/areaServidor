@@ -54,6 +54,20 @@ hr#documentacao{
     margin: 5px 0px 5px 0px;
 }
 
+p#documentacaoNomeClasse{
+    padding: 0px;
+    margin: 0px;
+    font-size: 22px;
+    text-align: center;
+}
+
+p#documentacaoNomeClassePrincipal{
+    padding: 0px;
+    margin: 0px;
+    font-size: 24px;
+    text-align: left;
+}
+
 p#documentaAtributos{
     padding: 0px;
     margin: 0px;
@@ -72,15 +86,15 @@ a#documentaMetodo{
 p#documentacaoDescricaoClasse{
     padding: 0px;
     margin: 0px;
-    font-size: 14px;
+    font-size: 13px;
     text-align: left;
 }
 
 p#documentacaoAutor{
     padding: 0px;
     margin: 0px;
-    font-size: 12px;
-    text-align: left;
+    font-size: 11px;
+    text-align: right;
 }
 
 p#documentacaoNota{
