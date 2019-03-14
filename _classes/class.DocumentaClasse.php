@@ -72,6 +72,15 @@ class DocumentaClasse
                 $posicao = stripos($line,'class');
                 $this->nomeClasse = substr($line, $posicao+6);
             }
+            
+            # Abstração
+            if (stristr($line, "abstract") AND ($line_num < 3)){
+                $this->abstracaoClasse = "abstract";
+            }
+            
+            if (stristr($line, "final") AND ($line_num < 3)){
+                $this->abstracaoClasse = "final";
+            }
 
             # Verifica se é o começo de um comentário da classe
             if(stristr($line, "/**") AND ($this->numMetodo == 0)){
@@ -97,33 +106,38 @@ class DocumentaClasse
             }
 
             # Deprecated
-            if ((stristr($line, "@deprecated")) AND ($this->numMetodo == 0))
+            if ((stristr($line, "@deprecated")) AND ($this->numMetodo == 0)){
                 $this->deprecatedClasse = TRUE;
+            }
 
             # Variáveis da Classe
-            if ((stristr($line, "@var")) AND ($this->numMetodo == 0)){
+            if ((stristr($line, "private")) AND ($this->numMetodo == 0)){
 
+                # Retira aspas
+                $line = preg_replace('/(")/', '', $line);
+                echo $line;
+                
                 # inicia a variável que será guardada a descrição 
                 $descricao = NULL;
 
-                $posicao = stripos($line,'@');
+                $posicao = stripos($line,'private');
 
                 # divide a linha em um array de palavras
                 $piecesVar = str_word_count($line,1,$caracteresAceitos);
 
-                # retira a palavra var
-                array_shift($piecesVar);
+                # retira a palavra private
+                #array_shift($piecesVar);
 
                 # verifica quantas palavras tem na linha       
                 $numPalavra = count($piecesVar);
 
                 # agrupa as palavras da descrição
-                for($i=4;$i<$numPalavra;$i++){
+                for($i=5; $i<$numPalavra; $i++){
                     $descricao .= $piecesVar[$i]." ";
                 }
 
                 # Junta a variavel no novo array
-                $this->variaveisClasse[] = array($piecesVar[0],$piecesVar[1],$piecesVar[2],$piecesVar[3],$descricao);          
+                $this->variaveisClasse[] = array($piecesVar[0],$piecesVar[1],$piecesVar[4],$piecesVar[2],$descricao);          
 
                 # incremente o número de variáveis
                 $this->numVariaveis++;
@@ -167,7 +181,32 @@ class DocumentaClasse
                 $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
                 $this->visibilidadeMetodo[$this->numMetodo] = 'protected';
                 $linhaMetodo = $line_num;
-            }            
+                
+                # Pega o primeiro parâmetro (se houver)
+                
+            }
+            
+            # Parâmetros de um método
+            if (stristr($line, "@param")){
+                $descParam = NULL;
+
+                # Pega a linha de parâmetros
+                $piecesParam = str_word_count($line,1,$caracteresAceitos);
+
+                # Rerira a palavra param do array
+                array_shift($piecesParam);
+
+                # Pega a descrição
+                for($i=3; $i<count($piecesParam); $i++){
+                    $descParam .= $piecesParam[$i].' ';
+                }
+
+                # Joga a descrição para a quarta posição do array
+                $piecesParam[3] = $descParam;
+
+                # Joga para para o array de parâmetros
+                $this->parametrosMetodo[$this->numMetodo][] = $piecesParam;
+            }
 
             # Verifica se é o começo de um comentário do método
             if (stristr($line, "/**") AND ($this->numMetodo > 0)){
@@ -220,28 +259,6 @@ class DocumentaClasse
             if (stristr($line, "@deprecated")){
                 $this->deprecatedMetodo[$this->numMetodo] = TRUE;
             }
-
-            # Parâmetros de um método
-            if (stristr($line, "@param")){
-                $descParam = NULL;
-
-                # Pega a linha de parâmetros
-                $piecesParam = str_word_count($line,1,$caracteresAceitos);
-
-                # Rerira a palavra param do array
-                array_shift($piecesParam);
-
-                # Pega a descrição
-                for($i=3; $i<count($piecesParam); $i++){
-                    $descParam .= $piecesParam[$i].' ';
-                }
-
-                # Joga a descrição para a quarta posição do array
-                $piecesParam[3] = $descParam;
-
-                # Joga para para o array de parâmetros
-                $this->parametrosMetodo[$this->numMetodo][] = $piecesParam;
-            }
         }
     }
 
@@ -257,7 +274,19 @@ class DocumentaClasse
         return $this->nomeClasse;
     }
     
-###########################################################     
+###########################################################
+    
+    public function get_abstracaoClasse(){        
+        /**
+         * Informa a abstração da classe.
+         *
+         * @syntax $documenta->get_abstracaoClasse();
+        `*/
+        
+        return $this->abstracaoClasse;
+    }
+    
+###########################################################          
     
     public function get_descricaoClasse(){        
         /**

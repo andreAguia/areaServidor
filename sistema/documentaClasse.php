@@ -94,6 +94,7 @@ if($acesso){
 
     # Pega os dados da classe
     $nomeClasse = $doc->get_nomeClasse();
+    $abstracaoClasse = $doc->get_abstracaoClasse();
     $descricaoClasse = $doc->get_descricaoClasse();
     $autorClasse = $doc->get_autorClasse();
     $notaClasse = $doc->get_notaClasse();
@@ -113,34 +114,30 @@ if($acesso){
     $notaMetodo = $doc->get_notaMetodo();
     $parametrosMetodo = $doc->get_parametrosMetodo();
     $exemploMetodo = $doc->get_exemploMetodo();
+    
+    # Define array de visibilidade
+    $tipoVisibilidade = [
+        "private" => "-",
+        "public" => "+",
+        "protected" => "#"
+        ];
 
     # Classe    
     echo '<a href="?sistema='.$sistema.'&classe='.$arquivoClasse.'">';
     p($nomeClasse,"documentacaoNomeClasse");
     echo '</a>';
     
+    # Abstração
+    if(!is_null($abstracaoClasse)){
+        p($abstracaoClasse,"documentacaoAutor");
+    }
+    
     hr("documentacao");
     
     # Percorre as variáveis
     if($numVariaveis > 0){
-        for ($i=0; $i < $numVariaveis;$i++){
-            
-            # Identifica o sinal da visibilidade
-            switch ($variaveisClasse[$i][0]){
-                case "private":
-                    $sinal = "-";
-                    break;
-                
-                case "public":
-                    $sinal = "+";
-                    break;
-                
-                case "protected":
-                    $sinal = "#";
-                    break;
-            }
-            
-            p($sinal." <b>".$variaveisClasse[$i][1].":</b> ".$variaveisClasse[$i][2],"documentaAtributos",NULL,"(".$variaveisClasse[$i][0].") ".$variaveisClasse[$i][4]);
+        for ($i=0; $i < $numVariaveis;$i++){            
+            p($tipoVisibilidade[$variaveisClasse[$i][0]]." <b>".$variaveisClasse[$i][1].":</b> ".$variaveisClasse[$i][2],"documentaAtributos",NULL,"(".$variaveisClasse[$i][0].") ".$variaveisClasse[$i][4]);
         }
         hr("documentacao");
     }
@@ -148,28 +145,13 @@ if($acesso){
     # Percorre os métodos    
     for ($i=1; $i <= $numMetodo;$i++){
         
-        # Identifica o sinal da visibilidade
-        switch ($visibilidadeMetodo[$i]){
-            case "private":
-                $sinal = "-";
-                break;
-
-            case "public":
-                $sinal = "+";
-                break;
-
-            case "protected":
-                $sinal = "#";
-                break;
-        }
-        
         # Verifica se é deprecated
         if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
             echo "<del>";
         }
             
         # link
-        $link = new Link($sinal." ".$nomeMetodo[$i]."()","?sistema=$sistema&classe=$arquivoClasse&metodo=$i");
+        $link = new Link($tipoVisibilidade[$visibilidadeMetodo[$i]]." ".$nomeMetodo[$i]."()","?sistema=$sistema&classe=$arquivoClasse&metodo=$i");
         $link->set_title("(".$visibilidadeMetodo[$i].") ".$descricaoMetodo[$i]);
         $link->set_id("documentaMetodo");
         $link->show();
@@ -194,13 +176,27 @@ if($acesso){
             ### Classe
             $callout = new Callout("primary");
             $callout->abre();
+            
+            # Abstração
+            if(!is_null($abstracaoClasse)){
+                $div = new Div("divAbstracaoClasse");
+                $div->abre();
+                if($abstracaoClasse == "abstract"){
+                    label("Classe Abstrata","secondary");
+                }
+
+                if($abstracaoClasse == "final"){
+                    label("Classe Final","secondary");
+                }
+                $div->fecha();
+            }
 
             # Nome
             p($nomeClasse,"documentacaoNomeClassePrincipal");
-
+            
             # Decrição
             p($descricaoClasse,"documentacaoDescricaoClasse");
-
+            
             # Autor
             if(!is_null($autorClasse)){
                 p('Autor: '.$autorClasse,"documentacaoAutor");
@@ -208,6 +204,17 @@ if($acesso){
 
             hr("documentacao");
             br();
+            
+            # Abstração
+            if(!is_null($abstracaoClasse)){
+                if($abstracaoClasse == "abstract"){
+                    callout("Classes Abstratas são super classes que não podem ser instanciadas diretamente, somente por herança.");
+                }
+                
+                if($abstracaoClasse == "final"){
+                    callout("Classes Final são classes que não podem ser herdadas.");
+                }                
+            }
 
             # Nota
             if(!is_null($notaClasse)){
@@ -238,11 +245,11 @@ if($acesso){
                 p('Variáveis da Classe:',"documentacaoDescricaoClasse");
                 
                 # Gera a tabela
-                $tabela = new Tabela();
+                $tabela = new Tabela("tableVariaveisClasse");
                 $tabela->set_conteudo($variaveisClasse);
                 $tabela->set_label(array('Visibilidade','Nome','Tipo','Padrão','Descrição'));
-                $tabela->set_align(array("center","center","center","center","left"));
-                $tabela->set_width(array(10,10,10,10,60));
+                $tabela->set_align(array("center","left","center","center","left"));
+                $tabela->set_totalRegistro(FALSE);
                 $tabela->show();
             }
 

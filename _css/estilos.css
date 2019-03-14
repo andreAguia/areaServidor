@@ -119,6 +119,60 @@ p#documentacaoVisibilidadeMetodo{
     margin-top: -15px;
 }
 
+div#divAbstracaoClasse{
+    float: right;
+    margin-top: -5px;
+    margin-right: -5px;
+}
+
+table#tableVariaveisClasse{
+    border-collapse: separate;
+    border-spacing: 2pt;
+    font-size: 13px;
+    width: 100%;
+    margin: 0px;
+}
+
+table#tableVariaveisClasse a{
+    color: #000;
+    font-size: 14px;
+}
+
+table#tableVariaveisClasse th{
+    background-color:#E0E0E0;
+    color: #000;
+    padding: 5px;
+    margin: 0px;
+}
+
+table#tableVariaveisClasse caption {
+    background-color: #fff;
+    font-weight: normal;
+    font-size: 13px;
+    color: #000;
+    text-align: left;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+table#tableVariaveisClasse td{
+   background-color: #FFF;
+   padding: 2px;
+   border-bottom: 1px solid gray;
+   color: #000;
+   font-size: 12px;
+}
+
+table#ttableVariaveisClasse tfoot td {
+    background-color: #FFF;
+    color: #000;
+    text-align: right;
+    border-bottom: 0px;
+    font-size: 10px;
+    padding: 0px;
+}
+
 /*******************************************
  * Histórico de cargos em Comissão
  *******************************************/
