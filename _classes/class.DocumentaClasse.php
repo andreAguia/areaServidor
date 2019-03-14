@@ -115,7 +115,7 @@ class DocumentaClasse
 
                 # Retira aspas
                 $line = preg_replace('/(")/', '', $line);
-                echo $line;
+                #echo $line;
                 
                 # inicia a variável que será guardada a descrição 
                 $descricao = NULL;

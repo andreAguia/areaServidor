@@ -485,25 +485,27 @@ if($acesso)
                     $hora = substr($valorArquivos, 11,2);
                     $minuto = substr($valorArquivos, 14,2);
                     $segundo = substr($valorArquivos, 17,2);
-                                        
-                    # Compara se já teve título do mês
-                    if($mes <> $mesAnterior){
-                        
-                        # Fecha o fieldset se não for o primeiro
-                        if(!is_null($mesAnterior)){
-                            $field->fecha();
-                            $grid->fechaColuna();
-                        }
                     
-                        $mesAnterior = $mes;                                                
-                        $grid->abreColuna(3);
-                        
-                        $field = new Fieldset(get_nomeMes($mes));
-                        $field->set_class('fieldset');
-                        $field->abre();
-                    }
-                    
+                    # Compara se é o ano desejado
                     if($ano == $parametroAno){
+                                        
+                        # Compara se já teve título do mês
+                        if($mes <> $mesAnterior){
+
+                            # Fecha o fieldset se não for o primeiro
+                            if(!is_null($mesAnterior)){
+                                $field->fecha();
+                                $grid->fechaColuna();
+                            }
+
+                            $mesAnterior = $mes;                                                
+                            $grid->abreColuna(3);
+
+                            $field = new Fieldset(get_nomeMes($mes));
+                            $field->set_class('fieldset');
+                            $field->abre();
+                        }
+                                        
                         echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
                     }
                 }
