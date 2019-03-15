@@ -53,6 +53,9 @@ class DocumentaClasse
         $linhaComentarioClasse = NULL;  // Determina a linha do início do comentário da classe        
         $linhaComentarioMetodo = NULL;  // Determina a linha do início do comentário do método
         $linhaMetodo = NULL;            // Determina a linha da declaração do método
+        
+        $marcadorParametro = 0;         // indica se o modo de coleta de parâmetros está ligado ou não. 1 -> Ligado | 0 -> Desligado
+        
         $numParMetodo = 0;              // Determina o número de parâmetros de um método
         $metodoNome = NULL;             // Nome do método que está sendo exibido
         $temTabelaAberta = FALSE;       // Flag que informa que existe uma tabela da lista de parâmetros aberta se a tag não for @param terá que fechá-la
@@ -115,7 +118,7 @@ class DocumentaClasse
 
                 # Retira aspas
                 $line = preg_replace('/(")/', '', $line);
-                #echo $line;
+                $line = trim($line);
                 
                 # inicia a variável que será guardada a descrição 
                 $descricao = NULL;
@@ -150,41 +153,55 @@ class DocumentaClasse
             }
             
             # Métodos            
-            if (stristr($line, "public function")){
+            if (stristr($line, "function")){
                 $this->numMetodo++;                     // incrementa o número de métodos
                 $posicao = stripos($line,'function');   // marca posição da palavra function
                 $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
                 $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
 
                 $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                $this->visibilidadeMetodo[$this->numMetodo] = 'public';
-                $linhaMetodo = $line_num;
-            }
-
-            if (stristr($line, "private function")){
-                $this->numMetodo++;                     // incrementa o número de métodos
-                $posicao = stripos($line,'function');   // marca posição da palavra function
-                $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
-                $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
-
-                $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                $this->visibilidadeMetodo[$this->numMetodo] = 'private';
-                $linhaMetodo = $line_num;
-            }
-
-            if (stristr($line, "protected function")){
-                $this->numMetodo++;                     // incrementa o número de métodos
-                $posicao = stripos($line,'function');   // marca posição da palavra function
-                $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
-                $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
-
-                $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                $this->visibilidadeMetodo[$this->numMetodo] = 'protected';
+                $this->visibilidadeMetodo[$this->numMetodo] = trim(substr($line, 1, $posicao-2));
                 $linhaMetodo = $line_num;
                 
-                # Pega o primeiro parâmetro (se houver)
+                if(substr($line, $posicaoFinal+1,1) <> ")"){
+                    
+                    # Liga o marcador
+                    $marcadorParametro = 1;
+
+                    # Coleta o primeiro parâmetro
+                    $textoParametro = substr($line,$posicaoFinal+1);
+
+                    # Divide o texto em pedaços
+                    $pedaco = str_word_count($textoParametro,1,$caracteresAceitos);
+
+                    # Inicia a variável da descrição
+                    $descParam = NULL;
+
+                    # Pega a descrição
+                    for($i = 5; $i < count($pedaco); $i++){
+                        $descParam .= $pedaco[$i].' ';
+                    }
+
+                    # Identifica o ultimo caractere do padrao. Que pode ser vírgula ou parenteses
+                    $ultimaLetra = substr($pedaco[1], -1);
+
+                    if($ultimaLetra == ")"){
+                        $marcadorParametro = 0;
+                    }
+
+                    # Retira esse caractere
+                    $pedaco[1] = substr_replace($pedaco[1], "", -1);
+                    
+                    ## Dando erro quando o parâmetro não tem valor padrão !!! REsolver
+
+                    # Joga esse primeiro parâmetro para o array
+                    $this->parametrosMetodo[$this->numMetodo][] = [$pedaco[0],$pedaco[3],$pedaco[1],$descParam];
+                }
                 
             }
+            
+            # Coleta os parâmetros
+            
             
             # Parâmetros de um método
             if (stristr($line, "@param")){

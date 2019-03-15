@@ -149,9 +149,9 @@ if($acesso){
         if((isset($deprecatedMetodo[$i])) AND ($deprecatedMetodo[$i])){
             echo "<del>";
         }
-            
+        
         # link
-        $link = new Link($tipoVisibilidade[$visibilidadeMetodo[$i]]." ".$nomeMetodo[$i]."()","?sistema=$sistema&classe=$arquivoClasse&metodo=$i");
+        $link = new Link($tipoVisibilidade["$visibilidadeMetodo[$i]"]." ".$nomeMetodo[$i]."()","?sistema=$sistema&classe=$arquivoClasse&metodo=$i");
         $link->set_title("(".$visibilidadeMetodo[$i].") ".$descricaoMetodo[$i]);
         $link->set_id("documentaMetodo");
         $link->show();
