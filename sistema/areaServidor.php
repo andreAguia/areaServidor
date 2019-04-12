@@ -408,7 +408,7 @@ if($acesso){
             $ano = date("Y");
             
             # Pega a Lotação atual do usuário
-            $idLotacao = $servidor->get_idlotacao($idServidor);
+            $idLotacao = $servidor->get_idLotacao($idServidor);
             
             # Conecta com o banco de dados
             $servidor = new Pessoal();

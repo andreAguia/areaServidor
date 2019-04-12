@@ -24,7 +24,7 @@ if($acesso)
     $idServidor = $intra->get_idServidor($idUsuario);
     
     # Pega a Lotação atual do usuário
-    $idLotacao = $pessoal->get_idlotacao($idServidor);
+    $idLotacao = $pessoal->get_idLotacao($idServidor);
 	
     # Verifica a fase do programa
     $fase = get('fase');
