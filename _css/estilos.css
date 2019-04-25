@@ -588,6 +588,39 @@ p#pDescricao {
 }
 
 /*******************************************
+ * Manual de Procedimentos
+ *******************************************/
+div#divNota p, div{
+    font-size: 12px;    
+}
+
+div#divNota ul,li{
+    font-size: 12px;    
+}
+
+div#divNota ul{
+    padding-top: 10px; 
+}
+
+div#divNota h1{
+    font-size: 24px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+div#divNota h2{
+    font-size: 20px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+
+div#divNota h3{
+    font-size: 16px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+/*******************************************
  * Sistema de controle de processos
  *******************************************/
 

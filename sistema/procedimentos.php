@@ -73,11 +73,35 @@ if($acesso){
     $grid = new Grid();
     $grid->abreColuna(12);
     
-    echo '<div class="title-bar">
-            <button class="menu-icon show-for-small-only" type="button" onclick="abreFechaDivId(\'menuSuspenso\');"></button>
-            <div class="title-bar-title">Sistema de Notas</div>
-          </div>';
+    # Cabeçalho da Página
+    AreaServidor::cabecalho();
     
+    # Cria um menu
+    $menu1 = new MenuBar();
+
+    # Voltar
+    $botaoVoltar = new Link("Voltar","../../grh/grhSistema/grh.php");
+    $botaoVoltar->set_class('button');
+    $botaoVoltar->set_title('Voltar a página anterior');
+    $botaoVoltar->set_accessKey('V');
+    $menu1->add_link($botaoVoltar,"left");
+    
+    # Ano Exercício
+    $botaoVoltar = new Link("Ano Exercício");
+    $botaoVoltar->set_class('button');
+    $botaoVoltar->set_title('Férias por Ano Exercício');
+    #$menu1->add_link($botaoVoltar,"right");
+    
+    # Ano por Fruíção
+    $botaoVoltar = new Link("Ano de Fruição","areaFeriasFruicao.php");
+    $botaoVoltar->set_class('hollow button');
+    $botaoVoltar->set_title('Férias por Ano em que foi realmente fruído');
+    #$menu1->add_link($botaoVoltar,"right");
+
+    $menu1->show();  
+    
+    # Título
+    titulo("Manual de Procedimentos");
     br();
     
     # Define o grid
@@ -179,7 +203,7 @@ if($acesso){
                     $numNotas = $projeto->get_numeroNotas($valor[0]);
                     $texto = $valor[1]." <span id='numProjeto'>$numNotas</span>";                
 
-                    $menu1->add_item('titulo2',"<i class='fi-book'></i> ".$texto,'?fase=caderno&idCaderno='.$valor[0],"Caderno: ".$valor[1]);                    
+                    $menu1->add_item('titulo2',$texto,'?fase=caderno&idCaderno='.$valor[0],"Caderno: ".$valor[1]);                    
                 }           
 
             }
@@ -254,7 +278,7 @@ if($acesso){
 
                 # Percorre as notas 
                 foreach($notas as $tituloNotas){
-                    $menu2->add_item('link',"<i class='fi-page'></i> ".$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0],$tituloNotas[2]);
+                    $menu2->add_item('link',$tituloNotas[1],'?fase=caderno&idNota='.$tituloNotas[0],$tituloNotas[2]);
                 }
 
                 # Incluir nota
@@ -307,7 +331,13 @@ if($acesso){
             p($dados[5],'descricaoProjeto');
             hr("projetosTarefas");
             
-            echo "<pre id='preNota'>".$dados[3]."</pre>";
+            $divNota = new Div("divNota");
+            $divNota->abre();
+            
+            echo $dados[3];
+            #echo "<pre id='preNota'>".$dados[3]."</pre>";
+            
+            $divNota->fecha();
             
             $painel->fecha();  
             
