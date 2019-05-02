@@ -21,6 +21,7 @@ if($acesso){
     
     # Pega o idServidor do usuário logado
     $idServidor = $intra->get_idServidor($idUsuario);
+    $idPerfil = $servidor->get_idPerfil($idServidor);
     
     # Pega o idServidor Pesquisado da rotina de pasta digitaliozada
     $idServidorPesquisado = get("idServidorPesquisado");
@@ -153,36 +154,38 @@ if($acesso){
         
         ################################################################
            
-            $grid->abreColuna(12,12,6);
-            tituloTable('Sobre o Servidor');
-            br(); 
+            if($idPerfil <> 10){
+                $grid->abreColuna(12,12,6);
+                tituloTable('Sobre o Servidor');
+                br(); 
 
-            $menu = new MenuGrafico();
+                $menu = new MenuGrafico();
 
-            $botao = new BotaoGrafico();
-            $botao->set_label('Histórico de Licença');
-            $botao->set_url('?fase=historicoLicenca');
-            $botao->set_imagem(PASTA_FIGURAS.'licenca.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Exibe o seu histórico de licenças e afastamentos');
-            $menu->add_item($botao);
+                $botao = new BotaoGrafico();
+                $botao->set_label('Histórico de Licença');
+                $botao->set_url('?fase=historicoLicenca');
+                $botao->set_imagem(PASTA_FIGURAS.'licenca.jpg',$tamanhoImage,$tamanhoImage);
+                $botao->set_title('Exibe o seu histórico de licenças e afastamentos');
+                $menu->add_item($botao);
 
-            $botao = new BotaoGrafico();
-            $botao->set_label('Histórico de Férias');
-            $botao->set_url('?fase=historicoFerias');
-            $botao->set_imagem(PASTA_FIGURAS.'ferias.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Exibe o seu histórico de férias');
-            $menu->add_item($botao);
-            
-            $botao = new BotaoGrafico();
-            $botao->set_label('Férias do seu Setor');
-            $botao->set_url('?fase=feriasSetor');
-            $botao->set_imagem(PASTA_FIGURAS.'feriasSetor.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Exibe as férias dos servidores do seu setor');
-            $menu->add_item($botao);
+                $botao = new BotaoGrafico();
+                $botao->set_label('Histórico de Férias');
+                $botao->set_url('?fase=historicoFerias');
+                $botao->set_imagem(PASTA_FIGURAS.'ferias.jpg',$tamanhoImage,$tamanhoImage);
+                $botao->set_title('Exibe o seu histórico de férias');
+                $menu->add_item($botao);
 
-            $menu->show();
-            br();
-            $grid->fechaColuna();
+                $botao = new BotaoGrafico();
+                $botao->set_label('Férias do seu Setor');
+                $botao->set_url('?fase=feriasSetor');
+                $botao->set_imagem(PASTA_FIGURAS.'feriasSetor.png',$tamanhoImage,$tamanhoImage);
+                $botao->set_title('Exibe as férias dos servidores do seu setor');
+                $menu->add_item($botao);
+
+                $menu->show();
+                br();
+                $grid->fechaColuna();
+            }
             
         ################################################################
 
