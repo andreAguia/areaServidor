@@ -123,7 +123,7 @@ if($acesso) {
                             tbservidor.matricula,
                             tbpessoa.nome,
                             tbcomissao.dtNom,
-                            concat(tbcomissao.descricao," ",if(protempore = 1," (pro tempore)","")),
+                            idComissao,
                             concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
                        FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
                                        LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
@@ -134,7 +134,7 @@ if($acesso) {
             $result = $pessoal->select($select);
             $label = array('IdFuncional','Matrícula','Nome','Nomeação','Nome do Cargo');
             $align = array("center","center","left","center","left");
-            $function = array(NULL,"dv",NULL,"date_to_php");
+            $function = array(NULL,"dv",NULL,"date_to_php","descricaoComissao");
            
             # Monta a tabela
             $tabela = new Tabela();
@@ -155,7 +155,7 @@ if($acesso) {
                             tbpessoa.nome,
                             tbcomissao.dtNom,
                             tbcomissao.dtExo,
-                            concat(tbcomissao.descricao," ",if(protempore = 1," (pro tempore)","")),
+                            idComissao,
                             concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
                        FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
                                        LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
@@ -166,7 +166,7 @@ if($acesso) {
             $result = $pessoal->select($select);
             $label = array('IdFuncional','Matrícula','Nome','Nomeação','Exoneração','Nome do Cargo');
             $align = array("center","center","left","center","center","left");
-            $function = array(NULL,"dv",NULL,"date_to_php","date_to_php");
+            $function = array(NULL,"dv",NULL,"date_to_php","date_to_php","descricaoComissao");
            
             # Monta a tabela
             $tabela = new Tabela();
