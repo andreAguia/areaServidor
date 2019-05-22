@@ -36,15 +36,16 @@ class Procedimento{
         # Inicia o menu
         $menu1 = new Menu();
         $menu1->add_item('titulo1','Categorias','?fase=menuCaderno');
-        $menu1->add_item('sublink','+ Nova Categoria','?fase=cadernoNovo');
+        $menu1->add_item('sublink','+ Nova Categoria','procedimentoCategoria.php?fase=editar');
                 
         # Verifica se tem Categorias cadastradas
         if($numCategorias > 0){
             
             # Percorre o array 
             foreach ($dados as $valor){
-                $numProcedimento = $this->get_numeroProcedimentos($valor[0]);
-                $texto = $valor[1]." <span id='numProjeto'>$numProcedimento</span>";                
+                #$numProcedimento = $this->get_numeroProcedimentos($valor[0]);
+                #$texto = $valor[1]." <span id='numProjeto'>$numProcedimento</span>";
+                $texto = $valor[1];
 
                 # Marca o item que está sendo editado
                 if($idCategoria == $valor[0]){
@@ -66,12 +67,12 @@ class Procedimento{
                         if($idProcedimento == $titulo[0]){
                             $menu1->add_item('link',"<b> -".$titulo.'</b>','?fase=categoria&idProcedimento='.$titulo[0],$titulo[2]);
                         }else{
-                            $menu1->add_item('link',"- ".$titulo[1],'?fase=categoria&idProcedimento='.$titulo[0],$titulo[2]);
+                            $menu1->add_item('link',"- ".$titulo[1],'procedimentoNota.php?fase=editar&id='.$titulo[0],$titulo[2],NULL,'teste');
                         }
                     }
                     
                     # Incluir nota
-                    $menu1->add_item('sublink','+ Novo Procedimento','?fase=notaNova');
+                    $menu1->add_item('sublink','+ Novo Procedimento','procedimentoNota.php?fase=editar');
                 }else{
                     $menu1->add_item('titulo2',$texto,'?fase=dadosCategoria&idCategoria='.$valor[0],$valor[2]);
                 }

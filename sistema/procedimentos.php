@@ -91,8 +91,10 @@ if($acesso){
             # Define a coluna de Conteúdo
             $grid->abreColuna($col2P,$col2M,$col2L);
                         
-            # Tela Inicial
-            p("Manual de Procedimentos");
+            $div = new Div("teste");
+            $div->abre();
+            
+            $div->fecha();
             
             $grid->fechaColuna();
             $grid->fechaGrid();    
