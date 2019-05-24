@@ -43,16 +43,20 @@ if($acesso){
     $objeto->set_voltarLista('procedimentos.php');
 
     # select da lista
-    $objeto->set_selectLista ('SELECT idCategoria,
+    $objeto->set_selectLista ('SELECT numOrdem,
+                                      visibilidade,
                                       categoria,
-                                      descricao
-                                 FROM tbprocedimentoCategoria
-                             ORDER BY categoria');
+                                      descricao,
+                                      idCategoria
+                                 FROM tbprocedimentocategoria
+                             ORDER BY numOrdem');
     # select do edita
-    $objeto->set_selectEdita('SELECT categoria,
-                                     descricao,
+    $objeto->set_selectEdita('SELECT numOrdem,
+                                     visibilidade,
+                                     categoria,
+                                     descricao,                                     
                                      idCategoria
-                                FROM tbprocedimentoCategoria
+                                FROM tbprocedimentocategoria
                                WHERE idCategoria = '.$id);
 
     # ordem da lista
@@ -64,18 +68,18 @@ if($acesso){
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkExcluir('?fase=excluir');
     $objeto->set_linkGravar('?fase=gravar');
-    $objeto->set_linkListar('procedimentos.php');
+    $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("Id","Categoria","Descrição"));
-    #$objeto->set_width(array(10,40,40));
-    $objeto->set_align(array("center","left","left"));
+    $objeto->set_label(array("numOrdem","Visibilidade","Categoria","Descrição"));
+    $objeto->set_width(array(5,10,20,50));
+    $objeto->set_align(array("center","center","left","left"));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
 
     # Nome da tabela
-    $objeto->set_tabela('tbprocedimentoCategoria');
+    $objeto->set_tabela('tbprocedimentocategoria');
 
     # Nome do campo id
     $objeto->set_idCampo('idCategoria');
@@ -86,19 +90,37 @@ if($acesso){
     # Campos para o formulario
     $objeto->set_campos(array(
         array ('linha' => 1,
+               'nome' => 'numOrdem',
+               'autofocus' => TRUE,
+               'label' => 'numOrdem:',
+               'tipo' => 'texto',
+               'required' => TRUE,
+               'col' => 2,
+               'size' => 4),
+        array ('linha' => 1,
+               'nome' => 'visibilidade',
+               'label' => 'Visibilidade:',
+               'tipo' => 'combo',
+               'required' => TRUE,
+               'array' => array(array(1,"Público"),array(2,"Admin")),
+               'col' => 2,
+               'size' => 15),
+        array ('linha' => 1,
                'nome' => 'categoria',
                'label' => 'Categoria:',
                'tipo' => 'texto',
                'required' => TRUE,
                'autofocus' => TRUE,
-               'col' => 12,
+               'col' => 8,
                'size' => 100),
         array ('linha' => 2,
                'nome' => 'descricao',
                'title' => 'Descrição detalhada da Categoria',
                'label' => 'Descrição:',
-               'tipo' => 'textarea',
-               'size' => array(80,5))));
+               'tipo' => 'texto',
+               'col' => 12,
+               'size' => 250)
+        ));
 
     # idUsuário para o Log
     $objeto->set_idUsuario($idUsuario);

@@ -43,16 +43,20 @@ if($acesso){
     $objeto->set_voltarLista('procedimentos.php');
 
     # select da lista
-    $objeto->set_selectLista ('SELECT idProcedimento,
+    $objeto->set_selectLista ('SELECT tbprocedimento.numOrdem,
+                                      tbprocedimento.visibilidade,
+                                      tbprocedimentocategoria.categoria,
                                       titulo,
-                                      descricao
-                                 FROM tbprocedimento
+                                      tbprocedimento.descricao
+                                 FROM tbprocedimento JOIN tbprocedimentocategoria USING (idCategoria)
                              ORDER BY titulo');
     # select do edita
-    $objeto->set_selectEdita('SELECT titulo,
-                                     idcategoria,
-                                     numOrdem,
-                                     descricao
+    $objeto->set_selectEdita('SELECT numOrdem,
+                                     visibilidade,
+                                     idCategoria,
+                                     titulo,
+                                     descricao,
+                                     link
                                 FROM tbprocedimento
                                WHERE idProcedimento = '.$id);
 
@@ -68,9 +72,9 @@ if($acesso){
     $objeto->set_linkListar('procedimentos.php');
 
     # Parametros da tabela
-    $objeto->set_label(array("Id","Categoria","Descrição"));
-    #$objeto->set_width(array(10,40,40));
-    $objeto->set_align(array("center","left","left"));
+    $objeto->set_label(array("numOrdem","Visibilidade","Categoria","Título","Descrição"));
+    #$objeto->set_width(array(5,10,10,25,35));
+    $objeto->set_align(array("center","center","left","left","left"));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -87,20 +91,28 @@ if($acesso){
     # Pega os dados da combo de Categoria
     $result3 = $intra->select('SELECT idCategoria,
                                         categoria
-                                   FROM tbprocedimentoCategoria
+                                   FROM tbprocedimentocategoria
                                ORDER BY categoria');
     array_push($result3, array(NULL,NULL));
 
     # Campos para o formulario
     $objeto->set_campos(array(
         array ('linha' => 1,
-               'nome' => 'titulo',
-               'label' => 'Título:',
+               'nome' => 'numOrdem',
+               'autofocus' => TRUE,
+               'label' => 'numOrdem:',
                'tipo' => 'texto',
                'required' => TRUE,
-               'autofocus' => TRUE,
-               'col' => 12,
-               'size' => 100),
+               'col' => 2,
+               'size' => 4),
+        array ('linha' => 1,
+               'nome' => 'visibilidade',
+               'label' => 'Visibilidade:',
+               'tipo' => 'combo',
+               'required' => TRUE,
+               'array' => array(array(1,"Público"),array(2,"Admin")),
+               'col' => 2,
+               'size' => 15),
         array ('linha' => 2,
                'nome' => 'idCategoria',
                'label' => 'Categoria:',
@@ -110,17 +122,27 @@ if($acesso){
                'col' => 8,
                'size' => 30),
         array ('linha' => 2,
-               'nome' => 'numOrdem',
-               'label' => 'Num Ordem:',
+               'nome' => 'titulo',
+               'label' => 'Título:',
                'tipo' => 'texto',
-               'col' => 4,
-               'size' => 5),
+               'required' => TRUE,
+               'autofocus' => TRUE,
+               'col' => 12,
+               'size' => 100),
         array ('linha' => 3,
                'nome' => 'descricao',
-               'title' => 'Descrição detalhada do procedimento',
+               'title' => 'Descrição detalhada da Categoria',
                'label' => 'Descrição:',
-               'tipo' => 'textarea',
-               'size' => array(80,5))));
+               'tipo' => 'texto',
+               'col' => 12,
+               'size' => 250),
+        array ('linha' => 4,
+               'nome' => 'link',
+               'title' => 'link',
+               'label' => 'link:',
+               'tipo' => 'texto',
+               'col' => 12,
+               'size' => 250)));
 
     # idUsuário para o Log
     $objeto->set_idUsuario($idUsuario);

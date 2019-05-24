@@ -27,7 +27,7 @@ class Procedimento{
         $select = 'SELECT idCategoria,
                           categoria,
                           descricao
-                     FROM tbprocedimentoCategoria
+                     FROM tbprocedimentocategoria
                   ORDER BY numOrdem, categoria';
         
         $dados = $intra->select($select);
@@ -36,7 +36,7 @@ class Procedimento{
         # Inicia o menu
         $menu1 = new Menu();
         $menu1->add_item('titulo1','Categorias','?fase=menuCaderno');
-        $menu1->add_item('sublink','+ Nova Categoria','procedimentoCategoria.php?fase=editar');
+        #$menu1->add_item('sublink','+ Nova Categoria','procedimentoCategoria.php?fase=editar');
                 
         # Verifica se tem Categorias cadastradas
         if($numCategorias > 0){
@@ -49,7 +49,7 @@ class Procedimento{
 
                 # Marca o item que está sendo editado
                 if($idCategoria == $valor[0]){
-                    $menu1->add_item('titulo2',"<b> ".$texto."</b>",'?fase=dadosCaderno&idCaderno='.$valor[0],$valor[2]);
+                    $menu1->add_item('titulo2',"<b> ".$texto."</b>",'?idCategoria='.$valor[0],$valor[2]);
 
                     # Pega os procedimentos
                     $select = 'SELECT idProcedimento,
@@ -72,9 +72,9 @@ class Procedimento{
                     }
                     
                     # Incluir nota
-                    $menu1->add_item('sublink','+ Novo Procedimento','procedimentoNota.php?fase=editar');
+                    #$menu1->add_item('sublink','+ Novo Procedimento','procedimentoNota.php?fase=editar');
                 }else{
-                    $menu1->add_item('titulo2',$texto,'?fase=dadosCategoria&idCategoria='.$valor[0],$valor[2]);
+                    $menu1->add_item('titulo2',$texto,'?idCategoria='.$valor[0],$valor[2]);
                 }
 
             }           
@@ -101,6 +101,25 @@ class Procedimento{
         
         $intra = new Intra();
         return $intra->count($select);
+    }
+    
+    ###########################################################
+    
+    function get_dadosCategoria($idCategoria){
+        
+    /**
+     * Fornece todos os dados da categoria
+     */
+        
+        # Pega os dados
+        $select="SELECT *
+                   FROM tbprocedimentocategoria
+                  WHERE idCategoria = $idCategoria";
+        
+        $intra = new Intra();
+        $dados = $intra->select($select,FALSE);
+        
+        return $dados;
     }
     
     ###########################################################

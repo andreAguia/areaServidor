@@ -17,13 +17,18 @@ $acesso = Verifica::acesso($idUsuario,1);
 if($acesso){
     # Conecta ao Banco de Dados
     $procedimento = new Procedimento();
+    $intra = new Intra();
     
     # Verifica a fase do programa
     $fase = get('fase');
     
-    # Pega od Ids
-    $idCategoria = get("idCategoria");
-    $idProcedimento = get("idProcedimento");
+    # Pega od Ids    
+    $idCategoria = get('idCategoria',get_session('idCategoria'));
+    $idProcedimento = get('idProcedimento',get_session('idProcedimento'));
+    
+    # Joga os parâmetros par as sessions    
+    set_session('idCategoria',$idCategoria);
+    set_session('idProcedimento',$idProcedimento);
     
     # Começa uma nova página
     $page = new Page();
@@ -45,18 +50,18 @@ if($acesso){
     $linkVoltar->set_title('Voltar a página anterior');    
     $menu1->add_link($linkVoltar,"left");
     
-    # Novo Projeto
-    $linkSenha = new Link("Novo Projeto","?fase=projetoNovo");
-    $linkSenha->set_class('button');
-    $linkSenha->set_title('Cria novo projeto');
-    #$menu1->add_link($linkSenha,"right");
+    # Categorias
+    $linkCategoria = new Link("Categorias","procedimentoCategoria.php");
+    $linkCategoria->set_class('button');
+    $linkCategoria->set_title('Gerencia as categorias');
+    $menu1->add_link($linkCategoria,"right");
     
-    # Fazendo
-    $linkSenha = new Link("Fazendo","?fase=fazendo");
-    $linkSenha->set_class('button success');
-    $linkSenha->set_title('Exibe as Tarefas que estão sendo feitas');
-    #$menu1->add_link($linkSenha,"right");
-
+    # Categorias
+    $linkProcedimento = new Link("Procedimentos","procedimentoNota.php");
+    $linkProcedimento->set_class('button');
+    $linkProcedimento->set_title('Gerencia as categorias');
+    $menu1->add_link($linkProcedimento,"right");
+    
     $menu1->show();
     
     # Título
@@ -81,26 +86,24 @@ if($acesso){
     
     $grid->fechaColuna();
     
+    # Define a coluna de Conteúdo
+    $grid->abreColuna($col2P,$col2M,$col2L);
+    
     switch ($fase){        
         
     #############################################################################################################################
     #   Inicial
     ############################################################################################################################# 
         
-        case "" :
-            # Define a coluna de Conteúdo
-            $grid->abreColuna($col2P,$col2M,$col2L);
-                        
+        case "" :       
             $div = new Div("teste");
             $div->abre();
             
-            $div->fecha();
+                
             
-            $grid->fechaColuna();
-            $grid->fechaGrid();    
+            $div->fecha();
             break;
-    
-    #############################################################################################################################
+        
         
     }
     
