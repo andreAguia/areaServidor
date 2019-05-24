@@ -12,7 +12,7 @@ $idUsuario = NULL;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,1);
+$acesso = Verifica::acesso($idUsuario);
 
 if($acesso){
     # Conecta ao Banco de Dados
@@ -32,6 +32,18 @@ if($acesso){
     
     # Começa uma nova página
     $page = new Page();
+    
+    if($fase == "exibeProcedimento"){
+        
+        # Pega os dados
+        $dados = $procedimento->get_dadosProcedimento($idProcedimento);
+        $link = $dados["link"];
+        
+        if(!vazio($link)){        
+            # Carrega a página do link
+            $page->set_bodyOnLoad("ajaxLoadPage('$link','divProcedimento',null);");
+        }
+    }
     $page->iniciaPagina();
     
     # Cabeçalho da Página
@@ -41,28 +53,32 @@ if($acesso){
     $grid = new Grid();
     $grid->abreColuna(12);  
     
-    # Cria um menu
-    $menu1 = new MenuBar("button-group");
+    if(Verifica::acesso($idUsuario,1)){
+        # Cria um menu
+        $menu1 = new MenuBar("button-group");
 
-    # Sair da Área do Servidor
-    $linkVoltar = new Link("Voltar","../../grh/grhSistema/grh.php");
-    $linkVoltar->set_class('button');
-    $linkVoltar->set_title('Voltar a página anterior');    
-    $menu1->add_link($linkVoltar,"left");
-    
-    # Categorias
-    $linkCategoria = new Link("Categorias","procedimentoCategoria.php");
-    $linkCategoria->set_class('button');
-    $linkCategoria->set_title('Gerencia as categorias');
-    $menu1->add_link($linkCategoria,"right");
-    
-    # Categorias
-    $linkProcedimento = new Link("Procedimentos","procedimentoNota.php");
-    $linkProcedimento->set_class('button');
-    $linkProcedimento->set_title('Gerencia as categorias');
-    $menu1->add_link($linkProcedimento,"right");
-    
-    $menu1->show();
+        # Sair da Área do Servidor
+        $linkVoltar = new Link("Voltar","../../grh/grhSistema/grh.php");
+        $linkVoltar->set_class('button');
+        $linkVoltar->set_title('Voltar a página anterior');    
+        #$menu1->add_link($linkVoltar,"left");
+
+        # Categorias
+        $linkCategoria = new Link("Categorias","procedimentoCategoria.php");
+        $linkCategoria->set_class('button');
+        $linkCategoria->set_title('Gerencia as categorias');
+        $menu1->add_link($linkCategoria,"right");
+
+        # Categorias
+        $linkProcedimento = new Link("Procedimentos","procedimentoNota.php");
+        $linkProcedimento->set_class('button');
+        $linkProcedimento->set_title('Gerencia as categorias');
+        $menu1->add_link($linkProcedimento,"right");
+
+        $menu1->show();
+    }else{
+        br();
+    }
     
     # Título
     titulo("Manual de Procedimentos");
@@ -82,7 +98,7 @@ if($acesso){
     br();
     
     # Menu de Projetos
-    $procedimento->menuCategorias($idCategoria,$idProcedimento);
+    $procedimento->menuCategorias($idCategoria,$idProcedimento,$idUsuario);
     
     $grid->fechaColuna();
     
@@ -96,14 +112,31 @@ if($acesso){
     ############################################################################################################################# 
         
         case "" :       
-            $div = new Div("teste");
-            $div->abre();
             
-                
+            break;
+   
+    ############################################################################
+        
+        case "exibeProcedimento" :
             
-            $div->fecha();
+            if(!vazio($link)){   
+            
+                # Monta o painel
+                $painel = new Callout();
+                $painel->abre();
+
+                # Div onde vai exibir o procedimento
+                $div = new Div("divProcedimento");
+                $div->abre();
+                $div->fecha();
+
+                # Fecha o painel
+                $painel->fecha();
+
+            }
             break;
         
+    ############################################################################    
         
     }
     

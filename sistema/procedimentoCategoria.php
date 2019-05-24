@@ -59,11 +59,6 @@ if($acesso){
                                 FROM tbprocedimentocategoria
                                WHERE idCategoria = '.$id);
 
-    # ordem da lista
-    $objeto->set_orderCampo($orderCampo);
-    $objeto->set_orderTipo($orderTipo);
-    $objeto->set_orderChamador('?fase=listar');
-
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkExcluir('?fase=excluir');
