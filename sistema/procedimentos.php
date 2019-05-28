@@ -22,12 +22,10 @@ if($acesso){
     # Verifica a fase do programa
     $fase = get('fase');
     
-    # Pega od Ids    
-    $idCategoria = get('idCategoria',get_session('idCategoria'));
+    # Pega od Ids
     $idProcedimento = get('idProcedimento',get_session('idProcedimento'));
     
-    # Joga os parâmetros par as sessions    
-    set_session('idCategoria',$idCategoria);
+    # Joga os parâmetros par as sessions
     set_session('idProcedimento',$idProcedimento);
     
     # Começa uma nova página
@@ -63,13 +61,7 @@ if($acesso){
         $linkVoltar->set_title('Voltar a página anterior');    
         #$menu1->add_link($linkVoltar,"left");
 
-        # Categorias
-        $linkCategoria = new Link("Categorias","procedimentoCategoria.php");
-        $linkCategoria->set_class('button');
-        $linkCategoria->set_title('Gerencia as categorias');
-        $menu1->add_link($linkCategoria,"right");
-
-        # Categorias
+        # Procedimentos
         $linkProcedimento = new Link("Procedimentos","procedimentoNota.php");
         $linkProcedimento->set_class('button');
         $linkProcedimento->set_title('Gerencia as categorias');
@@ -98,7 +90,7 @@ if($acesso){
     br();
     
     # Menu de Projetos
-    $procedimento->menuCategorias($idCategoria,$idProcedimento,$idUsuario);
+    $procedimento->menuPrincipal($idProcedimento,$idUsuario);
     
     $grid->fechaColuna();
     

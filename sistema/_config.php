@@ -17,8 +17,8 @@ define("PASTA_FUNCOES_GRH","../../grh/_funcoes/");                  # Funções 
 
 # Figuras
 define("PASTA_FIGURAS_GERAIS","../../_framework/_imgGerais/");     # Figuras Gerais
-define("PASTA_FIGURAS_GRH","../../grh/_img/");     # Figuras Gerais
-define("PASTA_FIGURAS","../_img/");                     # Figuras Específicas
+define("PASTA_FIGURAS_GRH","../../grh/_img/");                     # Figuras Gerais
+define("PASTA_FIGURAS","../_img/");                                # Figuras Específicas
 
 # Estilos
 define("PASTA_ESTILOS_GERAIS","../../_framework/_cssGerais/");     # Estilos Gerais (Foundation)

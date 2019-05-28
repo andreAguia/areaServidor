@@ -9,7 +9,7 @@ class Procedimento{
     
    ##########################################################
     
-    public function menuCategorias($idCategoria = NULL,$idProcedimento = NULL, $idUsuario = NULL){
+    public function menuPrincipal($idProcedimento = NULL, $idUsuario = NULL){
     /**
      * Exibe o menu de categoria.
      * 
@@ -23,111 +23,73 @@ class Procedimento{
         # Acessa o banco de dados
         $intra = new Intra();
         
+        # Pega os procedimentos do menu Inicial: idPai = 0
         if(Verifica::acesso($idUsuario,1)){
-            $select = 'SELECT idCategoria,
-                          categoria,
-                          descricao
-                     FROM tbprocedimentocategoria
-                  ORDER BY numOrdem, categoria';
+            $select = 'SELECT idProcedimento,
+                              titulo,
+                              descricao
+                         FROM tbprocedimento
+                        WHERE idPai = 0    
+                  ORDER BY numOrdem';
         }else{
-            $select = 'SELECT idCategoria,
-                          categoria,
-                          descricao
-                     FROM tbprocedimentocategoria
-                     WHERE visibilidade = 1
-                  ORDER BY numOrdem, categoria';
+            $select = 'SELECT idProcedimento,
+                              titulo,
+                              descricao
+                         FROM tbprocedimento
+                        WHERE idPai = 0  
+                          AND visibilidade = 1 
+                  ORDER BY numOrdem';
         }
         
         $dados = $intra->select($select);
         $numCategorias = $intra->count($select);
         
         # Inicia o menu
-        $menu1 = new Menu();
-        $menu1->add_item('titulo1','Menu','?fase=menuCaderno');
+        $menu1 = new Menu("menuProcedimentos");
+        #$menu1->add_item('titulo1','Menu','?fase=menuCaderno');
                 
         # Verifica se tem Categorias cadastradas
         if($numCategorias > 0){
             
             # Percorre o array 
             foreach ($dados as $valor){
-                #$numProcedimento = $this->get_numeroProcedimentos($valor[0]);
-                #$texto = $valor[1]." <span id='numProjeto'>$numProcedimento</span>";
                 $texto = $valor[1];
 
-                $menu1->add_item('titulo2',$texto,'?idCategoria='.$valor[0],$valor[2]);
+                $menu1->add_item('titulo','<b>'.$texto.'</b>','?idCategoria='.$valor[0],$valor[2]);
                 
-                # Pega os procedimentos
-                if(Verifica::acesso($idUsuario,1)){
-                    $select = 'SELECT idProcedimento,
-                                      titulo,
-                                      descricao
-                                 FROM tbprocedimento
-                                WHERE idcategoria = '.$valor[0].' ORDER BY numOrdem,titulo';
-                }else{
-                    $select = 'SELECT idProcedimento,
-                                      titulo,
-                                      descricao
-                                 FROM tbprocedimento
-                                WHERE visibilidade = 1 AND idcategoria = '.$valor[0].' ORDER BY numOrdem,titulo';
-                }
-
-                # Acessa o banco
-                $procedimentos = $intra->select($select);
-                $numProcedimento = $intra->count($select);
-
-                # Percorre as notas 
-                foreach($procedimentos as $titulo){
-                    if($idProcedimento == $titulo[0]){
-                        $menu1->add_item('link',"<b> - ".$titulo[1].'</b>','?fase=exibeProcedimento&idProcedimento='.$titulo[0],$titulo[2]);
-                    }else{
-                        $menu1->add_item('link',"- ".$titulo[1],'?fase=exibeProcedimento&idProcedimento='.$titulo[0],$titulo[2]);
+                # Verifica se tem filhos
+                $filhos = $this->get_filhosProcedimento($valor[0], $idUsuario);
+                
+                if(!is_null($filhos > 0)){
+                    foreach ($filhos as $valorFilhos){
+                        
+                        if($idProcedimento == $valorFilhos[0]){
+                            $menu1->add_item('link','📁 <b>'.$valorFilhos[1].'</b>','?fase=exibeProcedimento&idProcedimento='.$valorFilhos[0],$valorFilhos[2]);
+                        }else{
+                            $menu1->add_item('link','📁 '.$valorFilhos[1],'?fase=exibeProcedimento&idProcedimento='.$valorFilhos[0],$valorFilhos[2]);
+                        }
+                        
+                        # Verifica se tem netos
+                        $netos = $this->get_filhosProcedimento($valorFilhos[0], $idUsuario);
+                        
+                        if(!is_null($netos > 0)){
+                            
+                            foreach ($netos as $valorNetos){
+                                if($idProcedimento == $valorNetos[0]){
+                                    $menu1->add_item('sublink',"📄 <strong>".$valorNetos[1].'</strong>','?fase=exibeProcedimento&idProcedimento='.$valorNetos[0],$valorNetos[2]);
+                                }else{
+                                    $menu1->add_item('sublink',"📄 ".$valorNetos[1],'?fase=exibeProcedimento&idProcedimento='.$valorNetos[0],$valorNetos[2]);
+                                }
+                                
+                            }
+                        }
                     }
                 }
             }           
-                        
         }
         $menu1->show();
     }
 
-    ###########################################################
-    
-    public function get_numeroProcedimentos($idCategoria){
-    /**
-     * Retorna um inteiro com o número de procedimentos de uma categoria
-     * 
-     * @param $idCategoria integer NULL o idCategoria 
-     * 
-     * @syntax $procedimento->get_numeroProcedimentos([$idCategoria]);  
-     */
-    
-        # Pega os projetos cadastrados
-        $select = 'SELECT idProcedimento
-                     FROM tbprocedimento
-                    WHERE idCategoria = '.$idCategoria;
-        
-        $intra = new Intra();
-        return $intra->count($select);
-    }
-    
-    ###########################################################
-    
-    function get_dadosCategoria($idCategoria){
-        
-    /**
-     * Fornece todos os dados da categoria
-     */
-        
-        # Pega os dados
-        $select="SELECT *
-                   FROM tbprocedimentocategoria
-                  WHERE idCategoria = $idCategoria";
-        
-        $intra = new Intra();
-        $dados = $intra->select($select,FALSE);
-        
-        return $dados;
-    }
-    
     ###########################################################
     
     function get_dadosProcedimento($idProcedimento){
@@ -143,6 +105,29 @@ class Procedimento{
         
         $intra = new Intra();
         $dados = $intra->select($select,FALSE);
+        
+        return $dados;
+    }
+    
+    ###########################################################
+    
+    function get_filhosProcedimento($idProcedimento, $idUsuario = NULL){
+        
+    /**
+     * Fornece todos os dados da categoria
+     */
+        
+        # Pega os dados
+        $select="SELECT *
+                   FROM tbprocedimento
+                  WHERE idPai = $idProcedimento";
+        
+        if(!Verifica::acesso($idUsuario,1)){
+            $select .= " AND visibilidade = 1";
+        }
+        
+        $intra = new Intra();
+        $dados = $intra->select($select);
         
         return $dados;
     }

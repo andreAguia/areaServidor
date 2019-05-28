@@ -55,24 +55,24 @@ if($acesso){
     $objeto->set_parametroValue($parametro);
 
     # select da lista
-    $objeto->set_selectLista ('SELECT tbprocedimento.numOrdem,
-                                      IF(tbprocedimento.visibilidade = 1,"Público","Admin"),
-                                      tbprocedimentocategoria.categoria,
-                                      titulo,
-                                      tbprocedimento.descricao,
-                                      idProcedimento
-                                 FROM tbprocedimento JOIN tbprocedimentocategoria USING (idCategoria)
-                                WHERE titulo LIKE "%'.$parametro.'%"
-                                   OR tbprocedimentocategoria.categoria LIKE "%'.$parametro.'%" 
-                                   OR tbprocedimento.descricao LIKE "%'.$parametro.'%" 
-                             ORDER BY titulo');
+    $objeto->set_selectLista ('SELECT FILHO.numOrdem,
+                                      IF(FILHO.visibilidade = 1,"Público","Admin"),
+                                      PAI.titulo,
+                                      FILHO.titulo,
+                                      FILHO.descricao,
+                                      FILHO.idProcedimento
+                                 FROM tbprocedimento FILHO LEFT JOIN tbprocedimento PAI ON (FILHO.idPai = PAI.idProcedimento)
+                                WHERE FILHO.titulo LIKE "%'.$parametro.'%"
+                                   OR FILHO.descricao LIKE "%'.$parametro.'%" 
+                             ORDER BY PAI.titulo, FILHO.numOrdem');
     # select do edita
     $objeto->set_selectEdita('SELECT numOrdem,
                                      visibilidade,
-                                     idCategoria,
+                                     idPai,
                                      titulo,
                                      descricao,
-                                     link
+                                     link,
+                                     textoProcedimento
                                 FROM tbprocedimento
                                WHERE idProcedimento = '.$id);
 
@@ -83,7 +83,7 @@ if($acesso){
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("numOrdem","Visibilidade","Categoria","Título","Descrição"));
+    $objeto->set_label(array("Ordem","Visibilidade","Pai","Título","Descrição"));
     #$objeto->set_width(array(5,10,10,25,35));
     $objeto->set_align(array("center","center","left","left","left"));
 
@@ -100,11 +100,11 @@ if($acesso){
     $objeto->set_formlabelTipo(1);
     
     # Pega os dados da combo de Categoria
-    $result3 = $intra->select('SELECT idCategoria,
-                                        categoria
-                                   FROM tbprocedimentocategoria
-                               ORDER BY categoria');
-    array_push($result3, array(NULL,NULL));
+    $result3 = $intra->select('SELECT idProcedimento,
+                                      titulo
+                                 FROM tbprocedimento
+                             ORDER BY titulo');
+    array_push($result3, array(0,"Principal"));
 
     # Campos para o formulario
     $objeto->set_campos(array(
@@ -125,8 +125,8 @@ if($acesso){
                'col' => 2,
                'size' => 15),
         array ('linha' => 1,
-               'nome' => 'idCategoria',
-               'label' => 'Categoria:',
+               'nome' => 'idPai',
+               'label' => 'Pai:',
                'tipo' => 'combo',               
                'required' => TRUE,
                'array' => $result3,
@@ -153,7 +153,13 @@ if($acesso){
                'label' => 'link:',
                'tipo' => 'texto',
                'col' => 12,
-               'size' => 250)));
+               'size' => 250),
+        array ('linha' => 5,
+               'nome' => 'textoProcedimento',
+               'label' => 'Texto:',
+               'tipo' => 'editor',
+               'size' => array(90,5),
+               'title' => 'Texto')));
 
     # idUsuário para o Log
     $objeto->set_idUsuario($idUsuario);
