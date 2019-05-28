@@ -28,7 +28,9 @@ define("PASTA_ESTILOS","../_css/");                                # Estilos Esp
 #define('FPDF_FONTPATH','../../_framework/_pdfFont/');
 
 # Tags aceitas em campos com htmlTag = TRUE
-define('TAGS','<p></p><a></a><br/><br><div></div><table></table><tr></tr><td></td><th></th><strong></strong><em></em><u></u><sub></sub><sup></sup><ol></ol><li></li><ul></ul><hr><span></span><h3></h3>');       
+define('TAGS','<p></p><a></a><br/><br><div></div><table></table><tr></tr><td></td><th></th><strong></strong>'
+            . '<em></em><u></u><sub></sub><sup></sup><ol></ol><li></li><ul></ul><hr><span></span><h1></h1>'
+            . '<h2></h2><h3></h3><h4></h4><h5></h5><pre></pre>');       
 
 # Cria array dos meses
 $mes = array(array("1","Janeiro"),
