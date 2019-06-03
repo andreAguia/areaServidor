@@ -5,6 +5,8 @@
  * By Alat
  */
 
+echo "oiiiiiiiiiiiiiiiiiiii";
+
 # Servidor logado 
 $idUsuario = NULL;
 
