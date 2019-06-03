@@ -1,6 +1,6 @@
 <?php
 
-class Documenta
+class DocumentaFuncao
 {
  /**
   * Classe de documentação de classes ou funções
@@ -12,21 +12,9 @@ class Documenta
   * @var private $tipo    string classe O tipo de arquivo: classe | funcao 
   */
     
-    private $tipo = "classe";               // Define o tipo de documentação: classe | funcao
-    
-    # da Classe
-    private $nomeClasse = NULL;             // Guarda o nome da classe
-    private $descricaoClasse = NULL;        // Guarda a descição da classe
-    private $autorClasse = NULL;            // Autor da classe
-    private $notaClasse = NULL;             // Array com as anotações importante. Repare que é array ou seja pode se ter mais de uma nota por classe / função
-    private $deprecatedClasse = FALSE;      // Se a classe está sendo descontinuada
-    private $variaveisClasse = NULL;        // Array com as variáveis da classe
-    private $numVariaveis = 0;              // Inteiro que informa o número de variáveis de uma classe
-    private $exemploClasse = NULL;          // Arquivo de exemplo da classe
-    
-    # dos Métodos e/ou Funções
-    private $numMetodo = 0;                 // Número de métodos/funções de uma classe
-    private $nomeMetodo = NULL;             // Array com os nomes dos métodos/funções
+    # das Funções
+    private $numMetodo = 0;                 // Número de métodos de uma classe
+    private $nomeMetodo = NULL;             // Array com os nomes dos métodos
     private $visibilidadeMetodo = NULL;     // Array com a visibilidade dos métodos (public, private ou protected)
     private $descricaoMetodo = NULL;        // Array com a descrição dos métodos
     private $syntaxMetodo = NULL;           // Array com a syntax do método
@@ -40,7 +28,7 @@ class Documenta
 
 ###########################################################
     
-    public function __construct($arquivo = NULL, $tipo = NULL){
+    public function __construct($arquivo = NULL){
     /**
      * Inicia a classe e informa o arquivo da classe ou da função a ser documentada.
      * 
@@ -50,15 +38,9 @@ class Documenta
      * @syntax $documenta = new Documenta($arquivo);     
      */    
     
-       	# Variáveis        
-        $this->tipo = $tipo;
-        $linhaComentarioClasse = NULL;  // Determina a linha do início do comentário da classe        
+       	# Variáveis                     
         $linhaComentarioMetodo = NULL;  // Determina a linha do início do comentário do método
-        $linhaMetodo = NULL;            // Determina a linha da declaração do método
-        $numParMetodo = 0;              // Determina o número de parâmetros de um método
-        $metodoNome = NULL;             // Nome do método que está sendo exibido
-        $temTabelaAberta = FALSE;       // Flag que informa que existe uma tabela da lista de parâmetros aberta se a tag não for @param terá que fechá-la
-        $temClasseAberta = FALSE;       // Informa se é de uma classe ou de um método a tag
+        $linhaMetodo = NULL;            // Determina a linha da declaração do método        
         
         $caracteresAceitos = '#(),.|/:çãõáéíúóâê1234567890';  // caracteres especiais aceitos nas descrições de variáveis e parâmetros
         
@@ -67,136 +49,40 @@ class Documenta
         
         # Percorre o arquivo e guarda os dados em um array
         foreach ($lines as $line_num => $line) {
-            $line = htmlspecialchars($line);
 
-            if($this->tipo == "classe"){
-                # Classe
-                if (stristr($line, "class") AND ($line_num < 3)){
-                    $posicao = stripos($line,'class');
-                    $this->nomeClasse = substr($line, $posicao+6);
-                }
+            # Métodos        
+            if (stristr($line, "public function")){
+                $this->numMetodo++;                     // incrementa o número de métodos
+                $posicao = stripos($line,'function');   // marca posição da palavra function
+                $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
+                $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
 
-                # Verifica se é o começo de um comentário da classe
-                if(stristr($line, "/**") AND ($this->numMetodo == 0)){
-                    $linhaComentarioClasse = $line_num;
-                }
-
-                # Descrição da classe
-                if (($line_num == ($linhaComentarioClasse+1)) AND ($this->numMetodo == 0)){
-                    $posicao = stripos($line,'*');
-                    $this->descricaoClasse = substr($line, $posicao+2);
-                }
-
-                # Autor
-                if (stristr($line, "@author")){
-                    $posicao = stripos($line,'@');
-                    $this->autorClasse = substr($line, $posicao+7);
-                }
-
-                # Nota
-                if ((stristr($line, "@note")) AND ($this->numMetodo == 0)){
-                    $posicao = stripos($line,'@');
-                    $this->notaClasse[] = substr($line, $posicao+5);
-                }
-
-                # Deprecated
-                if ((stristr($line, "@deprecated")) AND ($this->numMetodo == 0))
-                    $this->deprecatedClasse = TRUE;
-
-                # Grupo de variáveis
-                if ((stristr($line, "@group")) AND ($this->numMetodo == 0)){
-                    $posicao = stripos($line,'@');
-                    $grupo = substr($line, $posicao+6);
-                    $this->variaveisClasse[] = array("group",$grupo);
-                }
-
-                # Variáveis da Classe
-                if ((stristr($line, "@var")) AND ($this->numMetodo == 0)){
-
-                    # inicia a variável que será guardada a descrição 
-                    $descricao = NULL;
-                    
-                    $posicao = stripos($line,'@');
-
-                    # divide a linha em um array de palavras
-                    $piecesVar = str_word_count($line,1,$caracteresAceitos);
-
-                    # retira a palavra var
-                    array_shift($piecesVar);
-
-                    # verifica quantas palavras tem na linha       
-                    $numPalavra = count($piecesVar);
-
-                    # agrupa as palavras da descrição
-                    for($i=4;$i<$numPalavra;$i++){
-                        $descricao .= $piecesVar[$i]." ";
-                    }
-
-                    # Junta a variavel no novo array
-                    $this->variaveisClasse[] = array($piecesVar[0],$piecesVar[1],$piecesVar[2],$piecesVar[3],$descricao);          
-
-                    # incremente o número de variáveis
-                    $this->numVariaveis++;
-                }
-
-                # Example
-                if ((stristr($line, "@example")) AND ($this->numMetodo == 0)){
-                    $posicao = stripos($line,'@');
-                    $this->exemploClasse = substr($line, $posicao+9);
-                }
+                $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
+                $this->visibilidadeMetodo[$this->numMetodo] = 'public';
+                $linhaMetodo = $line_num;
             }
 
-            # Métodos e Funções
-            # Método
-            if($this->tipo == "classe"){
-                if (stristr($line, "public function")){
-                    $this->numMetodo++;                     // incrementa o número de métodos
-                    $posicao = stripos($line,'function');   // marca posição da palavra function
-                    $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
-                    $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
+            if (stristr($line, "private function")){
+                $this->numMetodo++;                     // incrementa o número de métodos
+                $posicao = stripos($line,'function');   // marca posição da palavra function
+                $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
+                $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
 
-                    $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                    $this->visibilidadeMetodo[$this->numMetodo] = 'public';
-                    $linhaMetodo = $line_num;
-                }
-
-                if (stristr($line, "private function")){
-                    $this->numMetodo++;                     // incrementa o número de métodos
-                    $posicao = stripos($line,'function');   // marca posição da palavra function
-                    $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
-                    $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
-
-                    $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                    $this->visibilidadeMetodo[$this->numMetodo] = 'private';
-                    $linhaMetodo = $line_num;
-                }
-
-                if (stristr($line, "protected function")){
-                    $this->numMetodo++;                     // incrementa o número de métodos
-                    $posicao = stripos($line,'function');   // marca posição da palavra function
-                    $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
-                    $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
-
-                    $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                    $this->visibilidadeMetodo[$this->numMetodo] = 'protected';
-                    $linhaMetodo = $line_num;
-                }
+                $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
+                $this->visibilidadeMetodo[$this->numMetodo] = 'private';
+                $linhaMetodo = $line_num;
             }
-            
-            if($this->tipo == "funcao"){
-                if (stristr($line, "function")){
-                    $this->numMetodo++;                     // incrementa o número de métodos
-                    $posicao = stripos($line,'function');   // marca posição da palavra function
-                    $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
-                    $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
 
-                    $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
-                    $this->visibilidadeMetodo[$this->numMetodo] = 'public';
-                    $linhaMetodo = $line_num;
-                }
+            if (stristr($line, "protected function")){
+                $this->numMetodo++;                     // incrementa o número de métodos
+                $posicao = stripos($line,'function');   // marca posição da palavra function
+                $posicaoFinal = stripos($line,'(');     // marca posição final do nome do método
+                $tamanho = $posicaoFinal-$posicao-9;    // define o tamanho 
+
+                $this->nomeMetodo[$this->numMetodo] = substr($line, $posicao+9,$tamanho);   // extrai o nome do método
+                $this->visibilidadeMetodo[$this->numMetodo] = 'protected';
+                $linhaMetodo = $line_num;
             }
-            
-            
 
             # Verifica se é o começo de um comentário do método
             if (stristr($line, "/**") AND ($this->numMetodo > 0)){
@@ -226,7 +112,7 @@ class Documenta
                 $posicao = stripos($line,'@');
                 $this->retornoMetodo[$this->numMetodo] = substr($line, $posicao+8);
             }
-            
+
             # Category
             if (stristr($line, "@category")){
                 $posicao = stripos($line,'@');
@@ -271,11 +157,9 @@ class Documenta
 
                 # Joga para para o array de parâmetros
                 $this->parametrosMetodo[$this->numMetodo][] = $piecesParam;
-              }
-
+            }
         }
     }
-
 ###########################################################
     
     public function get_nomeClasse(){        
@@ -289,6 +173,18 @@ class Documenta
     }
     
 ###########################################################     
+    
+    public function get_abstracaoClasse(){        
+        /**
+         * Informa a abstração da classe.
+         *
+         * @syntax $documenta->get_abstracaoClasse();
+        `*/
+        
+        return $this->abstracaoClasse;
+    }
+    
+###########################################################          
     
     public function get_descricaoClasse(){        
         /**

@@ -134,13 +134,22 @@ if($acesso)
             $botao->set_imagem(PASTA_FIGURAS.'mensagem.jpg',$tamanhoImage,$tamanhoImage);
             $botao->set_url('mensagem.php');
             $menu->add_item($botao);
-            
+
+            # Documentação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Documentação');
+            $botao->set_target('blank');
+            $botao->set_title('Documentação do Sistema');
+            $botao->set_imagem(PASTA_FIGURAS.'documentacao.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_url('documentacao.php');
+            $menu->add_item($botao);            
             $menu->show();
             br();
             $grid2->fechaColuna();
             
             ############################################
 
+            /*
             # Documentação
             $grid2->abreColuna(12,12,6);       
             tituloTable('Documentação do Sistema');
@@ -191,37 +200,10 @@ if($acesso)
             br();
             
             $grid2->fechaColuna();
+             * *
+             */
             
-            ############################################
-
-            # Projetos
-            $grid2->abreColuna(12,12,6);
-            tituloTable('Gestão de Projetos');
-            br(); 
-
-            $menu = new MenuGrafico(4);
-
-            # Variáveis de Configuração
-            $botao = new BotaoGrafico();
-            $botao->set_label('Tarefas');
-            $botao->set_url('projeto.php');
-            $botao->set_imagem(PASTA_FIGURAS.'atribuicoes.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Sistema de gestão de tarefas');
-            $botao->set_target("_blank");
-            $menu->add_item($botao);
-
-            # Cadastro de Atualizações
-            $botao = new BotaoGrafico();
-            $botao->set_label('Notas');
-            $botao->set_url('projetoNota.php');
-            $botao->set_imagem(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Sistema de notas dos sistemas');
-            $botao->set_target("_blank");
-            $menu->add_item($botao);
             
-            $menu->show();
-            br();
-            $grid2->fechaColuna();
             
             ############################################
             
@@ -293,6 +275,37 @@ if($acesso)
             $botao->set_imagem(PASTA_FIGURAS.'webServer.png',$tamanhoImage,$tamanhoImage);
             $botao->set_url('infoWebServer.php');
             $menu->add_item($botao);
+            $menu->show();
+            br();
+            $grid2->fechaColuna();
+            
+            ############################################
+
+            # Projetos
+            $grid2->abreColuna(12,12,6);
+            tituloTable('Gestão de Projetos');
+            br(); 
+
+            $menu = new MenuGrafico(4);
+
+            # Variáveis de Configuração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Tarefas');
+            $botao->set_url('projeto.php');
+            $botao->set_imagem(PASTA_FIGURAS.'atribuicoes.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Sistema de gestão de tarefas');
+            $botao->set_target("_blank");
+            $menu->add_item($botao);
+
+            # Cadastro de Atualizações
+            $botao = new BotaoGrafico();
+            $botao->set_label('Notas');
+            $botao->set_url('projetoNota.php');
+            $botao->set_imagem(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Sistema de notas dos sistemas');
+            $botao->set_target("_blank");
+            $menu->add_item($botao);
+            
             $menu->show();
             br();
             $grid2->fechaColuna();

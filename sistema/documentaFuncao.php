@@ -24,9 +24,9 @@ if($acesso)
     $grid->abreColuna(12);
 
     # Pega a função a ser documentada
-    $funcao = trim(get('funcao'));
     $fase = get('fase');
-    $sistema = get('sistema');
+    $sistema = get('sistema');      // Informa a pasta a ser lido
+    $funcao = get('funcao');        // Método a ser exibido, se for "" exibe os dados da classe, se for "codigo" exibe o código
 
     switch ($sistema){
       case "Framework" :
@@ -46,38 +46,37 @@ if($acesso)
     $page = new Page();
     $page->iniciaPagina();
 
-    # Botão voltar
-    $linkBotao1 = new Link("Voltar",'documentaCodigo.php?fase='.$sistema);
-    $linkBotao1->set_class('button');
-    $linkBotao1->set_title('Volta para a página anterior');
-    $linkBotao1->set_accessKey('V');
-
-    # Botão codigo
-    $linkBotao2 = new Link("Código","?sistema=$sistema&funcao=$funcao&fase=codigo");
-    if($fase == "codigo"){
-        $linkBotao2->set_class('disabled button');
-    }else{
-        $linkBotao2->set_class('button');
-    }
-    $linkBotao2->set_title('Exibe o código fonte');
-    $linkBotao2->set_accessKey('C');
-    
-    # Botão função
-    $linkBotao3 = new Link("Função","?sistema=$sistema&funcao=$funcao");
-    if(is_null($fase)){
-        $linkBotao3->set_class('disabled button');
-    }else{
-        $linkBotao3->set_class('button');
-    }
-    $linkBotao3->set_title('Exibe a Função');
-    $linkBotao3->set_accessKey('F');
-
     # Cria um menu
     $menu = new MenuBar();
-    $menu->add_link($linkBotao1,"left");
-    $menu->add_link($linkBotao3,"right");
-    $menu->add_link($linkBotao2,"right");
+
+    # Botão voltar
+    if($funcao == "codigo"){
+        # Se estiver exibindo o código o voltar volta para a classe
+        $linkBotao1 = new Link("Voltar",'?sistema='.$sistema.'&funcao='.$funcao);
+        $linkBotao1->set_class('button');
+        $linkBotao1->set_title('Volta para a página anterior');
+        $linkBotao1->set_accessKey('V');
+        $menu->add_link($linkBotao1,"left");
+    }else{
+        # Se estiver exibindo a classe o voltar volta para o menu de classes
+        $linkBotao1 = new Link("Voltar",'documentacao.php?fase=sistema&sistema='.$sistema);
+        $linkBotao1->set_class('button');
+        $linkBotao1->set_title('Volta para a página anterior');
+        $linkBotao1->set_accessKey('V');
+        $menu->add_link($linkBotao1,"left");
+    }        
+
+    # Botão codigo
+    if($funcao <> "codigo"){
+        $linkBotao2 = new Link("Exibe o Código","?sistema=$sistema&funcao=codigo");
+        $linkBotao2->set_class('button');
+        $linkBotao2->set_title('Exibe o código fonte');
+        $linkBotao2->set_accessKey('C');
+        $menu->add_link($linkBotao2,"right");
+    }
+
     $menu->show();
+
 
     # Exibe a função
     if(!is_null($funcao)){
@@ -91,7 +90,7 @@ if($acesso)
         $callout->abre();
 
         # Inicia a documentação
-        $doc = new Documenta(PASTA_FUNCOES_GERAIS."/funcoes.gerais.php","funcao");
+        $doc = new DocumentaFuncao(PASTA_FUNCOES_GERAIS."/funcoes.gerais.php");
 
         # Pega os dados da funcao
         $nomeFuncao = $doc->get_nomeMetodo();

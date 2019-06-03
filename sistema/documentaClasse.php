@@ -14,18 +14,12 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso){    
-    # Cabeçalho
-    AreaServidor::cabecalho();
-
-    # Limita o tamanho da tela
-    $grid = new Grid();
-    $grid->abreColuna(12);
+if($acesso){
 
     # Pega a classe a ser documentada
-    $arquivoClasse = get('classe'); // Classe a ser exibida
-    $metodo = get('metodo');        // Método a ser exibido, se for "" exibe os dados da classe, se for "codigo" exibe o código
+    $arquivoClasse = get('classe'); // Classe a ser exibida    
     $sistema = get('sistema');      // Informa a pasta a ser lido
+    $metodo = get('metodo');        // Método a ser exibido, se for "" exibe os dados da classe, se for "codigo" exibe o código
 
     switch ($sistema){
       case "Framework" :
@@ -44,39 +38,44 @@ if($acesso){
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
+    
+    # Cabeçalho
+    AreaServidor::cabecalho();
+    
+    # Limita o tamanho da tela
+    $grid = new Grid();
+    $grid->abreColuna(12);
 
-        # Botão voltar
-        $linkBotao1 = new Link("Voltar",'documentaCodigo.php?fase='.$sistema);
+    # Cria um menu
+    $menu = new MenuBar();
+
+    # Botão voltar
+    if($metodo == "codigo"){
+        # Se estiver exibindo o código o voltar volta para a classe
+        $linkBotao1 = new Link("Voltar",'?sistema='.$sistema.'&classe='.$arquivoClasse);
         $linkBotao1->set_class('button');
         $linkBotao1->set_title('Volta para a página anterior');
         $linkBotao1->set_accessKey('V');
-        
-        # Botão codigo
-        $linkBotao2 = new Link("Código","?sistema=$sistema&classe=$arquivoClasse&metodo=codigo");
-        if($metodo == "codigo"){
-            $linkBotao2->set_class('disabled button');
-        }else{
-            $linkBotao2->set_class('button');
-        }
+        $menu->add_link($linkBotao1,"left");
+    }else{
+        # Se estiver exibindo a classe o voltar volta para o menu de classes
+        $linkBotao1 = new Link("Voltar",'documentacao.php?fase=sistema&sistema='.$sistema);
+        $linkBotao1->set_class('button');
+        $linkBotao1->set_title('Volta para a página anterior');
+        $linkBotao1->set_accessKey('V');
+        $menu->add_link($linkBotao1,"left");
+    }        
+
+    # Botão codigo
+    if($metodo <> "codigo"){
+        $linkBotao2 = new Link("Exibe o Código","?sistema=$sistema&classe=$arquivoClasse&metodo=codigo");
+        $linkBotao2->set_class('button');
         $linkBotao2->set_title('Exibe o código fonte');
         $linkBotao2->set_accessKey('C');
-
-        # Botão Classe
-        $linkBotao3 = new Link("Classe","?sistema=$sistema&classe=$arquivoClasse");
-        if(is_null($metodo)){
-            $linkBotao3->set_class('disabled button');
-        }else{
-            $linkBotao3->set_class('button');
-        }
-        $linkBotao3->set_title('Exibe a Classe');
-        #$linkBotao3->set_accessKey('F');
-
-        # Cria um menu
-        $menu = new MenuBar();
-        $menu->add_link($linkBotao1,"left");
         $menu->add_link($linkBotao2,"right");
-        $menu->add_link($linkBotao3,"right");
-        $menu->show();
+    }
+
+    $menu->show();
 
     $grid->fechaColuna();
     $grid->fechaGrid();
@@ -90,7 +89,7 @@ if($acesso){
     $callout->abre();
 
     # Inicia a documentação
-    $doc = new DocumentaClasse($pasta.$arquivoClasse.".php","classe");
+    $doc = new DocumentaClasse($pasta.$arquivoClasse.".php");
 
     # Pega os dados da classe
     $nomeClasse = $doc->get_nomeClasse();
@@ -251,6 +250,7 @@ if($acesso){
                 $tabela->set_align(array("center","left","center","center","left"));
                 $tabela->set_totalRegistro(FALSE);
                 $tabela->show();
+                br();
             }
 
             # Exemplo
@@ -307,10 +307,12 @@ if($acesso){
                 }
             }            
             break;
+            
+    #######################################################################
         
         default:
             ### Método
-            $callout = new Callout();
+            $callout = new Callout("primary");
             $callout->abre();
             
             # Visibilidade
@@ -370,13 +372,15 @@ if($acesso){
             if(isset($parametrosMetodo[$metodo])){
                 p('Parâmetros:',"documentacaoDescricaoClasse");
 
-                $tabela = new Tabela();
+                $tabela = new Tabela("tableVariaveisClasse");
                 #array_shift($lista);     
                 $tabela->set_conteudo($parametrosMetodo[$metodo]);
                 $tabela->set_label(array('Nome','Tipo','Padrão','Descrição'));
                 $tabela->set_align(array("center","center","center","left"));
                 $tabela->set_width(array(10,10,10,60));
+                $tabela->set_totalRegistro(FALSE);
                 $tabela->show();
+                br();
             }
 
             # Exemplo
@@ -394,6 +398,8 @@ if($acesso){
                 br();
             }
             break;
+            
+    #######################################################################
             
             case "codigo" :
             echo '<pre>';
@@ -435,7 +441,9 @@ if($acesso){
 
             echo '</pre>';
             break;
-
+            
+    #######################################################################
+            
     }
 
     $callout->fecha();
