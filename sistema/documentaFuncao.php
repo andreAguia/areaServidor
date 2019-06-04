@@ -14,8 +14,12 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){
+
+    # Começa uma nova página
+    $page = new Page();
+    $page->iniciaPagina();
+    
     # Cabeçalho
     AreaServidor::cabecalho();
 
@@ -42,9 +46,7 @@ if($acesso)
           break;
     }
 
-    # Começa uma nova página
-    $page = new Page();
-    $page->iniciaPagina();
+    
 
     # Cria um menu
     $menu = new MenuBar();

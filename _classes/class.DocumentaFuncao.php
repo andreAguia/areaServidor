@@ -162,14 +162,14 @@ class DocumentaFuncao
     }
 ###########################################################
     
-    public function get_nomeClasse(){        
+    public function get_nomeFuncao(){        
         /**
          * Informa o nome da classe.
          *
          * @syntax $documenta->get_nomeClasse();
         `*/
         
-        return $this->nomeClasse;
+        return $this->nomeFuncao;
     }
     
 ###########################################################     
