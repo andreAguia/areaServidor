@@ -5,8 +5,6 @@
  * By Alat
  */
 
-echo "oiiiiiiiiiiiiiiiiiiii";
-
 # Servidor logado 
 $idUsuario = NULL;
 
@@ -16,8 +14,8 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario,1);
 
-if($acesso)
-{    
+if($acesso){
+    
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
@@ -329,8 +327,16 @@ if($acesso)
             # Define o tamanho do ícone
             $tamanhoImage = 60;
 
-            #$menu = new MenuGrafico(5);
+            $menu = new MenuGrafico(5);
             br();
+            
+            # Dependentes
+            $botao = new BotaoGrafico();
+            $botao->set_label('Dependentes');
+            $botao->set_url('importacaoDependentes.php');
+            $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Importação da Tabela de Dependentes do SigRH');
+            $menu->add_item($botao);
             
             # Férias
             $botao = new BotaoGrafico();
@@ -371,7 +377,7 @@ if($acesso)
             $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
             #$menu->add_item($botao);
-            #$menu->show();
+            $menu->show();
             break;
         
 ########################################################################################
