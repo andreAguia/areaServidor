@@ -127,6 +127,7 @@ if($acesso){
 
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($lines as $linha) {
+                    
                     # Retira lixos de formatação
                     $linha = htmlspecialchars($linha);
 
@@ -134,37 +135,77 @@ if($acesso){
                     $parte = explode(";",$linha);
                     
                     # Passa para as variáveis
-                    $idFuncional = $parte[0];                    
+                    $idFuncional = $parte[0];
                     
                     if(!vazio($idFuncional)){
                         $idServidor = $pessoal->get_idServidoridFuncional($idFuncional);
-                        $nome1 = $pessoal->get_Nome($idServidor);
-                        $nome2 = $parte[2];
-                        $dependente = $parte[10];
-                        $nascimento = $parte[13];
-                        $cpf = $parte[12];
-                        $parentesco = $parte[11];
-                        $sexo = $parte[14];
                         
-                        $contador++;
-                        
-                        # Verifica se foi encontrado o idFuncional
-                        if(vazio($idServidor)){
+                        if(!vazio($idServidor)){
+                            $nome1 = $pessoal->get_Nome($idServidor);
+                            $nome2 = $parte[2];
+                            $dependente = $parte[10];
+                            $nascimento = $parte[13];
+                            $cpf = $parte[12];
+                            $parentesco = $parte[11];
+                            $sexo = $parte[14];
+
+                            # Analisa o parentesco
+                            $idParentesco = NULL;
+                            $nomeParentesco = NULL;
+                            switch ($parentesco){       
+                                case "FILHO(A)" : 
+                                    $idParentesco = 2;
+                                    break;
+
+                                case "CÔNJUGE" : 
+                                    $idParentesco = 1;
+                                    break;
+
+                                case "GUARDA PROVISÓRIA" : 
+                                    $idParentesco = 9;
+                                    break;
+
+                                case "COMPANHEIRO(A)" : 
+                                    $idParentesco = 11;
+                                    break;
+
+                                case "ENTEADO(A)" : 
+                                    $idParentesco = 10;
+                                    break;
+
+                                case "COTISTA" :
+                                    $parentesco = "Cotista";
+                                    break;
+
+                                case "PAI/MÃE" :
+                                    if($sexo == "F"){
+                                        $idParentesco = 4;
+                                    }else{
+                                        $idParentesco = 3;
+                                    }
+                                    break;
+                            }
+
+                            if(!is_null($idParentesco)){
+                                $nomeParentesco = $pessoal->get_parentesco($idParentesco);
+                            }
+                            $contador++;
+
+                            # Exibe os dados
+                            echo "<tr>";
+                            echo "<td>".$contador."</td>";
+                            echo "<td>".$idFuncional."</td>";
+                            echo "<td>".$idServidor."</td>";
+                            echo "<td>".$nome1."<br/>".$nome2."</td>";
+                            echo "<td>".$dependente."</td>";
+                            echo "<td>".$nascimento."</td>";
+                            echo "<td>".$cpf."</td>";
+                            echo "<td>".$parentesco."<br/>".$nomeParentesco."</td>";
+                            echo "<td>".$sexo."</td>";
+                            echo "</tr>";
+                        }else{
                             $problemas++;
                         }
-                                        
-                        # Exibe os dados
-                        echo "<tr>";
-                        echo "<td>".$contador."</td>";
-                        echo "<td>".$idFuncional."</td>";
-                        echo "<td>".$idServidor."</td>";
-                        echo "<td>".$nome1."<br/>".$nome2."</td>";
-                        echo "<td>".$dependente."</td>";
-                        echo "<td>".$nascimento."</td>";
-                        echo "<td>".$cpf."</td>";
-                        echo "<td>".$parentesco."</td>";
-                        echo "<td>".$sexo."</td>";
-                        echo "</tr>";
                     }
                 }
                
@@ -173,12 +214,12 @@ if($acesso){
                 echo "Problemas encontrados: ".$problemas;
                 br();
             }else{
-                echo "Arquivo de Faltas não encontrado";
+                echo "Arquivo não encontrado";
                 br();
                 $problemas++;
             }
             
-            if($problemas == 0){
+            #if($problemas == 0){
                 echo "Podemos fazer a importação";
                 br(2);
                 # Botão importar
@@ -188,9 +229,9 @@ if($acesso){
                 $linkBotao1->set_accessKey('I');
                 $linkBotao1->show();
                 
-            }else{
-                echo "Temos problemas";
-            }
+            #}else{
+            #    echo "Temos problemas";
+            #}
 
             $painel->fecha();
             break;
@@ -208,15 +249,12 @@ if($acesso){
         #########################################################################
         
         case "importa2" :
-             # Define o arquivo a ser importado
-            $arquivo = "../importacao/fen004.csv"; 
+            # Define o arquivo a ser importado
+            $arquivo = "../importacao/dependentes.txt"; 
             
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
                 $lines = file($arquivo);
-
-                # Array para inserir os dados
-                $conteúdo = array();
 
                 # Abre o banco de dados
                 $pessoal = new Pessoal();
@@ -230,26 +268,81 @@ if($acesso){
                     # Divide as colunas
                     $parte = explode(";",$linha);
                     
-                    # Verifica se o tipo é 10 ou 33                    
-                    if(($parte[2]==10) OR ($parte[2]==33)){
+                    # Passa para as variáveis
+                    $idFuncional = $parte[0];
                     
-                        # Pega o idServidor da matrícula
-                        $idServidor = $pessoal->get_idServidor($parte[0]);
-
-                        # Pega o nome
-                        $nome = $pessoal->get_nome($idServidor);
+                    if(!vazio($idFuncional)){
+                        $idServidor = $pessoal->get_idServidoridFuncional($idFuncional);
                         
-                        # Calcula a quantidade de dias
-                        $diferenca = dataDif($parte[1],$parte[3]) + 1;
+                        if(!vazio($idServidor)){
+                            $nome1 = $pessoal->get_Nome($idServidor);
+                            $nome2 = $parte[2];
+                            $dependente = $parte[10];
+                            $nascimento = date_to_bd($parte[13]);
+                            $cpf = $parte[12];
+                            $parentesco = $parte[11];
+                            $sexo = $parte[14];
 
-                        # Grava na tabela
-                        $campos = array("idServidor","dtInicial","numDias","idTpLicenca");
-                        $valor = array($idServidor,date_to_bd($parte[1]),$diferenca,25);                    
-                        $pessoal->gravar($campos,$valor,NULL,"tblicenca","idLicenca",FALSE);
+                            # Analisa o parentesco
+                            $idParentesco = NULL;
+                            $nomeParentesco = NULL;
+                            $cotista = NULL;
+                            switch ($parentesco){       
+                                case "FILHO(A)" : 
+                                    $idParentesco = 2;
+                                    break;
+
+                                case "CÔNJUGE" : 
+                                    $idParentesco = 1;
+                                    break;
+
+                                case "GUARDA PROVISÓRIA" : 
+                                    $idParentesco = 9;
+                                    break;
+
+                                case "COMPANHEIRO(A)" : 
+                                    $idParentesco = 11;
+                                    break;
+
+                                case "ENTEADO(A)" : 
+                                    $idParentesco = 10;
+                                    break;
+
+                                case "COTISTA" :
+                                    $cotista = "Sim";
+                                    break;
+
+                                case "PAI/MÃE" :
+                                    if($sexo == "F"){
+                                        $idParentesco = 4;
+                                    }else{
+                                        $idParentesco = 3;
+                                    }
+                                    break;
+                            }
+
+                            if(!is_null($idParentesco)){
+                                $nomeParentesco = $pessoal->get_parentesco($idParentesco);
+                            }
+                            $contador++;
+
+                            # Verifica se foi encontrado o idFuncional
+                            if(vazio($idServidor)){
+                                $problemas++;
+                            }
+
+                            # Pega o idPessoa
+                            $idPessoa = $pessoal->get_idPessoa($idServidor);
+
+                            # Grava na tabela
+                            $campos = array("idPessoa","nome","dtNasc","cpf","parentesco","sexo","cotista");
+                            $valor = array($idPessoa,$dependente,$nascimento,$cpf,$idParentesco,$sexo,$cotista);                    
+                            $pessoal->gravar($campos,$valor,NULL,"tbdependente","idDependente",FALSE);
+                        }
                     }
                 }
             }else{
-                echo "Arquivo de Férias não encontrado";
+                echo "Arquivo não encontrado";
             }
             loadPage("?fase=termina");
             break;
