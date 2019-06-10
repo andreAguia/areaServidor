@@ -98,7 +98,7 @@ if($acesso){
             ################################################################
 
             # Exibe o Menu
-            AreaServidor::menuPrincipal($idServidor);
+            AreaServidor::menuPrincipal($idUsuario);
             br();
             
             #########################################################

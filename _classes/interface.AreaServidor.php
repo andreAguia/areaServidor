@@ -187,9 +187,9 @@
     ###########################################################
     
     /**
-     * Método moduloTabelaAuxiliares
+     * Método moduloSistemas
      * 
-     * Exibe o menu de Legislação
+     * Exibe o menu de Sistemas
      */
     
     private static function moduloSistemas($idUsuario){
@@ -245,9 +245,9 @@
     ###########################################################
     
     /**
-     * Método moduloTabelaAuxiliares
+     * Método moduloServidoresUniversidade
      * 
-     * Exibe o menu de Legislação
+     * Exibe o menu de Servidores da Universidade
      */
     
     private static function moduloServidoresUniversidade($idUsuario){
