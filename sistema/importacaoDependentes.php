@@ -287,6 +287,8 @@ if($acesso){
                             $idParentesco = NULL;
                             $nomeParentesco = NULL;
                             $cotista = NULL;
+                            $obs = NULL;
+                            
                             switch ($parentesco){       
                                 case "FILHO(A)" : 
                                     $idParentesco = 2;
@@ -309,7 +311,15 @@ if($acesso){
                                     break;
 
                                 case "COTISTA" :
-                                    $cotista = "Sim";
+                                    $idParentesco = 12;
+                                    break;
+                                
+                                case "OUTROS" :
+                                    $idParentesco = 12;
+                                    break;
+                                
+                                case "MENOR POBRE" :
+                                    $idParentesco = 12;
                                     break;
 
                                 case "PAI/MÃE" :
@@ -320,11 +330,10 @@ if($acesso){
                                     }
                                     break;
                             }
-
-                            if(!is_null($idParentesco)){
-                                $nomeParentesco = $pessoal->get_parentesco($idParentesco);
-                            }
+                            
                             $contador++;
+                            
+                            $obs = "Importado. Valor anterior: ".$parentesco;
 
                             # Verifica se foi encontrado o idFuncional
                             if(vazio($idServidor)){
@@ -335,8 +344,8 @@ if($acesso){
                             $idPessoa = $pessoal->get_idPessoa($idServidor);
 
                             # Grava na tabela
-                            $campos = array("idPessoa","nome","dtNasc","cpf","parentesco","sexo","cotista");
-                            $valor = array($idPessoa,$dependente,$nascimento,$cpf,$idParentesco,$sexo,$cotista);                    
+                            $campos = array("idPessoa","nome","dtNasc","cpf","parentesco","sexo","obs");
+                            $valor = array($idPessoa,$dependente,$nascimento,$cpf,$idParentesco,$sexo,$obs);                    
                             $pessoal->gravar($campos,$valor,NULL,"tbdependente","idDependente",FALSE);
                         }
                     }

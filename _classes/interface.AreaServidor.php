@@ -260,7 +260,7 @@
         br();
             
         if(Verifica::acesso($idUsuario,3)){
-            $menu = new MenuGrafico(4);
+            $menu = new MenuGrafico(3);
 
             $botao = new BotaoGrafico();
             $botao->set_label('Geral');
@@ -314,7 +314,7 @@
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico();
+        $menu = new MenuGrafico(3);
 
         $botao = new BotaoGrafico();
         $botao->set_label('Histórico de Licença');
@@ -357,7 +357,7 @@
         tituloTable('Sobre o Servidor');
         $tamanhoImage = 64;
 
-        $menu = new MenuGrafico();
+        $menu = new MenuGrafico(3);
 
         $botao = new BotaoGrafico();
         $botao->set_label('Histórico de Licença');
