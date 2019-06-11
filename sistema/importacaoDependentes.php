@@ -68,7 +68,7 @@ if($acesso){
         case "aguarda" :
             titulo('Analisando ...');
             br(4);
-            aguarde("Analisando o arquivo de faltas");
+            aguarde("Analisando ...");
 
             loadPage('?fase=analisa');
             break;
@@ -241,7 +241,7 @@ if($acesso){
         case "importa" :
             titulo('Importando ...');
             br(4);
-            aguarde("Importando o arquivo de Faltas.");
+            aguarde("Importando ...");
             br();
             loadPage('?fase=importa2');
             break;
@@ -251,6 +251,12 @@ if($acesso){
         case "importa2" :
             # Define o arquivo a ser importado
             $arquivo = "../importacao/dependentes.txt"; 
+            
+            # Array comos dependentes cadastrados para evitar duplicidade
+            $dependentesImportados = array(NULL,NULL);
+            
+            # Inicia o contador de duplicatas
+            $duplicata = 0;
             
             # Verifica a existência do arquivo
             if(file_exists($arquivo)){
@@ -331,40 +337,58 @@ if($acesso){
                                     break;
                             }
                             
-                            $contador++;
-                            
-                            $obs = "Importado. Valor anterior: ".$parentesco;
-
-                            # Verifica se foi encontrado o idFuncional
-                            if(vazio($idServidor)){
-                                $problemas++;
-                            }
-
                             # Pega o idPessoa
                             $idPessoa = $pessoal->get_idPessoa($idServidor);
-
-                            # Grava na tabela
-                            $campos = array("idPessoa","nome","dtNasc","cpf","parentesco","sexo","obs");
-                            $valor = array($idPessoa,$dependente,$nascimento,$cpf,$idParentesco,$sexo,$obs);                    
-                            $pessoal->gravar($campos,$valor,NULL,"tbdependente","idDependente",FALSE);
+                            
+                            ## Verifica se já foi importado esse dependente
+                            # Inicia a variável da duplicata
+                            $temDuplicata = FALSE;
+                                    
+                            echo "Servidor: $nome1";
+                            br();
+                            echo "Dependente: $dependente";
+                            br();
+                            
+                            # Percorre o array para ver se já tem esse dependente no array
+                            foreach($dependentesImportados as $dd){                                
+                                if(($idPessoa == $dd[0]) AND (mb_strtolower($dependente) == mb_strtolower($dd[1]))){
+                                    $temDuplicata = TRUE;
+                                }
+                            }
+                            
+                            # Verifica se grava ou pula
+                            if($temDuplicata){
+                                $duplicata++;
+                                echo "$duplicata - DUPLICATA - DESCARTADO";
+                            }else{
+                                $dependentesImportados[]=array($idPessoa,$dependente);
+                                $contador++;
+                                $obs = "Importado. Valor anterior: ".$parentesco;
+                                
+                                # Grava na tabela
+                                $campos = array("idPessoa","nome","dtNasc","cpf","parentesco","sexo","obs");
+                                $valor = array($idPessoa,plm($dependente),$nascimento,$cpf,$idParentesco,$sexo,$obs);                    
+                                $pessoal->gravar($campos,$valor,NULL,"tbdependente","idDependente",FALSE);
+                                echo "$contador - IMPORTADO";
+                            }
+                            br();
+                            echo "------------------------------";
+                            br();
                         }
                     }
                 }
             }else{
                 echo "Arquivo não encontrado";
             }
-            loadPage("?fase=termina");
-            break;
-            
-        #########################################################################    
-            
-        case "termina" :
+            br(4);
             titulo('Importação Terminada');
             br(4);
-            P("Importação executada com sucesso !!");
-            br(2);
+            echo "Importadas: $contador";
+            br();
+            echo "Duplicatas descartadas: $duplicata";
+            br(4);
             
-            # Botão importar
+            # Botão voltar
             $linkBotao1 = new Link("Ok",'?');
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Volta para a página Inicial');
