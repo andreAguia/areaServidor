@@ -127,9 +127,10 @@ if($acesso) {
                             concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
                        FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
                                        LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
+                                       LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
                                             JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
                        WHERE tbcomissao.dtExo is NULL AND tbtipocomissao.idTipoComissao = "'.$parametroCargoComissao.'"                
-                  ORDER BY 6, tbcomissao.descricao, 4 desc';
+                  ORDER BY 6, tbdescricaocomissao.descricao, 4 desc';
 
             $result = $pessoal->select($select);
             $label = array('IdFuncional','Matrícula','Nome','Nomeação','Nome do Cargo');
@@ -159,9 +160,10 @@ if($acesso) {
                             concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
                        FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
                                        LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
+                                       LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
                                             JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
                        WHERE tbtipocomissao.idTipoComissao = '.$parametroCargoComissao.'                    
-                  ORDER BY 7, tbcomissao.descricao, 4 desc';
+                  ORDER BY 7, tbdescricaocomissao.descricao, 4 desc';
 
             $result = $pessoal->select($select);
             $label = array('IdFuncional','Matrícula','Nome','Nomeação','Exoneração','Nome do Cargo');
