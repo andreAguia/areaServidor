@@ -100,7 +100,7 @@ if($acesso){
             $botao->set_url('importacaoDependentes.php');
             $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Importação da Tabela de Dependentes do SigRH');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
             
             # Férias
             $botao = new BotaoGrafico();
@@ -140,7 +140,7 @@ if($acesso){
             $botao->set_url('?fase=sispatri');
             $botao->set_imagem(PASTA_FIGURAS.'codigo.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
-            #$menu->add_item($botao);
+            $menu->add_item($botao);
             $menu->show();
             break;
         
