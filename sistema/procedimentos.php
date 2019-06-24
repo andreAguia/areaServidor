@@ -30,18 +30,6 @@ if($acesso){
     
     # Começa uma nova página
     $page = new Page();
-    
-    if($fase == "exibeProcedimento"){
-        
-        # Pega os dados
-        $dados = $procedimento->get_dadosProcedimento($idProcedimento);
-        $link = $dados["link"];
-        
-        if(!vazio($link)){        
-            # Carrega a página do link
-            $page->set_bodyOnLoad("ajaxLoadPage('$link','divProcedimento',null);");
-        }
-    }
     $page->iniciaPagina();
     
     # Cabeçalho da Página
@@ -59,7 +47,7 @@ if($acesso){
         $linkVoltar = new Link("Voltar","../../grh/grhSistema/grh.php");
         $linkVoltar->set_class('button');
         $linkVoltar->set_title('Voltar a página anterior');    
-        #$menu1->add_link($linkVoltar,"left");
+        $menu1->add_link($linkVoltar,"left");
 
         # Procedimentos
         $linkProcedimento = new Link("Procedimentos","procedimentoNota.php");
@@ -73,7 +61,8 @@ if($acesso){
     }
     
     # Título
-    titulo("Manual de Procedimentos");
+    titulo("Procedimentos");
+    br();
     
     # Define o grid
     $col1P = 0;
@@ -87,7 +76,6 @@ if($acesso){
     # Limita o tamanho da tela
     $grid = new Grid();    
     $grid->abreColuna($col1P,$col1M,$col1L);
-    br();
     
     # Menu de Projetos
     $procedimento->menuPrincipal($idProcedimento,$idUsuario);
@@ -111,21 +99,52 @@ if($acesso){
         
         case "exibeProcedimento" :
             
-            if(!vazio($link)){   
+            # Pega os dados
+            $dados = $procedimento->get_dadosProcedimento($idProcedimento);
+            $link = $dados["link"];
+            $texto = $dados['textoProcedimento'];
+            $titulo = $dados['titulo'];
+            $descricao = $dados['descricao'];
             
-                # Monta o painel
-                $painel = new Callout();
-                $painel->abre();
-
+            # Monta o painel
+            $painel = new Callout();
+            $painel->abre();
+            
+            $divBtn = new Div("editarProcedimento");
+            $divBtn->abre();
+            
+            $btnEditar = new Link("<i class='fi-pencil'></i>","procedimentoNota.php?fase=editar&id=$idProcedimento");
+            $btnEditar->set_class('button secondary');
+            $btnEditar->set_title('Editar o Procedimento');
+            $btnEditar->show();
+            
+            $divBtn->fecha();
+            
+            titulo($titulo);
+            p($descricao,"f10","center");
+            
                 # Div onde vai exibir o procedimento
-                $div = new Div("divProcedimento");
+                $div = new Div("divNota");
                 $div->abre();
+                
+                if(vazio($link)){
+                    
+                    if(vazio($texto)){
+                        br(4);
+                        p("Não há conteúdo","center");
+                        br(4);
+                    }else{
+                        echo $texto;
+                    }
+                }else{
+                    $figura = new Imagem(PASTA_FIGURAS.$link,$descricao,'100%','100%');
+                    $figura->show();
+                    echo "oi";
+                }
                 $div->fecha();
-
-                # Fecha o painel
-                $painel->fecha();
-
-            }
+            
+            # Fecha o painel
+            $painel->fecha();
             break;
         
     ############################################################################    

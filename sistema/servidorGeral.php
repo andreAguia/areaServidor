@@ -140,6 +140,7 @@ if($acesso)
                                           FROM tbcargo LEFT JOIN tbtipocargo USING (idTipoCargo)
                                                        LEFT JOIN tbarea USING (idArea)
                                       ORDER BY 2');
+                array_unshift($result,array('Professor','Professores'));
                 array_unshift($result,array('*','-- Todos --'));
 
                 $controle = new Input('parametroCargo','combo','Cargo - Área - Função:',1);

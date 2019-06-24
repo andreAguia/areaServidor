@@ -86,7 +86,7 @@ if($acesso){
             $linkSobre = new Link("Sobre","?fase=sobre");
             $linkSobre->set_class('button');
             $linkSobre->set_title('Exibe informações do Sistema');
-            $menu1->add_link($linkSobre,"right");
+            #$menu1->add_link($linkSobre,"right");
 
             $menu1->show();
 
@@ -152,6 +152,8 @@ if($acesso){
             $tabela->set_funcao(array (NULL,NULL,'date_to_php',NULL,NULL,'date_to_php'));
             $tabela->set_classe(array(NULL,NULL,NULL,NULL,'pessoal'));
             $tabela->set_metodo(array(NULL,NULL,NULL,NULL,"get_feriasPeriodo"));
+            $tabela->set_rowspan(0);
+            $tabela->set_grupoCorColuna(0);
             $tabela->show();
             
             # Grava no log a atividade
@@ -235,7 +237,8 @@ if($acesso){
             # Conecta com o banco de dados
             $servidor = new Pessoal();
 
-            $select ="SELECT tbpessoa.nome,
+            $select ="SELECT month(tbferias.dtInicial),
+                         tbpessoa.nome,
                          tbservidor.idServidor,
                          tbferias.anoExercicio,
                          tbferias.dtInicial,
@@ -258,12 +261,14 @@ if($acesso){
 
             $tabela = new Tabela();
             $tabela->set_titulo("Férias dos Servidores da ".$servidor->get_nomeLotacao($idLotacao)." em $ano");
-            $tabela->set_label(array('Nome','Lotação','Exercício','Inicio','Dias','Fim','Período','Status','Situação'));
-            $tabela->set_align(array("left","left"));
-            $tabela->set_funcao(array(NULL,NULL,NULL,"date_to_php",NULL,NULL,NULL,NULL));
-            $tabela->set_classe(array(NULL,"pessoal",NULL,NULL,NULL,NULL,"pessoal"));
-            $tabela->set_metodo(array(NULL,"get_lotacaoSimples",NULL,NULL,NULL,NULL,"get_feriasPeriodo"));
+            $tabela->set_label(array('Mês','Nome','Lotação','Exercício','Inicio','Dias','Fim','Período','Status','Situação'));
+            $tabela->set_align(array("center","left","left"));
+            $tabela->set_funcao(array("get_nomeMes",NULL,NULL,NULL,"date_to_php",NULL,NULL,NULL,NULL));
+            $tabela->set_classe(array(NULL,NULL,"pessoal",NULL,NULL,NULL,NULL,"pessoal"));
+            $tabela->set_metodo(array(NULL,NULL,"get_lotacaoSimples",NULL,NULL,NULL,NULL,"get_feriasPeriodo"));
             $tabela->set_conteudo($result);
+            $tabela->set_rowspan(0);
+            $tabela->set_grupoCorColuna(0);
             $tabela->show();
             
             # Grava no log a atividade

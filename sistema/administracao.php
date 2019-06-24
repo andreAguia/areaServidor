@@ -398,7 +398,7 @@ if($acesso){
                     $idServidorPesquisado = $servidor->get_idServidoridPessoa($row2[0]);
                     echo "<td>".$idServidorPesquisado."</td>";
                     
-                    # Grava na tabela tbpessoa
+                    # Grava na tabela tbsispatri
                     $campos = array("idServidor");
                     $valor = array($idServidorPesquisado);                    
                     $servidor->gravar($campos,$valor,$tt[0],"tbsispatri","idSispatri");

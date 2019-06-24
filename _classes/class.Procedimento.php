@@ -23,6 +23,12 @@ class Procedimento{
         # Acessa o banco de dados
         $intra = new Intra();
         
+        # Monta o painel
+        $painel = new Callout();
+        $painel->abre();
+        
+        titulo("Menu Principal");
+        
         # Pega os procedimentos do menu Inicial: idPai = 0
         if(Verifica::acesso($idUsuario,1)){
             $select = 'SELECT idProcedimento,
@@ -43,19 +49,19 @@ class Procedimento{
         
         $dados = $intra->select($select);
         $numCategorias = $intra->count($select);
-        
-        # Inicia o menu
-        $menu1 = new Menu("menuProcedimentos");
-        #$menu1->add_item('titulo1','Menu','?fase=menuCaderno');
-                
+            
         # Verifica se tem Categorias cadastradas
         if($numCategorias > 0){
             
+            # Inicia o menu
+            $menu1 = new Menu("menuProcedimentos");
+            #$menu1->add_item('titulo1','Menu','?fase=menuCaderno');
+        
             # Percorre o array 
             foreach ($dados as $valor){
                 $texto = $valor[1];
 
-                $menu1->add_item('titulo','<b>'.$texto.'</b>','?idCategoria='.$valor[0],$valor[2]);
+                $menu1->add_item('titulo','<b>'.$texto.'</b>','?fase=exibeProcedimento&idProcedimento='.$valor[0],$valor[2]);
                 
                 # Verifica se tem filhos
                 $filhos = $this->get_filhosProcedimento($valor[0], $idUsuario);
@@ -85,9 +91,12 @@ class Procedimento{
                         }
                     }
                 }
-            }           
+            }
+            $menu1->show();
         }
-        $menu1->show();
+        
+        # Fecha o painel
+        $painel->fecha();
     }
 
     ###########################################################

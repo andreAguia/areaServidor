@@ -117,11 +117,15 @@ if($acesso)
             # Parâmetros
             $form = new Form('servidorLotacao.php');
             
-                # Lotação
-                $result = $pessoal->select('SELECT idlotacao, concat(IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")," - ",IFNULL(tblotacao.nome,"")) lotacao
+                 # Lotação
+                $result = $pessoal->select('(SELECT idlotacao, concat(IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")," - ",IFNULL(tblotacao.nome,"")) lotacao
                                               FROM tblotacao
-                                             WHERE ativo
-                                          ORDER BY lotacao');
+                                             WHERE ativo) UNION (SELECT distinct DIR, DIR
+                                              FROM tblotacao
+                                             WHERE ativo)
+                                          ORDER BY 2');
+                
+                array_unshift($result,array('*','-- Todos --'));
 
                 $controle = new Input('parametroLotacao','combo','Lotação:',1);
                 $controle->set_size(30);

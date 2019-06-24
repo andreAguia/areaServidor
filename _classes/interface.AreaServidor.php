@@ -156,16 +156,24 @@
         # Cria Grid
         $grid = new Grid();
         
-        # Primeira Coluna
-        $grid->abreColuna(12,6,4);
+        if(Verifica::acesso($idUsuario,2)){ 
+            
+            $colunaPequena = 4;
+            
+             # Primeira Coluna
+            $grid->abreColuna(12,6,4);
+
+            # Módulos
+            self::moduloSistemas($idUsuario);
+
+            $grid->fechaColuna();
+            
+        }else{
+            $colunaPequena = 6;
+        }
         
-        # Módulos
-        self::moduloSistemas($idUsuario);
-                
-        $grid->fechaColuna();
-        
-        # Terceira Coluna
-        $grid->abreColuna(12,6,4);
+        # Segunda Coluna
+        $grid->abreColuna(12,6,$colunaPequena);
         
         # Módulos
         self::moduloServidoresUniversidade($idUsuario);
@@ -173,7 +181,7 @@
         $grid->fechaColuna();
         
         # Terceira Coluna
-        $grid->abreColuna(12,6,4);
+        $grid->abreColuna(12,6,$colunaPequena);
 
         # Módulos
         self::moduloSobreServidor();
@@ -246,17 +254,18 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico();
+        $menu = new MenuGrafico(2);
 
         # Sistema de Pessoal
-        $botao = new BotaoGrafico();
-        $botao->set_label('Sistema de Pessoal');
-        $botao->set_url('../../grh/grhSistema/grh.php');
-        $botao->set_imagem(PASTA_FIGURAS.'sistemaPessoal.png',$tamanhoImage,$tamanhoImage);
-        $botao->set_title('Acessa o Sistema de Pessoal');
-        $botao->set_accesskey('P');
-        $menu->add_item($botao);
-
+        if(Verifica::acesso($idUsuario,2)){   
+            $botao = new BotaoGrafico();
+            $botao->set_label('Sistema de Pessoal');
+            $botao->set_url('../../grh/grhSistema/grh.php');
+            $botao->set_imagem(PASTA_FIGURAS.'sistemaPessoal.png',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Acessa o Sistema de Pessoal');
+            $botao->set_accesskey('P');
+            $menu->add_item($botao);
+        }
 
         # Sistema de Processos
         if(Verifica::acesso($idUsuario,5)){                    
@@ -301,18 +310,16 @@
         titulo('Servidores da Universidade');
         $tamanhoImage = 64;
         br();
+        
+        $menu = new MenuGrafico(2);
             
         if(Verifica::acesso($idUsuario,3)){
-            $menu = new MenuGrafico(3);
-
             $botao = new BotaoGrafico();
             $botao->set_label('Geral');
             $botao->set_url('servidorGeral.php');
             $botao->set_imagem(PASTA_FIGURAS.'admin.png',$tamanhoImage,$tamanhoImage);
             $botao->set_title('Lista geral de servidores');
             $menu->add_item($botao);
-        }else{
-            $menu = new MenuGrafico(3);
         }
 
         $botao = new BotaoGrafico();
@@ -357,9 +364,9 @@
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(2);
 
-        $botao = new BotaoGrafico();
+        $botao = new BotaoGrafico(2);
         $botao->set_label('Histórico de Licença');
         $botao->set_url('?fase=historicoLicenca');
         $botao->set_imagem(PASTA_FIGURAS.'licenca.jpg',$tamanhoImage,$tamanhoImage);

@@ -590,12 +590,12 @@ p#pDescricao {
 /*******************************************
  * Manual de Procedimentos
  *******************************************/
-div#divNota p, div{
-    font-size: 12px;    
+div#divNota {
+    font-size: 14px;    
 }
 
 div#divNota ul,li{
-    font-size: 12px;    
+    font-size: 14px;    
 }
 
 div#divNota ul{
@@ -618,6 +618,12 @@ div#divNota h3{
     font-size: 16px;
     padding-bottom: 2px;
     padding-top: 2px;
+}
+
+div#editarProcedimento{
+    position: relative;
+    float: right;
+    top: 40px;
 }
 
 /*******************************************

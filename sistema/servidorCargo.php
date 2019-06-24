@@ -109,11 +109,20 @@ if($acesso)
             $form = new Form('?');
             
             # Cargos
-            $result = $pessoal->select('SELECT tbcargo.idCargo,
-                                               concat(tbtipocargo.cargo," - ",tbarea.area," - ",tbcargo.nome)
+            $result1 = $pessoal->select('SELECT tbcargo.idCargo, 
+                                                concat(tbtipocargo.cargo," - ",tbarea.area," - ",tbcargo.nome) as cargo
                                           FROM tbcargo LEFT JOIN tbtipocargo USING (idTipoCargo)
-                                                       LEFT JOIN tbarea USING (idarea)
-                                      ORDER BY 2');
+                                                       LEFT JOIN tbarea USING (idArea)    
+                                  ORDER BY 2');
+
+            # cargos por nivel
+            $result2 = $pessoal->select('SELECT cargo,cargo FROM tbtipocargo WHERE cargo <> "Professor Associado" AND cargo <> "Professor Titular" ORDER BY 2');
+
+            # junta os dois
+            $result = array_merge($result2,$result1);
+
+            # acrescenta Professor
+            array_unshift($result,array('Professor','Professores'));
 
             $controle = new Input('parametroCargo','combo','Cargo - Área - Função:',1);
             $controle->set_size(30);

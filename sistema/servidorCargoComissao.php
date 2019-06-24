@@ -130,7 +130,7 @@ if($acesso) {
                                        LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
                                             JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
                        WHERE tbcomissao.dtExo is NULL AND tbtipocomissao.idTipoComissao = "'.$parametroCargoComissao.'"                
-                  ORDER BY 6, tbdescricaocomissao.descricao, 4 desc';
+                  ORDER BY tbpessoa.nome';
 
             $result = $pessoal->select($select);
             $label = array('IdFuncional','Matrícula','Nome','Nomeação','Nome do Cargo');
@@ -144,43 +144,6 @@ if($acesso) {
             $tabela->set_titulo("Servidores Ativos nomeados para o cargo");
             $tabela->set_align($align);
             $tabela->set_funcao($function);
-            $tabela->show();
-            
-            #---------------------            
-            # Histórico do cargo
-            #---------------------
-            
-            # select
-            $select ='SELECT DISTINCT tbservidor.idFuncional,
-                            tbservidor.matricula,
-                            tbpessoa.nome,
-                            tbcomissao.dtNom,
-                            tbcomissao.dtExo,
-                            idComissao,
-                            concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
-                       FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
-                                       LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
-                                       LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
-                                            JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
-                       WHERE tbtipocomissao.idTipoComissao = '.$parametroCargoComissao.'                    
-                  ORDER BY 7, tbdescricaocomissao.descricao, 4 desc';
-
-            $result = $pessoal->select($select);
-            $label = array('IdFuncional','Matrícula','Nome','Nomeação','Exoneração','Nome do Cargo');
-            $align = array("center","center","left","center","center","left");
-            $function = array(NULL,"dv",NULL,"date_to_php","date_to_php","descricaoComissao");
-           
-            # Monta a tabela
-            $tabela = new Tabela();
-            $tabela->set_conteudo($result);
-            $tabela->set_label($label);
-            $tabela->set_titulo("Histórico");
-            $tabela->set_align($align);
-            $tabela->set_funcao($function);
-            $tabela->set_formatacaoCondicional(array( array('coluna' => 4,
-                                                    'valor' => NULL,
-                                                    'operador' => '=',
-                                                    'id' => 'vigente')));
             $tabela->show();
 
             $grid->fechaColuna();
