@@ -142,4 +142,27 @@ class Procedimento{
     }
     
     ###########################################################
+    
+    function exibeProcedimento($idProcedimento, $idUsuario = NULL){
+        
+    /**
+     * Fornece todos os dados da categoria
+     */
+        
+        # Pega os dados
+        $select="SELECT *
+                   FROM tbprocedimento
+                  WHERE idPai = $idProcedimento";
+        
+        if(!Verifica::acesso($idUsuario,1)){
+            $select .= " AND visibilidade = 1";
+        }
+        
+        $intra = new Intra();
+        $dados = $intra->select($select);
+        
+        return $dados;
+    }
+    
+    ###########################################################
 }
