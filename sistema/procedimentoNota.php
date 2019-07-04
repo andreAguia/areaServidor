@@ -58,8 +58,8 @@ if($acesso){
     $objeto->set_selectLista ('SELECT FILHO.idProcedimento,
                                       FILHO.numOrdem,
                                       IF(FILHO.visibilidade = 1,"Público","Admin"),
-                                      FILHO.titulo,
                                       PAI.titulo,
+                                      FILHO.titulo,
                                       FILHO.descricao,
                                       FILHO.idProcedimento
                                  FROM tbprocedimento FILHO LEFT JOIN tbprocedimento PAI ON (FILHO.idPai = PAI.idProcedimento)
@@ -84,7 +84,7 @@ if($acesso){
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("Id","Ordem","Visibilidade","Título","Pai","Descrição"));
+    $objeto->set_label(array("Id","Ordem","Visibilidade","Pai","Título","Descrição"));
     #$objeto->set_width(array(5,10,10,25,35));
     $objeto->set_align(array("center","center","center","left","left","left"));
 
