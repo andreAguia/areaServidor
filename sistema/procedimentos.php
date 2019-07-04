@@ -99,52 +99,7 @@ if($acesso){
         
         case "exibeProcedimento" :
             
-            # Pega os dados
-            $dados = $procedimento->get_dadosProcedimento($idProcedimento);
-            $link = $dados["link"];
-            $texto = $dados['textoProcedimento'];
-            $titulo = $dados['titulo'];
-            $descricao = $dados['descricao'];
-            
-            # Monta o painel
-            $painel = new Callout();
-            $painel->abre();
-            
-            $divBtn = new Div("editarProcedimento");
-            $divBtn->abre();
-            
-            $btnEditar = new Link("<i class='fi-pencil'></i>","procedimentoNota.php?fase=editar&id=$idProcedimento");
-            $btnEditar->set_class('button secondary');
-            $btnEditar->set_title('Editar o Procedimento');
-            $btnEditar->show();
-            
-            $divBtn->fecha();
-            
-            titulo($titulo);
-            p($descricao,"f10","center");
-            
-                # Div onde vai exibir o procedimento
-                $div = new Div("divNota");
-                $div->abre();
-                
-                if(vazio($link)){
-                    
-                    if(vazio($texto)){
-                        br(4);
-                        p("Não há conteúdo","center");
-                        br(4);
-                    }else{
-                        echo $texto;
-                    }
-                }else{
-                    $figura = new Imagem(PASTA_FIGURAS.$link,$descricao,'100%','100%');
-                    $figura->show();
-                    echo "oi";
-                }
-                $div->fecha();
-            
-            # Fecha o painel
-            $painel->fecha();
+            $procedimento->exibeProcedimento($idProcedimento, $idUsuario);
             break;
         
     ############################################################################    

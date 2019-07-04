@@ -36,7 +36,7 @@ class Procedimento{
                               descricao
                          FROM tbprocedimento
                         WHERE idPai = 0    
-                  ORDER BY numOrdem';
+                  ORDER BY idPai,numOrdem';
         }else{
             $select = 'SELECT idProcedimento,
                               titulo,
@@ -44,7 +44,7 @@ class Procedimento{
                          FROM tbprocedimento
                         WHERE idPai = 0  
                           AND visibilidade = 1 
-                  ORDER BY numOrdem';
+                  ORDER BY idPai,umOrdem';
         }
         
         $dados = $intra->select($select);
@@ -150,18 +150,56 @@ class Procedimento{
      */
         
         # Pega os dados
-        $select="SELECT *
-                   FROM tbprocedimento
-                  WHERE idPai = $idProcedimento";
-        
-        if(!Verifica::acesso($idUsuario,1)){
-            $select .= " AND visibilidade = 1";
+        $dados = $this->get_dadosProcedimento($idProcedimento);
+        $link = $dados["link"];
+        $texto = $dados['textoProcedimento'];
+        $titulo = $dados['titulo'];
+        $descricao = $dados['descricao'];
+
+        # Monta o painel
+        $painel = new Callout();
+        $painel->abre();
+
+        # Botão de Editar
+        if(!vazio($idUsuario)){
+            if(Verifica::acesso($idUsuario,1)){
+                $divBtn = new Div("editarProcedimento");
+                $divBtn->abre();
+
+                $btnEditar = new Link("<i class='fi-pencil'></i>","procedimentoNota.php?fase=editar&id=$idProcedimento");
+                $btnEditar->set_class('button secondary');
+                $btnEditar->set_title('Editar o Procedimento');
+                $btnEditar->show();
+
+                $divBtn->fecha();
+            }
         }
-        
-        $intra = new Intra();
-        $dados = $intra->select($select);
-        
-        return $dados;
+
+        tituloTable($titulo);
+        p($descricao,"f10","left");
+
+            # Div onde vai exibir o procedimento
+            $div = new Div("divNota");
+            $div->abre();
+
+            if(vazio($link)){
+
+                if(vazio($texto)){
+                    br(4);
+                    p("Não há conteúdo","center");
+                    br(4);
+                }else{
+                    echo $texto;
+                }
+            }else{
+                $figura = new Imagem(PASTA_FIGURAS.$link,$descricao,'100%','100%');
+                $figura->show();
+                echo "oi";
+            }
+            $div->fecha();
+
+        # Fecha o painel
+        $painel->fecha();
     }
     
     ###########################################################
