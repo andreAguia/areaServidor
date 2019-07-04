@@ -99,7 +99,9 @@ if($acesso){
         
         case "exibeProcedimento" :
             
-            $procedimento->exibeProcedimento($idProcedimento, $idUsuario);
+            if(!vazio($idProcedimento)){
+                $procedimento->exibeProcedimento($idProcedimento, $idUsuario);
+            }
             break;
         
     ############################################################################    
