@@ -194,7 +194,6 @@ class Procedimento{
             }else{
                 $figura = new Imagem(PASTA_FIGURAS.$link,$descricao,'100%','100%');
                 $figura->show();
-                echo "oi";
             }
             $div->fecha();
 

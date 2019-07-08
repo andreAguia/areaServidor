@@ -108,8 +108,7 @@ if($acesso){
     array_push($result3, array(0,"Principal"));
 
     # Campos para o formulario
-    $objeto->set_campos(array(
-        array ('linha' => 1,
+    $objeto->set_campos([array ('linha' => 1,
                'nome' => 'numOrdem',
                'autofocus' => TRUE,
                'label' => 'numOrdem:',
@@ -151,7 +150,7 @@ if($acesso){
         array ('linha' => 2,
                'nome' => 'link',
                'title' => 'link',
-               'label' => 'link:',
+               'label' => 'Diagrama (da pasta de diagramas):',
                'tipo' => 'texto',
                'col' => 6,
                'size' => 250),
@@ -161,7 +160,7 @@ if($acesso){
                'tipo' => 'editor',
                'tagHtml' => TRUE,
                'size' => array(90,5),
-               'title' => 'Texto')));
+               'title' => 'Texto')]);
 
     # idUsuário para o Log
     $objeto->set_idUsuario($idUsuario);
