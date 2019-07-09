@@ -70,9 +70,9 @@ class Procedimento{
                     foreach ($filhos as $valorFilhos){
                         
                         if($idProcedimento == $valorFilhos[0]){
-                            $menu1->add_item('link','📁 <b>'.$valorFilhos[1].'</b>','?fase=exibeProcedimento&idProcedimento='.$valorFilhos[0],$valorFilhos[2]);
+                            $menu1->add_item('link','<b>'.$valorFilhos[1].'</b>','?fase=exibeProcedimento&idProcedimento='.$valorFilhos[0],$valorFilhos[2]);
                         }else{
-                            $menu1->add_item('link','📁 '.$valorFilhos[1],'?fase=exibeProcedimento&idProcedimento='.$valorFilhos[0],$valorFilhos[2]);
+                            $menu1->add_item('link',$valorFilhos[1],'?fase=exibeProcedimento&idProcedimento='.$valorFilhos[0],$valorFilhos[2]);
                         }
                         
                         # Verifica se tem netos
@@ -82,9 +82,9 @@ class Procedimento{
                             
                             foreach ($netos as $valorNetos){
                                 if($idProcedimento == $valorNetos[0]){
-                                    $menu1->add_item('sublink',"📄 <strong>".$valorNetos[1].'</strong>','?fase=exibeProcedimento&idProcedimento='.$valorNetos[0],$valorNetos[2]);
+                                    $menu1->add_item('sublink',"- <strong>".$valorNetos[1].'</strong>','?fase=exibeProcedimento&idProcedimento='.$valorNetos[0],$valorNetos[2]);
                                 }else{
-                                    $menu1->add_item('sublink',"📄 ".$valorNetos[1],'?fase=exibeProcedimento&idProcedimento='.$valorNetos[0],$valorNetos[2]);
+                                    $menu1->add_item('sublink',"- ".$valorNetos[1],'?fase=exibeProcedimento&idProcedimento='.$valorNetos[0],$valorNetos[2]);
                                 }
                                 
                             }
