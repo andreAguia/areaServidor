@@ -590,6 +590,35 @@ p#pDescricao {
 /*******************************************
  * Manual de Procedimentos
  *******************************************/
+
+p#procedimentoPai{
+    font-size: 20px;
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+}
+
+p#procedimentoTitulo{
+    font-size: 18px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+
+p#procedimentoDescricao{
+    font-size: 11px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+
+hr#procedimento{
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
 div#divNota {
     font-size: 14px;    
 }
@@ -623,7 +652,6 @@ div#divNota h3{
 div#editarProcedimento{
     position: relative;
     float: right;
-    top: 40px;
 }
 
 /*******************************************

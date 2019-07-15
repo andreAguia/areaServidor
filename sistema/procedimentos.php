@@ -37,28 +37,26 @@ if($acesso){
     
     # Limita o tamanho da tela
     $grid = new Grid();
-    $grid->abreColuna(12);  
-    
+    $grid->abreColuna(12);
+   
+    # Cria um menu
+    $menu1 = new MenuBar("button-group");
+
+    # Sair da Área do Servidor
+    $linkVoltar = new Link("Voltar","../../grh/grhSistema/grh.php");
+    $linkVoltar->set_class('button');
+    $linkVoltar->set_title('Voltar a página anterior');    
+    $menu1->add_link($linkVoltar,"left");
+
     if(Verifica::acesso($idUsuario,1)){
-        # Cria um menu
-        $menu1 = new MenuBar("button-group");
-
-        # Sair da Área do Servidor
-        $linkVoltar = new Link("Voltar","../../grh/grhSistema/grh.php");
-        $linkVoltar->set_class('button');
-        $linkVoltar->set_title('Voltar a página anterior');    
-        $menu1->add_link($linkVoltar,"left");
-
         # Procedimentos
         $linkProcedimento = new Link("Procedimentos","procedimentoNota.php");
         $linkProcedimento->set_class('button');
         $linkProcedimento->set_title('Gerencia as categorias');
         $menu1->add_link($linkProcedimento,"right");
-
-        $menu1->show();
-    }else{
-        br();
     }
+
+    $menu1->show();
     
     # Título
     titulo("Procedimentos");

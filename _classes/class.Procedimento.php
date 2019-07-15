@@ -24,10 +24,10 @@ class Procedimento{
         $intra = new Intra();
         
         # Monta o painel
-        $painel = new Callout();
-        $painel->abre();
+        #$painel = new Callout();
+        #$painel->abre();
         
-        titulo("Menu Principal");
+        titulo("Menu");
         
         # Pega os procedimentos do menu Inicial: idPai = 0
         if(Verifica::acesso($idUsuario,1)){
@@ -44,7 +44,7 @@ class Procedimento{
                          FROM tbprocedimento
                         WHERE idPai = 0  
                           AND visibilidade = 1 
-                  ORDER BY idPai,umOrdem';
+                  ORDER BY idPai,numOrdem';
         }
         
         $dados = $intra->select($select);
@@ -96,7 +96,7 @@ class Procedimento{
         }
         
         # Fecha o painel
-        $painel->fecha();
+        #$painel->fecha();
     }
 
     ###########################################################
@@ -155,6 +155,11 @@ class Procedimento{
         $texto = $dados['textoProcedimento'];
         $titulo = $dados['titulo'];
         $descricao = $dados['descricao'];
+        $idPai = $dados['idPai'];
+        
+        # Dados do Pai
+        $dadosPai = $this->get_dadosProcedimento($idPai);
+        $pai = $dadosPai['titulo'];
 
         # Monta o painel
         $painel = new Callout();
@@ -175,8 +180,15 @@ class Procedimento{
             }
         }
 
-        tituloTable($titulo);
-        p($descricao,"f10","left");
+        # Exibe o titulo do pai (quando houver)
+        if(!vazio($pai)){
+            p($pai,"procedimentoPai");
+            hr("procedimento");
+        }
+        
+        p($titulo,"procedimentoTitulo");
+        p($descricao,"procedimentoDescricao");
+        br();
 
             # Div onde vai exibir o procedimento
             $div = new Div("divNota");

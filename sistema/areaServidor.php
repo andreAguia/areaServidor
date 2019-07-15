@@ -140,7 +140,7 @@ if($acesso){
                              ADDDATE(dtInicial,numDias-1)
                         FROM tbferias
                        WHERE idServidor = '.$idServidor.'
-                    ORDER BY dtInicial desc';
+                    ORDER BY anoExercicio desc, dtInicial desc';
 
             $result = $servidor->select($select);
             
