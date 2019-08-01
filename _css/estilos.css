@@ -32,12 +32,12 @@ pre, code{
     color: #000;
     background: #fff;
     font-size: 13px;
-    
+
     display: block;
     unicode-bidi: embed;
     font-family: monospace;
     white-space: pre;
-    
+
     padding: 1em;
     border: 1px solid #ccc;
     border-left: 10px solid #ccc;
@@ -199,7 +199,7 @@ div#menuUsuarios{
     position: absolute;
     top: 1%;
     left: 60%;
-} 
+}
 
 div#divLegendaUsuarios{
     position: absolute;
@@ -245,7 +245,7 @@ div#divContagemExterna{
     padding: 5px;
 }
 
-div#divContagemInterna{    
+div#divContagemInterna{
     text-align: center;
     color: #B00000;
 }
@@ -342,7 +342,7 @@ p#grhTitulo{
     color: #02548b;
     padding: 0px;
     margin: 0px;
-    
+
 }
 
 p#versao{
@@ -505,15 +505,15 @@ table#tableNotas tfoot td {
     padding: 0px;
 }
 
-pre#preNota{    
+pre#preNota{
     color: #000;
     background: #fff;
-    font-size: 14px;    
-    
+    font-size: 14px;
+
     unicode-bidi: embed;
     font-family: sans-serif;
     white-space:pre-wrap;
-    
+
     padding: 1em;
     border: 0px;
     border-radius: 0px;
@@ -592,7 +592,7 @@ p#pDescricao {
  *******************************************/
 
 p#procedimentoPai{
-    font-size: 20px;
+    font-size: 12px;
     padding: 0px;
     margin: 0px;
     text-align: left;
@@ -619,34 +619,35 @@ hr#procedimento{
     margin-top: 10px;
 }
 
-div#divNota {
-    font-size: 14px;    
-}
-
 div#divNota ul,li{
-    font-size: 14px;    
+    font-size: 12px;
 }
 
 div#divNota ul{
-    padding-top: 10px; 
+  font-size: 12px;
+  padding-top: 3px;
 }
 
 div#divNota h1{
-    font-size: 24px;
+    font-size: 18px;
     padding-bottom: 5px;
-    padding-top: 5px;
+    padding-top: 3px;
 }
 
 div#divNota h2{
-    font-size: 20px;
+    font-size: 18px;
     padding-bottom: 3px;
     padding-top: 3px;
 }
 
 div#divNota h3{
-    font-size: 16px;
+    font-size: 14px;
     padding-bottom: 2px;
-    padding-top: 2px;
+    padding-top: 3px;
+}
+
+div#divNota {
+    font-size: 12px;
 }
 
 div#editarProcedimento{
@@ -669,12 +670,12 @@ p#pDataProcesso {
     font-size: 16px;
     text-align: center;
     margin: 0;
-    padding: 0;   
-} 
+    padding: 0;
+}
 
 p#pAssuntoProcesso {
     font-size: 14px;
     text-align: center;
     margin: 0;
-    padding: 8px;;   
-} 
+    padding: 8px;;
+}
