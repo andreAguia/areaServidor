@@ -106,15 +106,15 @@ class Procedimento{
     /**
      * Fornece todos os dados da categoria
      */
-
-        # Pega os dados
-        $select="SELECT *
-                   FROM tbprocedimento
-                  WHERE idProcedimento = $idProcedimento";
-
+        
         $intra = new Intra();
-        $dados = $intra->select($select,FALSE);
+        
+        # Pega os dados
+        $select = "SELECT *
+                     FROM tbprocedimento
+                    WHERE idProcedimento = $idProcedimento";
 
+        $dados = $intra->select($select,FALSE);
         return $dados;
     }
 
@@ -151,65 +151,78 @@ class Procedimento{
 
         # Pega os dados
         $dados = $this->get_dadosProcedimento($idProcedimento);
-        $link = $dados["link"];
-        $texto = $dados['textoProcedimento'];
-        $titulo = $dados['titulo'];
-        $descricao = $dados['descricao'];
-        $idPai = $dados['idPai'];
+        
+        $grid = new Grid();
+        $grid->abreColuna(12);
+        
+        if(!vazio($dados)){
 
-        # Dados do Pai
-        $dadosPai = $this->get_dadosProcedimento($idPai);
-        $pai = $dadosPai['titulo'];
+            $link = $dados["link"];
+            $texto = $dados['textoProcedimento'];
+            $titulo = $dados['titulo'];
+            $descricao = $dados['descricao'];
+            $idPai = $dados['idPai'];
 
-        # Monta o painel
-        $painel = new Callout();
-        $painel->abre();
+            # Dados do Pai
+            $dadosPai = $this->get_dadosProcedimento($idPai);
+            $pai = $dadosPai['titulo'];
 
-        # Botão de Editar
-        if(!vazio($idUsuario)){
-            if(Verifica::acesso($idUsuario,1)){
-                $divBtn = new Div("editarProcedimento");
-                $divBtn->abre();
+            # Monta o painel
+            $painel = new Callout();
+            $painel->abre();
 
-                $btnEditar = new Link("<i class='fi-pencil'></i>","procedimentoNota.php?fase=editar&id=$idProcedimento");
-                $btnEditar->set_class('button secondary');
-                $btnEditar->set_title('Editar o Procedimento');
-                $btnEditar->show();
+            # Botão de Editar
+            if(!vazio($idUsuario)){
+                if(Verifica::acesso($idUsuario,1)){
+                    $divBtn = new Div("editarProcedimento");
+                    $divBtn->abre();
 
-                $divBtn->fecha();
-            }
-        }
+                    $btnEditar = new Link("<i class='fi-pencil'></i>","procedimentoNota.php?fase=editar&id=$idProcedimento");
+                    $btnEditar->set_class('button secondary');
+                    $btnEditar->set_title('Editar o Procedimento');
+                    $btnEditar->show();
 
-        # Exibe o titulo do pai (quando houver)
-        if(!vazio($pai)){
-           p($pai,"procedimentoPai");
-        }
-
-        p($titulo,"procedimentoTitulo");
-        p($descricao,"procedimentoDescricao");
-        hr("procedimento");
-
-            # Div onde vai exibir o procedimento
-            $div = new Div("divNota");
-            $div->abre();
-
-            if(vazio($link)){
-
-                if(vazio($texto)){
-                    br(4);
-                    p("Não há conteúdo","center");
-                    br(4);
-                }else{
-                    echo $texto;
+                    $divBtn->fecha();
                 }
-            }else{
-                $figura = new Imagem(PASTA_FIGURAS.$link,$descricao,'100%','100%');
-                $figura->show();
             }
-            $div->fecha();
 
-        # Fecha o painel
-        $painel->fecha();
+            # Exibe o titulo do pai (quando houver)
+            if(!vazio($pai)){
+               p($pai,"procedimentoPai");
+            }
+
+            p($titulo,"procedimentoTitulo");
+            p($descricao,"procedimentoDescricao");
+            hr("procedimento");
+
+                # Div onde vai exibir o procedimento
+                $div = new Div("divNota");
+                $div->abre();
+
+                if(vazio($link)){
+
+                    if(vazio($texto)){
+                        br(4);
+                        p("Não há conteúdo","center");
+                        br(4);
+                    }else{
+                        echo $texto;
+                    }
+                }else{
+                    $figura = new Imagem(PASTA_FIGURAS.$link,$descricao,'100%','100%');
+                    $figura->show();
+                }
+                $div->fecha();
+
+            # Fecha o painel
+            $painel->fecha();
+        }else{
+            br(5);
+            p("Não há dados para serem exibidos","center");
+        }
+        
+        $grid->fechaColuna();
+        $grid->fechaGrid();
     }
 
     ###########################################################
