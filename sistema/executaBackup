@@ -4,19 +4,8 @@
 echo 'Executando backup'
 
 # Define os valores para conectar o banco de dados
-vv=$(hostname)
-if [ $vv == "grh1206" ]
-then
-    USUARIO="root"
-    SENHA="chewbacca"
-elif [ $vv == "alat-pc" ]
-then
-    USUARIO="root"
-    SENHA="chewbacca"
-else
-    USUARIO="andre"
-    SENHA="alat"
-fi
+USUARIO="root"
+SENHA="chewbacca"
 
 # Caminho
 CAMINHO="/var/www/html/_backup/"
