@@ -22,11 +22,8 @@ class BackupBancoDados{
      * 
      */
     
-    public function __construct($idUsuario = NULL){
+    public function __construct(){
         
-        if(!is_null($idUsuario)){
-            $this->idUsuario = $idUsuario;
-        }
     }
 
     ###########################################################
@@ -130,14 +127,16 @@ class BackupBancoDados{
 
         $mail->envia();
         
-        # Pega a data de hoje
-        $hoje = date("d/m/Y");    
+        # Data e Hora
+        $hoje = date("d/m/Y"); 
+        $hora = date("H");   
 
         # Atualiza a data do último backup
         $intra->set_variavel("backupData",$hoje);
+        $intra->set_variavel("backupHora",$hora);
 
         # Grava no log a atividade
-        $intra->registraLog($this->idUsuario,date("Y-m-d H:i:s"),"Backup $textoTipo realizado",NULL,NULL,6);
+        $intra->registraLog(NULL,date("Y-m-d H:i:s"),"Backup $textoTipo realizado",NULL,NULL,6);
     }
     
     ###########################################################

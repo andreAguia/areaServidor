@@ -146,27 +146,10 @@ if($acesso){
         
 ########################################################################################
         
-        case "backup" :
-            br(4);
-            aguarde();
-            br();
+        case "backup" :            
+            $processo = new Processo();
+            $processo->run("php backupManual.php");
             
-            # Limita a tela
-            $grid1 = new Grid("center");
-            $grid1->abreColuna(5);
-                p("Fazendo o backup ...","center");
-            $grid1->fechaColuna();
-            $grid1->fechaGrid();
-
-            loadPage('?fase=backup2');
-            break;
-
-        case "backup2" :            
-            # Realiza o backup
-            $backup = new BackupBancoDados($idUsuario);
-            $backup->set_tipo(2);
-            $backup->executa();
-
             loadPage('?fase=pastaBackup');
             break;
         

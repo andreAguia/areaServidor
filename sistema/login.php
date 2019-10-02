@@ -188,9 +188,9 @@ switch ($fase){
                 # Pega a data de hoje
                 $hoje = date("d/m/Y");       
                 
-                # Executa o backup
+                # Executa o primeiro backup ( o que analisa a data )
                 if(($intra->get_variavel("backupAutomatico")) AND ($hoje <> $backupData)){
-                    loadPage('?fase=backup1');
+                    loadPage('?fase=backup');
                 }else{                
                     # Verifica se o servidor está aniversariando hoje
                     if($pessoal->aniversariante($idServidor)){
@@ -307,41 +307,11 @@ switch ($fase){
         
 ################################################################################
         
-    case "backup1":
+    case "backup":
         
-        aguarde();
-        br(2);
-
-        # Limita a tela
-        $grid1 = new Grid("center");
-        $grid1->abreColuna(10);
-            
-            p("Você foi o primeiro a fazer login no sistema hoje!","center");
-            p("O sistema está programado a fazer backup no primeiro login do dia!","center");
-            p("Aguarde um pouco. Isso não irá demorar!!","center");
-            p("Fazendo o backup ...","center");
-                        
-            $div = new Div("center");
-            $div->abre();
-            
-            $figura = new Imagem(PASTA_FIGURAS.'cafe.png','Vê se faz café de macho !!',100,100);
-            $figura->show();
-            
-            $div->fecha();
-            
-            br(); 
-            p("Aproveite esse instante para fazer o café !!","center");
-        $grid1->fechaColuna();
-        $grid1->fechaGrid();
-       
-        loadPage('?fase=backup2');
-        break;
-    
-    case "backup2":
-
         # Realiza backup
-        $backup = new BackupBancoDados($idUsuario);
-        $backup->executa();
+        $processo = new Processo();
+        $processo->run("php backupAutomatico.php");
         
         # Pega o idServidor
         $idServidor = $intra->get_idServidor($idUsuario);
