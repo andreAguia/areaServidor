@@ -148,7 +148,7 @@ if($acesso){
         
         case "backup" :            
             $processo = new Processo();
-            $processo->run("php backupManual.php");
+            $processo->run("php backup.php 2 $idUsuario");
             
             loadPage('?fase=pastaBackup');
             break;

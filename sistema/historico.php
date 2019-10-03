@@ -287,6 +287,10 @@ if($acesso){
                                                     'operador' => '=',
                                                     'id' => 'logExclusao'),
                                               array('coluna' => 0,
+                                                    'valor' => 6,
+                                                    'operador' => '=',
+                                                    'id' => 'logBackup'),
+                                              array('coluna' => 0,
                                                     'valor' => 5,
                                                     'operador' => '=',
                                                     'id' => 'logLoginIncorreto')                                              

@@ -181,23 +181,12 @@ switch ($fase){
 
                 # Grava no log a atividade
                 $intra->registraLog($idUsuario,date("Y-m-d H:i:s"),'Login ('.BROWSER_NAME.' '.BROWSER_VERSION.' - '.SO.')');
-
-                # Verifica a data do último backup
-                $backupData = $intra->get_variavel("backupData");
-
-                # Pega a data de hoje
-                $hoje = date("d/m/Y");       
-                
-                # Executa o primeiro backup ( o que analisa a data )
-                if(($intra->get_variavel("backupAutomatico")) AND ($hoje <> $backupData)){
-                    loadPage('?fase=backup');
-                }else{                
-                    # Verifica se o servidor está aniversariando hoje
-                    if($pessoal->aniversariante($idServidor)){
-                        loadPage('?fase=parabens');
-                    }else{
-                        loadPage('areaServidor.php');
-                    }
+                                  
+                # Verifica se o servidor está aniversariando hoje
+                if($pessoal->aniversariante($idServidor)){
+                    loadPage('?fase=parabens');
+                }else{
+                    loadPage('areaServidor.php');
                 }
                 break;
                 
@@ -307,22 +296,6 @@ switch ($fase){
         
 ################################################################################
         
-    case "backup":
-        
-        # Realiza backup
-        $processo = new Processo();
-        $processo->run("php backupAutomatico.php");
-        
-        # Pega o idServidor
-        $idServidor = $intra->get_idServidor($idUsuario);
-        
-        # Verifica se o servidor está aniversariando hoje
-        if($pessoal->aniversariante($idServidor)){
-            loadPage('?fase=parabens');
-        }else{
-            loadPage('areaServidor.php');
-        }
-        break;
 }
 
 # Termina a Página

@@ -223,15 +223,19 @@ div#divPermissao{
  * Histórico
  *******************************************/
 tr#logLogin{
-    background-color:#ccffcc;
+    background-color: #ccffcc;
 }
 
 tr#logExclusao{
-    background-color:#ffdcc3;
+    background-color: #ffdcc3;
 }
 
 tr#logLoginIncorreto{
     background-color: lightsalmon;
+}
+
+tr#logBackup{
+    background-color: #99ccff;
 }
 
 div#divContagemExterna{

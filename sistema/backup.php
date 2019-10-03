@@ -12,6 +12,6 @@
     include ("_config.php");
     
     # Realiza o backup
-    $backup = new BackupBancoDados($idUsuario);
-    $backup->set_tipo(1);
+    $backup = new BackupBancoDados($argv[2]);
+    $backup->set_tipo($argv[1]);
     $backup->executa();

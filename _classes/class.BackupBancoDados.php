@@ -22,8 +22,11 @@ class BackupBancoDados{
      * 
      */
     
-    public function __construct(){
+    public function __construct($idUsuario = NULL){
         
+        if(!is_null($idUsuario)){
+            $this->idUsuario = $idUsuario;
+        }
     }
 
     ###########################################################
@@ -50,6 +53,12 @@ class BackupBancoDados{
         
         # Conecta ao Banco de Dados
         $intra = new Intra();
+        
+        # Data e Hora
+        $hora = date("H");   
+
+        # Atualiza a hora do último backup
+        $intra->set_variavel("backupHora",$hora);
 
         # Define o nome do arquivo
         $pedaco1 = date("Y.m.d");
@@ -57,7 +66,7 @@ class BackupBancoDados{
         $arquivo = $pedaco1."_".$pedaco2;
 
         # Executa o backup no Linux
-        shell_exec("./executaBackup $arquivo");
+        shell_exec("/var/www/html/areaServidor/sistema/executaBackup $arquivo");
 
         # Envia o arquivo por email
         $pedaco1 = date_to_php($pedaco1,".");
@@ -126,17 +135,9 @@ class BackupBancoDados{
         $mail->set_anexo($caminho.$arquivo);
 
         $mail->envia();
-        
-        # Data e Hora
-        $hoje = date("d/m/Y"); 
-        $hora = date("H");   
-
-        # Atualiza a data do último backup
-        $intra->set_variavel("backupData",$hoje);
-        $intra->set_variavel("backupHora",$hora);
 
         # Grava no log a atividade
-        $intra->registraLog(NULL,date("Y-m-d H:i:s"),"Backup $textoTipo realizado",NULL,NULL,6);
+        $intra->registraLog($this->idUsuario,date("Y-m-d H:i:s"),"Backup $textoTipo realizado",NULL,NULL,6);
     }
     
     ###########################################################
