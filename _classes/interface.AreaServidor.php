@@ -540,7 +540,7 @@
         # Documentação
         $botao = new BotaoGrafico();
         $botao->set_label('Documentação');
-        $botao->set_target('blank');
+        #$botao->set_target('blank');
         $botao->set_title('Documentação do Sistema');
         $botao->set_imagem(PASTA_FIGURAS.'documentacao.png',$tamanhoImage,$tamanhoImage);
         $botao->set_url('documentacao.php');

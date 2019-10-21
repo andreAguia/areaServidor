@@ -41,13 +41,13 @@ if($acesso){
     $grid->abreColuna(12);  
     
     # Cria um menu
-    #$menu1 = new MenuBar("button-group");
+    $menu1 = new MenuBar("button-group");
 
     # Sair da Área do Servidor
     $linkVoltar = new Link("Voltar","administracao.php");
     $linkVoltar->set_class('button');
     $linkVoltar->set_title('Voltar a página anterior');    
-    #$menu1->add_link($linkVoltar,"left");
+    $menu1->add_link($linkVoltar,"left");
 
     # Procedimentos
     $linkProcedimento = new Link("Procedimentos","procedimentoNota.php");
@@ -55,7 +55,7 @@ if($acesso){
     $linkProcedimento->set_title('Gerencia as categorias');
     #$menu1->add_link($linkProcedimento,"right");
 
-    #$menu1->show();
+    $menu1->show();
     
     # Título
     titulo("Documentação");
