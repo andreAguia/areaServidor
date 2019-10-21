@@ -56,7 +56,7 @@ class DocumentaClasse
         $linhaComentarioMetodo = NULL;  // Determina a linha do início do comentário do método
         $linhaMetodo = NULL;            // Determina a linha da declaração do método
         
-        $caracteresAceitos = '#(),.|/:çãõáéíúóâê1234567890=';  // caracteres especiais aceitos nas descrições de variáveis e parâmetros
+        $caracteresAceitos = '#(),.|/:çãõáéíúóâê1234567890=_"';  // caracteres especiais aceitos nas descrições de variáveis e parâmetros
         
         # Define o arquivo e caminho da classe
         $lines = file($arquivo,FILE_TEXT);
@@ -285,7 +285,6 @@ class DocumentaClasse
                 
                 # Verifica se tem parametros
                 if(($linhaMetodo == $line_num) 
-                        AND ($numPalavra == 3)
                         AND (stristr($line, "()"))){
                     $areaCodigo = 3;
                 }else{
@@ -296,7 +295,7 @@ class DocumentaClasse
                         $nome = $piecesParam[0];
 
                         if($piecesParam[1] == "="){
-                            $padrao = substr($piecesParam[2],0,strlen($piecesParam[2])-1);
+                            $padrao = $piecesParam[2];
                             $tipo = $piecesParam[4];
                             $inicioDescricao = 5;
                         }else{
@@ -308,7 +307,7 @@ class DocumentaClasse
                         $nome = $piecesParam[3];
                         
                         if($piecesParam[4] == "="){
-                            $padrao = substr($piecesParam[5],0,strlen($piecesParam[5])-1);
+                            $padrao = $piecesParam[5];
                             $tipo = $piecesParam[7];
                             $inicioDescricao = 8;
                         }else{
@@ -316,17 +315,17 @@ class DocumentaClasse
                             $tipo = $piecesParam[4];
                             $inicioDescricao = 5;
                         }
-                        
-                        # Verifica se é um único parametro
-                        if (stristr($line, ")")){
-                            $nome = substr($nome,0,strlen($nome)-1);
-                        }
                     }
-
+                   
                     # agrupa as palavras da descrição
                     for($i = $inicioDescricao;$i < $numPalavra;$i++){
                         $descricao .= $piecesParam[$i]." ";
                     }
+                    
+                    # Retira os caracteres indesejados
+                    $caracIndesejados = array(',','(',')','"');
+                    $padrao = str_replace($caracIndesejados, "", $padrao);
+                    $nome = str_replace($caracIndesejados, "", $nome);
 
                     # Junta os parametros no novo array
                     $this->parametrosMetodo[$this->numMetodo][] = array($nome,

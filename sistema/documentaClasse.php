@@ -345,12 +345,12 @@ if($acesso){
 
             # Return
             if(isset($retornoMetodo[$metodo])){
-              echo 'Valor Retornado:';
+                p('Valor Retornado:',"documentacaoDescricaoClasse");
 
-              $callout = new Callout();
-              $callout->abre();
-                echo $retornoMetodo[$metodo];
-              $callout->fecha();
+                $callout = new Callout();
+                $callout->abre();
+                  p($retornoMetodo[$metodo],"documentacaoDescricaoClasse");
+                $callout->fecha();
             }
 
             # Nota
