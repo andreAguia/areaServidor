@@ -198,6 +198,7 @@ if($acesso){
             
             # Autor
             if(!is_null($autorClasse)){
+                br();
                 p('Autor: '.$autorClasse,"documentacaoAutor");
             }
 
@@ -207,11 +208,11 @@ if($acesso){
             # Abstração
             if(!is_null($abstracaoClasse)){
                 if($abstracaoClasse == "abstract"){
-                    callout("Classes Abstratas são super classes que não podem ser instanciadas diretamente, somente por herança.");
+                    callout("Classes Abstratas são super classes que não podem ser instanciadas diretamente, somente por herança.","success");
                 }
                 
                 if($abstracaoClasse == "final"){
-                    callout("Classes Final são classes que não podem ser herdadas.");
+                    callout("Classes Final são classes que não podem ser herdadas.","success");
                 }                
             }
 
@@ -235,7 +236,7 @@ if($acesso){
             if($deprecatedClasse){
                 $callout = new Callout("alert");
                 $callout->abre();
-                    p('<h6>DEPRECATED</h6> Esta classe deverá ser descontiuada nas próximas versões.<br/>Seu uso é desaconselhado.',"p#documentacaoDeprecated");
+                    p('<h6>DEPRECATED</h6> Esta classe deverá ser descontiuada nas próximas versões.<br/>Seu uso é desaconselhado.','documentacaoDeprecated');
                 $callout->fecha();
             }
 
@@ -331,7 +332,7 @@ if($acesso){
             if((isset($deprecatedMetodo[$metodo])) AND ($deprecatedMetodo[$metodo])){
                 $callout = new Callout("alert");
                 $callout->abre();
-                    p('<h6>DEPRECATED</h6> Este método deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.',"p#documentacaoDeprecated");
+                    p('DEPRECATED<br/> Este método deverá ser descontiuado nas próximas versões.<br/>Seu uso é desaconselhado.','documentacaoDeprecated');
                 $callout->fecha();
             }
 
