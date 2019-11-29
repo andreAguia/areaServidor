@@ -189,8 +189,6 @@
         
         $grid->fechaColuna();
         $grid->fechaGrid();
-        
-        
     }
         
     ##########################################################
@@ -211,7 +209,7 @@
         
         # Módulos
         self::moduloProjetos($idUsuario);
-        self::moduloUsuarios($idUsuario);        
+        self::moduloUsuarios($idUsuario);
                 
         $grid->fechaColuna();
         
@@ -232,8 +230,6 @@
         
         $grid->fechaColuna();
         $grid->fechaGrid();
-        
-        
     }
         
     ###########################################################
@@ -603,6 +599,15 @@
         $botao->set_imagem(PASTA_FIGURAS.'regOrf.png',$tamanhoImage,$tamanhoImage);
         $botao->set_url('registroOrfao.php');
         $menu->add_item($botao);
+
+        # Documentação
+        $botao = new BotaoGrafico();
+        $botao->set_label('Documentação');
+        #$botao->set_target('blank');
+        $botao->set_title('Documentação do Banco de Dados');
+        $botao->set_imagem(PASTA_FIGURAS.'documentacao.png',$tamanhoImage,$tamanhoImage);
+        $botao->set_url('documentaBd.php');
+        $menu->add_item($botao);      
 
         $menu->show();
         $painel->fecha();

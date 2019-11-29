@@ -19,7 +19,7 @@ if($acesso){
     AreaServidor::cabecalho();
     
     # Verifica a fase do programa
-    $banco = get('banco');
+    $banco = get('banco','grh');
     
     # Limita o tamanho da tela
     $grid = new Grid();
@@ -72,6 +72,7 @@ if($acesso){
                       DATA_LENGTH,
                       AUTO_INCREMENT
                  FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$banco'"; 
+
     $conteudo = $servico->select($select);
     
     $label = array("Nome","Descrição","Motor","Num. Registros","Tamanho Médio","Tamanho Total","Auto Incremento");

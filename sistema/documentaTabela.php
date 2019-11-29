@@ -56,12 +56,11 @@ if($acesso){
     $servico = new Doc();
 
     $select = "SELECT ORDINAL_POSITION,
-                      COLUMN_NAME,
+                      COLUMN_NAME,                      
+                      COLUMN_TYPE,
                       COLUMN_KEY,
                       EXTRA,
                       COLUMN_COMMENT,
-                      COLUMN_TYPE,
-                      CHARACTER_MAXIMUM_LENGTH,
                       COLUMN_DEFAULT,
                       IS_NULLABLE
                  FROM COLUMNS 
@@ -70,9 +69,9 @@ if($acesso){
 
     $conteudo = $servico->select($select);
 
-    $label = array("#","Nome","Chave","Extra","Descrição","Tipo","Tamanho","Padrão","Nulo");
+    $label = array("#","Nome","Tipo","Chave","Extra","Descrição","Padrão","Nulo");
     #$function = array("datetime_to_php",NULL,NULL,NULL,"get_nome");
-    $align = array("center","left","center","center","left");
+    $align = array("center","left","center","center","center","left");
 
     # Monta a tabela
     $tabela2 = new Tabela();

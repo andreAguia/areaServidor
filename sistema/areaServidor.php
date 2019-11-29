@@ -86,7 +86,7 @@ if($acesso){
             $linkSobre = new Link("Sobre","?fase=sobre");
             $linkSobre->set_class('button');
             $linkSobre->set_title('Exibe informações do Sistema');
-            #$menu1->add_link($linkSobre,"right");
+            $menu1->add_link($linkSobre,"right");
 
             $menu1->show();
 
