@@ -65,6 +65,7 @@ if($acesso){
                                  FROM tbprocedimento FILHO LEFT JOIN tbprocedimento PAI ON (FILHO.idPai = PAI.idProcedimento)
                                 WHERE FILHO.titulo LIKE "%'.$parametro.'%"
                                    OR FILHO.descricao LIKE "%'.$parametro.'%" 
+                                   OR PAI.titulo LIKE "%'.$parametro.'%"     
                              ORDER BY PAI.titulo, FILHO.numOrdem');
     # select do edita
     $objeto->set_selectEdita('SELECT titulo,
@@ -137,7 +138,7 @@ if($acesso){
                'title' => 'link',
                'label' => 'Diagrama (da pasta de diagramas):',
                'tipo' => 'texto',
-               'col' => 5,
+               'col' => 4,
                'size' => 250),
         array ('linha' => 2,
                'nome' => 'numOrdem',
@@ -145,7 +146,7 @@ if($acesso){
                'label' => 'numOrdem:',
                'tipo' => 'texto',
                'required' => TRUE,
-               'col' => 1,
+               'col' => 2,
                'size' => 4),
         array ('linha' => 2,
                'nome' => 'visibilidade',

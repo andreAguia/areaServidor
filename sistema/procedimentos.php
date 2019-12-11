@@ -42,7 +42,7 @@ if($acesso){
     # Cria um menu
     $menu1 = new MenuBar("button-group");
 
-    # Sair da Área do Servidor
+    # Voltar
     $linkVoltar = new Link("Voltar","../../grh/grhSistema/grh.php");
     $linkVoltar->set_class('button');
     $linkVoltar->set_title('Voltar a página anterior');    

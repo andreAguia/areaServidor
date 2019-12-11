@@ -36,7 +36,7 @@ class Procedimento{
                               descricao
                          FROM tbprocedimento
                         WHERE idPai = 0
-                  ORDER BY idPai,numOrdem';
+                  ORDER BY idPai, numOrdem';
         }else{
             $select = 'SELECT idProcedimento,
                               titulo,
@@ -44,7 +44,7 @@ class Procedimento{
                          FROM tbprocedimento
                         WHERE idPai = 0
                           AND visibilidade = 1
-                  ORDER BY idPai,numOrdem';
+                  ORDER BY idPai, numOrdem';
         }
 
         $dados = $intra->select($select);
@@ -129,7 +129,8 @@ class Procedimento{
         # Pega os dados
         $select="SELECT *
                    FROM tbprocedimento
-                  WHERE idPai = $idProcedimento";
+                  WHERE idPai = $idProcedimento
+                  ORDER BY numOrdem";
 
         if(!Verifica::acesso($idUsuario,1)){
             $select .= " AND visibilidade = 1";
