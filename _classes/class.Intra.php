@@ -521,7 +521,16 @@ class Intra extends Bd {
 	 
     */
 
-    public function registraLog($idUsuario,$data,$atividade,$tabela = NULL,$idValor = NULL,$tipo = 0,$idServidor = NULL,$ip = NULL,$browser = NULL) {        
+    public function registraLog($idUsuario,
+                                $data,
+                                $atividade,
+                                $tabela = NULL,
+                                $idValor = NULL,
+                                $tipo = 0,
+                                $idServidor = NULL,
+                                $ip = NULL,
+                                $browser = NULL) {
+        
         $campos = array('idUsuario','data','atividade','tabela','idValor','tipo','idServidor','ip','browser');
         $valor = array($idUsuario,$data,$atividade,$tabela,$idValor,$tipo,$idServidor,IP,BROWSER_NAME.' '.BROWSER_VERSION);
         parent::gravar($campos,$valor,NULL,'tblog','idlog',FALSE);
