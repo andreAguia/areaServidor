@@ -101,6 +101,13 @@ if($acesso){
     $objeto->set_label(array("Status","Id","Usuário","Nome","Permissões","Último Acesso", "Lotação","Cargo","Email","Editar"));
     #$objeto->set_width(array(8,2,5,25,10,15,20,10,5));
     $objeto->set_align(array("center","center","center","left","left","center","center","left","left"));
+    
+    # Formatacao Condicional
+    $objeto->set_formatacaoCondicional(array( array('coluna' => 6,
+                                                    'valor' => 'UENF-DGA-GRH',
+                                                    'operador' => '<>',
+                                                    'id' => 'logExclusao')
+                                                    ));
 
     $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,NULL,"pessoal","pessoal","pessoal"));
     $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,NULL,"get_lotacao","get_cargo","get_emailUenf"));
