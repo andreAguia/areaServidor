@@ -73,17 +73,14 @@ if($acesso){
                                       usuario,
                                       idServidor,
                                       ultimoAcesso,
-                                      concat(IFNULL(tblotacao.UADM,"")," - ",IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")) lotacao,
+                                      idServidor,
                                       idServidor,
                                       idServidor,
                                       idUsuario,
                                       idUsuario
                                  FROM tbusuario
-                                 LEFT JOIN grh.tbhistlot USING (idServidor)
-                                 LEFT JOIN grh.tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
                                 WHERE usuario LIKE "%'.$parametro.'%"
-                                  AND ((grh.tbhistlot.data = (select max(data) from grh.tbhistlot where grh.tbhistlot.idServidor = tbusuario.idServidor)) OR (ISNULL(grh.tbhistlot.data)))
-                             ORDER BY (senha is NULL) asc, 1 asc');
+                             ORDER BY (senha is NULL), ultimoAcesso desc');
 
     # select do edita
     $objeto->set_selectEdita('SELECT usuario,
@@ -104,8 +101,8 @@ if($acesso){
     $objeto->set_width(array(8,2,5,25,10,15,20,10,5));
     $objeto->set_align(array("center","center","center","left","center","center","left","left"));
 
-    $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,NULL,"pessoal","pessoal"));
-    $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,NULL,"get_cargo","get_emailUenf"));
+    $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,"pessoal","pessoal","pessoal"));
+    $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,"get_lotacao","get_cargo","get_emailUenf"));
     $objeto->set_funcao(array("statusUsuario",NULL,NULL,NULL,"datetime_to_php"));
     
     $objeto->set_botaoExcluir(FALSE);
