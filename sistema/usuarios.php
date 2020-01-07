@@ -72,6 +72,7 @@ if($acesso){
                                       idUsuario,
                                       usuario,
                                       idServidor,
+                                      idUsuario,
                                       ultimoAcesso,
                                       idServidor,
                                       idServidor,
@@ -96,14 +97,14 @@ if($acesso){
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
-    #$objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
-    $objeto->set_label(array("Status","Id","Usuário","Nome","Último Acesso", "Lotação","Cargo","Email","Editar"));
-    $objeto->set_width(array(8,2,5,25,10,15,20,10,5));
-    $objeto->set_align(array("center","center","center","left","center","center","left","left"));
+    #$objeto->set_label(array("Status","Id","Usuário","Nome","Permissões",Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
+    $objeto->set_label(array("Status","Id","Usuário","Nome","Permissões","Último Acesso", "Lotação","Cargo","Email","Editar"));
+    #$objeto->set_width(array(8,2,5,25,10,15,20,10,5));
+    $objeto->set_align(array("center","center","center","left","left","center","center","left","left"));
 
-    $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,"pessoal","pessoal","pessoal"));
-    $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,"get_lotacao","get_cargo","get_emailUenf"));
-    $objeto->set_funcao(array("statusUsuario",NULL,NULL,NULL,"datetime_to_php"));
+    $objeto->set_classe(array(NULL,NULL,NULL,"pessoal",NULL,NULL,"pessoal","pessoal","pessoal"));
+    $objeto->set_metodo(array(NULL,NULL,NULL,"get_nome",NULL,NULL,"get_lotacao","get_cargo","get_emailUenf"));
+    $objeto->set_funcao(array("statusUsuario",NULL,NULL,NULL,"get_permissoes","datetime_to_php"));
     
     $objeto->set_botaoExcluir(FALSE);
     $objeto->set_botaoEditar(FALSE);

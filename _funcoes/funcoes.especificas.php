@@ -174,4 +174,36 @@ function verificaPasta($idServidorPesquisado){
 }
 
 ##########################################################
+/**
+ * Função que exibe em forma de texto as regras(permissões) para esse servidorum servidor
+ */
+
+function get_permissoes($idUsuario){
+    
+    $select = "SELECT nome 
+                 FROM tbregra JOIN tbpermissao USING (idRegra)
+                WHERE tbpermissao.idUsuario = $idUsuario
+                ORDER BY nome";
+    
+    $intra = new Intra();
+    $row = $intra->select($select);
+    $count = $intra->count($select);
+    
+    # Prepara a variável
+    $retorno = NULL;
+    $contador = 0;
+    
+    # Exibe as permissões
+    foreach($row as $pp){
+        $retorno .= $pp[0];
+        $contador++;
+        if($contador < $count){
+            $retorno.= "<br/>";
+        }
+    }
+    
+    echo $retorno;
+}
+
+##########################################################
 
