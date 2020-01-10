@@ -245,6 +245,9 @@ if($acesso)
                 # Retira a edição
                 $lista->set_permiteEditar(FALSE);
                 
+                # Retira o detalhado
+                $lista->set_detalhado(FALSE);
+                
                 # Paginação
                 $lista->set_paginacao(TRUE);
                 $lista->set_paginacaoInicial($paginacao);

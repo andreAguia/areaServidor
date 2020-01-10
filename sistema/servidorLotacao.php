@@ -150,6 +150,10 @@ if($acesso)
                 
                 # Edição
                 $lista->set_permiteEditar(FALSE);
+                
+                # Retira o detalhado
+                $lista->set_detalhado(FALSE);
+                
                 $lista->showTabela();
 
             $grid->fechaColuna();
