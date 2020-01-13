@@ -218,8 +218,8 @@ if($acesso) {
             #$tabela->set_width(array(80,10,10));
             $tabela->set_align(array("left","center","center"));
             $tabela->set_funcao(array(NULL,NULL,"formataMoeda"));
-            $tabela->set_classe(array(NULL,NULL,NULL,NULL,'pessoal','pessoal'));
-            $tabela->set_metodo(array(NULL,NULL,NULL,NULL,'get_servidoresCargoComissao','get_cargoComissaoVagasDisponiveis'));
+            $tabela->set_classe(array(NULL,NULL,NULL,NULL,'CargoComissao','CargoComissao'));
+            $tabela->set_metodo(array(NULL,NULL,NULL,NULL,'get_numServidoresNomeados','get_vagasDisponiveis'));
             $tabela->show();
             
             $grid->fechaColuna();
