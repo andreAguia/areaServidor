@@ -220,33 +220,39 @@ if($acesso)
                 $lista = new ListaServidores('Servidores');
                 if(!is_null($parametroNomeMat)){
                     $lista->set_matNomeId($parametroNomeMat);
+                    $lista->set_paginacao(FALSE);
                 }
                 
                 if($parametroCargo <> "*"){
                     $lista->set_cargo($parametroCargo);
+                    $lista->set_paginacao(FALSE);
                 }
 
                 if($parametroCargoComissao <> "*"){
                     $lista->set_cargoComissao($parametroCargoComissao);
+                    $lista->set_paginacao(FALSE);
                 }
 
                 if($parametroLotacao <> "*"){
                     $lista->set_lotacao($parametroLotacao);
+                    $lista->set_paginacao(FALSE);
                 }
                 
                 if($parametroPerfil <> "*"){
                     $lista->set_perfil($parametroPerfil);
+                    $lista->set_paginacao(FALSE);
                 }
 
                 if($parametroSituacao <> "*"){
                     $lista->set_situacao($parametroSituacao);
+                    $lista->set_paginacao(FALSE);
                 }
                 
                 # Retira a edição
                 $lista->set_permiteEditar(FALSE);
                 
                 # Retira o detalhado
-                $lista->set_detalhado(FALSE);
+                #$lista->set_detalhado(FALSE);
                 
                 # Paginação
                 $lista->set_paginacao(TRUE);
