@@ -275,6 +275,43 @@ div#divUsuariosHoje{
     padding: 5px;
 }
 
+/************************************
+* Manual de Procedimentos
+****************************************/
+
+p#vagaCentro{
+    font-size: 30px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+p#vagaCargo{
+    font-size: 12px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+p#vagaId{
+    font-size: 12px;    
+    padding: 0px;
+    margin: -10px;
+    color:#8a8a8a;
+    float: right;
+}
+
+p#vagaOrigem{
+    font-size: 10px;
+    text-align: center;
+    padding: 15px 0px 0px;
+    margin: 0px;
+}
+
+a#editarVaga{
+    position: absolute;
+}
+
 /*******************************************
  * Rotina que lista dados do servidor
  *******************************************/

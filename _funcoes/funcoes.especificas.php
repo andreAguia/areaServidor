@@ -206,4 +206,22 @@ function get_permissoes($idUsuario){
 }
 
 ##########################################################
+/**
+ * Função que exibe em forma de texto as regras(permissões) para esse servidorum servidor
+ */
+
+function exibeTarefa($texto){
+    
+    # Div onde vai exibir o procedimento
+    $div = new Div("divNota");
+    $div->abre();
+    
+    echo $texto;
+    
+    $div->fecha();
+}
+    
+
+##########################################################
+
 

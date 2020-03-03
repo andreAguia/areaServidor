@@ -286,6 +286,17 @@
             $botao->set_accesskey('D');
             $menu->add_item($botao);
         }
+        
+        # Controle de procedimentos 2
+        if(Verifica::acesso($idUsuario,1)){
+            $botao = new BotaoGrafico();
+            $botao->set_label('Rotinas');
+            $botao->set_url('rotina.php');
+            #$botao->set_url('pastaDigitalizada.php');
+            $botao->set_imagem(PASTA_FIGURAS.'rotina.jpg',$tamanhoImage,$tamanhoImage);
+            $botao->set_title('Sistema de controle de manuais de procedimentos');
+            $menu->add_item($botao);
+        }
 
         $menu->show();
         $painel->fecha();
