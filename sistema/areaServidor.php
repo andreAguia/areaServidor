@@ -86,7 +86,7 @@ if($acesso){
             $linkSobre = new Link("Sobre","?fase=sobre");
             $linkSobre->set_class('button');
             $linkSobre->set_title('Exibe informações do Sistema');
-            $menu1->add_link($linkSobre,"right");
+            #$menu1->add_link($linkSobre,"right");
 
             $menu1->show();
 
@@ -329,7 +329,7 @@ if($acesso){
             $grid->abreColuna(12);
             
             # botão voltar
-            botaoVoltar("?","Voltar","Volta ao Menu principal");
+            botaoVoltar("../../grh/grhSistema/grh.php","Voltar","Volta ao Menu principal");
             
             # Título
             titulo("Detalhes das Atualizações");
@@ -344,26 +344,19 @@ if($acesso){
             $atualizacoes = $intra->get_atualizacoes();
             
             # Percorre os dados
-            $painel3 = new Callout();
-            $painel3->set_title('Alterações');
-            $painel3->abre();
-            
-            # Percorre os dados
             foreach ($atualizacoes as $valor) {
                 $grid2 = new Grid("center");
                 $grid2->abreColuna(6);
                     p("Versão:".$valor[0],"f14");
                 $grid2->fechaColuna();
                 $grid2->abreColuna(6);
-                    p(date_to_php($valor[1]),"right","f10"); 
+                    p(date_to_php($valor[1]),"right","f14"); 
                 $grid2->fechaColuna();
                 $grid2->fechaGrid();
                 
                 p("<pre>".$valor[2]."</pre>");
                 #hr();
              }
-                
-            $painel3 ->fecha();
            
             $grid->fechaColuna();
             $grid->fechaGrid();
