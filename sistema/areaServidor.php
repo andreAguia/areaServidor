@@ -355,7 +355,7 @@ if($acesso){
                 $grid2->fechaGrid();
                 
                 p("<pre>".$valor[2]."</pre>");
-                #hr();
+                br();
              }
            
             $grid->fechaColuna();
