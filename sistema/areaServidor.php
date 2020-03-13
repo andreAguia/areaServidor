@@ -320,50 +320,6 @@ if($acesso){
             $grid->fechaColuna();
             $grid->fechaGrid();
             break;
-            
-##################################################################
-        
-        case "atualizacoes" :            
-            # Limita a tela
-            $grid = new Grid();
-            $grid->abreColuna(12);
-            
-            # botão voltar
-            botaoVoltar("../../grh/grhSistema/grh.php","Voltar","Volta ao Menu principal");
-            
-            # Título
-            titulo("Detalhes das Atualizações");
-            #p("Detalhes das Atualizações","center","f16");
-            br();
-            
-            # Limita ainda mais a tela paara o painel
-            $grid = new Grid("center");
-            $grid->abreColuna(11);
-            
-            # Pega os dados 
-            $atualizacoes = $intra->get_atualizacoes();
-            
-            # Percorre os dados
-            foreach ($atualizacoes as $valor) {
-                $grid2 = new Grid("center");
-                $grid2->abreColuna(6);
-                    p("Versão:".$valor[0],"f14");
-                $grid2->fechaColuna();
-                $grid2->abreColuna(6);
-                    p(date_to_php($valor[1]),"right","f14"); 
-                $grid2->fechaColuna();
-                $grid2->fechaGrid();
-                
-                p("<pre>".$valor[2]."</pre>");
-                br();
-             }
-           
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-            
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-            break;
 
 ##################################################################
                       
