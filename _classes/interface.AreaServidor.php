@@ -157,32 +157,16 @@
         # Cria Grid
         $grid = new Grid();
         
-        if(Verifica::acesso($idUsuario,2)){ 
-            
-            $colunaPequena = 4;
-            
-             # Primeira Coluna
-            $grid->abreColuna(12,6,4);
-
-            # Módulos
-            self::moduloSistemas($idUsuario);
-
-            $grid->fechaColuna();
-            
-        }else{
-            $colunaPequena = 6;
-        }
-        
-        # Segunda Coluna
-        $grid->abreColuna(12,6,$colunaPequena);
+        # Primeira Coluna
+        $grid->abreColuna(12,6);
         
         # Módulos
         self::moduloServidoresUniversidade($idUsuario);
                 
         $grid->fechaColuna();
         
-        # Terceira Coluna
-        $grid->abreColuna(12,6,$colunaPequena);
+        # Segunda Coluna
+        $grid->abreColuna(12,6);
 
         # Módulos
         self::moduloSobreServidor();
@@ -230,76 +214,6 @@
         
         $grid->fechaColuna();
         $grid->fechaGrid();
-    }
-        
-    ###########################################################
-        
-    /**
-     * Método moduloSistemas
-     * 
-     * Exibe o menu de Sistemas
-     */
-    
-    private static function moduloSistemas($idUsuario){
-        
-        $painel = new Callout();
-        $painel->abre();
-        
-        # Título
-        titulo('Sistemas');
-        $tamanhoImage = 64;
-        br();
-        
-        # Inicia o menu
-        $menu = new MenuGrafico(2);
-
-        # Sistema de Pessoal
-        if(Verifica::acesso($idUsuario,2)){   
-            $botao = new BotaoGrafico();
-            $botao->set_label('Sistema de Pessoal');
-            $botao->set_url('../../grh/grhSistema/grh.php');
-            $botao->set_imagem(PASTA_FIGURAS.'sistemaPessoal.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Acessa o Sistema de Pessoal');
-            $botao->set_accesskey('P');
-            $menu->add_item($botao);
-        }
-
-        # Sistema de Processos
-        if(Verifica::acesso($idUsuario,5)){                    
-            $botao = new BotaoGrafico();
-            $botao->set_label('Sistema de Processos');
-            $botao->set_url('processo.php');
-            $botao->set_imagem(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Sistema de controle de processos');
-            $botao->set_target("_blank");
-            $menu->add_item($botao);
-        }
-
-        # Controle de pastas Digitalizadas
-        if(Verifica::acesso($idUsuario,4)){
-            $botao = new BotaoGrafico();
-            $botao->set_label('Pastas Digitalizadas');
-            $botao->set_url('?fase=pastasDigitalizadas');
-            #$botao->set_url('pastaDigitalizada.php');
-            $botao->set_imagem(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Sistema de controle de pastas digitalizadas');
-            $botao->set_accesskey('D');
-            $menu->add_item($botao);
-        }
-        
-        # Controle de procedimentos 2
-        if(Verifica::acesso($idUsuario,1)){
-            $botao = new BotaoGrafico();
-            $botao->set_label('Rotinas');
-            $botao->set_url('rotina.php');
-            #$botao->set_url('pastaDigitalizada.php');
-            $botao->set_imagem(PASTA_FIGURAS.'rotina.jpg',$tamanhoImage,$tamanhoImage);
-            $botao->set_title('Sistema de controle de manuais de procedimentos');
-            $menu->add_item($botao);
-        }
-
-        $menu->show();
-        $painel->fecha();
     }
         
     ###########################################################
@@ -702,6 +616,15 @@
         $botao->set_imagem(PASTA_FIGURAS.'contratos.png',$tamanhoImage,$tamanhoImage);
         $botao->set_title('Sistema de notas dos sistemas');
         $botao->set_target("_blank");
+        $menu->add_item($botao);
+        
+        # Controle de procedimentos 2
+        $botao = new BotaoGrafico();
+        $botao->set_label('Rotinas');
+        $botao->set_url('rotina.php');
+        #$botao->set_url('pastaDigitalizada.php');
+        $botao->set_imagem(PASTA_FIGURAS.'rotina.jpg',$tamanhoImage,$tamanhoImage);
+        $botao->set_title('Sistema de controle de manuais de procedimentos');
         $menu->add_item($botao);
 
         $menu->show();

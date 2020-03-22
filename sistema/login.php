@@ -186,7 +186,11 @@ switch ($fase){
                 if($pessoal->aniversariante($idServidor)){
                     loadPage('?fase=parabens');
                 }else{
-                    loadPage('areaServidor.php');
+                    if(Verifica::acesso($idUsuario,2)){
+                        loadPage("../../grh/grhSistema/grh.php");
+                    }else{
+                        loadPage('areaServidor.php');
+                    }
                 }
                 break;
                 
@@ -235,9 +239,7 @@ switch ($fase){
         $pagina = 'areaServidor.php';
         if(Verifica::acesso($idUsuario,2)){
             $pagina = '../../grh/grhSistema/grh.php';
-        }
-
-        if(Verifica::acesso($idUsuario,1)){
+        }else{
             $pagina = 'areaServidor.php';
         }
         
@@ -282,7 +284,6 @@ switch ($fase){
         $linkBotaoVoltar = new Button('Continua');
         $linkBotaoVoltar->set_title('Continua');
         $linkBotaoVoltar->set_url($pagina);
-        $linkBotaoVoltar->set_accessKey('C');
         $menu->add_link($linkBotaoVoltar,"right");
 
         $menu->show();

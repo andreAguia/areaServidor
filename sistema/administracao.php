@@ -52,7 +52,23 @@ if($acesso){
             set_session('idNota');
             set_session('idCaderno');
     
-            botaoVoltar('areaServidor.php');
+            # Cria um menu
+            $menu = new MenuBar();
+
+            # Voltar
+            $linkVoltar = new Link("Voltar","../../grh/grhSistema/grh.php");
+            $linkVoltar->set_class('button');
+            $linkVoltar->set_title('Voltar');
+            $menu->add_link($linkVoltar,"left");
+            
+            # Área do Servidor
+            $linkArea = new Link("Área do Servidor","areaServidor.php");
+            $linkArea->set_class('button');
+            $linkArea->set_title('Área do Servidor');
+            $menu->add_link($linkArea,"right");
+            
+            $menu->show();
+            
             titulo('Administração');
             br();
             
