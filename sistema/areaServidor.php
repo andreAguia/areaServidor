@@ -28,6 +28,9 @@ if($acesso){
     
     # Verifica a fase do programa
     $fase = get('fase','menu'); # Qual a fase
+    
+    # Pega os parâmetros
+    $parametroAno = post('parametroAno',get_session('parametroAno',date("Y"))); 
 
     # Começa uma nova página
     $page = new Page();
@@ -165,56 +168,40 @@ if($acesso){
 
 ##################################################################
         
-        case "historicoLicenca" :
+        case "afastamentoGeral" :
             botaoVoltar('?');
             
             # Exibe os dados do Servidor            
             Grh::listaDadosServidor($idServidor);
             
-            # Pega os dados
-            $select ='(SELECT CONCAT(tbtipolicenca.nome,"<br/>",IFNULL(tbtipolicenca.lei,"")),
-                                     CASE tipo
-                                        WHEN 1 THEN "Inicial"
-                                        WHEN 2 THEN "Prorrogação"
-                                        end,
-                                     CASE alta
-                                        WHEN 1 THEN "Sim"
-                                        WHEN 2 THEN "Não"
-                                        end,
-                                     dtInicial,
-                                     numdias,
-                                     ADDDATE(dtInicial,numDias-1),
-                                     CONCAT(tblicenca.idTpLicenca,"&",idLicenca),
-                                     dtPublicacao,
-                                     idLicenca
-                                FROM tblicenca LEFT JOIN tbtipolicenca ON tblicenca.idTpLicenca = tbtipolicenca.idTpLicenca
-                               WHERE idServidor='.$idServidor.')
-                               UNION
-                               (SELECT (SELECT CONCAT(tbtipolicenca.nome,"<br/>",IFNULL(tbtipolicenca.lei,"")) FROM tbtipolicenca WHERE idTpLicenca = 6),
-                                       "",
-                                       "",
-                                       dtInicial,
-                                       tblicencapremio.numdias,
-                                       ADDDATE(dtInicial,tblicencapremio.numDias-1),
-                                       CONCAT("6&",tblicencapremio.idServidor),
-                                       tbpublicacaopremio.dtPublicacao,
-                                       idLicencaPremio
-                                  FROM tblicencapremio LEFT JOIN tbpublicacaopremio USING (idPublicacaoPremio)
-                                 WHERE tblicencapremio.idServidor = '.$idServidor.')
-                              ORDER BY 4 desc';
+            # Formulário de Pesquisa
+            $form = new Form('?fase=afastamentoGeral');
 
-            $result = $servidor->select($select);
-            
-            $tabela = new Tabela();
-            $tabela->set_titulo("Histórico de Licenças");
-            $tabela->set_conteudo($result);
-            $tabela->set_label(array("Licença ou Afastamento","Tipo","Alta","Inicio","Dias","Término","Processo","Publicação"));
-            $tabela->set_align(array("left"));
-            $tabela->set_funcao(array(NULL,NULL,NULL,'date_to_php',NULL,'date_to_php','exibeProcessoPremio','date_to_php'));
-            $tabela->show();
+            # Cria um array com os anos possíveis
+            $anoInicial = 1999;
+            $anoAtual = date('Y');
+            $anos = arrayPreenche($anoInicial,$anoAtual+2);
+
+            $controle = new Input('parametroAno','combo','Ano:',1);
+            $controle->set_size(8);
+            $controle->set_title('Filtra por Ano');
+            $controle->set_array($anos);
+            $controle->set_valor($parametroAno);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(3);
+            $form->add_item($controle);
+
+            $form->show();
+
+            $afast = new Afastamento();
+            $afast->set_idServidor($idServidor);
+            $afast->set_ano($parametroAno);
+            $afast->exibeTabela();
+            #$afast->exibeTimeline();
             
             # Grava no log a atividade
-            $atividade = 'Visualizou o próprio histórico de Licença na área do servidor';
+            $atividade = 'Visualizou o próprio histórico de afastamento na área do servidor';
             $Objetolog = new Intra();
             $data = date("Y-m-d H:i:s");
             $Objetolog->registraLog($idUsuario,$data,$atividade,NULL,NULL,7);
@@ -279,326 +266,6 @@ if($acesso){
             break;
         
 ##################################################################
-        
-        case "sobre" :
-            # Limita o tamanho da tela
-            br(3);
-            $grid = new Grid("center");
-            $grid->abreColuna(6);
-            
-            # Cria um menu
-            $menu2 = new MenuBar();
-            
-            $painel2 = new Callout();
-            $painel2->set_title('Sobre o Sistema');
-            #$painel2->set_botaoFechar(TRUE);
-            $painel2->abre();
-            
-            br();
-            p(SISTEMA,'grhTitulo');
-            p('Versão: '.VERSAO.'<br/>Atualizado em: '.ATUALIZACAO,'versao');
-
-            br();
-            p('Desenvolvedor: '.AUTOR,'versao');
-            p(EMAILAUTOR,'versao');
-            
-            # detalhes
-            $linkFecha = new Link("Detalhes","?fase=atualizacoes");
-            $linkFecha->set_class('button');
-            $linkFecha->set_title('Exibe os detalhes das atualizações');
-            $menu2->add_link($linkFecha,"left");
-            
-            # ok
-            $linkFecha = new Link("Ok","?");
-            $linkFecha->set_class('button');
-            $linkFecha->set_title('fecha esta janela');
-            $menu2->add_link($linkFecha,"right");
-            $menu2->show();
-            
-            $painel2 ->fecha();
-
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-            break;
-
-##################################################################
-                      
-        case "pastasDigitalizadas" :
-            
-            if(Verifica::acesso($idUsuario,4)){
-                br(4);
-                aguarde("Aguarde...");
-                loadPage("?fase=pastasDigitalizadas1");
-            }else{
-                loadPage("?");
-            }    
-            break;
-
-##################################################################
-                      
-        case "pastasDigitalizadas1" :
-            # Voltar
-            $grid = new Grid();
-            $grid->abreColuna(8);
-            botaoVoltar('?');
-            br(0);
-            
-            # Pega os parâmetros
-            $parametro = retiraAspas(post('parametro'));
-            
-            # Parâmetros
-            $form = new Form('?fase=pastasDigitalizadas1');
-
-                # Pesquisa por nome
-                $controle = new Input('parametro','texto','Pesquisa por nome:',1);
-                $controle->set_size(55);
-                $controle->set_title('Pesquisa por nome');
-                $controle->set_valor($parametro);
-                $controle->set_autofocus(TRUE);
-                $controle->set_onChange('formPadrao.submit();');
-                $controle->set_linha(1);
-                $controle->set_col(10);
-                $form->add_item($controle);
-                
-            $form->show();
-            
-            $grid->fechaColuna();
-            $grid->abreColuna(4);
-            
-                # Define a pasta
-                $pasta = "../../_arquivo/";
-                $numPasta = 0;
-                
-                # Define o array da tabela
-                $result = array();
-                
-                # Exibe um quadro com o resumo
-                if(file_exists($pasta)){        // Verifica se a pasta existe
-                
-                    # Calcula o número de pastas no diretótio de pastas
-                    $s = scandir($pasta);
-                    foreach($s as $k){
-                        if(($k <> ".") AND ($k <> "..")){
-                            $numPasta++;
-                            
-                            # Divide o nome da pasta
-                            $partes = explode('-',$k);
-                            
-                            # IdFuncional
-                            $idFuncionalServ = $partes[0];
-                            
-                            # IdServidor
-                            $idServidorServ = $servidor->get_idServidoridFuncional($idFuncionalServ);
-                            
-                            if(is_null($idServidorServ)){
-                                $nome = "Servidor Não Encontrado";
-                                $cargo = NULL;
-                                $lotacao = NULL;
-                                $perfil = NULL;
-                                $admissao = NULL;
-                            }else{
-                                # Nome
-                                $nome = $servidor->get_nome($idServidorServ);
-
-                                # Cargo
-                                $cargo = $servidor->get_cargo($idServidorServ);
-
-                                # Lotação
-                                $lotacao = $servidor->get_lotacao($idServidorServ);
-
-                                # Perfil
-                                $perfil = $servidor->get_perfil($idServidorServ);
-
-                                # Admissao
-                                $admissao = $servidor->get_dtAdmissao($idServidorServ);
-                            }
-                            
-                            # verifica o parametro
-                            if(vazio($parametro)){
-                                $result[] = array($idFuncionalServ,$nome,$cargo,$lotacao,$perfil,$admissao,$idServidorServ);
-                            }else{
-                                # Conta quantas vezes o parametro aparece no nome
-                                if(substr_count(strtolower(retiraAcento($nome)),strtolower(retiraAcento($parametro))) > 0){
-                                    $result[] = array($idFuncionalServ,$nome,$cargo,$lotacao,$perfil,$admissao,$idServidorServ);
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                $numServidores = $servidor->get_numServidoresAtivos();
-                $total = $numServidores - $numPasta;
-                
-                $conteudo = array(array("Quantidade",$numServidores),
-                                  array("Com Pasta Digitalizada",$numPasta),
-                                  array("Falta Digitalizar:",$total));
-            
-                $tabela1 = new Tabela();
-                $tabela1->set_conteudo($conteudo);
-                $tabela1->set_label(array("Servidores Ativos","Quantidade"));
-                $tabela1->set_align(array("left","center"));
-                $tabela1->set_totalRegistro(FALSE);
-                $tabela1->set_scroll(FALSE);
-                $tabela1->show();
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-            
-            $tabela = new Tabela();
-            $tabela->set_titulo("Servidores Com Pasta Digitalizada");
-            $tabela->set_conteudo($result);
-            $tabela->set_label(array("IdFuncional","Nome","Cargo","Lotação","Perfil","Admissão","Pasta"));
-            #$tabela->set_label(array("IdFuncional","Nome","Cargo","Lotação","Perfil","Admissão","Pasta"));
-            $tabela->set_align(array("center","left","left","left"));
-            $tabela->set_funcao(array (NULL,NULL,NULL,NULL,NULL,NULL,'verificaPasta'));
-            #$tabela->set_classe(array(NULL,NULL,"pessoal"));
-            #$tabela->set_metodo(array(NULL,NULL,"get_Cargo"));
-            if(Verifica::acesso($idUsuario,4)){
-                $tabela->show();
-            }else{
-                loadPage("?");
-            }    
-            break;
-
-##################################################################	
-        
-        case "pasta" :
-            # Voltar
-            botaoVoltar('?fase=pastasDigitalizadas');
-            br(0);
-            
-            # Pasta Funcional
-            $grid = new Grid();
-            $grid->abreColuna(4);
-            
-            # Título
-            tituloTable('Pasta Funcional');
-            
-            br();
-                        
-            # Pega o idfuncional
-            $idFuncional = intval($servidor->get_idFuncional($idServidorPesquisado));
-            
-            # Define a pasta
-            $pasta = "../../_arquivo/";
-            
-            $achei = NULL;
-            
-            # Encontra a pasta
-            foreach (glob($pasta.$idFuncional."*") as $escolhido) {
-                $achei = $escolhido;
-            }
-            
-            # Verifica se tem pasta desse servidor
-            if(file_exists($achei)){
-                
-                $grupoarquivo = NULL;
-                $contador = 0;
-                
-                # Inicia o menu
-                $tamanhoImage = 60;
-                $menu = new MenuGrafico(1);
-            
-                # pasta
-                $ponteiro  = opendir($achei."/");
-                while ($arquivo = readdir($ponteiro)) {
-
-                    # Desconsidera os diretorios 
-                    if($arquivo == ".." || $arquivo == "."){
-                        continue;
-                    }
-                    
-                    # Verifica a codificação do nome do arquivo
-                    if(codificacao($arquivo) == 'ISO-8859-1'){
-                        $arquivo = utf8_encode($arquivo);
-                    }
-
-                    # Divide o nome do arquivos
-                    $partesArquivo = explode('.',$arquivo);
-                    
-                    # Verifica se arquivo é da pasta
-                    if(substr($arquivo, 0, 5) == "Pasta"){
-                        $botao = new BotaoGrafico();
-                        $botao->set_label($partesArquivo[0]);
-                        $botao->set_url($achei.'/'.$arquivo);
-                        $botao->set_target('_blank');
-                        $botao->set_imagem(PASTA_FIGURAS.'pasta.png',$tamanhoImage,$tamanhoImage);
-                        $menu->add_item($botao);
-                        
-                        $contador++;
-                    }
-                }
-                if($contador >0){
-                    $menu->show();
-                }
-            }else{                
-                p("Nenhum arquivo encontrado.","center");
-            }
-            
-            #$callout->fecha();
-            $grid->fechaColuna();
-            $grid->abreColuna(8);
-            
-            #############################################################
-            
-            tituloTable('Processos');
-            br();
-            
-            # Verifica se tem pasta desse servidor
-            if(file_exists($achei)){
-                
-                $grupoarquivo = NULL;
-                 
-                # Inicia o menu
-                $tamanhoImage = 60;
-                $menu = new MenuGrafico(4);
-                
-                $numeroArquivos = 0;
-            
-                # pasta
-                $ponteiro  = opendir($achei."/");
-                while ($arquivo = readdir($ponteiro)) {
-
-                    # Desconsidera os diretorios 
-                    if($arquivo == ".." || $arquivo == "."){
-                        continue;
-                    }
-
-                    # Verifica a codificação do nome do arquivo
-                    if(codificacao($arquivo) == 'ISO-8859-1'){
-                        $arquivo = utf8_encode($arquivo);
-                    }
-                    
-                    # Divide o nome do arquivos
-                    $partesArquivo = explode('.',$arquivo);
-                    
-                    
-                    # Verifica se arquivo é da pasta
-                    if(substr($arquivo, 0, 5) <> "Pasta"){
-                        $numeroArquivos++;
-                        $botao = new BotaoGrafico();
-                        $botao->set_label($partesArquivo[0]);
-                        $botao->set_url($achei.'/'.$arquivo);
-                        $botao->set_target('_blank');
-                        $botao->set_imagem(PASTA_FIGURAS.'processo.png',$tamanhoImage,$tamanhoImage);
-                        $menu->add_item($botao);
-                    }
-                }
-                if($numeroArquivos>0){
-                    $menu->show();
-                }else{
-                    br(2);
-                    p("Nenhum arquivo encontrado.","center");
-                }
-            }else{
-                br(2);
-                p("Nenhum arquivo encontrado.","center");
-            }
-            
-            #$callout->fecha();
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-            
-    #############################################################
         
     }
     

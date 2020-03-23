@@ -233,7 +233,7 @@
         $tamanhoImage = 64;
         br();
         
-        $menu = new MenuGrafico(2);
+        $menu = new MenuGrafico(4);
             
         if(Verifica::acesso($idUsuario,3)){
             $botao = new BotaoGrafico();
@@ -286,12 +286,12 @@
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(2);
+        $menu = new MenuGrafico(3);
 
-        $botao = new BotaoGrafico(2);
-        $botao->set_label('Histórico de Licença');
-        $botao->set_url('?fase=historicoLicenca');
-        $botao->set_imagem(PASTA_FIGURAS.'licenca.jpg',$tamanhoImage,$tamanhoImage);
+        $botao = new BotaoGrafico();
+        $botao->set_label('Histórico de Afastamentos');
+        $botao->set_url('?fase=afastamentoGeral');
+        $botao->set_imagem(PASTA_FIGURAS.'afastamento.png',$tamanhoImage,$tamanhoImage);
         $botao->set_title('Exibe o seu histórico de licenças e afastamentos');
         $menu->add_item($botao);
 
