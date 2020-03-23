@@ -14,8 +14,8 @@ include ("_config.php");
 # Permissão de Acesso
 $acesso = Verifica::acesso($idUsuario);
 
-if($acesso)
-{    
+if($acesso){
+    
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
@@ -44,7 +44,13 @@ if($acesso)
     {
         case "":
             # Botão voltar
-            $linkBotao1 = new Link("Voltar",'areaServidor.php');
+            if(Verifica::acesso($idUsuario,2)){
+                $pagina = '../../grh/grhSistema/grh.php';
+            }else{
+                $pagina = 'areaServidor.php';
+            }
+            
+            $linkBotao1 = new Link("Voltar",$pagina);
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Volta para a página anterior');
             $linkBotao1->set_accessKey('V');

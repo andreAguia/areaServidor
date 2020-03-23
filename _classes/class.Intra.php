@@ -401,6 +401,28 @@ class Intra extends Bd {
 	###########################################################
   
 	/**
+	 * Método get_senha
+	 * Informa a senha (criptografada) 
+	 * 
+	 * @param string $usuario	matricula do servidor
+	 */
+	public function get_idPessoa($idUsuario){
+            
+            # verifica se o parametro foi informado
+            if(is_null($idUsuario)){
+                return 0;
+            }else{
+                $idServidor = $this->get_idServidor($idUsuario);
+                
+                $pessoal = new Pessoal();
+                $idPessoa = $pessoal->get_idPessoa($idServidor);
+                return $idPessoa;
+            }
+        }
+	
+	###########################################################
+  
+	/**
 	 * Método get_usuario
 	 * Informa a senha (criptografada) 
 	 * 
