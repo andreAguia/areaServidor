@@ -189,28 +189,21 @@
         $grid = new Grid();
         
         # Primeira Coluna
-        $grid->abreColuna(12,6,4);
+        $grid->abreColuna(12,6);
         
         # Módulos
-        self::moduloProjetos($idUsuario);
         self::moduloUsuarios($idUsuario);
-                
-        $grid->fechaColuna();
-        
-        # Terceira Coluna
-        $grid->abreColuna(12,6,4);
-        
-        # Módulos
         self::moduloAdministracaoSistemas($idUsuario);
-        self::moduloServidor($idUsuario);
+        self::moduloBanco($idUsuario);
                 
         $grid->fechaColuna();
         
-        # Terceira Coluna
-        $grid->abreColuna(12,6,4);
+        # Segunda Coluna
+        $grid->abreColuna(12,6);
 
         # Módulos
-        self::moduloBanco($idUsuario);
+        self::moduloProjetos($idUsuario);        
+        self::moduloServidor($idUsuario);
         
         $grid->fechaColuna();
         $grid->fechaGrid();
@@ -375,7 +368,7 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(5);
 
         # Administração de Usuários
         $botao = new BotaoGrafico();
@@ -432,7 +425,7 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(5);
 
         # Variáveis de Configuração
         $botao = new BotaoGrafico();
@@ -490,7 +483,7 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(5);
 
         # Backup
         $botao = new BotaoGrafico();
@@ -557,7 +550,7 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(5);
 
          # Informação do PHP
         $botao = new BotaoGrafico();
@@ -598,7 +591,7 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(5);
 
         # Variáveis de Configuração
         $botao = new BotaoGrafico();
