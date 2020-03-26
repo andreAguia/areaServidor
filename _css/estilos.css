@@ -720,3 +720,32 @@ p#pAssuntoProcesso {
     margin: 0;
     padding: 8px;;
 }
+
+/*******************************************
+ * Chat
+ *******************************************/
+
+div#divAreaMensagens{
+    width: 100%;
+    height: 80%;
+    border-top: #8a8a8a thin solid;
+        
+}
+
+hr#hrChat{
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 10px 0px;
+}
+
+img#chat{
+    border-radius: 30% 30% 30% 30%;
+    cursor:pointer;
+    padding-bottom: 10px;
+}
+
+p#pchatMensagem{
+    font-size: 14px;
+    text-align: left;
+    margin: 0px;
+    padding: 0px 0px 0px 0px;
+}

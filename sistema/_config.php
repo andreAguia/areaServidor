@@ -24,8 +24,8 @@ define("PASTA_FIGURAS","../_img/");                                # Figuras Esp
 define("PASTA_ESTILOS_GERAIS","../../_framework/_cssGerais/");     # Estilos Gerais (Foundation)
 define("PASTA_ESTILOS","../_css/");                                # Estilos Específicos
 
-# Fontes para PDF
-#define('FPDF_FONTPATH','../../_framework/_pdfFont/');
+# Uploads
+define("PASTA_FOTOS","../../_arquivos/fotos/");                     # Fotos dos Servidores
 
 # Tags aceitas em campos com htmlTag = TRUE
 define('TAGS','<p></p><a></a><br/><br><div></div><table></table><tr></tr><td></td><th></th><strong></strong>'
