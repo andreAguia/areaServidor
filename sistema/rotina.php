@@ -53,7 +53,7 @@ if($acesso){
     $objeto->set_nome('Procedimentos');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('areaServidor.php');
+    $objeto->set_voltarLista('administracao.php');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');

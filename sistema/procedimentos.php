@@ -43,7 +43,7 @@ if($acesso){
     $menu1 = new MenuBar("button-group");
 
     # Voltar
-    $linkVoltar = new Link("Voltar","../../grh/grhSistema/grh.php");
+    $linkVoltar = new Link("Voltar","administracao.php");
     $linkVoltar->set_class('button');
     $linkVoltar->set_title('Voltar a página anterior');    
     $menu1->add_link($linkVoltar,"left");
