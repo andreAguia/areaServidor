@@ -273,7 +273,7 @@ if($acesso){
     $tabela->set_titulo("Histórico do Dia");
     $tabela->set_conteudo($row);
     $tabela->set_label(array("Usuário","Data","IP","Tabela","Id","Servidor","","Atividade"));
-    $tabela->set_width(array(10,10,10,15,10,20,5,25));
+    $tabela->set_width(array(8,8,8,10,8,15,8,35));
     $tabela->set_align(array("center","center","center","center","center","left","center","left"));
     $tabela->set_funcao(array(NULL,"datetime_to_php"));
     $tabela->set_classe(array("intra",NULL,NULL,NULL,NULL,"Pessoal"));
