@@ -94,7 +94,7 @@ if($acesso){
     $result = $intra->select($select);
 
     $usuariosLogados = $result;
-    array_push($result,array(NULL,'-- Todos --'));
+    array_unshift($result,array(NULL,'-- Todos --'));
 
     $controle = new Input('usuarioLog','combo','Filtra por Usuário',1);
     $controle->set_size(30);
@@ -123,7 +123,7 @@ if($acesso){
 
     $result2 = $intra->select($select2);
 
-    array_push($result2,array(NULL,'-- Todos --'));
+    array_unshift($result2,array(NULL,'-- Todos --'));
 
     $controle = new Input('usuarioIp','combo','Filtra por IP',1);
     $controle->set_size(20);
@@ -152,7 +152,7 @@ if($acesso){
 
     $result3 = $intra->select($select3);
 
-    array_push($result3,array(NULL,'-- Todos --'));
+    array_unshift($result3,array(NULL,'-- Todos --'));
 
     $controle = new Input('tabela','combo','Tabela',1);
     $controle->set_size(20);
@@ -181,7 +181,7 @@ if($acesso){
 
     $result4 = $intra->select($select4);
 
-    array_push($result4,array(NULL,'-- Todos --'));
+    array_unshift($result4,array(NULL,'-- Todos --'));
 
     $controle = new Input('idTabela','combo','Id',1);
     $controle->set_size(20);
@@ -195,14 +195,15 @@ if($acesso){
 
     # Pega o id Servidor
     $result5 = $intra->select('SELECT DISTINCT idServidor,
-                                        idServidor
-                                   FROM tblog
+                                        tbpessoa.nome
+                                   FROM tblog JOIN grh.tbservidor USING (idServidor)
+                                              JOIN grh.tbpessoa USING (idPessoa)
                                   WHERE date(data) = "'.$parametro.'"
                                     AND idServidor IS NOT NULL  
                                ORDER BY 2');
-    array_push($result5,array(NULL,'-- Todos --'));
+    array_unshift($result5,array(NULL,'-- Todos --'));
 
-    $controle = new Input('idServidorPesquisado','combo','Id Servidor',1);
+    $controle = new Input('idServidorPesquisado','combo','Servidor',1);
     $controle->set_size(20);
     $controle->set_title('id Servidor');
     $controle->set_array($result5);
@@ -272,7 +273,7 @@ if($acesso){
     $tabela->set_titulo("Histórico do Dia");
     $tabela->set_conteudo($row);
     $tabela->set_label(array("Usuário","Data","IP","Tabela","Id","Servidor","","Atividade"));
-    #$tabela->set_width(array(5,15,15,10,10,5,5,35));
+    $tabela->set_width(array(10,10,10,15,10,20,5,25));
     $tabela->set_align(array("center","center","center","center","center","left","center","left"));
     $tabela->set_funcao(array(NULL,"datetime_to_php"));
     $tabela->set_classe(array("intra",NULL,NULL,NULL,NULL,"Pessoal"));
