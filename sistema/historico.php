@@ -298,14 +298,14 @@ if($acesso){
                                                     ));
     
     # Imagem Condicional
-    $imagemLogin = new Imagem(PASTA_FIGURAS.'login.png','Usuário efetuou o login',15,15);
-    $imagemInclusao = new Imagem(PASTA_FIGURAS.'logInclusao.png','Inclusão de Registro',15,15);
-    $imagemAlterar = new Imagem(PASTA_FIGURAS.'logAlterar.png','Alteração de Registro',15,15);
-    $imagemExclusao = new Imagem(PASTA_FIGURAS.'logExclusao.png','Exclusão de Registro',15,15);
-    $imagemRelatorio = new Imagem(PASTA_FIGURAS.'logRelatorio.png','Visualizou Relatório',15,15);
-    $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS.'loginIncorreto.png','Login Incorreto',15,15);
-    $imagemBackup = new Imagem(PASTA_FIGURAS.'backup2.png','Backup',15,15);
-    $imagemVer = new Imagem(PASTA_FIGURAS.'visualizar.png','Visualizou',15,15);
+    $imagemLogin = new Imagem(PASTA_FIGURAS.'login.png','Usuário efetuou o login',20,20);
+    $imagemInclusao = new Imagem(PASTA_FIGURAS.'logInclusao.png','Inclusão de Registro',20,20);
+    $imagemAlterar = new Imagem(PASTA_FIGURAS.'logAlterar.png','Alteração de Registro',20,20);
+    $imagemExclusao = new Imagem(PASTA_FIGURAS.'logExclusao.png','Exclusão de Registro',20,20);
+    $imagemRelatorio = new Imagem(PASTA_FIGURAS.'logRelatorio.png','Visualizou Relatório',20,20);
+    $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS.'loginIncorreto.png','Login Incorreto',20,20);
+    $imagemBackup = new Imagem(PASTA_FIGURAS.'backup2.png','Backup',20,20);
+    $imagemVer = new Imagem(PASTA_FIGURAS.'visualizar.png','Visualizou',20,20);
     
     $tabela->set_imagemCondicional(array(array('coluna' => 6,
                                                'valor' => 0,
