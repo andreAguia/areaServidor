@@ -218,13 +218,13 @@ if($acesso){
     $form->show();
     
     # select
-    $select = 'SELECT tipo,
-                      idUsuario,
+    $select = 'SELECT idUsuario,
                       data,
                       ip,
                       tabela,
                       idValor,
                       idServidor,
+                      tipo,
                       atividade,                                      
                       idlog
                  FROM tblog
@@ -271,26 +271,26 @@ if($acesso){
     $tabela = new Tabela();
     $tabela->set_titulo("Histórico do Dia");
     $tabela->set_conteudo($row);
-    $tabela->set_label(array("","Usuário","Data","IP","Tabela","Id","IdServidor","Atividade"));
-    $tabela->set_width(array(5,15,15,10,10,5,5,35));
-    $tabela->set_align(array("center","center","center","center","center","center","center","left"));
-    $tabela->set_funcao(array(NULL,NULL,"datetime_to_php",NULL,NULL,NULL,"exibeNomeTitle"));
-    $tabela->set_classe(array(NULL,"intra"));
-    $tabela->set_metodo(array(NULL,"get_usuario"));
-    
-    $tabela->set_formatacaoCondicional(array( array('coluna' => 0,
+    $tabela->set_label(array("Usuário","Data","IP","Tabela","Id","Servidor","","Atividade"));
+    #$tabela->set_width(array(5,15,15,10,10,5,5,35));
+    $tabela->set_align(array("center","center","center","center","center","left","center","left"));
+    $tabela->set_funcao(array(NULL,"datetime_to_php"));
+    $tabela->set_classe(array("intra",NULL,NULL,NULL,NULL,"Pessoal"));
+    $tabela->set_metodo(array("get_usuario",NULL,NULL,NULL,NULL,"get_nome"));
+        
+    $tabela->set_formatacaoCondicional(array( array('coluna' => 6,
                                                     'valor' => 0,
                                                     'operador' => '=',
                                                     'id' => 'logLogin'),                                              
-                                              array('coluna' => 0,
+                                              array('coluna' => 6,
                                                     'valor' => 3,
                                                     'operador' => '=',
                                                     'id' => 'logExclusao'),
-                                              array('coluna' => 0,
+                                              array('coluna' => 6,
                                                     'valor' => 6,
                                                     'operador' => '=',
                                                     'id' => 'logBackup'),
-                                              array('coluna' => 0,
+                                              array('coluna' => 6,
                                                     'valor' => 5,
                                                     'operador' => '=',
                                                     'id' => 'logLoginIncorreto')                                              
@@ -306,35 +306,35 @@ if($acesso){
     $imagemBackup = new Imagem(PASTA_FIGURAS.'backup2.png','Backup',15,15);
     $imagemVer = new Imagem(PASTA_FIGURAS.'visualizar.png','Visualizou',15,15);
     
-    $tabela->set_imagemCondicional(array(array('coluna' => 0,
+    $tabela->set_imagemCondicional(array(array('coluna' => 6,
                                                'valor' => 0,
                                                'operador' => '=',
                                                'imagem' => $imagemLogin),
-                                         array('coluna' => 0,
+                                         array('coluna' => 6,
                                                'valor' => 1,
                                                'operador' => '=',
                                                'imagem' => $imagemInclusao),
-                                         array('coluna' => 0,
+                                         array('coluna' => 6,
                                                'valor' => 2,
                                                'operador' => '=',
                                                'imagem' => $imagemAlterar),
-                                         array('coluna' => 0,
+                                         array('coluna' => 6,
                                                'valor' => 3,
                                                'operador' => '=',
                                                'imagem' => $imagemExclusao),
-                                         array('coluna' => 0,
+                                         array('coluna' => 6,
                                                'valor' => 4,
                                                'operador' => '=',
                                                'imagem' => $imagemRelatorio),
-                                         array('coluna' => 0,
+                                         array('coluna' => 6,
                                                'valor' => 5,
                                                'operador' => '=',
                                                'imagem' => $imagemLoginIncorreto),
-                                         array('coluna' => 0,
+                                         array('coluna' => 6,
                                                'valor' => 6,
                                                'operador' => '=',
                                                'imagem' => $imagemBackup),
-                                         array('coluna' => 0,
+                                         array('coluna' => 6,
                                                'valor' => 7,
                                                'operador' => '=',
                                                'imagem' => $imagemVer)

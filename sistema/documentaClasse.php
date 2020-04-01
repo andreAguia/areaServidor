@@ -256,55 +256,60 @@ if($acesso){
 
             # Exemplo
             if(!is_null($exemploClasse)){
-                # Define o arquivo de exemplo
-                $arquivoExemplo = PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse);
+                
+                # Vê quantos exemplos existem
+                $qtdadeExemploClasse = count($exemploClasse);
+                
+                # Percorre os exemplos
+                for ($i = 0; $i < $qtdadeExemploClasse; $i++) {                    
+                
+                    # Define o arquivo de exemplo
+                    $arquivoExemplo = PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse[$i]);
 
-                # Verifica se o arquivo existe
-                if(file_exists($arquivoExemplo)){
+                    # Verifica se o arquivo existe
+                    if(file_exists($arquivoExemplo)){
 
-                    # Exibe o exemplo
-                    p('Exemplo:',"documentacaoDescricaoClasse");
-                    echo '<pre>';
+                        # Exibe o exemplo
+                        p('Exemplo:',"documentacaoDescricaoClasse");
+                        echo '<pre>';
 
-                    # Variável que conta o número da linha
-                    $numLinhaExemplo = 1;
+                        # Variável que conta o número da linha
+                        $numLinhaExemplo = 1;
 
-                    # Percorre o arquivo
-                    $linesExample = file($arquivoExemplo);
+                        # Percorre o arquivo
+                        $linesExample = file($arquivoExemplo);
 
-                    # Percorre o arquivo e guarda os dados em um array
-                    foreach ($linesExample as $linha) {
-                        $linha = htmlspecialchars($linha);
+                        # Percorre o arquivo e guarda os dados em um array
+                        foreach ($linesExample as $linha) {
+                            $linha = htmlspecialchars($linha);
 
-                        # Exibe o número da linha
-                        #echo "<span id='numLinhaCodigo'>".formataNumLinha($numLinhaExemplo)."</span> ";
+                            # Exibe o código
+                            echo $linha;
 
-                        # Exibe o código
-                        echo $linha;
+                            # Incrementa o ~umero da linha
+                            $numLinhaExemplo++;
+                        }
+                        echo '</pre>';
 
-                        # Incrementa o ~umero da linha
-                        $numLinhaExemplo++;
+                        br();
+
+                        # Roda o exemplo
+                        p('O exemplo acima exibirá o seguinte resultado:',"documentacaoDescricaoClasse");
+
+                        # Cria borda para o exemplo
+                        $calloutExemplo = new Callout();
+                        $calloutExemplo->abre();
+
+                        include PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse[$i]);
+
+                        $calloutExemplo->fecha();
+                    }else{
+                        echo 'Exemplo:';
+                        $callout1 = new Callout();
+                        $callout1->abre();
+                        echo "Arquivo de exemplo não encontrado";
+                        $callout1->fecha();
                     }
-                    echo '</pre>';
-                    
-                    br();
-
-                    # Roda o exemplo
-                    p('O exemplo acima exibirá o seguinte resultado:',"documentacaoDescricaoClasse");
-                    
-                    # Cria borda para o exemplo
-                    $calloutExemplo = new Callout();
-                    $calloutExemplo->abre();
-
-                    include PASTA_CLASSES_GERAIS."exemplos/".rtrim($exemploClasse);
-
-                    $calloutExemplo->fecha();
-                }else{
-                    echo 'Exemplo:';
-                    $callout1 = new Callout();
-                    $callout1->abre();
-                    echo "Arquivo de exemplo não encontrado";
-                    $callout1->fecha();
                 }
             }            
             break;

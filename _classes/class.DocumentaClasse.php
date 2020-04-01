@@ -21,7 +21,7 @@ class DocumentaClasse
     private $deprecatedClasse = FALSE;      // Se a classe está sendo descontinuada
     private $variaveisClasse = NULL;        // Array com as variáveis da classe
     private $numVariaveis = 0;              // Inteiro que informa o número de variáveis de uma classe
-    private $exemploClasse = NULL;          // Arquivo de exemplo da classe
+    private $exemploClasse = NULL;          // array com os arquivso de exemplo da classe
     
     # dos Métodos
     private $numMetodo = 0;                 // Número de métodos de uma classe
@@ -212,7 +212,7 @@ class DocumentaClasse
             # Example
             if ((stristr($line, "@example")) AND ($this->numMetodo == 0)){
                 $posicao = stripos($line,'@');
-                $this->exemploClasse = substr($line, $posicao+9);
+                $this->exemploClasse[] = substr($line, $posicao+9);
             }
             
         #############################################################
@@ -257,7 +257,7 @@ class DocumentaClasse
             # Example
             if ((stristr($line, "@example")) AND ($areaCodigo == 3)){
                 $posicao = stripos($line,'@');
-                $this->exemploMetodo[$this->numMetodo] = substr($line, $posicao+9);
+                $this->exemploMetodo[$this->numMetodo][] = substr($line, $posicao+9);
             }    
 
             # Nota
