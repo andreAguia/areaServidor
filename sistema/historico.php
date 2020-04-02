@@ -306,6 +306,7 @@ if($acesso){
     $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS.'loginIncorreto.png','Login Incorreto',20,20);
     $imagemBackup = new Imagem(PASTA_FIGURAS.'backup2.png','Backup',20,20);
     $imagemVer = new Imagem(PASTA_FIGURAS.'visualizar.png','Visualizou',20,20);
+    $imagemUpload = new Imagem(PASTA_FIGURAS.'upload.png','Fez Upload',20,20);
     
     $tabela->set_imagemCondicional(array(array('coluna' => 6,
                                                'valor' => 0,
@@ -338,7 +339,11 @@ if($acesso){
                                          array('coluna' => 6,
                                                'valor' => 7,
                                                'operador' => '=',
-                                               'imagem' => $imagemVer)
+                                               'imagem' => $imagemVer),
+                                         array('coluna' => 6,
+                                               'valor' => 8,
+                                               'operador' => '=',
+                                               'imagem' => $imagemUpload)
                                         ));
     
     $tabela->show();
