@@ -151,34 +151,35 @@ if($acesso){
     $grid = new Grid();    
     $grid->abreColuna($col1P,$col1M,$col1L);
     
-    $div = new Div(NULL,"hide-for-small-only");
+    $div = new Div("menuNormal","hide-for-small-only");
     $div->abre();
+    br();
     
-    $form = new Form('?fase=pesquisa');
-    
-    $controle = new Input('parametro','pesquisa');
-    $controle->set_size(30);
-    $controle->set_linha(1);
-    $controle->set_col(12);
-    $controle->set_placeholder('Pesquisar');
-    $controle->set_title('Pesquisar');
-    $controle->set_onChange('formPadrao.submit();');
-    $form->add_item($controle);    
-        
-    $form->show();
-    
-    # Menu Cronológico
-    Gprojetos::menuFazendo($fase);
+        $form = new Form('?fase=pesquisa');
 
-    # Menu de Projetos
-    Gprojetos::menuProjetosAtivos($idProjeto);
+        $controle = new Input('parametro','texto');
+        $controle->set_size(30);
+        $controle->set_linha(1);
+        $controle->set_col(12);
+        $controle->set_placeholder('Pesquisar');
+        $controle->set_title('Pesquisar');
+        $controle->set_onChange('formPadrao.submit();');
+        $form->add_item($controle);    
 
-    # Menu de Etiquetas
-    Gprojetos::menuEtiquetas($etiqueta);
+        $form->show();
 
-    # Menu de Solicitantes
-    Gprojetos::menuSolicitante($solicitante);   
-    
+        # Menu Cronológico
+        Gprojetos::menuFazendo($fase);
+
+        # Menu de Projetos
+        Gprojetos::menuProjetosAtivos($idProjeto);
+
+        # Menu de Etiquetas
+        Gprojetos::menuEtiquetas($etiqueta);
+
+        # Menu de Solicitantes
+        Gprojetos::menuSolicitante($solicitante);   
+
     $div->fecha();
 
     $grid->fechaColuna();
@@ -470,11 +471,10 @@ if($acesso){
                 # Menu
                 $menu1 = new MenuBar("small button-group");
                 
-                # Voltar
-                $link4 = new Link("<i class='fi-arrow-left'></i>",$voltar);
-                $link4->set_class('button secondary');
-                $link4->set_title('Voltar');
-                $menu1->add_link($link4,"right");
+                $link1 = new Link("Voltar",$voltar);
+                $link1->set_class('button');
+                $link1->set_title('Voltar Sem Salvar');
+                $menu1->add_link($link1,"right");
                 
                 # Editar
                 $link4 = new Link("<i class='fi-pencil'></i>",'?fase=tarefaNova&idTarefa='.$idTarefa);
@@ -519,6 +519,7 @@ if($acesso){
             break;
         
 ###########################################################        
+            
         case "tarefaNova" :
             # Inclui uma tarefa nova ou edita uma já existente
                         
@@ -919,31 +920,31 @@ if($acesso){
     $div2 = new Div("campoPesquisa");
     $div2->abre();
     
-    $form = new Form('?fase=pesquisa');
-    
-    $controle = new Input('parametro','pesquisa');
-    $controle->set_size(30);
-    $controle->set_linha(1);
-    $controle->set_col(12);
-    $controle->set_placeholder('Pesquisar');
-    $controle->set_title('Pesquisar');
-    $controle->set_onChange('formPadrao.submit();');
-    $form->add_item($controle);    
-        
-    $form->show();
-    $div2->fecha();
-    
-    # Menu Cronológico
-    Gprojetos::menuFazendo($fase);
+        $form = new Form('?fase=pesquisa');
 
-    # Menu de Projetos
-    Gprojetos::menuProjetosAtivos($idProjeto);
+        $controle = new Input('parametro','texto');
+        $controle->set_size(30);
+        $controle->set_linha(1);
+        $controle->set_col(12);
+        $controle->set_placeholder('Pesquisar');
+        $controle->set_title('Pesquisar');
+        $controle->set_onChange('formPadrao.submit();');
+        $form->add_item($controle);    
 
-    # Menu de Etiquetas
-    Gprojetos::menuEtiquetas($etiqueta);
+        $form->show();
+        $div2->fecha();
 
-    # Menu de Solicitantes
-    Gprojetos::menuSolicitante($solicitante);   
+        # Menu Cronológico
+        Gprojetos::menuFazendo($fase);
+
+        # Menu de Projetos
+        Gprojetos::menuProjetosAtivos($idProjeto);
+
+        # Menu de Etiquetas
+        Gprojetos::menuEtiquetas($etiqueta);
+
+        # Menu de Solicitantes
+        Gprojetos::menuSolicitante($solicitante);   
     
     $div->fecha();
     

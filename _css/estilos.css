@@ -601,9 +601,15 @@ div#menuSuspenso{
     display: none;
     position: absolute;
     top: 50px;
-    height: 100%;
-    background-color: #f9f9f9;
+    background-color:#ededed;
     border:#f0f0f0 thin solid;
+}
+
+div#menuNormal{
+    top: 50px;
+    background-color:#ededed;
+    border:#f0f0f0 thin solid;
+    padding: 10px;
 }
 
 div#campoPesquisa{

@@ -26,7 +26,7 @@
         }elseif(($mes == 12) AND ($dia < 26)){
             $imagem = new Imagem(PASTA_FIGURAS.'uenf_natal.png','Feliz Natal',200,60);
         }else{
-            $imagem = new Imagem(PASTA_FIGURAS.'uenf.png','Uenf - Universidade do Norte Fluminense',190,60);
+            $imagem = new Imagem(PASTA_FIGURAS.'uenf.png','Uenf - Universidade Estadual do Norte Fluminense',190,60);
         }
 		
         $cabec = new Div('center');
@@ -368,7 +368,7 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico(5);
+        $menu = new MenuGrafico(4);
 
         # Administração de Usuários
         $botao = new BotaoGrafico();
@@ -425,7 +425,7 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico(5);
+        $menu = new MenuGrafico(4);
 
         # Variáveis de Configuração
         $botao = new BotaoGrafico();
@@ -550,7 +550,7 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico(5);
+        $menu = new MenuGrafico(4);
 
          # Informação do PHP
         $botao = new BotaoGrafico();
@@ -591,7 +591,16 @@
         br();
         
         # Inicia o menu
-        $menu = new MenuGrafico(5);
+        $menu = new MenuGrafico(4);
+        
+        # Controle de procedimentos
+        $botao = new BotaoGrafico();
+        $botao->set_label('Procedimentos');
+        $botao->set_url('procedimentos.php');
+        #$botao->set_url('pastaDigitalizada.php');
+        $botao->set_imagem(PASTA_FIGURAS.'procedimentos.png',$tamanhoImage,$tamanhoImage);
+        $botao->set_title('Sistema de procedimentos');
+        $menu->add_item($botao);
 
         # Variáveis de Configuração
         $botao = new BotaoGrafico();
@@ -618,15 +627,6 @@
         #$botao->set_url('pastaDigitalizada.php');
         $botao->set_imagem(PASTA_FIGURAS.'rotina.jpg',$tamanhoImage,$tamanhoImage);
         $botao->set_title('Sistema de controle de manuais de procedimentos');
-        $menu->add_item($botao);
-        
-        # Controle de procedimentos
-        $botao = new BotaoGrafico();
-        $botao->set_label('Procedimentos');
-        $botao->set_url('procedimentos.php');
-        #$botao->set_url('pastaDigitalizada.php');
-        $botao->set_imagem(PASTA_FIGURAS.'procedimentos.png',$tamanhoImage,$tamanhoImage);
-        $botao->set_title('Sistema de procedimentos');
         $menu->add_item($botao);
 
         $menu->show();
