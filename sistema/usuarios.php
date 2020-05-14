@@ -124,7 +124,7 @@ if($acesso){
     $botao->set_imagem(PASTA_FIGURAS.'bullet_edit.png',20,20);
 
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array("","","","","","","","",$botao));
+    $objeto->set_link(array("","","","","","","","","",$botao));
     
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
