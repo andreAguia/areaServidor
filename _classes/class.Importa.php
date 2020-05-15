@@ -162,9 +162,9 @@ class Importa
         # le o array e monta o sql de gravação
         foreach ($result as $row){
             if(is_null($this->novoNomeTabela)){
-                $sql = 'INSERT INTO grh.'.$this->nomeTabela.' (';
+                $sql = 'INSERT INTO uenf_grh.'.$this->nomeTabela.' (';
             }else{
-                $sql = 'INSERT INTO grh.'.$this->novoNomeTabela.' (';
+                $sql = 'INSERT INTO uenf_grh.'.$this->novoNomeTabela.' (';
             }
             
             # Nome dos campos

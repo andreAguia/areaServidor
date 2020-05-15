@@ -78,8 +78,8 @@ if($acesso){
     $select = 'SELECT DISTINCT tblog.idUsuario,
                         tbusuario.usuario
                         FROM tblog JOIN tbusuario ON (tblog.idUsuario = tbusuario.idUsuario)
-                        JOIN grh.tbservidor ON (tbusuario.idServidor = grh.tbservidor.idServidor)
-                        JOIN grh.tbpessoa ON (grh.tbservidor.idPessoa = grh.tbpessoa.idPessoa)
+                        JOIN uenf_grh.tbservidor ON (tbusuario.idServidor = uenf_grh.tbservidor.idServidor)
+                        JOIN uenf_grh.tbpessoa ON (uenf_grh.tbservidor.idPessoa = uenf_grh.tbpessoa.idPessoa)
                  WHERE ';
 
     if(is_null($idServidor)){
@@ -196,8 +196,8 @@ if($acesso){
     # Pega o id Servidor
     $result5 = $intra->select('SELECT DISTINCT idServidor,
                                         tbpessoa.nome
-                                   FROM tblog JOIN grh.tbservidor USING (idServidor)
-                                              JOIN grh.tbpessoa USING (idPessoa)
+                                   FROM tblog JOIN uenf_grh.tbservidor USING (idServidor)
+                                              JOIN uenf_grh.tbpessoa USING (idPessoa)
                                   WHERE date(data) = "'.$parametro.'"
                                     AND idServidor IS NOT NULL  
                                ORDER BY 2');

@@ -9,7 +9,7 @@ class Intra extends Bd {
     private $servidor = "localhost";        // servidor
     private $usuario = "intranet";          // usuário
     private $senha = "txzVHnMdh53ZWX9p";    // senha
-    private $banco = "areaservidor";        // nome do banco
+    private $banco = "uenf_areaservidor";        // nome do banco
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela
     private $idCampo;                       // o nome do campo id
@@ -496,7 +496,7 @@ class Intra extends Bd {
     {
         $select = 'SELECT idUsuario
                      FROM tbpermissao JOIN tbusuario USING (idusuario)
-                                      JOIN grh.tbservidor USING (idservidor)
+                                      JOIN uenf_grh.tbservidor USING (idservidor)
                     WHERE tbservidor.situacao = 1
                       AND idRegra = '.$idRegra;		
 
@@ -624,9 +624,9 @@ class Intra extends Bd {
 	
 	public function get_nomeUsuario($idUsuario){ 
             
-            $select = 'SELECT grh.tbpessoa.nome
-                         FROM tbusuario LEFT JOIN grh.tbservidor USING (idServidor)
-                                        LEFT JOIN grh.tbpessoa USING (idPessoa)
+            $select = 'SELECT uenf_grh.tbpessoa.nome
+                         FROM tbusuario LEFT JOIN uenf_grh.tbservidor USING (idServidor)
+                                        LEFT JOIN uenf_grh.tbpessoa USING (idPessoa)
                          WHERE idusuario = '.$idUsuario;
             
             # verifica se o id foi informado
