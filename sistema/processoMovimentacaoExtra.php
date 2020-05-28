@@ -12,13 +12,13 @@ $setorCombo = $campoValor[2];
 $setorTexto = $campoValor[3];
 
 # Verifica se os setores estão em banco
-if((is_null($setorTexto)) AND (is_null($setorCombo))){
-    $msgErro.='O Campo de setor está em branco!\n';
+if ((is_null($setorTexto)) AND (is_null($setorCombo))) {
+    $msgErro .= 'O Campo de setor está em branco!\n';
     $erro = 1;
 }
 
 # Escolhe o combo quando os dois estão preenchidos
-if((!is_null($setorTexto)) AND (!is_null($setorCombo))){
+if ((!is_null($setorTexto)) AND (!is_null($setorCombo))) {
     $campoValor[3] = NULL;
 }
 

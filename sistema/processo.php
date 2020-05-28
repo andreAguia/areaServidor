@@ -1,10 +1,10 @@
 <?php
+
 /**
  * Cadastro de Processos
  *  
  * By Alat
  */
-
 ## Servidor logado 
 $idUsuario = NULL;
 
@@ -12,25 +12,25 @@ $idUsuario = NULL;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,5);
+$acesso = Verifica::acesso($idUsuario, 5);
 
-if($acesso){     
+if ($acesso) {
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
-	
+
     # Verifica a fase do programa
-    $fase = get('fase','listar');
+    $fase = get('fase', 'listar');
 
     # pega o id se tiver)
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro'))){                                     # Se o parametro não vier por post (for nulo)
-        $parametro = retiraAspas(get_session('sessionParametro'));	# passa o parametro da session para a variavel parametro retirando as aspas
-    }else{ 
-        $parametro = post('parametro');								# Se vier por post, retira as aspas e passa para a variavel parametro			
-        set_session('sessionParametro',$parametro);			 		# transfere para a session para poder recuperá-lo depois
+    if (is_null(post('parametro'))) {                                     # Se o parametro não vier por post (for nulo)
+        $parametro = retiraAspas(get_session('sessionParametro')); # passa o parametro da session para a variavel parametro retirando as aspas
+    } else {
+        $parametro = post('parametro');        # Se vier por post, retira as aspas e passa para a variavel parametro			
+        set_session('sessionParametro', $parametro);      # transfere para a session para poder recuperá-lo depois
     }
 
     # Ordem da tabela
@@ -38,7 +38,7 @@ if($acesso){
     $orderTipo = get('orderTipo');
 
     # Começa uma nova página
-    $page = new Page();			
+    $page = new Page();
     $page->iniciaPagina();
 
     # Cabeçalho da Página
@@ -50,7 +50,7 @@ if($acesso){
     ################################################################
     # Nome do Modelo
     $objeto->set_nome('Sistema de Controle de Processos');
-    
+
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');
     $objeto->set_parametroValue($parametro);
@@ -61,23 +61,22 @@ if($acesso){
                                      assunto,
                                      idProcesso
                                 FROM tbprocesso
-                               WHERE data LIKE "%'.$parametro.'%"
-                                  OR numero LIKE "%'.$parametro.'%"
-                                  OR assunto LIKE "%'.$parametro.'%"
+                               WHERE data LIKE "%' . $parametro . '%"
+                                  OR numero LIKE "%' . $parametro . '%"
+                                  OR assunto LIKE "%' . $parametro . '%"
                             ORDER BY 1 desc');
-    
+
     # select do edita
     $objeto->set_selectEdita('SELECT data,
                                      numero,
                                      assunto						    
                                 FROM tbprocesso
-                               WHERE idProcesso = '.$id);
-    
+                               WHERE idProcesso = ' . $id);
+
     # botões
     $objeto->set_botaoEditar(FALSE);  # Não exibe o botão editar
     $objeto->set_botaoExcluir(FALSE); # Não exibe o botão excluir
     $objeto->set_botaoVoltarLista(FALSE); # Não exibe o botão voltar
-
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
@@ -85,15 +84,15 @@ if($acesso){
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("Data","Processo","Assunto","Mov."));
-    $objeto->set_width(array(10,25,60));	
-    $objeto->set_align(array("center","center","left"));
-    $objeto->set_funcao(array("date_to_php",NULL,"retiraAcento"));
-    
+    $objeto->set_label(array("Data", "Processo", "Assunto", "Mov."));
+    $objeto->set_width(array(10, 25, 60));
+    $objeto->set_align(array("center", "center", "left"));
+    $objeto->set_funcao(array("date_to_php", NULL, "retiraAcento"));
+
     # Botão de exibição dos servidores com permissão a essa regra
-    $botao = new Link(NULL,'processoMovimentacao.php?idProcesso=','Movimentação do Processo');
-    $botao->set_imagem(PASTA_FIGURAS.'movimentacao.png',20,20);
-    $objeto->set_link(array(NULL,NULL,NULL,$botao));
+    $botao = new Link(NULL, 'processoMovimentacao.php?idProcesso=', 'Movimentação do Processo');
+    $botao->set_imagem(PASTA_FIGURAS . 'movimentacao.png', 20, 20);
+    $objeto->set_link(array(NULL, NULL, NULL, $botao));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -105,33 +104,33 @@ if($acesso){
     $objeto->set_idCampo('idProcesso');
 
     # Campos para o formulario
-    $objeto->set_campos(array( 
-                        array ( 'nome' => 'numero',
-                                'label' => 'Processo:',
-                                'tipo' => 'processo',
-                                'size' => 25,
-                                'autofocus' => TRUE,
-                                'required' => TRUE,
-                                'title' => 'O número do Processo.',
-                                'linha' => 1,
-                                'col' => 6),
-                        array ( 'nome' => 'data',
-                                'label' => 'Data:',
-                                'tipo' => 'data',
-                                'size' => 12,
-                                'required' => TRUE,
-                                'title' => 'Data de Nascimento.',
-                                'col' => 6,
-                                'linha' => 1),
-                        array ( 'nome' => 'assunto',
-                                'label' => 'Assunto:',
-                                'tipo' => 'textarea',
-                                'required' => TRUE,
-                                'size' => array(90,5),
-                                'title' => 'Assunto do processo.',
-                                'col' => 12,
-                                'linha' => 2)	 	 	 	 	 	 
-                    ));
+    $objeto->set_campos(array(
+        array('nome' => 'numero',
+            'label' => 'Processo:',
+            'tipo' => 'processo',
+            'size' => 25,
+            'autofocus' => TRUE,
+            'required' => TRUE,
+            'title' => 'O número do Processo.',
+            'linha' => 1,
+            'col' => 6),
+        array('nome' => 'data',
+            'label' => 'Data:',
+            'tipo' => 'data',
+            'size' => 12,
+            'required' => TRUE,
+            'title' => 'Data de Nascimento.',
+            'col' => 6,
+            'linha' => 1),
+        array('nome' => 'assunto',
+            'label' => 'Assunto:',
+            'tipo' => 'textarea',
+            'required' => TRUE,
+            'size' => array(90, 5),
+            'title' => 'Assunto do processo.',
+            'col' => 12,
+            'linha' => 2)
+    ));
 
 
     # Log
@@ -144,13 +143,13 @@ if($acesso){
             $objeto->listar();
             break;
 
-        case "editar" :	
-        case "excluir" :	
-        case "gravar" :		
-            $objeto->$fase($id);		
-            break;		
+        case "editar" :
+        case "excluir" :
+        case "gravar" :
+            $objeto->$fase($id);
+            break;
     }
     $page->terminaPagina();
-}else{
+} else {
     loadPage("login.php");
 }	

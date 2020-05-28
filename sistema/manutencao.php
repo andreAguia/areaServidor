@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Rotina que é exibida quando o sistema está em manutenção
  * 

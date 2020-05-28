@@ -7,12 +7,12 @@ $idUsuario = NULL;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,1);
+$acesso = Verifica::acesso($idUsuario, 1);
 
-if($acesso){   
+if ($acesso) {
 
     # Começa uma nova página
-    $page = new Page();			
+    $page = new Page();
     $page->iniciaPagina();
 
     # Cabeçalho
@@ -29,14 +29,14 @@ if($acesso){
     $banco = get('banco');
 
     # Botão voltar
-    $linkBotaoVoltar = new Link("Voltar",'documentaTabela.php?banco='.$banco.'&id='.$table);
+    $linkBotaoVoltar = new Link("Voltar", 'documentaTabela.php?banco=' . $banco . '&id=' . $table);
     $linkBotaoVoltar->set_class('button float-left');
     $linkBotaoVoltar->set_title('Volta para a página anterior');
     $linkBotaoVoltar->set_accessKey('V');
 
     # Cria um menu
     $menu = new MenuBar();
-    $menu->add_link($linkBotaoVoltar,"left");
+    $menu->add_link($linkBotaoVoltar, "left");
     $menu->show();
 
     # Pega os nomes da tabela
@@ -44,29 +44,29 @@ if($acesso){
 
     $select1 = "SELECT COLUMN_NAME
                  FROM COLUMNS 
-                WHERE TABLE_SCHEMA = '".$banco."' 
-                  AND TABLE_NAME = '".$table."'";
+                WHERE TABLE_SCHEMA = '" . $banco . "' 
+                  AND TABLE_NAME = '" . $table . "'";
     $conteudo1 = $servico->select($select1);
-    
+
     # Pega os nomes das colunas
     $colunas = array();
-    foreach($conteudo1 as $item){
-        $colunas[] = $item[0]; 
+    foreach ($conteudo1 as $item) {
+        $colunas[] = $item[0];
         $align[] = "left";
     }
-    
+
     # Pega o conteúdo da tabela
-    $select2 = "SELECT * FROM $banco.$table"; 
-    $conteudo2 = $servico->select($select2); 
-    
+    $select2 = "SELECT * FROM $banco.$table";
+    $conteudo2 = $servico->select($select2);
+
 
     # Monta a tabela
     $tabela = new Tabela();
-    $tabela->set_titulo($banco." / ".$table);
+    $tabela->set_titulo($banco . " / " . $table);
     $tabela->set_conteudo($conteudo2);
     $tabela->set_label($colunas);
     $tabela->set_align($align);
-    
+
     # exibe a tabela
     $tabela->show();
 
@@ -74,6 +74,6 @@ if($acesso){
     $grid->fechaGrid();
 
     $page->terminaPagina();
-}else{
+} else {
     loadPage("login.php");
 }

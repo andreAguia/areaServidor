@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Rotina que exibe uma mensagem de aguarde
  * 
@@ -6,7 +7,6 @@
  *  
  * By Alat
  */
-
 # Configurações
 include ("../config.php");
 
@@ -15,7 +15,6 @@ $pagina = get('pagina');
 
 # pega a div se for por ajax
 #$div = get('div');
-
 # Começa uma nova página
 $page = new Page();
 $page->set_bodyOnLoad("abreDivId('divMensagemAguarde');");
@@ -25,8 +24,8 @@ $page->iniciaPagina();
 aguarde();
 
 # carraga a página se for link
-if(!is_null($pagina))
+if (!is_null($pagina))
     loadPage($pagina);
 
-$page->terminaPagina();	   
+$page->terminaPagina();
 ?>

@@ -1,10 +1,10 @@
 <?php
+
 /**
  * Cadastro de regras
  *  
  * By Alat
  */
-
 # Servidor logado 
 $idUsuario = NULL;
 
@@ -12,15 +12,15 @@ $idUsuario = NULL;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,1);
+$acesso = Verifica::acesso($idUsuario, 1);
 
-if($acesso){     
+if ($acesso) {
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servidor = new Pessoal();
-	
+
     # Verifica a fase do programa
-    $fase = get('fase','listar');
+    $fase = get('fase', 'listar');
 
     # pega o id se tiver)
     $id = soNumeros(get('id'));
@@ -33,21 +33,20 @@ if($acesso){
     $orderTipo = get('orderTipo');
 
     # Começa uma nova página
-    $page = new Page();			
+    $page = new Page();
     $page->iniciaPagina();
 
     # Inicia a classe de interface da área do servidor
     $area = new AreaServidor();
 
     # Cabeçalho da Página
-    if($fase <> 'servidoresPermissao')
+    if ($fase <> 'servidoresPermissao')
         AreaServidor::cabecalho();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
 
     ################################################################
-
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
     $objeto->set_nome('Regras');
 
@@ -55,11 +54,11 @@ if($acesso){
     $objeto->set_voltarLista('administracao.php');
 
     # ordenação
-    if(is_null($orderCampo)){
+    if (is_null($orderCampo)) {
         $orderCampo = 1;
     }
 
-    if(is_null($orderTipo)){
+    if (is_null($orderTipo)) {
         $orderTipo = 'asc';
     }
 
@@ -67,11 +66,11 @@ if($acesso){
     $objeto->set_orderCampo($orderCampo);
     $objeto->set_orderTipo($orderTipo);
     $objeto->set_orderChamador('?fase=listar');
-    
+
     # Parametros da tabela
-    $objeto->set_label(array("Num","Nome","Descrição","Servidores","Ver"));
-    $objeto->set_width(array(5,25,45,10,5));		
-    $objeto->set_align(array("center","left","left"));
+    $objeto->set_label(array("Num", "Nome", "Descrição", "Servidores", "Ver"));
+    $objeto->set_width(array(5, 25, 45, 10, 5));
+    $objeto->set_align(array("center", "left", "left"));
 
     # select da lista
     $objeto->set_selectLista('SELECT idRegra,
@@ -80,7 +79,7 @@ if($acesso){
                                      idRegra,
                                      idRegra
                                 FROM tbregra
-                            ORDER BY '.$orderCampo.' '.$orderTipo);	
+                            ORDER BY ' . $orderCampo . ' ' . $orderTipo);
 
     $objeto->set_botaoExcluir(TRUE);
     $objeto->set_botaoIncluir(TRUE);
@@ -89,26 +88,26 @@ if($acesso){
     $objeto->set_selectEdita('SELECT nome,
                                      descricao
                                 FROM tbregra
-                               WHERE idRegra = '.$id);
-    
+                               WHERE idRegra = ' . $id);
+
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkExcluir('?fase=excluir');
     $objeto->set_linkGravar('?fase=gravar');
-    $objeto->set_linkListar('?fase=listar');    
+    $objeto->set_linkListar('?fase=listar');
 
-    $objeto->set_classe(array(NULL,NULL,NULL,"Intra"));
-    $objeto->set_metodo(array(NULL,NULL,NULL,"get_numeroUsuariosPermissao")); 
+    $objeto->set_classe(array(NULL, NULL, NULL, "Intra"));
+    $objeto->set_metodo(array(NULL, NULL, NULL, "get_numeroUsuariosPermissao"));
 
     # Botão de exibição dos servidores com permissão a essa regra
     $botao = new BotaoGrafico();
     $botao->set_label('');
     $botao->set_title('Servidores com permissão a essa regra');
-    $botao->set_onClick("abreDivId('divPermissao'); ajaxLoadPage('?fase=servidoresPermissao&id=','divPermissao',");       
-    $botao->set_imagem(PASTA_FIGURAS.'ver.png',20,20);
+    $botao->set_onClick("abreDivId('divPermissao'); ajaxLoadPage('?fase=servidoresPermissao&id=','divPermissao',");
+    $botao->set_imagem(PASTA_FIGURAS . 'ver.png', 20, 20);
 
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array("","","","",$botao));
+    $objeto->set_link(array("", "", "", "", $botao));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -123,23 +122,23 @@ if($acesso){
     $objeto->set_formlabelTipo(1);
 
     # Campos para o formulario
-    $campos = array(array ( 'nome' => 'nome',
-                            'label' => 'Nome:',
-                            'tipo' => 'texto',
-                            'size' => 90,
-                            'maxlength' => 45,
-                            'required' => TRUE,
-                            'title' => 'Nome da Regra.',                            
-                            'col' => 12,
-                            'linha' => 1),     
-                    array ( 'nome' => 'descricao',
-                            'label' => 'Descrição:',
-                            'tipo' => 'textarea',
-                            'size' => array(90,5),
-                            'required' => TRUE,
-                            'title' => 'Descrição resumida da regra.',                            
-                            'col' => 12,
-                            'linha' => 2));
+    $campos = array(array('nome' => 'nome',
+            'label' => 'Nome:',
+            'tipo' => 'texto',
+            'size' => 90,
+            'maxlength' => 45,
+            'required' => TRUE,
+            'title' => 'Nome da Regra.',
+            'col' => 12,
+            'linha' => 1),
+        array('nome' => 'descricao',
+            'label' => 'Descrição:',
+            'tipo' => 'textarea',
+            'size' => array(90, 5),
+            'required' => TRUE,
+            'title' => 'Descrição resumida da regra.',
+            'col' => 12,
+            'linha' => 2));
 
     $objeto->set_campos($campos);
 
@@ -147,22 +146,21 @@ if($acesso){
     $objeto->set_idUsuario($idUsuario);
 
     ################################################################
-    switch ($fase)
-    {
+    switch ($fase) {
         case "" :
-        case "listar" :               
+        case "listar" :
             $objeto->listar();
 
             # Div de servidores com essa permissão
             $divPermissao = new Div('divPermissao');
             $divPermissao->abre();
-            
+
             $divPermissao->fecha();
             break;
 
         case "editar" :
-        case "excluir" :	
-        case "gravar" :        
+        case "excluir" :
+        case "gravar" :
             $objeto->$fase($id);
             break;
 
@@ -173,37 +171,37 @@ if($acesso){
             $callout = new Callout();
             $callout->set_botaoFechar(TRUE);
             $callout->abre();
-                br();
-                titulo('Permissões');
-            
-                # Monta a tabela        
-                $select = 'SELECT tbusuario.usuario,
+            br();
+            titulo('Permissões');
+
+            # Monta a tabela        
+            $select = 'SELECT tbusuario.usuario,
                                   tbusuario.idServidor,
                                   tbusuario.idServidor,
                                   tbusuario.idServidor,
                                   idPermissao
                              FROM tbpermissao JOIN tbusuario USING (idUsuario)
-                            WHERE tbpermissao.idRegra = '.$id.'
+                            WHERE tbpermissao.idRegra = ' . $id . '
                          ORDER BY tbusuario.usuario';
-                $result = $intra->select($select,TRUE);
-                $tabela = new Tabela();
-                $tabela->set_conteudo($result);
-                $tabela->set_label(array("Usuário","Nome","Cargo","Lotação"));
-                #$tabela->set_width(array(10,30,30,20));
-                $tabela->set_align(array("center","left","left"));
-                
-                #$tabela->set_funcao(array('dv'));
-                $tabela->set_classe(array(NULL,"Pessoal","Pessoal","Pessoal"));
-                $tabela->set_metodo(array(NULL,'get_nome','get_cargo','get_lotacao')); 
-    
-                $tabela->set_excluir('?fase=excluirPermissao');
-                $tabela->set_idCampo('idPermissao');
+            $result = $intra->select($select, TRUE);
+            $tabela = new Tabela();
+            $tabela->set_conteudo($result);
+            $tabela->set_label(array("Usuário", "Nome", "Cargo", "Lotação"));
+            #$tabela->set_width(array(10,30,30,20));
+            $tabela->set_align(array("center", "left", "left"));
 
-                if(count($result) == 0){        
-                    p('<br/><br/>Não há Servidores.<br/><br/>','center');
-                }else{
-                    $tabela->show();
-                }
+            #$tabela->set_funcao(array('dv'));
+            $tabela->set_classe(array(NULL, "Pessoal", "Pessoal", "Pessoal"));
+            $tabela->set_metodo(array(NULL, 'get_nome', 'get_cargo', 'get_lotacao'));
+
+            $tabela->set_excluir('?fase=excluirPermissao');
+            $tabela->set_idCampo('idPermissao');
+
+            if (count($result) == 0) {
+                p('<br/><br/>Não há Servidores.<br/><br/>', 'center');
+            } else {
+                $tabela->show();
+            }
 
             $callout->fecha();
             break;
@@ -215,26 +213,25 @@ if($acesso){
             $intra = new Intra();
             $pessoal = new Pessoal();
             $permissao = $intra->get_permissao($id);
-            $atividade = 'Excluiu a permissao de: '.$permissao[1].' da matrícula '.$permissao[0].' ('.$pessoal->get_nome($permissao[0]).')';
+            $atividade = 'Excluiu a permissao de: ' . $permissao[1] . ' da matrícula ' . $permissao[0] . ' (' . $pessoal->get_nome($permissao[0]) . ')';
 
             # Conecta com o banco de dados
             $objeto = new Intra();
-            $objeto->set_tabela('tbpermissao');	# a tabela
-            $objeto->set_idCampo('idPermissao');	# o nome do campo id
-            $objeto->excluir($id);			# executa a exclusão
-
+            $objeto->set_tabela('tbpermissao'); # a tabela
+            $objeto->set_idCampo('idPermissao'); # o nome do campo id
+            $objeto->excluir($id);   # executa a exclusão
             # Grava no log a atividade
             $Objetolog = new Intra();
             $data = date("Y-m-d H:i:s");
-            $Objetolog->registraLog($matricula,$data,$atividade,'tbpermissao',$id);	
+            $Objetolog->registraLog($matricula, $data, $atividade, 'tbpermissao', $id);
 
-            loadPage ('?');
+            loadPage('?');
             break;
 
         ##################################################################
-    }									 	 		
+    }
 
     $page->terminaPagina();
-}else{
+} else {
     loadPage("login.php");
 }

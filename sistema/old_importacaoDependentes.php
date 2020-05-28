@@ -1,10 +1,10 @@
 <?php
+
 /**
  * Rotina de Importação de Faltas
  *  
  * By Alat
  */
-
 # Servidor logado 
 $idUsuario = NULL;
 
@@ -12,9 +12,9 @@ $idUsuario = NULL;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,1);
+$acesso = Verifica::acesso($idUsuario, 1);
 
-if($acesso){
+if ($acesso) {
 
     # Começa uma nova página
     $page = new Page();
@@ -22,49 +22,48 @@ if($acesso){
 
     # Cabeçalho da Página
     AreaServidor::cabecalho();
-    
+
     # Verifica a fase do programa
     $fase = get('fase');
-    
+
     # Parâmetros da importação
     $tt = 0;        // contador de registros
     $problemas = 0; // contador de problemas
     $contador = 0;  // contador de linhas
-    
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
-    
+
     br();
 
     #########################################################################
-    
-    switch ($fase){       
-        case "" : 
+
+    switch ($fase) {
+        case "" :
             # Cria menu
             $menu = new MenuBar();
-            
+
             # Botão voltar
-            $link = new Link("Voltar",'administracao.php?fase=importacao');
+            $link = new Link("Voltar", 'administracao.php?fase=importacao');
             $link->set_class('button');
             $link->set_title('Volta para a página anterior');
             $link->set_accessKey('V');
-            $menu->add_link($link,"left");
-            
+            $menu->add_link($link, "left");
+
             # 2017
-            $link = new Link("Analisar","?fase=aguarda");
+            $link = new Link("Analisar", "?fase=aguarda");
             $link->set_class('button');
             $link->set_title('Importando tabela de afastamento os lançamentos tipo 10 e 33');
-            $menu->add_link($link,"right"); 
-            
+            $menu->add_link($link, "right");
+
             # Cria um menu
             $menu->show();
-            
+
             titulo('Importação de Dependentes de arquivo texto para o banco de dados');
             break;
-        
+
         #########################################################################
-    
+
         case "aguarda" :
             titulo('Analisando ...');
             br(4);
@@ -72,32 +71,32 @@ if($acesso){
 
             loadPage('?fase=analisa');
             break;
-        
+
         #########################################################################
 
-        case "analisa" :            
+        case "analisa" :
             # Cria um menu
             $menu = new MenuBar();
-            
+
             # Define o arquivo a ser importado
-            $arquivo = "../importacao/dependentes.txt"; 
+            $arquivo = "../importacao/dependentes.txt";
 
             # Abre o banco de dados
             $pessoal = new Pessoal();
 
             # Botão voltar
-            $linkBotao1 = new Link("Voltar",'?');
+            $linkBotao1 = new Link("Voltar", '?');
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Volta para a página anterior');
             $linkBotao1->set_accessKey('V');
-            $menu->add_link($linkBotao1,"left");
+            $menu->add_link($linkBotao1, "left");
 
             # Refazer
-            $linkBotao2 = new Link("Refazer",'?fase=aguarda');
+            $linkBotao2 = new Link("Refazer", '?fase=aguarda');
             $linkBotao2->set_class('button');
             $linkBotao2->set_title('Refazer a Importação');
             $linkBotao2->set_accessKey('R');
-            $menu->add_link($linkBotao2,"right");
+            $menu->add_link($linkBotao2, "right");
             $menu->show();
 
             titulo('Importação da tabela de Faltas');
@@ -107,9 +106,9 @@ if($acesso){
             $painel->abre();
 
             # Verifica a existência do arquivo
-            if(file_exists($arquivo)){
+            if (file_exists($arquivo)) {
                 $lines = file($arquivo);
-                
+
                 # Inicia a tabela
                 echo "<table border=1>";
 
@@ -127,20 +126,20 @@ if($acesso){
 
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($lines as $linha) {
-                    
+
                     # Retira lixos de formatação
                     $linha = htmlspecialchars($linha);
 
                     # Divide as colunas
-                    $parte = explode(";",$linha);
-                    
+                    $parte = explode(";", $linha);
+
                     # Passa para as variáveis
                     $idFuncional = $parte[0];
-                    
-                    if(!vazio($idFuncional)){
+
+                    if (!vazio($idFuncional)) {
                         $idServidor = $pessoal->get_idServidoridFuncional($idFuncional);
-                        
-                        if(!vazio($idServidor)){
+
+                        if (!vazio($idServidor)) {
                             $nome1 = $pessoal->get_Nome($idServidor);
                             $nome2 = $parte[2];
                             $dependente = $parte[10];
@@ -152,24 +151,24 @@ if($acesso){
                             # Analisa o parentesco
                             $idParentesco = NULL;
                             $nomeParentesco = NULL;
-                            switch ($parentesco){       
-                                case "FILHO(A)" : 
+                            switch ($parentesco) {
+                                case "FILHO(A)" :
                                     $idParentesco = 2;
                                     break;
 
-                                case "CÔNJUGE" : 
+                                case "CÔNJUGE" :
                                     $idParentesco = 1;
                                     break;
 
-                                case "GUARDA PROVISÓRIA" : 
+                                case "GUARDA PROVISÓRIA" :
                                     $idParentesco = 9;
                                     break;
 
-                                case "COMPANHEIRO(A)" : 
+                                case "COMPANHEIRO(A)" :
                                     $idParentesco = 11;
                                     break;
 
-                                case "ENTEADO(A)" : 
+                                case "ENTEADO(A)" :
                                     $idParentesco = 10;
                                     break;
 
@@ -178,66 +177,66 @@ if($acesso){
                                     break;
 
                                 case "PAI/MÃE" :
-                                    if($sexo == "F"){
+                                    if ($sexo == "F") {
                                         $idParentesco = 4;
-                                    }else{
+                                    } else {
                                         $idParentesco = 3;
                                     }
                                     break;
                             }
 
-                            if(!is_null($idParentesco)){
+                            if (!is_null($idParentesco)) {
                                 $nomeParentesco = $pessoal->get_parentesco($idParentesco);
                             }
                             $contador++;
 
                             # Exibe os dados
                             echo "<tr>";
-                            echo "<td>".$contador."</td>";
-                            echo "<td>".$idFuncional."</td>";
-                            echo "<td>".$idServidor."</td>";
-                            echo "<td>".$nome1."<br/>".$nome2."</td>";
-                            echo "<td>".$dependente."</td>";
-                            echo "<td>".$nascimento."</td>";
-                            echo "<td>".$cpf."</td>";
-                            echo "<td>".$parentesco."<br/>".$nomeParentesco."</td>";
-                            echo "<td>".$sexo."</td>";
+                            echo "<td>" . $contador . "</td>";
+                            echo "<td>" . $idFuncional . "</td>";
+                            echo "<td>" . $idServidor . "</td>";
+                            echo "<td>" . $nome1 . "<br/>" . $nome2 . "</td>";
+                            echo "<td>" . $dependente . "</td>";
+                            echo "<td>" . $nascimento . "</td>";
+                            echo "<td>" . $cpf . "</td>";
+                            echo "<td>" . $parentesco . "<br/>" . $nomeParentesco . "</td>";
+                            echo "<td>" . $sexo . "</td>";
                             echo "</tr>";
-                        }else{
+                        } else {
                             $problemas++;
                         }
                     }
                 }
-               
-                echo "Registros analisados: ".$contador;
+
+                echo "Registros analisados: " . $contador;
                 br();
-                echo "Problemas encontrados: ".$problemas;
+                echo "Problemas encontrados: " . $problemas;
                 br();
-            }else{
+            } else {
                 echo "Arquivo não encontrado";
                 br();
                 $problemas++;
             }
-            
+
             #if($problemas == 0){
-                echo "Podemos fazer a importação";
-                br(2);
-                # Botão importar
-                $linkBotao1 = new Link("Importar",'?fase=importa');
-                $linkBotao1->set_class('button');
-                $linkBotao1->set_title('Volta para a página anterior');
-                $linkBotao1->set_accessKey('I');
-                $linkBotao1->show();
-                
+            echo "Podemos fazer a importação";
+            br(2);
+            # Botão importar
+            $linkBotao1 = new Link("Importar", '?fase=importa');
+            $linkBotao1->set_class('button');
+            $linkBotao1->set_title('Volta para a página anterior');
+            $linkBotao1->set_accessKey('I');
+            $linkBotao1->show();
+
             #}else{
             #    echo "Temos problemas";
             #}
 
             $painel->fecha();
             break;
-            
+
         #########################################################################    
-            
+
         case "importa" :
             titulo('Importando ...');
             br(4);
@@ -245,21 +244,21 @@ if($acesso){
             br();
             loadPage('?fase=importa2');
             break;
-        
+
         #########################################################################
-        
+
         case "importa2" :
             # Define o arquivo a ser importado
-            $arquivo = "../importacao/dependentes.txt"; 
-            
+            $arquivo = "../importacao/dependentes.txt";
+
             # Array comos dependentes cadastrados para evitar duplicidade
-            $dependentesImportados = array(NULL,NULL);
-            
+            $dependentesImportados = array(NULL, NULL);
+
             # Inicia o contador de duplicatas
             $duplicata = 0;
-            
+
             # Verifica a existência do arquivo
-            if(file_exists($arquivo)){
+            if (file_exists($arquivo)) {
                 $lines = file($arquivo);
 
                 # Abre o banco de dados
@@ -267,20 +266,20 @@ if($acesso){
 
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($lines as $linha) {
-                    
+
                     # Retira lixos de formatação
                     $linha = htmlspecialchars($linha);
 
                     # Divide as colunas
-                    $parte = explode(";",$linha);
-                    
+                    $parte = explode(";", $linha);
+
                     # Passa para as variáveis
                     $idFuncional = $parte[0];
-                    
-                    if(!vazio($idFuncional)){
+
+                    if (!vazio($idFuncional)) {
                         $idServidor = $pessoal->get_idServidoridFuncional($idFuncional);
-                        
-                        if(!vazio($idServidor)){
+
+                        if (!vazio($idServidor)) {
                             $nome1 = $pessoal->get_Nome($idServidor);
                             $nome2 = $parte[2];
                             $dependente = $parte[10];
@@ -294,81 +293,81 @@ if($acesso){
                             $nomeParentesco = NULL;
                             $cotista = NULL;
                             $obs = NULL;
-                            
-                            switch ($parentesco){       
-                                case "FILHO(A)" : 
+
+                            switch ($parentesco) {
+                                case "FILHO(A)" :
                                     $idParentesco = 2;
                                     break;
 
-                                case "CÔNJUGE" : 
+                                case "CÔNJUGE" :
                                     $idParentesco = 1;
                                     break;
 
-                                case "GUARDA PROVISÓRIA" : 
+                                case "GUARDA PROVISÓRIA" :
                                     $idParentesco = 9;
                                     break;
 
-                                case "COMPANHEIRO(A)" : 
+                                case "COMPANHEIRO(A)" :
                                     $idParentesco = 11;
                                     break;
 
-                                case "ENTEADO(A)" : 
+                                case "ENTEADO(A)" :
                                     $idParentesco = 10;
                                     break;
 
                                 case "COTISTA" :
                                     $idParentesco = 12;
                                     break;
-                                
+
                                 case "OUTROS" :
                                     $idParentesco = 12;
                                     break;
-                                
+
                                 case "MENOR POBRE" :
                                     $idParentesco = 12;
                                     break;
 
                                 case "PAI/MÃE" :
-                                    if($sexo == "F"){
+                                    if ($sexo == "F") {
                                         $idParentesco = 4;
-                                    }else{
+                                    } else {
                                         $idParentesco = 3;
                                     }
                                     break;
                             }
-                            
+
                             # Pega o idPessoa
                             $idPessoa = $pessoal->get_idPessoa($idServidor);
-                            
+
                             ## Verifica se já foi importado esse dependente
                             # Inicia a variável da duplicata
                             $temDuplicata = FALSE;
-                                    
+
                             echo "Servidor: $nome1";
                             br();
                             echo "Dependente: $dependente";
                             br();
-                            
+
                             # Percorre o array para ver se já tem esse dependente no array
-                            foreach($dependentesImportados as $dd){                                
-                                if(($idPessoa == $dd[0]) AND (mb_strtolower($dependente) == mb_strtolower($dd[1]))){
+                            foreach ($dependentesImportados as $dd) {
+                                if (($idPessoa == $dd[0]) AND (mb_strtolower($dependente) == mb_strtolower($dd[1]))) {
                                     $temDuplicata = TRUE;
                                 }
                             }
-                            
+
                             # Verifica se grava ou pula
-                            if($temDuplicata){
+                            if ($temDuplicata) {
                                 $duplicata++;
                                 echo "$duplicata - DUPLICATA - DESCARTADO";
-                            }else{
-                                $dependentesImportados[]=array($idPessoa,$dependente);
+                            } else {
+                                $dependentesImportados[] = array($idPessoa, $dependente);
                                 $contador++;
-                                $obs = "Importado. Valor anterior: ".$parentesco;
-                                
+                                $obs = "Importado. Valor anterior: " . $parentesco;
+
                                 # Grava na tabela
-                                $campos = array("idPessoa","nome","dtNasc","cpf","parentesco","sexo","obs");
-                                $valor = array($idPessoa,plm($dependente),$nascimento,$cpf,$idParentesco,$sexo,$obs);                    
-                                $pessoal->gravar($campos,$valor,NULL,"tbdependente","idDependente",FALSE);
+                                $campos = array("idPessoa", "nome", "dtNasc", "cpf", "parentesco", "sexo", "obs");
+                                $valor = array($idPessoa, plm($dependente), $nascimento, $cpf, $idParentesco, $sexo, $obs);
+                                $pessoal->gravar($campos, $valor, NULL, "tbdependente", "idDependente", FALSE);
                                 echo "$contador - IMPORTADO";
                             }
                             br();
@@ -377,7 +376,7 @@ if($acesso){
                         }
                     }
                 }
-            }else{
+            } else {
                 echo "Arquivo não encontrado";
             }
             br(4);
@@ -387,19 +386,19 @@ if($acesso){
             br();
             echo "Duplicatas descartadas: $duplicata";
             br(4);
-            
+
             # Botão voltar
-            $linkBotao1 = new Link("Ok",'?');
+            $linkBotao1 = new Link("Ok", '?');
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Volta para a página Inicial');
             $linkBotao1->set_accessKey('O');
             $linkBotao1->show();
             break;
-        
+
         #########################################################################
     }
-    
+
     $grid->fechaColuna();
-    $grid->fechaGrid();        
+    $grid->fechaGrid();
     $page->terminaPagina();
 }

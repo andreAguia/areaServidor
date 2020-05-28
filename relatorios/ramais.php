@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Sistema GRH
  * 
@@ -6,28 +7,25 @@
  *   
  * By Alat
  */
-
 # Inicia as vari?eis que receber? as sessions
-$matricula = NULL;		  # Reservado para a matr?ula do servidor logado
-
+$matricula = NULL;    # Reservado para a matr?ula do servidor logado
 # Configura?o
 include ("../sistema/_config.php");
 
 # Permiss? de Acesso
 $acesso = Verifica::acesso($matricula);
 
-if($acesso)
-{    
+if ($acesso) {
     # Conecta ao Banco de Dados
     $servidor = new Pessoal();
 
     # Come? uma nova p?ina
-    $page = new Page();			
+    $page = new Page();
     $page->iniciaPagina();
-    
+
     ######  FENORTE
 
-    $select ='SELECT DIR,
+    $select = 'SELECT DIR,
                      CONCAT(GER," - ",nome),
                      ramais
                 FROM tblotacao
@@ -47,14 +45,14 @@ if($acesso)
     - Para utilizar cadeado eletrôico basta digitar 71 + CODIGO DE BLOQUEIO;<br/>
     - Para desativar cadeado eletrôico basta digitar 701 + CODIGO DE BLOQUEIO;<br/>
     - Para Fax será utilizado o Nº(22) 2738-0868. Sendo necessáio originar chamada para o mesmo;<br/>
-    - Utilizar sempre a operadora 41.<br/><br/>','divMensagemRamal');
+    - Utilizar sempre a operadora 41.<br/><br/>', 'divMensagemRamal');
 
     $relatorio = new Relatorio('relatorioRamal');
     $relatorio->set_titulo('FENORTE');
     $relatorio->set_subtitulo('Telefones e Ramais');
-    $relatorio->set_label(array('Diretoria','Setor','Ramais'));
-    $relatorio->set_width(array(0,40,30));
-    $relatorio->set_align(array("center","left"));
+    $relatorio->set_label(array('Diretoria', 'Setor', 'Ramais'));
+    $relatorio->set_width(array(0, 40, 30));
+    $relatorio->set_align(array("center", "left"));
     $relatorio->set_conteudo($result);
     $relatorio->set_numGrupo(0);
     $relatorio->set_totalRegistro(FALSE);
@@ -68,7 +66,7 @@ if($acesso)
     echo '<br/>';
 
     $servidor = new Pessoal();
-    $select ='SELECT DIR,
+    $select = 'SELECT DIR,
                      CONCAT(GER," - ",nome),
                      ramais
                 FROM tblotacao
@@ -83,9 +81,9 @@ if($acesso)
     $relatorio = new Relatorio('relatorioRamal');
     $relatorio->set_titulo('TECNORTE');
     $relatorio->set_subtitulo('Telefones e Ramais');
-    $relatorio->set_label(array('Diretoria','Setor','Ramais'));
-    $relatorio->set_width(array(0,40,30));
-    $relatorio->set_align(array("center","left"));
+    $relatorio->set_label(array('Diretoria', 'Setor', 'Ramais'));
+    $relatorio->set_width(array(0, 40, 30));
+    $relatorio->set_align(array("center", "left"));
     $relatorio->set_conteudo($result);
     $relatorio->set_numGrupo(0);
     $relatorio->set_cabecalhoRelatorio(FALSE);
