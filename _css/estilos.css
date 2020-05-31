@@ -1,0 +1,757 @@
+/*******************************************
+ * Área do Servidor - Menu
+ *******************************************/
+p#exibeIP{
+    text-align: center;
+    font-size: 10px;
+}
+
+p#versao{
+    font-size: 11px;
+    text-align: center;
+    color: #02548b;
+}
+
+p#ip{
+    font-size: 11px;
+    text-align: right;
+    color: #02548b;
+}
+
+p#usuarioLogado{
+    font-size: 11px;
+    text-align: left;
+    color: #02548b;
+}
+
+/*******************************************
+ * Rotina de Documentação
+ *******************************************/
+pre, code{
+    max-height: 750px;
+    color: #000;
+    background: #fff;
+    font-size: 13px;
+
+    display: block;
+    unicode-bidi: embed;
+    font-family: monospace;
+    white-space: pre;
+
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-left: 10px solid #ccc;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+dd{
+    margin-left: 20px;
+}
+
+hr#documentacao{
+    padding: 0px;
+    margin: 5px 0px 5px 0px;
+}
+
+p#documentacaoNomeClasse{
+    padding: 0px;
+    margin: 0px;
+    font-size: 22px;
+    text-align: center;
+}
+
+p#documentacaoNomeClassePrincipal{
+    padding: 0px;
+    margin: 0px;
+    font-size: 24px;
+    text-align: left;
+}
+
+p#documentaAtributos{
+    padding: 0px;
+    margin: 0px;
+    font-size: 13px;
+    text-align: left;
+}
+
+a#documentaMetodo{
+    padding: 0px;
+    margin: 0px;
+    font-size: 13px;
+    text-align: left;
+    color: #000;
+}
+
+p#documentacaoDescricaoClasse{
+    padding: 0px;
+    margin: 0px;
+    font-size: 13px;
+    text-align: left;
+}
+
+p#documentacaoAutor{
+    padding: 0px;
+    margin: 0px;
+    font-size: 11px;
+    text-align: right;
+}
+
+p#documentacaoNota{
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    text-align: left;
+}
+
+p#documentacaoDeprecated{
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    text-align: left;
+}
+
+p#documentacaoVisibilidadeMetodo{
+    padding: 0px;
+    margin: 0px;
+    font-size: 11px;
+    text-align: left;
+    margin-top: -15px;
+}
+
+div#divAbstracaoClasse{
+    float: right;
+    margin-top: -5px;
+    margin-right: -5px;
+}
+
+table#tableVariaveisClasse{
+    border-collapse: separate;
+    border-spacing: 2pt;
+    font-size: 13px;
+    width: 100%;
+    margin: 0px;
+}
+
+table#tableVariaveisClasse a{
+    color: #000;
+    font-size: 14px;
+}
+
+table#tableVariaveisClasse th{
+    background-color:#E0E0E0;
+    color: #000;
+    padding: 5px;
+    margin: 0px;
+}
+
+table#tableVariaveisClasse caption {
+    background-color: #fff;
+    font-weight: normal;
+    font-size: 13px;
+    color: #000;
+    text-align: left;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+table#tableVariaveisClasse td{
+    background-color: #FFF;
+    padding: 2px;
+    border-bottom: 1px solid gray;
+    color: #000;
+    font-size: 12px;
+}
+
+table#ttableVariaveisClasse tfoot td {
+    background-color: #FFF;
+    color: #000;
+    text-align: right;
+    border-bottom: 0px;
+    font-size: 10px;
+    padding: 0px;
+}
+
+/*******************************************
+ * Histórico de cargos em Comissão
+ *******************************************/
+tr#vigente{
+    background-color:#8FBC8F;
+}
+
+
+/*******************************************
+ * Cadastro de Usuários
+ *******************************************/
+tr#senhaOk{
+    background-color: #8FBC8F;
+}
+
+tr#senhaNula{
+    background-color: #FFA07A;
+}
+
+tr#senhaPadrao{
+    background-color: #EDE275;
+}
+div#menuUsuarios{
+    position: absolute;
+    top: 1%;
+    left: 60%;
+}
+
+div#divLegendaUsuarios{
+    position: absolute;
+    top: 15%;
+    left: 25%;
+    width: 50%;
+    height: auto;
+    display: none;
+}
+
+div#divPermissao{
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: auto;
+    display: none;
+}
+
+/*******************************************
+ * Histórico
+ *******************************************/
+tr#logLogin{
+    background-color: #ccffcc;
+}
+
+tr#logExclusao{
+    background-color: #ffdcc3;
+}
+
+tr#logLoginIncorreto{
+    background-color: lightsalmon;
+}
+
+tr#logBackup{
+    background-color: #99ccff;
+}
+
+div#divContagemExterna{
+    position: absolute;
+    top: 1%;
+    left: 10%;
+    width: 140px;
+    font-size: 12px;
+    text-align: center;
+    background-color: #E0E0E0;
+    padding: 5px;
+}
+
+div#divContagemInterna{
+    text-align: center;
+    color: #B00000;
+}
+
+p#diaSemana{
+    position: relative;
+    top: -15px;
+    font-size: 10px;
+    color: #02548b;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+
+div#divUsuariosHoje{
+    position: absolute;
+    top: 1%;
+    left: 70%;
+    width: 200px;
+    font-size: 12px;
+    text-align: center;
+    background-color: #E0E0E0;
+    padding: 5px;
+}
+
+/************************************
+* Manual de Procedimentos
+****************************************/
+
+p#vagaCentro{
+    font-size: 30px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+p#vagaCargo{
+    font-size: 12px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+p#vagaId{
+    font-size: 12px;    
+    padding: 0px;
+    margin: -10px;
+    color:#8a8a8a;
+    float: right;
+}
+
+p#vagaOrigem{
+    font-size: 10px;
+    text-align: center;
+    padding: 15px 0px 0px;
+    margin: 0px;
+}
+
+a#editarVaga{
+    position: absolute;
+}
+
+/*******************************************
+ * Rotina que lista dados do servidor
+ *******************************************/
+tr#listaDados{
+    background-color: #D7D7D7;
+}
+
+/*******************************************
+ * Rotina de documentação de classes
+ *******************************************/
+span#public{
+    color: #0000CC;
+}
+
+span#private{
+    color: #ff6600;
+}
+
+span#protected{
+    color: #ff3333;
+}
+
+/*******************************************
+ * Mensagem
+ *******************************************/
+
+p#mensagem{
+    text-align: center;
+    font-size: 14px;
+    color: #8a8a8a;
+}
+
+span#mensagemLabel{
+    text-align: left;
+    font-size: 10px;
+    color: #000;
+}
+
+/*******************************************
+ * Div Sobre
+ *******************************************/
+
+div#divSobre{
+    display: none;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    width: 40%;
+}
+
+p#grhAutor{
+    font-size: 14px;
+    text-align: center;
+    font-family: tahoma;
+    color: #02548b;
+}
+
+p#grhSetor{
+    font-size: 16px;
+    text-align: center;
+    font-family: tahoma;
+    color: #02548b;
+}
+
+p#grhTitulo{
+    font-size: 25px;
+    text-align: center;
+    font-family: tahoma;
+    color: #02548b;
+    padding: 0px;
+    margin: 0px;
+
+}
+
+p#versao{
+    font-size: 11px;
+    text-align: center;
+    color: #02548b;
+    padding: 0px;
+    margin: 0px;
+}
+
+/*******************************************
+ * Sistema de Gestão de Projetos
+ *******************************************/
+
+hr#projetosTarefas{
+    margin: 1px;
+}
+
+p#descricaoProjeto {
+    font-size: 11px;
+    margin: 0;
+    padding-bottom: 5px;
+    font-style: italic;
+}
+
+p#descricaoProjetoTitulo {
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    vertical-align:bottom;
+}
+
+div#card {
+    min-height: 250px;
+    max-height: 250px;
+}
+
+hr#hrCard {
+    margin-top: 2px;
+    margin-bottom: 5px;
+    padding: 0;
+}
+
+p#pCardNumTarefas {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+a#aCardNomeProjeto {
+    font-size: 16px;
+    margin: 5px;
+    padding: 0;
+    color:#000;
+}
+
+p#pCardNomeGrupo {
+    font-size: 10px;
+    margin: 0px;
+    margin-left: 8px;
+    padding: 0px;
+    color:cadetblue;
+}
+
+table#tableTarefas{
+    border-collapse: separate;
+    border-spacing: 2pt;
+    font-size: 13px;
+    width: 100%;
+    margin: 0px;
+}
+
+table#tableTarefas a{
+    color: #000;
+    font-size: 14px;
+}
+
+table#tableTarefas th{
+    background-color:#fff;
+    height: 0px;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+table#tableTarefas caption {
+    background-color: #fff;
+    font-weight: normal;
+    font-size: 13px;
+    color: #000;
+    text-align: left;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+table#tableTarefas td{
+    background-color: #FFF;
+    padding: 2px;
+    border-bottom: 1px solid gray;
+    color: #000;
+    font-size: 12px;
+}
+
+table#tableTarefas tfoot td {
+    background-color: #FFF;
+    color: #000;
+    text-align: right;
+    border-bottom: 0px;
+    font-size: 10px;
+    padding: 0px;
+}
+
+table#tableNotas{
+    border-collapse: separate;
+    border-spacing: 1pt;
+    font-size: 10px;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+table#tableNotas th{
+    background-color:#fff;
+    height: 0px;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+table#tableNotas caption {
+    background-color: #fff;
+    height: 0px;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+table#tableNotas td{
+    background-color: #FFF;
+    padding: 5px;
+    border-bottom: #D7D7D7 solid 1px;
+    font-size: 12px;
+}
+
+table#tableNotas a{
+    color: #076cba;
+}
+
+table#tableNotas a:hover{
+    color: darkgray;
+}
+
+table#tableNotas tfoot td {
+    background-color: #FFF;
+    color: #000;
+    text-align: right;
+    border-bottom: 0px;
+    font-size: 10px;
+    padding: 0px;
+}
+
+pre#preNota{
+    color: #000;
+    background: #fff;
+    font-size: 14px;
+
+    unicode-bidi: embed;
+    font-family: sans-serif;
+    white-space:pre-wrap;
+
+    padding: 1em;
+    border: 0px;
+    border-radius: 0px;
+}
+
+span#projeto{
+    color: #076cba;
+    font-size: 10px;
+}
+
+span#etiqueta{
+    font-size: 10px;
+    color: #ff6600;
+}
+
+span#solicitante{
+    font-size: 10px;
+    color: #8FBC8F;
+}
+
+span#numProjeto{
+    font-size: 9px;
+    color: #8a8a8a;
+}
+
+a#editaNota{
+    font-size: 10px;
+    color: #8a8a8a;
+}
+
+div#divEditaNota{
+    float: right;
+    margin-top: -15px;
+    margin-right: -5px;
+}
+
+div#divEditaNota2{
+    float: right;
+    margin-top: 0px;
+    margin-right: -5px;
+}
+
+div#menuSuspenso{
+    display: none;
+    position: absolute;
+    top: 50px;
+    background-color:#ededed;
+    border:#f0f0f0 thin solid;
+}
+
+div#menuNormal{
+    top: 50px;
+    background-color:#ededed;
+    border:#f0f0f0 thin solid;
+    padding: 10px;
+}
+
+div#campoPesquisa{
+    padding-left: 10px;
+    padding-right: 20px;
+}
+
+p#pExibeTarefa {
+    font-size: 18px;
+    margin-bottom: -5px;
+    padding: 0;
+}
+
+p#pDescricaoTag {
+    font-size: 10px;
+    margin-bottom: -5px;
+    padding: 0;
+}
+
+p#pDescricao {
+    font-size: 14px;
+    padding: 0;
+}
+
+/*******************************************
+ * Manual de Procedimentos
+ *******************************************/
+
+p#procedimentoPai{
+    font-size: 12px;
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+}
+
+p#procedimentoTitulo{
+    font-size: 18px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+
+p#procedimentoDescricao{
+    font-size: 11px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+
+hr#procedimento{
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+div#divNota ul,li{
+    font-size: 12px;
+}
+
+div#divNota ul{
+    font-size: 12px;
+    padding-top: 3px;
+}
+
+div#divNota h1{
+    font-size: 18px;
+    padding-bottom: 5px;
+    padding-top: 3px;
+}
+
+div#divNota h2{
+    font-size: 18px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+
+div#divNota h3{
+    font-size: 14px;
+    padding-bottom: 2px;
+    padding-top: 3px;
+}
+
+div#divNota {
+    font-size: 12px;
+}
+
+div#editarProcedimento{
+    position: relative;
+    float: right;
+}
+
+/*******************************************
+ * Sistema de controle de processos
+ *******************************************/
+
+p#pNumeroProcesso {
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+p#pDataProcesso {
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+p#pAssuntoProcesso {
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+    padding: 8px;;
+}
+
+/*******************************************
+ * Chat
+ *******************************************/
+
+div#divAreaMensagens{
+    width: 100%;
+    height: 80%;
+    border-top: #8a8a8a thin solid;
+
+}
+
+hr#hrChat{
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 10px 0px;
+}
+
+img#chat{
+    border-radius: 30% 30% 30% 30%;
+    cursor:pointer;
+    padding-bottom: 10px;
+}
+
+p#pchatMensagem{
+    font-size: 14px;
+    text-align: left;
+    margin: 0px;
+    padding: 0px 0px 0px 0px;
+}

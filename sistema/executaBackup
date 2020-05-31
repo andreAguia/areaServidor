@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Informa que iniciou o backup 
+echo 'Executando backup'
+
+# Define os valores para conectar o banco de dados
+USUARIO="root"
+SENHA="chewbacca"
+
+# Caminho
+CAMINHO="/var/www/html/_backup/"
+
+# Arquivo
+ARQUIVO=$1
+
+# Executa o backup no banco GRH
+BANCO="uenf_grh"
+NOME1="$CAMINHO""$ARQUIVO.$BANCO"
+mysqldump -u $USUARIO -p$SENHA $BANCO > $NOME1
+
+# Executa o backup no banco AREASERVIDOR
+BANCO="uenf_areaservidor"
+NOME2="$CAMINHO""$ARQUIVO.$BANCO"
+mysqldump -u $USUARIO -p$SENHA $BANCO > $NOME2
+
+# Executa o backup no banco CONTRATOS
+BANCO="uenf_contratos"
+NOME3="$CAMINHO""$ARQUIVO.$BANCO"
+mysqldump -u $USUARIO -p$SENHA $BANCO > $NOME3
+
+# Compacta e junta os 3 arquivos
+tar -zcf "$CAMINHO""$ARQUIVO".tar $NOME1 $NOME2 $NOME3
+
+# Apaga os arquivos originais nao compactados
+rm $NOME1
+rm $NOME2
+rm $NOME3
