@@ -19,6 +19,6 @@ if ((is_null($setorTexto)) AND (is_null($setorCombo))) {
 
 # Escolhe o combo quando os dois estão preenchidos
 if ((!is_null($setorTexto)) AND (!is_null($setorCombo))) {
-    $campoValor[3] = NULL;
+    $campoValor[3] = null;
 }
 

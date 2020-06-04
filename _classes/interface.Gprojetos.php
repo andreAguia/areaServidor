@@ -9,13 +9,13 @@ class Gprojetos {
      */
 ##########################################################
 
-    public static function menuProjetosAtivos($idProjeto = NULL) {
+    public static function menuProjetosAtivos($idProjeto = null) {
         /**
          * Exibe o menu de projetos ativos.
          * 
          * @syntax Gprojetos::Gprojetos;
          * 
-         * @param $idProjeto integer NULL o id do projeto a ser ressaltado no menu informando que stá sendo editado.
+         * @param $idProjeto integer null o id do projeto a ser ressaltado no menu informando que stá sendo editado.
          */
         # Acessa o banco de dados
         $projeto = new Projeto();
@@ -83,13 +83,13 @@ class Gprojetos {
 
     ##########################################################
 
-    public static function menuCadernos($idCaderno = NULL, $idNota = NULL) {
+    public static function menuCadernos($idCaderno = null, $idNota = null) {
         /**
          * Exibe o menu de cadernos.
          * 
          * @syntax Gprojetos::Gprojetos;
          * 
-         * @param $idPCaderno integer NULL o id do caderno a sser ressaltado no menu informando que stá sendo editado.
+         * @param $idPCaderno integer null o id do caderno a sser ressaltado no menu informando que stá sendo editado.
          */
         # Acessa o banco de dados
         $projeto = new Projeto();
@@ -151,13 +151,13 @@ class Gprojetos {
 
     ##########################################################
 
-    public static function menuEtiquetas($etiqueta = NULL) {
+    public static function menuEtiquetas($etiqueta = null) {
         /**
          * Exibe o menu de projetos ativos.
          * 
          * @syntax Gprojetos::Gprojetos;
          * 
-         * @param $idProjeto integer NULL o id do projeto a sser ressaltado no menu informando que stá sendo editado.
+         * @param $idProjeto integer null o id do projeto a sser ressaltado no menu informando que stá sendo editado.
          */
         # Pega as etiquetas cadastradas
         $select = 'SELECT distinct etiqueta
@@ -196,13 +196,13 @@ class Gprojetos {
 
     ##########################################################
 
-    public static function menuSolicitante($solicitante = NULL) {
+    public static function menuSolicitante($solicitante = null) {
         /**
          * Exibe o menu de solicitantes.
          * 
          * @syntax Gprojetos::Gprojetos;
          * 
-         * @param $idProjeto integer NULL o id do projeto a sser ressaltado no menu informando que stá sendo editado.
+         * @param $idProjeto integer null o id do projeto a sser ressaltado no menu informando que stá sendo editado.
          */
         # Pega os projetos cadastrados
         $select = 'SELECT distinct solicitante
@@ -241,13 +241,13 @@ class Gprojetos {
 
     ##########################################################
 
-    public static function cartoesProjetosAtivos($grupo = NULL) {
+    public static function cartoesProjetosAtivos($grupo = null) {
         /**
          * Exibe o os projetos ativo em forma de cartões
          * 
          * @syntax Gprojetos::Gprojetos;
          * 
-         * @param $idProjeto integer NULL o id do projeto a sser ressaltado no menu informando que stá sendo editado.
+         * @param $idProjeto integer null o id do projeto a sser ressaltado no menu informando que stá sendo editado.
          */
         # Pega os projetos cadastrados
         $select = 'SELECT idProjeto,
@@ -318,7 +318,7 @@ class Gprojetos {
 
     ##########################################################
 
-    public static function cartoesCadernos($grupo = NULL) {
+    public static function cartoesCadernos($grupo = null) {
         /**
          * Exibe o os cadernos ativo em forma de cartões
          * 
@@ -429,7 +429,7 @@ class Gprojetos {
         /**
          * Retorna o nome do projeto informado
          * 
-         * @param $idProjeto integer NULL o idProjeto
+         * @param $idProjeto integer null o idProjeto
          * 
          * @syntax $projeto->get_nomeProjeto([$idProjeto]);  
          */
@@ -443,7 +443,7 @@ class Gprojetos {
         $intra = new Intra();
         $row = $intra->select($select, false);
         if (!is_null($row[0])) {
-            label($row[0], $row[1], NULL, $row[2]);
+            label($row[0], $row[1], null, $row[2]);
         } else {
             echo "--";
         }
@@ -455,7 +455,7 @@ class Gprojetos {
         /**
          * Retorna um link para editar a nota
          * 
-         * @param $idNota integer NULL o idNota
+         * @param $idNota integer null o idNota
          * 
          * @syntax $projeto->showNota([$idNota]);  
          */
@@ -474,11 +474,11 @@ class Gprojetos {
 
     ###########################################################
 
-    public function showEtiqueta($etiqueta = NULL) {
+    public function showEtiqueta($etiqueta = null) {
         /**
          * Retorna o nome da etiqueta
          * 
-         * @param $etiqueta integer NULL o etiqueta
+         * @param $etiqueta integer null o etiqueta
          * 
          * @syntax $projeto->get_nomeProjeto([$etiqueta]);  
          */
@@ -496,7 +496,7 @@ class Gprojetos {
         } else {
             $row = $intra->select($select, false);
             if (!is_null($row[0])) {
-                label($row[0], $row[1], NULL, $row[2]);
+                label($row[0], $row[1], null, $row[2]);
             } else {
                 echo "--";
             }
@@ -509,8 +509,8 @@ class Gprojetos {
         /**
          * Exibe a tarefa
          * 
-         * @param $idTarefa integer NULL o $idTarefa
-         * @param $esconde  integer NULL NULL -> exibe o projeto e a etiqueta | 1 -> esconde Projeto | 2 -> esconde etiqueta
+         * @param $idTarefa integer null o $idTarefa
+         * @param $esconde  integer null null -> exibe o projeto e a etiqueta | 1 -> esconde Projeto | 2 -> esconde etiqueta
          * 
          * @syntax $projeto->showTarefa($idTarefa);  
          */
@@ -539,18 +539,18 @@ class Gprojetos {
             br();
 
             # Projeto
-            span($nomeProjeto, "projeto", NULL, "Projeto");
+            span($nomeProjeto, "projeto", null, "Projeto");
 
             # Etiqueta
             if (!is_null($row[4])) {
                 echo "&nbsp&nbsp&nbsp";
-                span($row[4], "etiqueta", NULL, "Etiqueta");
+                span($row[4], "etiqueta", null, "Etiqueta");
             }
 
             # Solicitante
             if (!is_null($row[5])) {
                 echo "&nbsp&nbsp&nbsp";
-                span($row[5], "solicitante", NULL, "Solicitante");
+                span($row[5], "solicitante", null, "Solicitante");
             }
         } else {
 
@@ -559,18 +559,18 @@ class Gprojetos {
             br();
 
             # Projeto
-            span($nomeProjeto, "projeto", NULL, "Projeto");
+            span($nomeProjeto, "projeto", null, "Projeto");
 
             # Etiqueta
             if (!is_null($row[4])) {
                 echo "&nbsp&nbsp&nbsp";
-                span($row[4], "etiqueta", NULL, "Etiqueta");
+                span($row[4], "etiqueta", null, "Etiqueta");
             }
 
             # Solicitante
             if (!is_null($row[5])) {
                 echo "&nbsp&nbsp&nbsp";
-                span($row[5], "solicitante", NULL, "Solicitante");
+                span($row[5], "solicitante", null, "Solicitante");
             }
         }
     }
@@ -581,7 +581,7 @@ class Gprojetos {
         /**
          * Exibe a prioridade de uma tarefa
          * 
-         * @param $idTarefa integer NULL o $idTarefa
+         * @param $idTarefa integer null o $idTarefa
          * 
          * @syntax $projeto->showPrioridade($idTarefa);  
          */
@@ -619,7 +619,7 @@ class Gprojetos {
         /**
          * Retorna o nome da etiqueta
          * 
-         * @param $etiqueta integer NULL o idProjeto
+         * @param $etiqueta integer null o idProjeto
          * 
          * @syntax $projeto->get_nomeProjeto([$etiqueta]);  
          */
@@ -636,16 +636,16 @@ class Gprojetos {
         $dataFinal = date_to_php($row[1]);
 
         if ($dataFinal == "00/00/0000") {
-            $dataFinal = NULL;
+            $dataFinal = null;
         }
 
         if ($dataInicial == "00/00/0000") {
-            $dataInicial = NULL;
+            $dataInicial = null;
         }
 
         $hoje = date('d/m/Y');
-        $amanha = addDias($hoje, 1, FALSE);
-        $ontem = addDias($hoje, -1, FALSE);
+        $amanha = addDias($hoje, 1, false);
+        $ontem = addDias($hoje, -1, false);
 
         # Inicia as Variáveis de retorno
         $inicialRetorno = $dataInicial;

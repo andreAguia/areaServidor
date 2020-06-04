@@ -15,7 +15,7 @@ class Intra extends Bd {
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela
     private $idCampo;                       // o nome do campo id
-    private $log = TRUE;                    // habilita o log
+    private $log = true;                    // habilita o log
 
     /**
      * Método Construtor
@@ -51,7 +51,7 @@ class Intra extends Bd {
     /**
      * Método Gravar
      */
-    public function gravar($campos = NULL, $valor = NULL, $idValor = NULL, $tabela = NULL, $idCampo = NULL, $alerta = FALSE) {
+    public function gravar($campos = null, $valor = null, $idValor = null, $tabela = null, $idCampo = null, $alerta = false) {
 
         if (is_null($tabela)) {
             $tabela = $this->tabela;
@@ -68,10 +68,10 @@ class Intra extends Bd {
     /**
      * Método Excluir
      */
-    public function excluir($idValor = NULL, $tabela = NULL, $idCampo = 'id') {
+    public function excluir($idValor = null, $tabela = null, $idCampo = 'id') {
 
-        $erro = FALSE;  // Flag de erro
-        $msgErro = NULL; // Recipiente das mensagens de erro
+        $erro = false;  // Flag de erro
+        $msgErro = null; // Recipiente das mensagens de erro
 
         if ($this->tabela == 'tbregra') {
             # Verifica se existe alguma permissão com a regra a ser excluída
@@ -80,7 +80,7 @@ class Intra extends Bd {
                         WHERE idRegra = ' . $idValor;
             $numRows = parent::count($select);
             if ($numRows > 0) {
-                $erro = TRUE;
+                $erro = true;
                 $msgErro = 'Existem ' . $numRows . ' permissão(ões) cadastrada(s) para essa regra. A mesma não pode ser excluída!!';
             }
         }
@@ -98,11 +98,11 @@ class Intra extends Bd {
             # Exibe o alerta
             $alert = new Alert($msgErro);
             $alert->show();
-            return 0; # False -> o FALSE não funcionou então colocou 0
+            return 0; # false -> o false não funcionou então colocou 0
         } else {
             # efetua a exclusão
             parent::excluir($idValor, $this->tabela, $this->idCampo);
-            return 1; # True 		
+            return 1; # true 		
         }
     }
 
@@ -119,14 +119,14 @@ class Intra extends Bd {
         $select = 'SELECT valor
                      FROM tbvariaveis
                     WHERE nome = "' . $variavel . '"';
-        $valor = parent::select($select, FALSE);
+        $valor = parent::select($select, false);
         $count = parent::count($select);
 
         if ($count > 0) {
             return $valor[0];
         } else {
             alert('Variável não existemte');
-            return NULL;
+            return null;
         }
     }
 
@@ -148,7 +148,7 @@ class Intra extends Bd {
         if (is_null($nome))
             return 0;
         else {
-            $result = parent::select($select, FALSE);
+            $result = parent::select($select, false);
             return $result[0];
         }
     }
@@ -255,7 +255,7 @@ class Intra extends Bd {
         if (is_null($idUsuario))
             return 0;
         else {
-            $result = parent::select($select, FALSE);
+            $result = parent::select($select, false);
             return $result[0];
         }
     }
@@ -269,14 +269,14 @@ class Intra extends Bd {
      * @param	string 	$idUsuario 	-> o usuario
      * @param 	string	$senha		-> senha (n�o criptofrafada) a ser gravada (se nulo grava-se a senha padr�o)
      */
-    public function set_senha($idUsuario, $senha = NULL, $alert = TRUE) {
+    public function set_senha($idUsuario, $senha = null, $alert = true) {
         # Verifica se a senha foi informada
         if (is_null($senha)) {
             # Define a senha com senha padrão
             $senha = SENHA_PADRAO;
 
             # Grava o acesso para o controle de dias com senha padrão
-            parent::gravar('ultimoAcesso', date("Y-m-d H:i:s"), $idUsuario, 'tbusuario', 'idUsuario', FALSE);
+            parent::gravar('ultimoAcesso', date("Y-m-d H:i:s"), $idUsuario, 'tbusuario', 'idUsuario', false);
         }
         #criptografa a senha
         $senha = md5($senha);
@@ -294,9 +294,9 @@ class Intra extends Bd {
      * @param	string 	$idUsuario 	-> o usuario
      * @param 	string	$senha		-> senha (n�o criptofrafada) a ser gravada (se nulo grava-se a senha padr�o)
      */
-    public function set_senhaNull($idUsuario, $alert = TRUE) {
+    public function set_senhaNull($idUsuario, $alert = true) {
         # Grava a senha
-        parent::gravar('senha', NULL, $idUsuario, 'tbusuario', 'idUsuario', $alert);
+        parent::gravar('senha', null, $idUsuario, 'tbusuario', 'idUsuario', $alert);
     }
 
     ###########################################################
@@ -313,7 +313,7 @@ class Intra extends Bd {
                          FROM tbusuario
                         WHERE idUsuario = " . $idUsuario;
 
-        $result = parent::select($select, FALSE);
+        $result = parent::select($select, false);
         $padrao = MD5(SENHA_PADRAO);
 
         switch ($result[0]) {
@@ -323,7 +323,7 @@ class Intra extends Bd {
                 break;
 
             # senha bloqueada
-            case NULL :
+            case null :
                 return 2;
                 break;
 
@@ -352,7 +352,7 @@ class Intra extends Bd {
         if (is_null($usuario))
             return 0;
         else {
-            $result = parent::select($select, FALSE);
+            $result = parent::select($select, false);
             return $result[0];
         }
     }
@@ -375,7 +375,7 @@ class Intra extends Bd {
         if (is_null($idUsuario))
             return 0;
         else {
-            $result = parent::select($select, FALSE);
+            $result = parent::select($select, false);
             return $result[0];
         }
     }
@@ -416,7 +416,7 @@ class Intra extends Bd {
                          FROM tbusuario
                         WHERE idUsuario = '" . $idUsuario . "'";
 
-        $result = parent::select($select, FALSE);
+        $result = parent::select($select, false);
         return $result[0];
     }
 
@@ -426,7 +426,7 @@ class Intra extends Bd {
      * Método verificaPermissao
      * 
      * verifica se um usuário pode executar uma determinada tarefa (regra)
-     * retorna TRUE ou FALSE 
+     * retorna true ou false 
      * 
      * @param	integer $matricula	-> a matrícula
      * @param	integer	$idRegra	-> o id da regra
@@ -438,24 +438,24 @@ class Intra extends Bd {
 
         # verifica se o id foi preenchido
         if (is_null($idUsuario)) {
-            return FALSE;
+            return false;
         } else {
             $numReg = parent::count($select);
 
             #echo $idUsuario."-".$idRegra."-".$numReg."-".CHAMADOR;
             # verifica se tem permissão para esse usuário e essa regra 
             if ($numReg > 0) {
-                return TRUE;
+                return true;
             } else {
                 # se não tiver para essa regra pode ter para admin
                 if ($idRegra == 1) {
-                    return FALSE;
+                    return false;
                 } else {
                     # verifica se tem para admin
                     if ($this->verificaPermissao($idUsuario, 1)) {
-                        return TRUE;
+                        return true;
                     } else {
-                        return FALSE;
+                        return false;
                     }
                 }
             }
@@ -519,16 +519,16 @@ class Intra extends Bd {
     public function registraLog($idUsuario,
             $data,
             $atividade,
-            $tabela = NULL,
-            $idValor = NULL,
+            $tabela = null,
+            $idValor = null,
             $tipo = 0,
-            $idServidor = NULL,
-            $ip = NULL,
-            $browser = NULL) {
+            $idServidor = null,
+            $ip = null,
+            $browser = null) {
 
         $campos = array('idUsuario', 'data', 'atividade', 'tabela', 'idValor', 'tipo', 'idServidor', 'ip', 'browser');
         $valor = array($idUsuario, $data, $atividade, $tabela, $idValor, $tipo, $idServidor, IP, BROWSER_NAME . ' ' . BROWSER_VERSION);
-        parent::gravar($campos, $valor, NULL, 'tblog', 'idlog', FALSE);
+        parent::gravar($campos, $valor, null, 'tblog', 'idlog', false);
     }
 
     ###########################################################
@@ -548,7 +548,7 @@ class Intra extends Bd {
         if (is_null($idUsuario)) {
             $data[0] = "1900-01-01";
         } else {
-            $data = parent::select($select, FALSE);
+            $data = parent::select($select, false);
         }
         return $data[0];
     }
@@ -566,7 +566,7 @@ class Intra extends Bd {
         $select = 'SELECT tbregra.nome
                      FROM tbpermissao LEFT JOIN tbregra ON (tbregra.idregra = tbpermissao.idregra) 
                     WHERE idPermissao = ' . $idPermissao;
-        $row = parent::select($select, FALSE);
+        $row = parent::select($select, false);
         return $row[0];
     }
 
@@ -583,7 +583,7 @@ class Intra extends Bd {
         $select = 'SELECT tbregra.nome
                      FROM tbregra
                     WHERE idRegra = ' . $idRegra;
-        $row = parent::select($select, FALSE);
+        $row = parent::select($select, false);
         return $row[0];
     }
 
@@ -600,7 +600,7 @@ class Intra extends Bd {
         if (is_null($idUsuario))
             return 0;
         else {
-            $result = parent::select($select, FALSE);
+            $result = parent::select($select, false);
             return $result[0];
         }
     }
@@ -617,7 +617,7 @@ class Intra extends Bd {
         if (is_null($idUsuario))
             return 0;
         else {
-            $result = parent::select($select, FALSE);
+            $result = parent::select($select, false);
             return $result[0];
         }
     }
@@ -635,11 +635,11 @@ class Intra extends Bd {
                      FROM tbcomputador
                     WHERE ip = "' . $ip . '"';
 
-        $result = parent::select($select, FALSE);
+        $result = parent::select($select, false);
         if (is_null($result[0])) {
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -656,7 +656,7 @@ class Intra extends Bd {
                      FROM tbmensagem
                     ORDER BY RAND() LIMIT 1';
 
-        $result = parent::select($select, FALSE);
+        $result = parent::select($select, false);
         return $result[0];
     }
 
@@ -674,7 +674,7 @@ class Intra extends Bd {
                  ORDER BY data desc
                  LIMIT 1";
 
-        $result = parent::select($select, FALSE);
+        $result = parent::select($select, false);
         return $result;
     }
 
@@ -708,17 +708,17 @@ class Intra extends Bd {
         $select = 'SELECT numero
                      FROM tbprocesso
                     WHERE idProcesso = ' . $idProcesso;
-        $row = parent::select($select, FALSE);
+        $row = parent::select($select, false);
         return $row[0];
     }
 
     ###########################################################
 
-    public function get_ProcessoMovimentoSetor($idMovimento = NULL) {
+    public function get_ProcessoMovimentoSetor($idMovimento = null) {
         /**
          * Retorna o setor desse movimento no cadastro de movimentação de processo
          * 
-         * @param $idMovimento integer NULL o idMovimento
+         * @param $idMovimento integer null o idMovimento
          * 
          * @syntax $processo->get_MovimentoSetor([$idMovimento]);  
          */
@@ -728,7 +728,7 @@ class Intra extends Bd {
                      FROM tbprocessomovimento
                      WHERE idProcessoMovimento = ' . $idMovimento;
 
-        $row = parent::select($select, FALSE);
+        $row = parent::select($select, false);
 
         # Verifica qual campo foi preenchido
         # Se for setor interno, pega o nome e retorna 

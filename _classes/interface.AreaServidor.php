@@ -13,7 +13,7 @@ class AreaServidor {
      * 
      * Exibe o cabecalho
      */
-    public static function cabecalho($titulo = NULL) {
+    public static function cabecalho($titulo = null) {
         # tag do cabeçalho
         echo '<header>';
         br();
@@ -113,11 +113,11 @@ class AreaServidor {
                                        LEFT JOIN tbperfil ON tbservidor.idPerfil = tbperfil.idPerfil
                    WHERE idServidor = ' . $idServidor;
 
-        $conteudo = $servidor->select($select, TRUE);
+        $conteudo = $servidor->select($select, true);
         $label = array("Usuário", "Servidor", "Perfil", "Cargo", "Admissão", "Lotação", "Situação");
-        $function = array(NULL, NULL, NULL, NULL, "date_to_php");
-        $classe = array(NULL, NULL, NULL, "pessoal", NULL, "pessoal", "pessoal");
-        $metodo = array(NULL, NULL, NULL, "get_Cargo", NULL, "get_Lotacao", "get_Situacao");
+        $function = array(null, null, null, null, "date_to_php");
+        $classe = array(null, null, null, "pessoal", null, "pessoal", "pessoal");
+        $metodo = array(null, null, null, "get_Cargo", null, "get_Lotacao", "get_Situacao");
 
         $formatacaoCondicional = array(array('coluna' => 0,
                 'valor' => $nomeUsuario,
@@ -131,7 +131,7 @@ class AreaServidor {
         $tabela->set_funcao($function);
         $tabela->set_classe($classe);
         $tabela->set_metodo($metodo);
-        $tabela->set_totalRegistro(FALSE);
+        $tabela->set_totalRegistro(false);
         $tabela->set_formatacaoCondicional($formatacaoCondicional);
 
         # Limita o tamanho da tela

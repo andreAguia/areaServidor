@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -109,7 +109,7 @@ if ($acesso) {
     $objeto->set_campos(array(
         array('nome' => 'mensagem',
             'label' => 'Mensagem:',
-            'autofocus' => TRUE,
+            'autofocus' => true,
             'tipo' => 'textarea',
             'size' => array(90, 5),
             'title' => 'Mensagem a ser exibida.',

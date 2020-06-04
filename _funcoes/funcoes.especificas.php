@@ -13,12 +13,12 @@ function exibeNomeTitle($idServidor) {
      * 
      * @syntax exibeNomeTitle($idServidor);
      * 
-     * @param $idServidor integer NULL id do servidor.
+     * @param $idServidor integer null id do servidor.
      */
     $pessoal = new Pessoal();
     $nomeServidor = $pessoal->get_nome($idServidor);
     echo "<abbr title='$nomeServidor'>$idServidor</abbr>";
-    #p($idServidor,NULL,NULL,$nomeServidor);
+    #p($idServidor,null,null,$nomeServidor);
 }
 
 ##################################################################
@@ -31,28 +31,28 @@ function statusUsuario($idUsuario) {
      * 
      * @syntax statusUsuario($idUsuario);
      * 
-     * @param $tipoUsuario string NULL o tipo de usuario
+     * @param $tipoUsuario string null o tipo de usuario
      */
     $intra = new Intra();
     $tipoSenha = $intra->get_tipoSenha($idUsuario);
 
     switch ($tipoSenha) {
         case 1 :
-            badge("!", "secondary", NULL, "Usuário com senha padrão.");
+            badge("!", "secondary", null, "Usuário com senha padrão.");
             break;
 
         case 2 :
-            badge("X", "alert", NULL, "Usuário Bloqueado.");
+            badge("X", "alert", null, "Usuário Bloqueado.");
             break;
 
         case 3 :
-            badge("OK", "success", NULL, "Usuário Habilitado.");
+            badge("OK", "success", null, "Usuário Habilitado.");
             break;
     }
 
     # Informa ainda se é usuário admin
     if ($intra->verificaPermissao($idUsuario, 1)) {
-        badge("A", "warning", NULL, "Usuário Administrador.");
+        badge("A", "warning", null, "Usuário Administrador.");
     }
 }
 
@@ -71,7 +71,7 @@ function encontraCidade($cidade) {
             . " WHERE LCASE(TRIM(tbcidade.nome)) = '" . mb_strtolower(trim($cidade)) . "'"
             . " ORDER BY proximidade, tbestado.nome, tbcidade.nome";
 
-    $escolhida = $pessoal->select($select, FALSE);
+    $escolhida = $pessoal->select($select, false);
     return $escolhida[0];
 }
 
@@ -95,7 +95,7 @@ function get_dadosProcesso($tt) {
                 WHERE idProcesso = ' . $idProcesso;
 
     $intra = new Intra();
-    $row = $intra->select($select, FALSE);
+    $row = $intra->select($select, false);
 
     $grid = new Grid();
     $grid->abreColuna();
@@ -104,7 +104,7 @@ function get_dadosProcesso($tt) {
     $painel->set_id("right");
     $painel->abre();
 
-    $link = new Link(NULL, 'processo.php?fase=editar&id=' . $idProcesso);
+    $link = new Link(null, 'processo.php?fase=editar&id=' . $idProcesso);
     $link->set_imagem(PASTA_FIGURAS_GERAIS . 'bullet_edit.png', 20, 20);
     $link->set_title('Editar Processo');
     $link->show();
@@ -120,7 +120,7 @@ function get_dadosProcesso($tt) {
         if ($numMov == 0) {
             echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 
-            $link = new Link(NULL, 'processo.php?fase=excluir&id=' . $idProcesso);
+            $link = new Link(null, 'processo.php?fase=excluir&id=' . $idProcesso);
             $link->set_imagem(PASTA_FIGURAS_GERAIS . 'lixo.png', 20, 20);
             $link->set_title('Excluir Processo');
             $link->set_confirma('Deseja mesmo excluir?');
@@ -152,7 +152,7 @@ function verificaPasta($idServidorPesquisado) {
     # Define a pasta
     $pasta = "../../_arquivo/";
 
-    $achei = NULL;
+    $achei = null;
 
     # Encontra a pasta
     foreach (glob($pasta . $idFuncional . "*") as $escolhido) {
@@ -185,7 +185,7 @@ function get_permissoes($idUsuario) {
     $count = $intra->count($select);
 
     # Prepara a variável
-    $retorno = NULL;
+    $retorno = null;
     $contador = 0;
 
     # Exibe as permissões

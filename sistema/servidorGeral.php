@@ -6,7 +6,7 @@
  * By Alat
  */
 # Reservado para o servidor logado
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -93,7 +93,7 @@ if ($acesso) {
             $menu1->add_link($linkBotao1, "left");
 
             # Relatórios
-            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', NULL, 15, 15);
+            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', null, 15, 15);
             $botaoRel = new Button();
             $botaoRel->set_title("Relatório dessa pesquisa");
             $botaoRel->set_url("?fase=relatorio");
@@ -110,7 +110,7 @@ if ($acesso) {
             $controle->set_size(55);
             $controle->set_title('Nome, matrícula ou ID:');
             $controle->set_valor($parametroNomeMat);
-            $controle->set_autofocus(TRUE);
+            $controle->set_autofocus(true);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(1);
             $controle->set_col(3);
@@ -169,7 +169,7 @@ if ($acesso) {
             $form->add_item($controle);
 
             # Lotação
-            $result = $pessoal->select('(SELECT idlotacao, concat(IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")," - ",IFNULL(tblotacao.nome,"")) lotacao
+            $result = $pessoal->select('(SELECT idlotacao, concat(IFnull(tblotacao.DIR,"")," - ",IFnull(tblotacao.GER,"")," - ",IFnull(tblotacao.nome,"")) lotacao
                                               FROM tblotacao
                                              WHERE ativo) UNION (SELECT distinct DIR, DIR
                                               FROM tblotacao
@@ -218,41 +218,41 @@ if ($acesso) {
             $lista = new ListaServidores('Servidores');
             if (!is_null($parametroNomeMat)) {
                 $lista->set_matNomeId($parametroNomeMat);
-                $lista->set_paginacao(FALSE);
+                $lista->set_paginacao(false);
             }
 
             if ($parametroCargo <> "*") {
                 $lista->set_cargo($parametroCargo);
-                $lista->set_paginacao(FALSE);
+                $lista->set_paginacao(false);
             }
 
             if ($parametroCargoComissao <> "*") {
                 $lista->set_cargoComissao($parametroCargoComissao);
-                $lista->set_paginacao(FALSE);
+                $lista->set_paginacao(false);
             }
 
             if ($parametroLotacao <> "*") {
                 $lista->set_lotacao($parametroLotacao);
-                $lista->set_paginacao(FALSE);
+                $lista->set_paginacao(false);
             }
 
             if ($parametroPerfil <> "*") {
                 $lista->set_perfil($parametroPerfil);
-                $lista->set_paginacao(FALSE);
+                $lista->set_paginacao(false);
             }
 
             if ($parametroSituacao <> "*") {
                 $lista->set_situacao($parametroSituacao);
-                $lista->set_paginacao(FALSE);
+                $lista->set_paginacao(false);
             }
 
             # Retira a edição
-            $lista->set_permiteEditar(FALSE);
+            $lista->set_permiteEditar(false);
 
             # Retira o detalhado
-            #$lista->set_detalhado(FALSE);
+            #$lista->set_detalhado(false);
             # Paginação
-            $lista->set_paginacao(TRUE);
+            $lista->set_paginacao(true);
             $lista->set_paginacaoInicial($paginacao);
             $lista->set_paginacaoItens(20);
 
@@ -267,7 +267,7 @@ if ($acesso) {
         case "relatorio" :
             # Lista de Servidores Ativos
             $lista = new ListaServidores('Servidores');
-            if ($parametroNomeMat <> NULL) {
+            if ($parametroNomeMat <> null) {
                 $lista->set_matNomeId($parametroNomeMat);
             }
 

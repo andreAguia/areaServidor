@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -34,7 +34,7 @@ if ($acesso) {
             set_session('idProjeto');
             set_session('etiqueta');
             set_session('solicitante');
-            set_session('fazendo', FALSE);
+            set_session('fazendo', false);
             $voltar = 'administracao.php';
             break;
 
@@ -42,14 +42,14 @@ if ($acesso) {
             set_session('idProjeto');
             set_session('etiqueta');
             set_session('solicitante');
-            set_session('fazendo', TRUE);
+            set_session('fazendo', true);
             $voltar = 'administracao.php';
             break;
 
         case "projeto":
             set_session('etiqueta');
             set_session('solicitante');
-            set_session('fazendo', FALSE);
+            set_session('fazendo', false);
             $voltar = '?';
             break;
 
@@ -57,7 +57,7 @@ if ($acesso) {
             set_session('idProjeto');
             set_session('etiqueta');
             set_session('solicitante');
-            set_session('fazendo', FALSE);
+            set_session('fazendo', false);
             $voltar = '?';
             break;
 
@@ -68,14 +68,14 @@ if ($acesso) {
         case "etiqueta":
             set_session('idProjeto');
             set_session('solicitante');
-            set_session('fazendo', FALSE);
+            set_session('fazendo', false);
             $voltar = '?';
             break;
 
         case "solicitante":
             set_session('idProjeto');
             set_session('etiqueta');
-            set_session('fazendo', FALSE);
+            set_session('fazendo', false);
             $voltar = '?';
             break;
 
@@ -275,7 +275,7 @@ if ($acesso) {
             $lista = new ListaTarefas("Fazendo");
             $lista->set_status("fazendo");
             $lista->set_projeto($idProjeto);
-            $lista->set_datado(FALSE);
+            $lista->set_datado(false);
             $lista->show();
 
             # Exibe as tarefas a fazer
@@ -287,7 +287,7 @@ if ($acesso) {
             # Exibe as tarefas completatadas
             $lista = new ListaTarefas("Feito");
             $lista->set_projeto($idProjeto);
-            $lista->set_pendente(FALSE);
+            $lista->set_pendente(false);
             $lista->show();
 
             $grid->fechaColuna();
@@ -308,7 +308,7 @@ if ($acesso) {
                 $dados = $projeto->get_dadosProjeto($idProjeto);
                 $titulo = "Editar Projeto";
             } else {
-                $dados = array(NULL, NULL, NULL, NULL);
+                $dados = array(null, null, null, null);
                 $titulo = "Novo Projeto";
             }
 
@@ -327,8 +327,8 @@ if ($acesso) {
             $controle = new Input('projeto', 'texto', 'Nome do Projeto:', 1);
             $controle->set_size(50);
             $controle->set_linha(1);
-            $controle->set_required(TRUE);
-            $controle->set_autofocus(TRUE);
+            $controle->set_required(true);
+            $controle->set_autofocus(true);
             $controle->set_placeholder('Nome do Projeto');
             $controle->set_title('O nome do Projeto a ser criado');
             $controle->set_valor($dados[1]);
@@ -350,7 +350,7 @@ if ($acesso) {
             $controle->set_col(5);
             $controle->set_placeholder('Grupo');
             $controle->set_title('O nome agrupamento do Projeto');
-            $controle->set_plm(TRUE);
+            $controle->set_plm(true);
             $controle->set_valor($dados[3]);
             $form->add_item($controle);
 
@@ -448,18 +448,18 @@ if ($acesso) {
             p($exibeTarefa, "pExibeTarefa");
 
             # Projeto
-            span($exibeNomeProjeto, "projeto", NULL, "Projeto");
+            span($exibeNomeProjeto, "projeto", null, "Projeto");
 
             # Etiqueta
             if (!is_null($dados[7])) {
                 echo "&nbsp&nbsp&nbsp";
-                span($dados[7], "etiqueta", NULL, "Etiqueta");
+                span($dados[7], "etiqueta", null, "Etiqueta");
             }
 
             # Solicitante
             if (!is_null($dados[11])) {
                 echo "&nbsp&nbsp&nbsp";
-                span($dados[11], "solicitante", NULL, "Solicitante");
+                span($dados[11], "solicitante", null, "Solicitante");
             }
 
             $grid->fechaColuna();
@@ -530,7 +530,7 @@ if ($acesso) {
                 $etiqueta = $dados[7];
                 $idProjeto = $dados[8];
             } else {
-                $dados = array(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+                $dados = array(null, null, null, null, null, null, null, null, null, null, null, null);
                 $titulo = "Nova Tarefa";
             }
 
@@ -568,7 +568,7 @@ if ($acesso) {
                      ORDER BY projeto';
 
             $comboProjeto = $intra->select($select);
-            array_unshift($comboProjeto, array(NULL, NULL)); # Adiciona o valor de nulo
+            array_unshift($comboProjeto, array(null, null)); # Adiciona o valor de nulo
             # Formuário
             $form = new Form('?fase=validaTarefa&idTarefa=' . $idTarefa);
 
@@ -577,8 +577,8 @@ if ($acesso) {
             $controle->set_size(array(80, 3));
             $controle->set_linha(1);
             $controle->set_col(12);
-            $controle->set_required(TRUE);
-            $controle->set_autofocus(TRUE);
+            $controle->set_required(true);
+            $controle->set_autofocus(true);
             $controle->set_placeholder('Tarefa');
             $controle->set_title('A tarefa a ser executada');
             $controle->set_valor($dados[1]);
@@ -738,7 +738,7 @@ if ($acesso) {
         ###########################################################  
 
         case "mudaTarefa" :
-            # Muda somente o campo pendente TRUE or FALSE
+            # Muda somente o campo pendente true or false
             # Pega os dados da tarefa
             $valor = $projeto->get_dadosTarefa($idTarefa);
 
@@ -822,7 +822,7 @@ if ($acesso) {
             # Exibe as tarefas completatadas
             $lista = new ListaTarefas("Feito");
             $lista->set_etiqueta($etiqueta);
-            $lista->set_pendente(FALSE);
+            $lista->set_pendente(false);
             $lista->show();
             break;
 
@@ -875,7 +875,7 @@ if ($acesso) {
             # Exibe as tarefas completatadas
             $lista = new ListaTarefas("Feito");
             $lista->set_solicitante($solicitante);
-            $lista->set_pendente(FALSE);
+            $lista->set_pendente(false);
             $lista->show();
             break;
 

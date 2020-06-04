@@ -6,7 +6,7 @@
  * By Alat
  */
 # Reservado para o servidor logado
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -85,7 +85,7 @@ if ($acesso) {
             $menu1->add_link($linkBotao1, "left");
 
             # Lotação Ativas
-            $imagem = new Imagem(PASTA_FIGURAS . 'lista.png', NULL, 15, 15);
+            $imagem = new Imagem(PASTA_FIGURAS . 'lista.png', null, 15, 15);
             $botaoLot = new Button();
             $botaoLot->set_title("Listagem de lotações ativas");
             $botaoLot->set_imagem($imagem);
@@ -94,7 +94,7 @@ if ($acesso) {
             $menu1->add_link($botaoLot, "right");
 
             # Organograma
-            $imagem3 = new Imagem(PASTA_FIGURAS . 'organograma2.png', NULL, 15, 15);
+            $imagem3 = new Imagem(PASTA_FIGURAS . 'organograma2.png', null, 15, 15);
             $botaoOrg = new Button();
             $botaoOrg->set_title("Exibe o Organograma da UENF");
             $botaoOrg->set_imagem($imagem3);
@@ -103,7 +103,7 @@ if ($acesso) {
             $menu1->add_link($botaoOrg, "right");
 
             # Relatórios
-            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', NULL, 15, 15);
+            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', null, 15, 15);
             $botaoRel = new Button();
             $botaoRel->set_title("Relatório dessa pesquisa");
             $botaoRel->set_imagem($imagem);
@@ -116,7 +116,7 @@ if ($acesso) {
             $form = new Form('servidorLotacao.php');
 
             # Lotação
-            $result = $pessoal->select('(SELECT idlotacao, concat(IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")," - ",IFNULL(tblotacao.nome,"")) lotacao
+            $result = $pessoal->select('(SELECT idlotacao, concat(IFnull(tblotacao.DIR,"")," - ",IFnull(tblotacao.GER,"")," - ",IFnull(tblotacao.nome,"")) lotacao
                                               FROM tblotacao
                                              WHERE ativo) UNION (SELECT distinct DIR, DIR
                                               FROM tblotacao
@@ -147,10 +147,10 @@ if ($acesso) {
             }
 
             # Edição
-            $lista->set_permiteEditar(FALSE);
+            $lista->set_permiteEditar(false);
 
             # Retira o detalhado
-            $lista->set_detalhado(FALSE);
+            $lista->set_detalhado(false);
 
             $lista->showTabela();
 
@@ -160,7 +160,7 @@ if ($acesso) {
             # Grava no log a atividade
             $atividade = "Visualizou os servidores da lotação: " . $pessoal->get_nomeLotacao($parametroLotacao) . " na área do servidor";
             $data = date("Y-m-d H:i:s");
-            $intra->registraLog($idUsuario, $data, $atividade, NULL, NULL, 7);
+            $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
         ###############################

@@ -8,7 +8,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("../sistema/_config.php");
@@ -38,7 +38,7 @@ if ($acesso) {
                       COLUMN_TYPE,
                       CHARACTER_MAXIMUM_LENGTH,
                       COLUMN_DEFAULT,
-                      IS_NULLABLE
+                      IS_nullABLE
                  FROM COLUMNS 
                 WHERE TABLE_SCHEMA = '" . $banco . "' 
                   AND TABLE_NAME = '" . $tabela . "'";

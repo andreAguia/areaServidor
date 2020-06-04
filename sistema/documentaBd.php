@@ -1,7 +1,7 @@
 <?php
 
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -38,7 +38,7 @@ if ($acesso) {
     $linkBotao4->set_accessKey('D');
 
     # Relatórios
-    $imagem = new Imagem(PASTA_FIGURAS . 'print.png', NULL, 15, 15);
+    $imagem = new Imagem(PASTA_FIGURAS . 'print.png', null, 15, 15);
     $botaoRel = new Button();
     $botaoRel->set_title("Relatório");
     $botaoRel->set_onClick("window.open('../relatorios/documentaBd.php?banco=$banco','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
@@ -76,7 +76,7 @@ if ($acesso) {
     $conteudo = $servico->select($select);
 
     $label = array("Nome", "Descrição", "Motor", "Num. Registros", "Tamanho Médio", "Tamanho Total", "Auto Incremento");
-    #$function = array("datetime_to_php",NULL,NULL,NULL,"get_nome");
+    #$function = array("datetime_to_php",null,null,null,"get_nome");
     $align = array("left", "left");
 
     # Monta a tabela
@@ -86,7 +86,7 @@ if ($acesso) {
     $tabela->set_label($label);
     $tabela->set_align($align);
     #$tabela->set_funcao($function); 
-    $tabela->set_numeroOrdem(TRUE);
+    $tabela->set_numeroOrdem(true);
     $tabela->set_editar("documentaTabela.php?banco=$banco");
     $tabela->set_idCampo('TABLE_NAME');
     $tabela->set_nomeColunaEditar('Ver');

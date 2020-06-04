@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -149,8 +149,8 @@ if ($acesso) {
                             $sexo = $parte[14];
 
                             # Analisa o parentesco
-                            $idParentesco = NULL;
-                            $nomeParentesco = NULL;
+                            $idParentesco = null;
+                            $nomeParentesco = null;
                             switch ($parentesco) {
                                 case "FILHO(A)" :
                                     $idParentesco = 2;
@@ -252,7 +252,7 @@ if ($acesso) {
             $arquivo = "../importacao/dependentes.txt";
 
             # Array comos dependentes cadastrados para evitar duplicidade
-            $dependentesImportados = array(NULL, NULL);
+            $dependentesImportados = array(null, null);
 
             # Inicia o contador de duplicatas
             $duplicata = 0;
@@ -289,10 +289,10 @@ if ($acesso) {
                             $sexo = $parte[14];
 
                             # Analisa o parentesco
-                            $idParentesco = NULL;
-                            $nomeParentesco = NULL;
-                            $cotista = NULL;
-                            $obs = NULL;
+                            $idParentesco = null;
+                            $nomeParentesco = null;
+                            $cotista = null;
+                            $obs = null;
 
                             switch ($parentesco) {
                                 case "FILHO(A)" :
@@ -341,7 +341,7 @@ if ($acesso) {
 
                             ## Verifica se já foi importado esse dependente
                             # Inicia a variável da duplicata
-                            $temDuplicata = FALSE;
+                            $temDuplicata = false;
 
                             echo "Servidor: $nome1";
                             br();
@@ -351,7 +351,7 @@ if ($acesso) {
                             # Percorre o array para ver se já tem esse dependente no array
                             foreach ($dependentesImportados as $dd) {
                                 if (($idPessoa == $dd[0]) AND (mb_strtolower($dependente) == mb_strtolower($dd[1]))) {
-                                    $temDuplicata = TRUE;
+                                    $temDuplicata = true;
                                 }
                             }
 
@@ -367,7 +367,7 @@ if ($acesso) {
                                 # Grava na tabela
                                 $campos = array("idPessoa", "nome", "dtNasc", "cpf", "parentesco", "sexo", "obs");
                                 $valor = array($idPessoa, plm($dependente), $nascimento, $cpf, $idParentesco, $sexo, $obs);
-                                $pessoal->gravar($campos, $valor, NULL, "tbdependente", "idDependente", FALSE);
+                                $pessoal->gravar($campos, $valor, null, "tbdependente", "idDependente", false);
                                 echo "$contador - IMPORTADO";
                             }
                             br();

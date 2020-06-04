@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -237,7 +237,7 @@ if ($acesso) {
                         # Grava na tabela
                         $campos = array("idServidor", "dtInicial", "numDias", "idTpLicenca");
                         $valor = array($idServidor, date_to_bd($parte[1]), $diferenca, 25);
-                        $pessoal->gravar($campos, $valor, NULL, "tblicenca", "idLicenca", FALSE);
+                        $pessoal->gravar($campos, $valor, null, "tblicenca", "idLicenca", false);
                     }
                 }
             } else {

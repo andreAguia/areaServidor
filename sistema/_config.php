@@ -22,7 +22,7 @@ define("PASTA_ESTILOS_GERAIS", "../../_framework/_cssGerais/");     # Estilos Ge
 define("PASTA_ESTILOS", "../_css/");                                # Estilos Específicos
 # Uploads
 define("PASTA_FOTOS", "../../_arquivos/fotos/");                     # Fotos dos Servidores
-# Tags aceitas em campos com htmlTag = TRUE
+# Tags aceitas em campos com htmlTag = true
 define('TAGS', '<p></p><a></a><br/><br><div></div><table></table><tr></tr><td></td><th></th><strong></strong>'
         . '<em></em><u></u><sub></sub><sup></sup><ol></ol><li></li><ul></ul><hr><span></span><h1></h1>'
         . '<h2></h2><h3></h3><h4></h4><h5></h5><pre></pre>');
@@ -41,7 +41,7 @@ $mes = array(array("1", "Janeiro"),
     array("11", "Novembro"),
     array("12", "Dezembro"));
 
-$nomeMes = array(NULL,
+$nomeMes = array(null,
     "Janeiro",
     "Fevereiro",
     "Março",

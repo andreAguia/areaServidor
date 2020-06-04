@@ -6,7 +6,7 @@
  * By Alat
  */
 ## Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -82,7 +82,7 @@ if ($acesso) {
     $objeto->set_orderChamador('?fase=listar&usuarioSelecionado=' . $idUsuarioPesquisado);
 
     # botões
-    $objeto->set_botaoEditar(FALSE);        # Não exibe o botão editar
+    $objeto->set_botaoEditar(false);        # Não exibe o botão editar
     # Caminhos
     $objeto->set_linkEditar('?fase=editar&idUsuarioPesquisado=' . $idUsuarioPesquisado);
     $objeto->set_linkExcluir('?fase=excluir&idUsuarioPesquisado=' . $idUsuarioPesquisado);
@@ -114,10 +114,10 @@ if ($acesso) {
                                      ORDER BY regra";
 
     # Verifica a quantidade de registros
-    $conteudo = $servidor->select($selectCombo, TRUE);
+    $conteudo = $servidor->select($selectCombo, true);
     if (count($conteudo) == 0) {
         # Retira o botão de incluir
-        $objeto->set_botaoIncluir(FALSE);
+        $objeto->set_botaoIncluir(false);
 
         # Informa o porquê
         $mensagem = "O botão de incluir sumiu! Porque? Esse usuário já possui todas as permissões.<br/>"
@@ -135,7 +135,7 @@ if ($acesso) {
             'tipo' => 'combo',
             'array' => $result2,
             'size' => 90,
-            'autofocus' => TRUE,
+            'autofocus' => true,
             'title' => 'Regra para esse grupo.',
             'linha' => 1,
             'col' => 6),

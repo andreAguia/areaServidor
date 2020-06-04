@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -256,7 +256,7 @@ if ($acesso) {
                     # Grava na tabela
                     $campos = array("idServidor", "dtInicial", "anoExercicio", "numDias", "status");
                     $valor = array($idServidor, date_to_bd($dtInicial), $anoExercicio, $numDias, "fruída");
-                    $pessoal->gravar($campos, $valor, NULL, "tbferias", "idFerias", FALSE);
+                    $pessoal->gravar($campos, $valor, null, "tbferias", "idFerias", false);
                     $contador++;
 
                     if ($anoExercicio == $anoImportacao) {

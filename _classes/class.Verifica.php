@@ -15,10 +15,10 @@ class Verifica {
      * @param $idUsuario string $idUsuario do servidor logado
      * @param $rotina integer codigo numérico da rotina a ser verificada
      */
-    static function acesso($idUsuario, $rotina = NULL) {
+    static function acesso($idUsuario, $rotina = null) {
         # Flag de permissão do acesso
-        $acesso = TRUE;
-        $manutencao = FALSE;
+        $acesso = true;
+        $manutencao = false;
 
         $intra = new Intra();
 
@@ -29,23 +29,23 @@ class Verifica {
          */
         # Verifica se foi logado se não redireciona para o login
         if (is_null($idUsuario)) {
-            $acesso = FALSE;
+            $acesso = false;
         }
 
         # Verifica se $idUsuario é nula acesso bloqueado para a área do servidor
         if (($intra->get_senha($idUsuario) == '') and ($idUsuario <> 0)) {
-            $acesso = FALSE;
+            $acesso = false;
         }
 
         # Verifica se o login foi feito ou se a sessão foi "recuperada" pelo browser
         if (($intra->get_ultimoAcesso($idUsuario)) <> date("Y-m-d")) {
-            $acesso = FALSE;
+            $acesso = false;
         }
 
         # Verifica de o usuário logado tem permissão para essa rotina 
         if (!is_null($rotina)) {
             if (!($intra->verificaPermissao($idUsuario, $rotina))) {
-                $acesso = FALSE;
+                $acesso = false;
             }
         }
 
@@ -59,7 +59,7 @@ class Verifica {
 
         if ($intra->get_variavel('manutencao')) {
             if ($ipManutencao <> $ipMaquina) {
-                $manutencao = TRUE;
+                $manutencao = true;
             }
         }
 

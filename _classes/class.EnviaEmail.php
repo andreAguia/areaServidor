@@ -23,8 +23,8 @@ class EnviaEmail {
     private $comCopiaOculta = array();
 
     # Da mensagem
-    private $mensagem = NULL;       // A mensagem
-    private $assunto = NULL;        // O assunto
+    private $mensagem = null;       // A mensagem
+    private $assunto = null;        // O assunto
     private $anexo = array();       // array com anexos
 
     ###########################################################
@@ -32,8 +32,8 @@ class EnviaEmail {
     /**
      * Método Construtor
      * 
-     * @param $assunto  string NULL O assunto do email
-     * @param $mensagem string NULL A mensagem a ser enviada
+     * @param $assunto  string null O assunto do email
+     * @param $mensagem string null A mensagem a ser enviada
      */
     public function __construct($assunto, $mensagem) {
         $this->mensagem = $mensagem;
@@ -144,17 +144,17 @@ class EnviaEmail {
         $mail->FromName = $this->deNome;    // Nome
         # Destinatários
         foreach ($this->para as $destinatario) {
-            $mail->AddAddress($destinatario, NULL);
+            $mail->AddAddress($destinatario, null);
         }
 
         # Com Cópia
         foreach ($this->comCopia as $copia) {
-            $mail->AddCC($copia, NULL);
+            $mail->AddCC($copia, null);
         }
 
         # Com Cópia Oculta
         foreach ($this->comCopiaOculta as $oculta) {
-            $mail->AddBCC($oculta, NULL);
+            $mail->AddBCC($oculta, null);
         }
 
         # Mensagem

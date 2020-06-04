@@ -1,7 +1,7 @@
 <?php
 
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -74,7 +74,7 @@ if ($acesso) {
     $callout->abre();
     titulo('Classes');
 
-    $grupoarquivo = NULL;
+    $grupoarquivo = null;
     br();
     echo '<dl>';
 

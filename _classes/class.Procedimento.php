@@ -10,14 +10,14 @@ class Procedimento {
      */
     ##########################################################
 
-    public function menuPrincipal($idProcedimento = NULL, $idUsuario = NULL) {
+    public function menuPrincipal($idProcedimento = null, $idUsuario = null) {
         /**
          * Exibe o menu de categoria.
          *
          * @syntax Procedimento::menuCategorias;
          *
-         * @param $idCategoria    integer NULL o id da categoria a ser ressaltado no menu informando que está sendo editada.
-         * @param $idProcedimento integer NULL o id do procedimento a ser ressaltado no menu informando que está sendo editada.
+         * @param $idCategoria    integer null o id da categoria a ser ressaltado no menu informando que está sendo editada.
+         * @param $idProcedimento integer null o id do procedimento a ser ressaltado no menu informando que está sendo editada.
          *
          */
         # Acessa o banco de dados
@@ -111,13 +111,13 @@ class Procedimento {
                      FROM tbprocedimento
                     WHERE idProcedimento = $idProcedimento";
 
-        $dados = $intra->select($select, FALSE);
+        $dados = $intra->select($select, false);
         return $dados;
     }
 
     ###########################################################
 
-    function get_filhosProcedimento($idProcedimento, $idUsuario = NULL) {
+    function get_filhosProcedimento($idProcedimento, $idUsuario = null) {
 
         /**
          * Fornece todos os dados da categoria
@@ -140,7 +140,7 @@ class Procedimento {
 
     ###########################################################
 
-    function exibeProcedimento($idProcedimento, $idUsuario = NULL) {
+    function exibeProcedimento($idProcedimento, $idUsuario = null) {
 
         /**
          * Fornece todos os dados da categoria

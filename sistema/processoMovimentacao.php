@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -87,9 +87,9 @@ if ($acesso) {
     $objeto->set_label(array("Status", "Data", "Origem / Destino", "Motivo"));
     $objeto->set_align(array("center", "center", "center", "left"));
     $objeto->set_width(array(10, 10, 20, 45));
-    $objeto->set_funcao(array(NULL, "date_to_php"));
-    $objeto->set_classe(array(NULL, NULL, "Intra"));
-    $objeto->set_metodo(array(NULL, NULL, "get_ProcessoMovimentoSetor"));
+    $objeto->set_funcao(array(null, "date_to_php"));
+    $objeto->set_classe(array(null, null, "Intra"));
+    $objeto->set_metodo(array(null, null, "get_ProcessoMovimentoSetor"));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -105,13 +105,13 @@ if ($acesso) {
 
     # Pega os dados da combo setorCombo
     $selectLotacao = 'SELECT idlotacao, 
-                             concat(IFNULL(tblotacao.UADM,"")," - ",IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")," - ",IFNULL(tblotacao.nome,"")) as lotacao
+                             concat(IFnull(tblotacao.UADM,"")," - ",IFnull(tblotacao.DIR,"")," - ",IFnull(tblotacao.GER,"")," - ",IFnull(tblotacao.nome,"")) as lotacao
                         FROM tblotacao
                        WHERE ativo
                        ORDER BY lotacao';
 
     $comboSetor = $servidor->select($selectLotacao);
-    array_unshift($comboSetor, array(NULL, NULL)); # Adiciona o valor de nulo
+    array_unshift($comboSetor, array(null, null)); # Adiciona o valor de nulo
     # Data padrão
     $dataPadrao = date("Y-m-d");
 
@@ -122,8 +122,8 @@ if ($acesso) {
             'label' => 'Data:',
             'tipo' => 'data',
             'title' => 'A data do movimento',
-            'autofocus' => TRUE,
-            'required' => TRUE,
+            'autofocus' => true,
+            'required' => true,
             'padrao' => $dataPadrao,
             'col' => 4,
             'size' => 50),
@@ -131,9 +131,9 @@ if ($acesso) {
             'label' => 'Status:',
             'tipo' => 'combo',
             'size' => 20,
-            'array' => array(array(NULL, NULL), array(1, "Entrada"), array(2, "Saída")),
+            'array' => array(array(null, null), array(1, "Entrada"), array(2, "Saída")),
             'title' => 'Status do Movimento',
-            'required' => TRUE,
+            'required' => true,
             'col' => 4,
             'linha' => 1),
         array('nome' => 'setorCombo',
@@ -156,7 +156,7 @@ if ($acesso) {
             'tipo' => 'textarea',
             'size' => array(90, 5),
             'title' => 'Motivo.',
-            'required' => TRUE,
+            'required' => true,
             'col' => 12,
             'linha' => 3),
         array('nome' => 'idProcesso',

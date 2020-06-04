@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -81,8 +81,8 @@ if ($acesso) {
                                 FROM tbregra
                             ORDER BY ' . $orderCampo . ' ' . $orderTipo);
 
-    $objeto->set_botaoExcluir(TRUE);
-    $objeto->set_botaoIncluir(TRUE);
+    $objeto->set_botaoExcluir(true);
+    $objeto->set_botaoIncluir(true);
 
     # select do edita
     $objeto->set_selectEdita('SELECT nome,
@@ -96,8 +96,8 @@ if ($acesso) {
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
 
-    $objeto->set_classe(array(NULL, NULL, NULL, "Intra"));
-    $objeto->set_metodo(array(NULL, NULL, NULL, "get_numeroUsuariosPermissao"));
+    $objeto->set_classe(array(null, null, null, "Intra"));
+    $objeto->set_metodo(array(null, null, null, "get_numeroUsuariosPermissao"));
 
     # Botão de exibição dos servidores com permissão a essa regra
     $botao = new BotaoGrafico();
@@ -127,7 +127,7 @@ if ($acesso) {
             'tipo' => 'texto',
             'size' => 90,
             'maxlength' => 45,
-            'required' => TRUE,
+            'required' => true,
             'title' => 'Nome da Regra.',
             'col' => 12,
             'linha' => 1),
@@ -135,7 +135,7 @@ if ($acesso) {
             'label' => 'Descrição:',
             'tipo' => 'textarea',
             'size' => array(90, 5),
-            'required' => TRUE,
+            'required' => true,
             'title' => 'Descrição resumida da regra.',
             'col' => 12,
             'linha' => 2));
@@ -169,7 +169,7 @@ if ($acesso) {
         case "servidoresPermissao":
             # Informa os servidores com essa permissão
             $callout = new Callout();
-            $callout->set_botaoFechar(TRUE);
+            $callout->set_botaoFechar(true);
             $callout->abre();
             br();
             titulo('Permissões');
@@ -183,7 +183,7 @@ if ($acesso) {
                              FROM tbpermissao JOIN tbusuario USING (idUsuario)
                             WHERE tbpermissao.idRegra = ' . $id . '
                          ORDER BY tbusuario.usuario';
-            $result = $intra->select($select, TRUE);
+            $result = $intra->select($select, true);
             $tabela = new Tabela();
             $tabela->set_conteudo($result);
             $tabela->set_label(array("Usuário", "Nome", "Cargo", "Lotação"));
@@ -191,8 +191,8 @@ if ($acesso) {
             $tabela->set_align(array("center", "left", "left"));
 
             #$tabela->set_funcao(array('dv'));
-            $tabela->set_classe(array(NULL, "Pessoal", "Pessoal", "Pessoal"));
-            $tabela->set_metodo(array(NULL, 'get_nome', 'get_cargo', 'get_lotacao'));
+            $tabela->set_classe(array(null, "Pessoal", "Pessoal", "Pessoal"));
+            $tabela->set_metodo(array(null, 'get_nome', 'get_cargo', 'get_lotacao'));
 
             $tabela->set_excluir('?fase=excluirPermissao');
             $tabela->set_idCampo('idPermissao');

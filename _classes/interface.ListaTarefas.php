@@ -7,20 +7,20 @@ class ListaTarefas {
      * 
      * @author André Águia (Alat) - alataguia@gmail.com
      */
-    private $titulo = NULL;
-    private $etiqueta = NULL;
-    private $solicitante = NULL;
-    private $projeto = NULL;
-    private $pendente = TRUE;
-    private $status = NULL;
-    private $pesquisa = NULL;
+    private $titulo = null;
+    private $etiqueta = null;
+    private $solicitante = null;
+    private $projeto = null;
+    private $pendente = true;
+    private $status = null;
+    private $pesquisa = null;
 
     ###########################################################
 
     /**
      * Método Construtor
      */
-    public function __construct($titulo = NULL) {
+    public function __construct($titulo = null) {
         $this->titulo = $titulo;
     }
 
@@ -130,15 +130,15 @@ class ListaTarefas {
         $label = array("", "", "");
         $align = array("center", "left");
         $width = array(5, 85, 10);
-        $classe = array(NULL, "Gprojetos", "Gprojetos");
-        $metodo = array(NULL, "showTarefa", "showPrioridade");
+        $classe = array(null, "Gprojetos", "Gprojetos");
+        $metodo = array(null, "showTarefa", "showPrioridade");
         $link = array($botao1);
 
         $tabela->set_conteudo($tarefas);
         $tabela->set_cabecalho($label, $width, $align);
         $tabela->set_classe($classe);
         $tabela->set_metodo($metodo);
-        $tabela->set_scroll(FALSE);
+        $tabela->set_scroll(false);
 
         # Coloca o objeto link na tabela	
         $tabela->set_idCampo("idTarefa");

@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -62,7 +62,7 @@ if ($acesso) {
             $menu1 = new MenuBar();
 
             # Pega o time inicial
-            $time_start = microtime(TRUE);
+            $time_start = microtime(true);
 
             # Sair da Área do Servidor
             $linkVoltar = new Link("Voltar", "areaServidor.php");
@@ -79,7 +79,7 @@ if ($acesso) {
             $controle->set_size(55);
             $controle->set_title('Nome, matrícula ou ID:');
             $controle->set_valor($parametroNomeMat);
-            $controle->set_autofocus(TRUE);
+            $controle->set_autofocus(true);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(1);
             $controle->set_col(3);
@@ -137,7 +137,7 @@ if ($acesso) {
             $form->add_item($controle);
 
             # Lotação
-            $result = $servidor->select('(SELECT idlotacao, concat(IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")," - ",IFNULL(tblotacao.nome,"")) lotacao
+            $result = $servidor->select('(SELECT idlotacao, concat(IFnull(tblotacao.DIR,"")," - ",IFnull(tblotacao.GER,"")," - ",IFnull(tblotacao.nome,"")) lotacao
                                           FROM tblotacao
                                          WHERE ativo) UNION (SELECT distinct DIR, DIR
                                           FROM tblotacao
@@ -211,10 +211,10 @@ if ($acesso) {
 
                         if (is_null($idServidorServ)) {
                             $nome = "Servidor Não Encontrado";
-                            $cargo = NULL;
-                            $lotacao = NULL;
-                            $perfil = NULL;
-                            $admissao = NULL;
+                            $cargo = null;
+                            $lotacao = null;
+                            $perfil = null;
+                            $admissao = null;
                         } else {
                             # Nome
                             $nome = $servidor->get_nome($idServidorServ);
@@ -249,8 +249,8 @@ if ($acesso) {
             $tabela1->set_conteudo($conteudo);
             $tabela1->set_label(array("Servidores Ativos", "Quantidade"));
             $tabela1->set_align(array("left", "center"));
-            $tabela1->set_totalRegistro(FALSE);
-            $tabela1->set_scroll(FALSE);
+            $tabela1->set_totalRegistro(false);
+            $tabela1->set_scroll(false);
             $tabela1->show();
             $grid->fechaColuna();
             $grid->fechaGrid();
@@ -259,7 +259,7 @@ if ($acesso) {
                       tbservidor.matricula,
                       tbpessoa.nome,
                       tbservidor.idServidor,
-                      concat(IFNULL(tblotacao.UADM,"")," - ",IFNULL(tblotacao.DIR,"")," - ",IFNULL(tblotacao.GER,"")) lotacao,
+                      concat(IFnull(tblotacao.UADM,"")," - ",IFnull(tblotacao.DIR,"")," - ",IFnull(tblotacao.GER,"")) lotacao,
                       tbperfil.nome,
                       tbservidor.dtAdmissao,
                       tbsituacao.situacao,
@@ -312,7 +312,7 @@ if ($acesso) {
 
             # cargo em comissão
             if ($parametroCargoComissao <> "*") {
-                $select .= ' AND tbcomissao.dtExo is NULL AND tbtipocomissao.idTipoComissao = "' . $parametroCargoComissao . '"';
+                $select .= ' AND tbcomissao.dtExo is null AND tbtipocomissao.idTipoComissao = "' . $parametroCargoComissao . '"';
             }
 
             # lotacao
@@ -331,9 +331,9 @@ if ($acesso) {
             # Dados da Tabela        
             $label = array("IDFuncional", "Matrícula", "Servidor", "Cargo - Função (Comissão)", "Lotação", "Perfil", "Admissão", "Situação", "Pasta");
             $align = array("center", "center", "left", "left", "left");
-            $function = array(NULL, "dv", NULL, NULL, NULL, NULL, "date_to_php", NULL, "verificaPasta");
-            $classe = array(NULL, NULL, NULL, "pessoal");
-            $metodo = array(NULL, NULL, NULL, "get_Cargo");
+            $function = array(null, "dv", null, null, null, null, "date_to_php", null, "verificaPasta");
+            $classe = array(null, null, null, "pessoal");
+            $metodo = array(null, null, null, "get_Cargo");
 
             # Executa o select juntando o selct e o select de paginacao
             $conteudo = $servidor->select($select);
@@ -350,7 +350,7 @@ if ($acesso) {
             $tabela->set_classe($classe);
             $tabela->set_metodo($metodo);
             $tabela->set_funcao($function);
-            $tabela->set_totalRegistro(TRUE);
+            $tabela->set_totalRegistro(true);
             $tabela->set_idCampo('idServidor');
 
             if (!is_null($parametroNomeMat)) {
@@ -360,7 +360,7 @@ if ($acesso) {
             $tabela->show();
 
             # Pega o time final
-            $time_end = microtime(TRUE);
+            $time_end = microtime(true);
 
             # Calcula e exibe o tempo
             $time = $time_end - $time_start;

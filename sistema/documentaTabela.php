@@ -1,7 +1,7 @@
 <?php
 
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -39,7 +39,7 @@ if ($acesso) {
     $linkBotaoEditar->set_accessKey('C');
 
     # Relatórios
-    $imagem = new Imagem(PASTA_FIGURAS . 'print.png', NULL, 15, 15);
+    $imagem = new Imagem(PASTA_FIGURAS . 'print.png', null, 15, 15);
     $botaoRel = new Button();
     $botaoRel->set_title("Relatório");
     $botaoRel->set_onClick("window.open('../relatorios/documentaTabela.php?banco=$banco&tabela=$tabela','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
@@ -62,7 +62,7 @@ if ($acesso) {
                       EXTRA,
                       COLUMN_COMMENT,
                       COLUMN_DEFAULT,
-                      IS_NULLABLE
+                      IS_nullABLE
                  FROM COLUMNS 
                 WHERE TABLE_SCHEMA = '" . $banco . "' 
                   AND TABLE_NAME = '" . $tabela . "'";
@@ -70,7 +70,7 @@ if ($acesso) {
     $conteudo = $servico->select($select);
 
     $label = array("#", "Nome", "Tipo", "Chave", "Extra", "Descrição", "Padrão", "Nulo");
-    #$function = array("datetime_to_php",NULL,NULL,NULL,"get_nome");
+    #$function = array("datetime_to_php",null,null,null,"get_nome");
     $align = array("center", "left", "center", "center", "center", "left");
 
     # Monta a tabela

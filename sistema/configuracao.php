@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -120,8 +120,8 @@ if ($acesso) {
     $objeto->set_orderChamador('?fase=listar');
 
     # Caminhos
-    $objeto->set_botaoVoltarLista(FALSE);
-    $objeto->set_botaoIncluir(FALSE);
+    $objeto->set_botaoVoltarLista(false);
+    $objeto->set_botaoIncluir(false);
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
@@ -157,11 +157,11 @@ if ($acesso) {
         array('nome' => 'categoria',
             'label' => 'Categoria:',
             'tipo' => 'texto',
-            'required' => TRUE,
+            'required' => true,
             'datalist' => $dadosCategoria,
             'size' => 50,
             'title' => 'Categoria da Variável.',
-            'autofocus' => TRUE,
+            'autofocus' => true,
             'col' => 4,
             'linha' => 1),
         array('nome' => 'nome',
@@ -169,14 +169,14 @@ if ($acesso) {
             'tipo' => 'texto',
             'size' => 90,
             'title' => 'Nome da Variável.',
-            'required' => TRUE,
+            'required' => true,
             'col' => 8,
             'linha' => 1),
         array('nome' => 'comentario',
             'label' => 'Comentário:',
             'tipo' => 'textarea',
             'size' => array(90, 5),
-            'required' => TRUE,
+            'required' => true,
             'title' => 'Descrição resumida da utilidade da variável.',
             'col' => 12,
             'linha' => 2),

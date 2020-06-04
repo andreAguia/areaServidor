@@ -6,7 +6,7 @@
  * By Alat
  */
 ## Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -74,9 +74,9 @@ if ($acesso) {
                                WHERE idProcesso = ' . $id);
 
     # botões
-    $objeto->set_botaoEditar(FALSE);  # Não exibe o botão editar
-    $objeto->set_botaoExcluir(FALSE); # Não exibe o botão excluir
-    $objeto->set_botaoVoltarLista(FALSE); # Não exibe o botão voltar
+    $objeto->set_botaoEditar(false);  # Não exibe o botão editar
+    $objeto->set_botaoExcluir(false); # Não exibe o botão excluir
+    $objeto->set_botaoVoltarLista(false); # Não exibe o botão voltar
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
@@ -87,12 +87,12 @@ if ($acesso) {
     $objeto->set_label(array("Data", "Processo", "Assunto", "Mov."));
     $objeto->set_width(array(10, 25, 60));
     $objeto->set_align(array("center", "center", "left"));
-    $objeto->set_funcao(array("date_to_php", NULL, "retiraAcento"));
+    $objeto->set_funcao(array("date_to_php", null, "retiraAcento"));
 
     # Botão de exibição dos servidores com permissão a essa regra
-    $botao = new Link(NULL, 'processoMovimentacao.php?idProcesso=', 'Movimentação do Processo');
+    $botao = new Link(null, 'processoMovimentacao.php?idProcesso=', 'Movimentação do Processo');
     $botao->set_imagem(PASTA_FIGURAS . 'movimentacao.png', 20, 20);
-    $objeto->set_link(array(NULL, NULL, NULL, $botao));
+    $objeto->set_link(array(null, null, null, $botao));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -109,8 +109,8 @@ if ($acesso) {
             'label' => 'Processo:',
             'tipo' => 'processo',
             'size' => 25,
-            'autofocus' => TRUE,
-            'required' => TRUE,
+            'autofocus' => true,
+            'required' => true,
             'title' => 'O número do Processo.',
             'linha' => 1,
             'col' => 6),
@@ -118,14 +118,14 @@ if ($acesso) {
             'label' => 'Data:',
             'tipo' => 'data',
             'size' => 12,
-            'required' => TRUE,
+            'required' => true,
             'title' => 'Data de Nascimento.',
             'col' => 6,
             'linha' => 1),
         array('nome' => 'assunto',
             'label' => 'Assunto:',
             'tipo' => 'textarea',
-            'required' => TRUE,
+            'required' => true,
             'size' => array(90, 5),
             'title' => 'Assunto do processo.',
             'col' => 12,

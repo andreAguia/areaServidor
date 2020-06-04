@@ -5,7 +5,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -85,8 +85,8 @@ if ($acesso) {
             $controle = new Input('senha1', 'password', 'Digite a Nova Senha:', 1);
             $controle->set_size(20);
             $controle->set_linha(1);
-            $controle->set_required(TRUE);
-            $controle->set_autofocus(TRUE);
+            $controle->set_required(true);
+            $controle->set_autofocus(true);
             $controle->set_tabIndex(1);
             $controle->set_placeholder('Digite a Senha');
             $controle->set_title('A nova senha');
@@ -96,7 +96,7 @@ if ($acesso) {
             $controle = new Input('senha2', 'password', 'Redigite a Nova Senha:', 1);
             $controle->set_size(20);
             $controle->set_linha(2);
-            $controle->set_required(TRUE);
+            $controle->set_required(true);
             $controle->set_tabIndex(2);
             $controle->set_title('Redigite a nova senha para confirmar e evitar erros de digitação');
             $controle->set_placeholder('Redigite a senha');
@@ -124,7 +124,7 @@ if ($acesso) {
 
         case "gravar" :
             $erro = 0;    // flag de erro: 1 - tem erro; 0 - não tem	
-            $msgErro = NULL; // repositório de mensagens de erro
+            $msgErro = null; // repositório de mensagens de erro
             # pega as senhas digitadas
             $senha1 = post('senha1');
             $senha2 = post('senha2');
@@ -184,7 +184,7 @@ if ($acesso) {
             br();
 
             # Define o tipo de callout
-            $tipo = array(NULL, "secondary", "primary", "success", "warning", "alert", NULL);
+            $tipo = array(null, "secondary", "primary", "success", "warning", "alert", null);
 
             # Mensagens
             $mensagem[1] = '1. Use mais de uma palavra<br/>Em vez de usar apenas o nome de uma pessoa conhecida, como "Amador", escolha um detalhe dessa pessoa que mais ninguém saiba, por exemplo, "UrsoAmador" ou "UrsoDodo".';

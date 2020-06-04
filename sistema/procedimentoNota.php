@@ -6,7 +6,7 @@
  * By Alat
  */
 # Reservado para o servidor logado
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -113,8 +113,8 @@ if ($acesso) {
             'nome' => 'titulo',
             'label' => 'Título:',
             'tipo' => 'texto',
-            'required' => TRUE,
-            'autofocus' => TRUE,
+            'required' => true,
+            'autofocus' => true,
             'col' => 6,
             'size' => 100),
         array('linha' => 1,
@@ -128,7 +128,7 @@ if ($acesso) {
             'nome' => 'idPai',
             'label' => 'Pai:',
             'tipo' => 'combo',
-            'required' => TRUE,
+            'required' => true,
             'array' => $result3,
             'col' => 4,
             'size' => 30),
@@ -141,17 +141,17 @@ if ($acesso) {
             'size' => 250),
         array('linha' => 2,
             'nome' => 'numOrdem',
-            'autofocus' => TRUE,
+            'autofocus' => true,
             'label' => 'numOrdem:',
             'tipo' => 'texto',
-            'required' => TRUE,
+            'required' => true,
             'col' => 2,
             'size' => 4),
         array('linha' => 2,
             'nome' => 'visibilidade',
             'label' => 'Visibilidade:',
             'tipo' => 'combo',
-            'required' => TRUE,
+            'required' => true,
             'array' => array(array(1, "Público"), array(2, "Admin")),
             'col' => 2,
             'size' => 15),
@@ -159,7 +159,7 @@ if ($acesso) {
             'nome' => 'textoProcedimento',
             'label' => 'Texto:',
             'tipo' => 'editor',
-            'tagHtml' => TRUE,
+            'tagHtml' => true,
             'size' => array(90, 5),
             'title' => 'Texto')]);
 

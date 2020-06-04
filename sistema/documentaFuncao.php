@@ -6,7 +6,7 @@
  * Gera documentação de uma função
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -255,7 +255,7 @@ if ($acesso) {
                 br(2);
 
                 # Marca se é a função desejada
-                $funcaoDesejada = FALSE;
+                $funcaoDesejada = false;
 
                 # variável que conta o número da linha
                 $numLinha = 1;
@@ -275,9 +275,9 @@ if ($acesso) {
 
                             $nome = substr($linha, $posicao + 9, $tamanho);   // extrai o nome
                             if ($nome == $nomeFuncao[$keyFuncao]) {
-                                $funcaoDesejada = TRUE;
+                                $funcaoDesejada = true;
                             } else {
-                                $funcaoDesejada = FALSE;
+                                $funcaoDesejada = false;
                             }
                         }
 

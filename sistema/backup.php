@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");

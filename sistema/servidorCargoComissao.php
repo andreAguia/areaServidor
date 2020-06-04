@@ -6,7 +6,7 @@
  * By Alat
  */
 # Reservado para o servidor logado
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -87,7 +87,7 @@ if ($acesso) {
             $menu1->add_link($linkBotao1, "right");
 
             # Relatórios
-            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', NULL, 15, 15);
+            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', null, 15, 15);
             $botaoRel = new Button();
             $botaoRel->set_title("Relatório dessa pesquisa");
             $botaoRel->set_imagem($imagem);
@@ -127,13 +127,13 @@ if ($acesso) {
                                        LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
                                        LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
                                             JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
-                       WHERE tbcomissao.dtExo is NULL AND tbtipocomissao.idTipoComissao = "' . $parametroCargoComissao . '"                
+                       WHERE tbcomissao.dtExo is null AND tbtipocomissao.idTipoComissao = "' . $parametroCargoComissao . '"                
                   ORDER BY tbpessoa.nome';
 
             $result = $pessoal->select($select);
             $label = array('IdFuncional', 'Matrícula', 'Nome', 'Nomeação', 'Nome do Cargo');
             $align = array("center", "center", "left", "center", "left");
-            $function = array(NULL, "dv", NULL, "date_to_php", "descricaoComissao");
+            $function = array(null, "dv", null, "date_to_php", "descricaoComissao");
 
             # Monta a tabela
             $tabela = new Tabela();
@@ -150,7 +150,7 @@ if ($acesso) {
             # Grava no log a atividade
             $atividade = "Visualizou os servidores do cargo em comissão: " . $pessoal->get_nomeCargoComissao($parametroCargoComissao) . " na área do servidor";
             $data = date("Y-m-d H:i:s");
-            $intra->registraLog($idUsuario, $data, $atividade, NULL, NULL, 7);
+            $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
         ###############################
@@ -186,7 +186,7 @@ if ($acesso) {
             $menu1->add_link($linkBotao1, "left");
 
             # Relatórios
-            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', NULL, 15, 15);
+            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', null, 15, 15);
             $botaoRel = new Button();
             $botaoRel->set_title("Relatório");
             $botaoRel->set_imagem($imagem);
@@ -214,9 +214,9 @@ if ($acesso) {
             $tabela->set_label(array("Cargo", "Simbolo", "Valor (R$)", "Vagas", "Servidores Nomeados", "Vagas Disponíveis"));
             #$tabela->set_width(array(80,10,10));
             $tabela->set_align(array("left", "center", "center"));
-            $tabela->set_funcao(array(NULL, NULL, "formataMoeda"));
-            $tabela->set_classe(array(NULL, NULL, NULL, NULL, 'CargoComissao', 'CargoComissao'));
-            $tabela->set_metodo(array(NULL, NULL, NULL, NULL, 'get_numServidoresNomeados', 'get_vagasDisponiveis'));
+            $tabela->set_funcao(array(null, null, "formataMoeda"));
+            $tabela->set_classe(array(null, null, null, null, 'CargoComissao', 'CargoComissao'));
+            $tabela->set_metodo(array(null, null, null, null, 'get_numServidoresNomeados', 'get_vagasDisponiveis'));
             $tabela->show();
 
             $grid->fechaColuna();

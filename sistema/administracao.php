@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -235,8 +235,8 @@ if ($acesso) {
             }
 
             # Cria títulos de ordenação
-            $mes = NULL;
-            $mesAnterior = NULL;
+            $mes = null;
+            $mesAnterior = null;
 
             if (isset($arrayArquivos)) {
                 # Limita ainda mais
@@ -376,7 +376,7 @@ if ($acesso) {
                               FROM tbdocumentacao
                              WHERE CPF = '$cpfFinalizado'";
 
-                $row2 = $servidor->select($select2, FALSE);
+                $row2 = $servidor->select($select2, false);
 
                 if (is_null($row2[0])) {
                     echo "<td></td>";

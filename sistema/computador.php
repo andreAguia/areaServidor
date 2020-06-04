@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -121,7 +121,7 @@ if ($acesso) {
                                            usuario
                                       FROM tbusuario
                                   ORDER BY usuario');
-    array_unshift($comboUsuario, array(NULL, NULL));
+    array_unshift($comboUsuario, array(null, null));
 
     # Campos para o formulario
     $objeto->set_campos(array(
@@ -130,8 +130,8 @@ if ($acesso) {
             'tipo' => 'texto',
             'size' => 20,
             'title' => 'IP do computador.',
-            'required' => TRUE,
-            'autofocus' => TRUE,
+            'required' => true,
+            'autofocus' => true,
             'col' => 3,
             'linha' => 1),
         array('linha' => 1,

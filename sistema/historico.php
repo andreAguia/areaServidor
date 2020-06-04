@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -66,7 +66,7 @@ if ($acesso) {
     $controle->set_size(30);
     $controle->set_title('Insira a data');
     $controle->set_valor($parametro);
-    $controle->set_autofocus(TRUE);
+    $controle->set_autofocus(true);
     $controle->set_onChange('formPadrao.submit();');
     $controle->set_linha(1);
     $controle->set_col(4);
@@ -88,13 +88,13 @@ if ($acesso) {
         $select .= ' tblog.idServidor = ' . $idServidor;
     }
 
-    $select .= ' AND tblog.idUsuario IS NOT NULL  
+    $select .= ' AND tblog.idUsuario IS NOT null  
                       ORDER BY 2';
 
     $result = $intra->select($select);
 
     $usuariosLogados = $result;
-    array_unshift($result, array(NULL, '-- Todos --'));
+    array_unshift($result, array(null, '-- Todos --'));
 
     $controle = new Input('usuarioLog', 'combo', 'Filtra por Usuário', 1);
     $controle->set_size(30);
@@ -118,12 +118,12 @@ if ($acesso) {
         $select2 .= ' idServidor = ' . $idServidor;
     }
 
-    $select2 .= ' AND ip IS NOT NULL  
+    $select2 .= ' AND ip IS NOT null  
                       ORDER BY 2';
 
     $result2 = $intra->select($select2);
 
-    array_unshift($result2, array(NULL, '-- Todos --'));
+    array_unshift($result2, array(null, '-- Todos --'));
 
     $controle = new Input('usuarioIp', 'combo', 'Filtra por IP', 1);
     $controle->set_size(20);
@@ -147,12 +147,12 @@ if ($acesso) {
         $select3 .= ' idServidor = ' . $idServidor;
     }
 
-    $select3 .= ' AND tabela IS NOT NULL  
+    $select3 .= ' AND tabela IS NOT null  
                       ORDER BY 2';
 
     $result3 = $intra->select($select3);
 
-    array_unshift($result3, array(NULL, '-- Todos --'));
+    array_unshift($result3, array(null, '-- Todos --'));
 
     $controle = new Input('tabela', 'combo', 'Tabela', 1);
     $controle->set_size(20);
@@ -176,12 +176,12 @@ if ($acesso) {
         $select4 .= ' idServidor = ' . $idServidor;
     }
 
-    $select4 .= ' AND idValor IS NOT NULL  
+    $select4 .= ' AND idValor IS NOT null  
                       ORDER BY 2';
 
     $result4 = $intra->select($select4);
 
-    array_unshift($result4, array(NULL, '-- Todos --'));
+    array_unshift($result4, array(null, '-- Todos --'));
 
     $controle = new Input('idTabela', 'combo', 'Id', 1);
     $controle->set_size(20);
@@ -199,9 +199,9 @@ if ($acesso) {
                                    FROM tblog JOIN uenf_grh.tbservidor USING (idServidor)
                                               JOIN uenf_grh.tbpessoa USING (idPessoa)
                                   WHERE date(data) = "' . $parametro . '"
-                                    AND idServidor IS NOT NULL  
+                                    AND idServidor IS NOT null  
                                ORDER BY 2');
-    array_unshift($result5, array(NULL, '-- Todos --'));
+    array_unshift($result5, array(null, '-- Todos --'));
 
     $controle = new Input('idServidorPesquisado', 'combo', 'Servidor', 1);
     $controle->set_size(20);
@@ -275,9 +275,9 @@ if ($acesso) {
     $tabela->set_label(array("Usuário", "Data", "IP", "Tabela", "Id", "Servidor", "", "Atividade"));
     $tabela->set_width(array(8, 8, 8, 10, 5, 15, 5, 36));
     $tabela->set_align(array("center", "center", "center", "center", "center", "left", "center", "left"));
-    $tabela->set_funcao(array(NULL, "datetime_to_php"));
-    $tabela->set_classe(array("intra", NULL, NULL, NULL, NULL, "Pessoal"));
-    $tabela->set_metodo(array("get_usuario", NULL, NULL, NULL, NULL, "get_nome"));
+    $tabela->set_funcao(array(null, "datetime_to_php"));
+    $tabela->set_classe(array("intra", null, null, null, null, "Pessoal"));
+    $tabela->set_metodo(array("get_usuario", null, null, null, null, "get_nome"));
 
     $tabela->set_formatacaoCondicional(array(array('coluna' => 6,
             'valor' => 0,

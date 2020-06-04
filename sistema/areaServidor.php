@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -120,7 +120,7 @@ if ($acesso) {
             $atividade = 'Visualizou o organograma da Uenf na área do servidor';
             $Objetolog = new Intra();
             $data = date("Y-m-d H:i:s");
-            $Objetolog->registraLog($idUsuario, $data, $atividade, NULL, NULL, 7);
+            $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
 ##################################################################
@@ -149,9 +149,9 @@ if ($acesso) {
             $tabela->set_conteudo($result);
             $tabela->set_label(array("Exercicio", "Status", "Data Inicial", "Dias", "P", "Data Final"));
             $tabela->set_align(array("center"));
-            $tabela->set_funcao(array(NULL, NULL, 'date_to_php', NULL, NULL, 'date_to_php'));
-            $tabela->set_classe(array(NULL, NULL, NULL, NULL, 'pessoal'));
-            $tabela->set_metodo(array(NULL, NULL, NULL, NULL, "get_feriasPeriodo"));
+            $tabela->set_funcao(array(null, null, 'date_to_php', null, null, 'date_to_php'));
+            $tabela->set_classe(array(null, null, null, null, 'pessoal'));
+            $tabela->set_metodo(array(null, null, null, null, "get_feriasPeriodo"));
             $tabela->set_rowspan(0);
             $tabela->set_grupoCorColuna(0);
             $tabela->show();
@@ -160,7 +160,7 @@ if ($acesso) {
             $atividade = 'Visualizou o próprio histórico de férias na área do servidor';
             $Objetolog = new Intra();
             $data = date("Y-m-d H:i:s");
-            $Objetolog->registraLog($idUsuario, $data, $atividade, NULL, NULL, 7);
+            $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
 ##################################################################
@@ -200,7 +200,7 @@ if ($acesso) {
             $atividade = 'Visualizou o próprio histórico de afastamento na área do servidor';
             $Objetolog = new Intra();
             $data = date("Y-m-d H:i:s");
-            $Objetolog->registraLog($idUsuario, $data, $atividade, NULL, NULL, 7);
+            $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
 ##################################################################
@@ -246,9 +246,9 @@ if ($acesso) {
             $tabela->set_titulo("Férias dos Servidores da " . $servidor->get_nomeLotacao($idLotacao) . " em $ano");
             $tabela->set_label(array('Mês', 'Nome', 'Lotação', 'Exercício', 'Inicio', 'Dias', 'Fim', 'Período', 'Status', 'Situação'));
             $tabela->set_align(array("center", "left", "left"));
-            $tabela->set_funcao(array("get_nomeMes", NULL, NULL, NULL, "date_to_php", NULL, NULL, NULL, NULL));
-            $tabela->set_classe(array(NULL, NULL, "pessoal", NULL, NULL, NULL, NULL, "pessoal"));
-            $tabela->set_metodo(array(NULL, NULL, "get_lotacaoSimples", NULL, NULL, NULL, NULL, "get_feriasPeriodo"));
+            $tabela->set_funcao(array("get_nomeMes", null, null, null, "date_to_php", null, null, null, null));
+            $tabela->set_classe(array(null, null, "pessoal", null, null, null, null, "pessoal"));
+            $tabela->set_metodo(array(null, null, "get_lotacaoSimples", null, null, null, null, "get_feriasPeriodo"));
             $tabela->set_conteudo($result);
             $tabela->set_rowspan(0);
             $tabela->set_grupoCorColuna(0);
@@ -258,7 +258,7 @@ if ($acesso) {
             $atividade = 'Visualizou os servidores em férias do próprio setor na área do servidor';
             $Objetolog = new Intra();
             $data = date("Y-m-d H:i:s");
-            $Objetolog->registraLog($idUsuario, $data, $atividade, NULL, NULL, 7);
+            $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
 ##################################################################

@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -74,7 +74,7 @@ if ($acesso) {
                 $grid2->abreColuna(4);
                 tituloTable($tt);
                 $select = "SELECT * FROM $tt WHERE idPessoa NOT IN (SELECT idPessoa FROM tbpessoa)";
-                $row = $servidor->select($select, FALSE);
+                $row = $servidor->select($select, false);
                 if (count($row[0]) == 0) {
                     br(2);
                     p("Nenhum registro órfão encontrado !", "center");
@@ -98,7 +98,7 @@ if ($acesso) {
                 $grid2->abreColuna(4);
                 tituloTable($tt);
                 $select = "SELECT * FROM $tt WHERE idServidor NOT IN (SELECT idServidor FROM tbservidor)";
-                $row = $servidor->select($select, FALSE);
+                $row = $servidor->select($select, false);
                 if (count($row[0]) == 0) {
                     br(2);
                     p("Nenhum registro órfão encontrado !", "center");

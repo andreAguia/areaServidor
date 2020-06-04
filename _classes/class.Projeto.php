@@ -7,10 +7,10 @@ class Projeto {
      * 
      * @author André Águia (Alat) - alataguia@gmail.com
      * 
-     * @var private $projeto        integer NULL O id do projeto a ser acessado
+     * @var private $projeto        integer null O id do projeto a ser acessado
      * 
      */
-    private $projeto = NULL;
+    private $projeto = null;
 
     ###########################################################
 
@@ -23,11 +23,11 @@ class Projeto {
 
     ###########################################################
 
-    public function get_dadosProjeto($idProjeto = NULL) {
+    public function get_dadosProjeto($idProjeto = null) {
         /**
          * Retorna um array com todas as informações do projeto informado
          * 
-         * @param $idProjeto integer NULL o idProjeto
+         * @param $idProjeto integer null o idProjeto
          * 
          * @syntax $projeto->getDadosProjetos([$idProjeto]);  
          */
@@ -48,11 +48,11 @@ class Projeto {
 
     ###########################################################
 
-    public function get_dadosCaderno($idCaderno = NULL) {
+    public function get_dadosCaderno($idCaderno = null) {
         /**
          * Retorna um array com todas as informações do caderno informado
          * 
-         * @param $idCaderno integer NULL o idCaderno
+         * @param $idCaderno integer null o idCaderno
          * 
          * @syntax $projeto->get_dadosCaderno([$idCaderno]);  
          */
@@ -71,11 +71,11 @@ class Projeto {
 
     ###########################################################
 
-    public function get_dadosNota($idNota = NULL) {
+    public function get_dadosNota($idNota = null) {
         /**
          * Retorna um array com as informações da nota
          * 
-         * @param $idNota integer NULL o idNota
+         * @param $idNota integer null o idNota
          * 
          * @syntax $projeto->get_dadosNota([$idNota]);  
          */
@@ -100,7 +100,7 @@ class Projeto {
         /**
          * Retorna um inteiro com o número de tarefas pendentes de um projeto
          * 
-         * @param $idProjeto integer NULL o idProjeto 
+         * @param $idProjeto integer null o idProjeto 
          * 
          * @note usado no menu de projetos ativos informando o número de tarefas no menu
          * 
@@ -122,7 +122,7 @@ class Projeto {
         /**
          * Retorna um inteiro com o número de tarefas concluídas de um projeto
          * 
-         * @param $idProjeto integer NULL o idProjeto 
+         * @param $idProjeto integer null o idProjeto 
          * 
          * @note usado no menu de projetos ativos informando o número de tarefas no menu
          * 
@@ -144,7 +144,7 @@ class Projeto {
         /**
          * Retorna um inteiro com o número de tarefas pendentes de uma Etiqueta
          * 
-         * @param $etiqueta integer NULL o etiqueta 
+         * @param $etiqueta integer null o etiqueta 
          * 
          * @note usado no menu de etiquetas informando o número de tarefas no menu
          * 
@@ -166,7 +166,7 @@ class Projeto {
         /**
          * Retorna um inteiro com o número de tarefas pendentes de uma Etiqueta
          * 
-         * @param $etiqueta integer NULL o etiqueta 
+         * @param $etiqueta integer null o etiqueta 
          * 
          * @note usado no menu de etiquetas informando o número de tarefas no menu
          * 
@@ -188,7 +188,7 @@ class Projeto {
         /**
          * Retorna um array com todos os dados de uma tarefa específica
          * 
-         * @param $idTarefa integer NULL o idTarefa 
+         * @param $idTarefa integer null o idTarefa 
          * 
          * @syntax $projeto->get_dadosTarefas($idTarefa);  
          */
@@ -221,12 +221,12 @@ class Projeto {
         /**
          * Retorna o nome do projeto informado
          * 
-         * @param $idProjeto integer NULL o idProjeto
+         * @param $idProjeto integer null o idProjeto
          * 
          * @syntax $projeto->get_nomeProjeto([$idProjeto]);  
          */
         if (is_null($idProjeto)) {
-            return NULL;
+            return null;
         } else {
             # Pega os projetos cadastrados
             $select = 'SELECT projeto
@@ -234,7 +234,7 @@ class Projeto {
                         WHERE idProjeto = ' . $idProjeto;
 
             $intra = new Intra();
-            $row = $intra->select($select, FALSE);
+            $row = $intra->select($select, false);
             return $row[0];
         }
     }
@@ -245,12 +245,12 @@ class Projeto {
         /**
          * Retorna o nome da etiqueta informado
          * 
-         * @param $etiqueta integer NULL a $etiqueta
+         * @param $etiqueta integer null a $etiqueta
          * 
          * @syntax $projeto->get_nomeEtiqueta([$etiqueta]);  
          */
         if (is_null($etiqueta)) {
-            return NULL;
+            return null;
         } else {
             # Pega os projetos cadastrados
             $select = 'SELECT etiqueta
@@ -258,7 +258,7 @@ class Projeto {
                         WHERE etiqueta = ' . $etiqueta;
 
             $intra = new Intra();
-            $row = $intra->select($select, FALSE);
+            $row = $intra->select($select, false);
             return $row[0];
         }
     }
@@ -269,7 +269,7 @@ class Projeto {
         /**
          * Retorna a cor do projeto informado
          * 
-         * @param $idProjeto integer NULL o idProjeto
+         * @param $idProjeto integer null o idProjeto
          * 
          * @syntax $projeto->get_corProjeto([$idProjeto]);  
          */
@@ -289,7 +289,7 @@ class Projeto {
         /**
          * Retorna um inteiro com o número de notas de um caderno
          * 
-         * @param $idCaderno integer NULL o idCaderno 
+         * @param $idCaderno integer null o idCaderno 
          * 
          * @syntax $projeto->get_numeroNotas([$idCaderno]);  
          */

@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -58,8 +58,8 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
             $controle = new Input('usuario', 'texto', 'Usuário:', 1);
             $controle->set_size(20);
             $controle->set_linha(1);
-            $controle->set_required(TRUE);
-            $controle->set_autofocus(TRUE);
+            $controle->set_required(true);
+            $controle->set_autofocus(true);
             $controle->set_tabIndex(1);
             $controle->set_placeholder('usuário');
             $controle->set_title('O nome do usuário');
@@ -69,7 +69,7 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
             $controle = new Input('senha', 'password', 'Senha:', 1);
             $controle->set_size(20);
             $controle->set_linha(2);
-            $controle->set_required(TRUE);
+            $controle->set_required(true);
             $controle->set_tabIndex(2);
             $controle->set_title('A senha da intranet');
             $controle->set_placeholder('senha');
@@ -135,7 +135,7 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
                     alert('Login Incorreto!');
 
                     # Grava no log a atividade
-                    $intra->registraLog(NULL, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') inexistente (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', NULL, NULL, 5);
+                    $intra->registraLog(null, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') inexistente (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', null, null, 5);
 
                     # Retorna a página de login
                     loadPage('login.php');
@@ -148,7 +148,7 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
                     alert('Login Incorreto!');
 
                     # Grava no log a atividade
-                    $intra->registraLog(NULL, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') bloqueado (com senha nula) no servidor (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', NULL, NULL, 5);
+                    $intra->registraLog(null, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') bloqueado (com senha nula) no servidor (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', null, null, 5);
 
                     # Retorna a página de login
                     loadPage('login.php');
@@ -161,7 +161,7 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
                     alert('Login Incorreto!');
 
                     # Grava no log a atividade
-                    $intra->registraLog(NULL, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') e com senha errada. (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', NULL, NULL, 5);
+                    $intra->registraLog(null, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') e com senha errada. (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', null, null, 5);
 
                     # Retorna a página de login
                     loadPage('login.php');
@@ -177,7 +177,7 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
                     $idServidor = $intra->get_idServidor($idUsuario);
 
                     # Grava o último acesso
-                    $intra->gravar('ultimoAcesso', date("Y-m-d H:i:s"), $idUsuario, 'tbusuario', 'idUsuario', FALSE);
+                    $intra->gravar('ultimoAcesso', date("Y-m-d H:i:s"), $idUsuario, 'tbusuario', 'idUsuario', false);
 
                     # Grava no log a atividade
                     $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Login (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')');
@@ -207,7 +207,7 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
                     $idServidor = $intra->get_idServidor($idUsuario);
 
                     # Grava o último acesso
-                    $intra->gravar('ultimoAcesso', date("Y-m-d H:i:s"), $idUsuario, 'tbusuario', 'idUsuario', FALSE);
+                    $intra->gravar('ultimoAcesso', date("Y-m-d H:i:s"), $idUsuario, 'tbusuario', 'idUsuario', false);
 
                     # Grava no log a atividade        
                     $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Login com senha padrão (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')');
@@ -222,7 +222,7 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
                     alert('Este Computador não está autorizado a acessar o sistema! Entre em contato com o administrador do sistema.');
 
                     # Grava no log a atividade
-                    $intra->registraLog(NULL, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') em Computador não autorizado (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', NULL, NULL, 5);
+                    $intra->registraLog(null, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') em Computador não autorizado (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', null, null, 5);
 
                     # Retorna a página de login
                     loadPage('login.php');
@@ -289,7 +289,7 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
             $menu->show();
 
             # Grava no log a atividade
-            $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Recebeu os parabéns do sistema pelo aniversário.', NULL, NULL, 7);
+            $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Recebeu os parabéns do sistema pelo aniversário.', null, null, 7);
 
             $grid->fechaColuna();
             $grid->fechaGrid();

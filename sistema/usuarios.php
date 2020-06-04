@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -81,7 +81,7 @@ if ($acesso) {
                                       idUsuario
                                  FROM tbusuario
                                 WHERE usuario LIKE "%' . $parametro . '%"
-                             ORDER BY (senha is NULL), ultimoAcesso desc');
+                             ORDER BY (senha is null), ultimoAcesso desc');
 
     # select do edita
     $objeto->set_selectEdita('SELECT usuario,
@@ -109,12 +109,12 @@ if ($acesso) {
             'id' => 'logExclusao')
     ));
 
-    $objeto->set_classe(array(NULL, NULL, NULL, "pessoal", NULL, NULL, "pessoal", "pessoal", "pessoal"));
-    $objeto->set_metodo(array(NULL, NULL, NULL, "get_nome", NULL, NULL, "get_lotacao", "get_cargo", "get_emailUenf"));
-    $objeto->set_funcao(array("statusUsuario", NULL, NULL, NULL, "get_permissoes", "datetime_to_php"));
+    $objeto->set_classe(array(null, null, null, "pessoal", null, null, "pessoal", "pessoal", "pessoal"));
+    $objeto->set_metodo(array(null, null, null, "get_nome", null, null, "get_lotacao", "get_cargo", "get_emailUenf"));
+    $objeto->set_funcao(array("statusUsuario", null, null, null, "get_permissoes", "datetime_to_php"));
 
-    $objeto->set_botaoExcluir(FALSE);
-    $objeto->set_botaoEditar(FALSE);
+    $objeto->set_botaoExcluir(false);
+    $objeto->set_botaoEditar(false);
 
     # Botão de exibição dos servidores com permissão a essa regra
     $botao = new BotaoGrafico();
@@ -141,7 +141,7 @@ if ($acesso) {
                                   FROM tbservidor JOIN tbpessoa USING(idPessoa)
                                  WHERE tbservidor.situacao = 1
                               ORDER BY tbpessoa.nome');
-    array_unshift($result, array(0, NULL)); # Adiciona o valor de nulo
+    array_unshift($result, array(0, null)); # Adiciona o valor de nulo
     # Campos para o formulario
     $objeto->set_campos(array(
         array('linha' => 1,
@@ -149,9 +149,9 @@ if ($acesso) {
             'nome' => 'usuario',
             'label' => 'Usuário:',
             'tipo' => 'texto',
-            'autofocus' => TRUE,
-            'required' => TRUE,
-            'unique' => TRUE,
+            'autofocus' => true,
+            'required' => true,
+            'unique' => true,
             'size' => 15),
         array('linha' => 1,
             'col' => 9,
@@ -170,7 +170,7 @@ if ($acesso) {
 
     # Log
     $objeto->set_idUsuario($idUsuario);
-    $objeto->set_exibeInfoObrigatoriedade(FALSE);
+    $objeto->set_exibeInfoObrigatoriedade(false);
 
     ################################################################
     switch ($fase) {
@@ -227,7 +227,7 @@ if ($acesso) {
             if ($statusUsuario <> 2) { # Verifica se já está bloqueado
                 if ($id <> $idUsuario) { # Impede o usuário bloquear a si próprio
                     $botaoBloquear = new Button("Bloquear", '?fase=bloquear&id=' . $id);
-                    $botaoBloquear->set_title("Bloqueia o acesso desse servidor a área do servidor. (passa a senha para NULL)");
+                    $botaoBloquear->set_title("Bloqueia o acesso desse servidor a área do servidor. (passa a senha para null)");
                     $botaoBloquear->set_class('alert button');
                     $menu1->add_link($botaoBloquear, "right");
                 }
@@ -298,7 +298,7 @@ if ($acesso) {
                     if (!is_null($parametroHistorico)) {
                         $controle->set_valor($parametroHistorico);
                     }
-                    $controle->set_autofocus(TRUE);
+                    $controle->set_autofocus(true);
                     $controle->set_onChange('formHistorico.submit();');
                     $controle->set_linha(1);
                     $controle->set_col(12);
@@ -325,7 +325,7 @@ if ($acesso) {
                            AND MONTH(data) = ' . $mes . '      
                       GROUP BY browser ORDER BY 2 desc';
 
-                    $conteudo = $intra->select($select, TRUE);
+                    $conteudo = $intra->select($select, true);
 
                     # Pega a soma dos campos
                     $soma = 0;
@@ -338,7 +338,7 @@ if ($acesso) {
                     $tabela->set_titulo("Browsers Preferidos");
                     $tabela->set_label(array("Browser", "Logins"));
                     $tabela->set_align(array("center"));
-                    $tabela->set_totalRegistro(FALSE);
+                    $tabela->set_totalRegistro(false);
                     $tabela->set_rodape("Total de Logins: " . $soma);
                     $tabela->show();
 
@@ -352,7 +352,7 @@ if ($acesso) {
                            AND MONTH(data) = ' . $mes . '      
                       GROUP BY ip ORDER BY 2 desc';
 
-                    $conteudo = $intra->select($select, TRUE);
+                    $conteudo = $intra->select($select, true);
 
                     # Pega a soma dos campos
                     $soma = 0;
@@ -365,7 +365,7 @@ if ($acesso) {
                     $tabela->set_titulo("IPs Acessados");
                     $tabela->set_label(array("ip", "Logins"));
                     $tabela->set_align(array("center"));
-                    $tabela->set_totalRegistro(FALSE);
+                    $tabela->set_totalRegistro(false);
                     $tabela->set_rodape("Total de Logins: " . $soma);
                     $tabela->show();
 
@@ -390,7 +390,7 @@ if ($acesso) {
                            AND YEAR(data) = ' . $ano . '
                            AND MONTH(data) = ' . $mes;
 
-                    $conteudo = $intra->select($select, TRUE);
+                    $conteudo = $intra->select($select, true);
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
@@ -398,7 +398,7 @@ if ($acesso) {
                     $tabela->set_width(array(5, 20, 10, 10, 5, 5, 45));
                     $tabela->set_label(array("", "Data", "IP", "Tabela", "Id", "IdServidor", "Atividade"));
                     $tabela->set_align(array("center", "center", "center", "center", "center", "center", "left"));
-                    $tabela->set_funcao(array(NULL, "datetime_to_php", NULL, NULL, NULL, "exibeNomeTitle"));
+                    $tabela->set_funcao(array(null, "datetime_to_php", null, null, null, "exibeNomeTitle"));
 
                     $tabela->set_formatacaoCondicional(array(array('coluna' => 0,
                             'valor' => 0,
@@ -488,7 +488,7 @@ if ($acesso) {
                             WHERE tbpermissao.idUsuario = ' . $id . '
                          ORDER BY tbregra.nome';
 
-                $conteudo = $intra->select($select, TRUE);
+                $conteudo = $intra->select($select, true);
 
                 $tabela = new Tabela();
                 $tabela->set_conteudo($conteudo);
@@ -537,7 +537,7 @@ if ($acesso) {
                                           AND tbregra.idRegra = tbpermissao.idRegra)
                          ORDER BY nome";
 
-                $conteudo = $intra->select($select, TRUE);
+                $conteudo = $intra->select($select, true);
 
                 $tabela = new Tabela();
                 $tabela->set_conteudo($conteudo);
@@ -651,7 +651,7 @@ if ($acesso) {
             $intra->set_idCampo('idPermissao');    # o nome do campo id
             $campos = array("idRegra", "idUsuario");
             $valor = array($idRegra, $id);
-            $intra->gravar($campos, $valor, NULL, NULL, NULL, FALSE);
+            $intra->gravar($campos, $valor, null, null, null, false);
 
             $idPermissao = $intra->get_lastId();
 

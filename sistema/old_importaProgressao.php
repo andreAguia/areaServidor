@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -153,7 +153,7 @@ if ($acesso) {
                     $perfil = $pessoal->get_idPerfil($idServidor);
                     $dtAdmissao = $pessoal->get_dtAdmissao($idServidor);
                     $idTpProgressao = 9;    // Tipo importado
-                    $obs = NULL;
+                    $obs = null;
 
                     # Trata a Classe
                     $CL1 = substr($CLASS, -1);
@@ -178,7 +178,7 @@ if ($acesso) {
                             $problemaData++;
                             continue;
                         } else {
-                            $tt = NULL;
+                            $tt = null;
                         }
                     }
 
@@ -351,7 +351,7 @@ if ($acesso) {
                     $perfil = $pessoal->get_idPerfil($idServidor);
                     $dtAdmissao = $pessoal->get_dtAdmissao($idServidor);
                     $idTpProgressao = 9;    // Tipo importado
-                    $obs = NULL;
+                    $obs = null;
 
                     # Trata a Classe
                     $CL1 = substr($CLASS, -1);
@@ -373,7 +373,7 @@ if ($acesso) {
                             $problemaData++;
                             continue;
                         } else {
-                            $tt = NULL;
+                            $tt = null;
                         }
                     }
 
@@ -449,7 +449,7 @@ if ($acesso) {
                     # Grava na tabela
                     $campos = array("idServidor", "idTpProgressao", "idClasse", "dtInicial", "obs");
                     $valor = array($idServidor, $idTpProgressao, $idClasse, date_to_bd($DT), $obs);
-                    $pessoal->gravar($campos, $valor, NULL, "tbprogressao", "idProgressao", FALSE);
+                    $pessoal->gravar($campos, $valor, null, "tbprogressao", "idProgressao", false);
                 }############################################
                 # Informa sobre a importação
                 echo "Registros analisados: " . $contador;

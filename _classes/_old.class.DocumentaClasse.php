@@ -12,44 +12,44 @@ class DocumentaClasse {
      * @var private $tipo    string classe O tipo de arquivo: classe | funcao 
      */
     # da Classe
-    private $nomeClasse = NULL;             // Guarda o nome da classe
-    private $abstracaoClasse = NULL;        // Guarda a abstração da classe: abstract | final #######-> ainda falta implementar
-    private $descricaoClasse = NULL;        // Guarda a descição da classe
-    private $autorClasse = NULL;            // Autor da classe
-    private $notaClasse = NULL;             // Array com as anotações importante. Repare que é array ou seja pode se ter mais de uma nota por classe / função
-    private $deprecatedClasse = FALSE;      // Se a classe está sendo descontinuada
-    private $variaveisClasse = NULL;        // Array com as variáveis da classe
+    private $nomeClasse = null;             // Guarda o nome da classe
+    private $abstracaoClasse = null;        // Guarda a abstração da classe: abstract | final #######-> ainda falta implementar
+    private $descricaoClasse = null;        // Guarda a descição da classe
+    private $autorClasse = null;            // Autor da classe
+    private $notaClasse = null;             // Array com as anotações importante. Repare que é array ou seja pode se ter mais de uma nota por classe / função
+    private $deprecatedClasse = false;      // Se a classe está sendo descontinuada
+    private $variaveisClasse = null;        // Array com as variáveis da classe
     private $numVariaveis = 0;              // Inteiro que informa o número de variáveis de uma classe
-    private $exemploClasse = NULL;          // Arquivo de exemplo da classe
+    private $exemploClasse = null;          // Arquivo de exemplo da classe
     # dos Métodos
     private $numMetodo = 0;                 // Número de métodos de uma classe
-    private $nomeMetodo = NULL;             // Array com os nomes dos métodos
-    private $visibilidadeMetodo = NULL;     // Array com a visibilidade dos métodos (public, private ou protected)
-    private $descricaoMetodo = NULL;        // Array com a descrição dos métodos
-    private $syntaxMetodo = NULL;           // Array com a syntax do método
-    private $retornoMetodo = NULL;          // Array com o valor retotnado do método
-    private $notaMetodo = NULL;             // Array com uma nota do método
-    private $deprecatedMetodo = NULL;       // Array informando se o método está sendo descontinuado
-    private $parametrosMetodo = NULL;       // Array com os parâmetros de cada método
-    private $exemploMetodo = NULL;          // Array com arquivos exemplos de códigos
-    private $categoriaMetodo = NULL;        // Array com a categoria dos método
-    private $autorMetodo = NULL;            // Array com o autor da função. Usado mais em funções de terceiros
+    private $nomeMetodo = null;             // Array com os nomes dos métodos
+    private $visibilidadeMetodo = null;     // Array com a visibilidade dos métodos (public, private ou protected)
+    private $descricaoMetodo = null;        // Array com a descrição dos métodos
+    private $syntaxMetodo = null;           // Array com a syntax do método
+    private $retornoMetodo = null;          // Array com o valor retotnado do método
+    private $notaMetodo = null;             // Array com uma nota do método
+    private $deprecatedMetodo = null;       // Array informando se o método está sendo descontinuado
+    private $parametrosMetodo = null;       // Array com os parâmetros de cada método
+    private $exemploMetodo = null;          // Array com arquivos exemplos de códigos
+    private $categoriaMetodo = null;        // Array com a categoria dos método
+    private $autorMetodo = null;            // Array com o autor da função. Usado mais em funções de terceiros
 
 ###########################################################
 
-    public function __construct($arquivo = NULL) {
+    public function __construct($arquivo = null) {
         /**
          * Inicia a classe e informa o arquivo da classe ou da função a ser documentada.
          * 
-         * @param $arquivo string NULL O arquivo com o caminho para se documentado
-         * @param $tipo    string NULL O tipo de arquivo: classe | funcao 
+         * @param $arquivo string null O arquivo com o caminho para se documentado
+         * @param $tipo    string null O tipo de arquivo: classe | funcao 
          * 
          * @syntax $documenta = new Documenta($arquivo);     
          */
         # Variáveis        
-        $linhaComentarioClasse = NULL;  // Determina a linha do início do comentário da classe        
-        $linhaComentarioMetodo = NULL;  // Determina a linha do início do comentário do método
-        $linhaMetodo = NULL;            // Determina a linha da declaração do método
+        $linhaComentarioClasse = null;  // Determina a linha do início do comentário da classe        
+        $linhaComentarioMetodo = null;  // Determina a linha do início do comentário do método
+        $linhaMetodo = null;            // Determina a linha da declaração do método
 
         $caracteresAceitos = '#(),.|/:çãõáéíúóâê1234567890';  // caracteres especiais aceitos nas descrições de variáveis e parâmetros
         # Define o arquivo e caminho da classe
@@ -96,7 +96,7 @@ class DocumentaClasse {
 
             # Deprecated
             if ((stristr($line, "@deprecated")) AND ($this->numMetodo == 0)) {
-                $this->deprecatedClasse = TRUE;
+                $this->deprecatedClasse = true;
             }
 
             # Grupo de variáveis
@@ -110,7 +110,7 @@ class DocumentaClasse {
             if ((stristr($line, "@var")) AND ($this->numMetodo == 0)) {
 
                 # inicia a variável que será guardada a descrição 
-                $descricao = NULL;
+                $descricao = null;
 
                 $posicao = stripos($line, '@');
 
@@ -224,13 +224,13 @@ class DocumentaClasse {
 
             # Deprecated (sendo descontinuado)
             if (stristr($line, "@deprecated")) {
-                $this->deprecatedMetodo[$this->numMetodo] = TRUE;
+                $this->deprecatedMetodo[$this->numMetodo] = true;
             }
 
             # Parâmetros de um método
             if (stristr($line, "@param")) {
 
-                $descParam = NULL;
+                $descParam = null;
 
                 # Pega a linha de parâmetros
                 $piecesParam = str_word_count($line, 1, $caracteresAceitos);
@@ -399,7 +399,7 @@ class DocumentaClasse {
 
     public function get_deprecatedMetodo() {
         /**
-         * Fornece array de TRUE OR FALSE para informar se o método está sendo, ou não, descontinuado
+         * Fornece array de true OR false para informar se o método está sendo, ou não, descontinuado
          *
          * @syntax $documenta->get_deprecatedMetodo();
           ` */

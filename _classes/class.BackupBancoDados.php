@@ -7,10 +7,10 @@ class BackupBancoDados {
      * 
      * @author André Águia (Alat) - alataguia@gmail.com
      * 
-     * @var private $idUsuario integer  NULL   O idUsuário do servidor que fez o backup para o log
+     * @var private $idUsuario integer  null   O idUsuário do servidor que fez o backup para o log
      * @var private $tipo      integer  1      O tipo do backup: 1 - automático ou 2 - manual 
      */
-    private $idUsuario = NULL;
+    private $idUsuario = null;
     private $tipo = 1;
 
     ###########################################################
@@ -18,10 +18,10 @@ class BackupBancoDados {
     /**
      * Método Construtor
      *
-     * @param $idUsuario integer NULL O idUsuário do servidor que fez o backup para o log
+     * @param $idUsuario integer null O idUsuário do servidor que fez o backup para o log
      * 
      */
-    public function __construct($idUsuario = NULL) {
+    public function __construct($idUsuario = null) {
 
         if (!is_null($idUsuario)) {
             $this->idUsuario = $idUsuario;
@@ -134,7 +134,7 @@ class BackupBancoDados {
         $mail->envia();
 
         # Grava no log a atividade
-        $intra->registraLog($this->idUsuario, date("Y-m-d H:i:s"), "Backup $textoTipo realizado", NULL, NULL, 6);
+        $intra->registraLog($this->idUsuario, date("Y-m-d H:i:s"), "Backup $textoTipo realizado", null, null, 6);
     }
 
     ###########################################################

@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -118,8 +118,8 @@ if ($acesso) {
             'tipo' => 'texto',
             'size' => 20,
             'title' => 'Versão do Sistema.',
-            'required' => TRUE,
-            'autofocus' => TRUE,
+            'required' => true,
+            'autofocus' => true,
             'col' => 3,
             'linha' => 1),
         array('linha' => 1,

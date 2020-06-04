@@ -6,7 +6,7 @@
  * Gera documentação de uma classe
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -136,7 +136,7 @@ if ($acesso) {
     # Percorre as variáveis
     if ($numVariaveis > 0) {
         for ($i = 0; $i < $numVariaveis; $i++) {
-            p($tipoVisibilidade[$variaveisClasse[$i][0]] . " <b>" . $variaveisClasse[$i][1] . ":</b> " . $variaveisClasse[$i][2], "documentaAtributos", NULL, "(" . $variaveisClasse[$i][0] . ") " . $variaveisClasse[$i][4]);
+            p($tipoVisibilidade[$variaveisClasse[$i][0]] . " <b>" . $variaveisClasse[$i][1] . ":</b> " . $variaveisClasse[$i][2], "documentaAtributos", null, "(" . $variaveisClasse[$i][0] . ") " . $variaveisClasse[$i][4]);
         }
         hr("documentacao");
     }
@@ -248,7 +248,7 @@ if ($acesso) {
                 $tabela->set_conteudo($variaveisClasse);
                 $tabela->set_label(array('Visibilidade', 'Nome', 'Tipo', 'Padrão', 'Descrição'));
                 $tabela->set_align(array("center", "left", "center", "center", "left"));
-                $tabela->set_totalRegistro(FALSE);
+                $tabela->set_totalRegistro(false);
                 $tabela->show();
                 br();
             }
@@ -383,7 +383,7 @@ if ($acesso) {
                 $tabela->set_label(array('Nome', 'Tipo', 'Padrão', 'Descrição'));
                 $tabela->set_align(array("center", "center", "center", "left"));
                 $tabela->set_width(array(10, 10, 10, 60));
-                $tabela->set_totalRegistro(FALSE);
+                $tabela->set_totalRegistro(false);
                 $tabela->show();
                 br();
             }

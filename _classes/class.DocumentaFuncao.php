@@ -13,32 +13,32 @@ class DocumentaFuncao {
      */
     # das Funções
     private $numMetodo = 0;                 // Número de métodos de uma classe
-    private $nomeMetodo = NULL;             // Array com os nomes dos métodos
-    private $visibilidadeMetodo = NULL;     // Array com a visibilidade dos métodos (public, private ou protected)
-    private $descricaoMetodo = NULL;        // Array com a descrição dos métodos
-    private $syntaxMetodo = NULL;           // Array com a syntax do método
-    private $retornoMetodo = NULL;          // Array com o valor retotnado do método
-    private $notaMetodo = NULL;             // Array com uma nota do método
-    private $deprecatedMetodo = NULL;       // Array informando se o método está sendo descontinuado
-    private $parametrosMetodo = NULL;       // Array com os parâmetros de cada método
-    private $exemploMetodo = NULL;          // Array com arquivos exemplos de códigos
-    private $categoriaMetodo = NULL;        // Array com a categoria dos método
-    private $autorMetodo = NULL;            // Array com o autor da função. Usado mais em funções de terceiros
+    private $nomeMetodo = null;             // Array com os nomes dos métodos
+    private $visibilidadeMetodo = null;     // Array com a visibilidade dos métodos (public, private ou protected)
+    private $descricaoMetodo = null;        // Array com a descrição dos métodos
+    private $syntaxMetodo = null;           // Array com a syntax do método
+    private $retornoMetodo = null;          // Array com o valor retotnado do método
+    private $notaMetodo = null;             // Array com uma nota do método
+    private $deprecatedMetodo = null;       // Array informando se o método está sendo descontinuado
+    private $parametrosMetodo = null;       // Array com os parâmetros de cada método
+    private $exemploMetodo = null;          // Array com arquivos exemplos de códigos
+    private $categoriaMetodo = null;        // Array com a categoria dos método
+    private $autorMetodo = null;            // Array com o autor da função. Usado mais em funções de terceiros
 
 ###########################################################
 
-    public function __construct($arquivo = NULL) {
+    public function __construct($arquivo = null) {
         /**
          * Inicia a classe e informa o arquivo da classe ou da função a ser documentada.
          * 
-         * @param $arquivo string NULL O arquivo com o caminho para se documentado
-         * @param $tipo    string NULL O tipo de arquivo: classe | funcao 
+         * @param $arquivo string null O arquivo com o caminho para se documentado
+         * @param $tipo    string null O tipo de arquivo: classe | funcao 
          * 
          * @syntax $documenta = new Documenta($arquivo);     
          */
         # Variáveis                     
-        $linhaComentarioMetodo = NULL;  // Determina a linha do início do comentário do método
-        $linhaMetodo = NULL;            // Determina a linha da declaração do método        
+        $linhaComentarioMetodo = null;  // Determina a linha do início do comentário do método
+        $linhaMetodo = null;            // Determina a linha da declaração do método        
 
         $caracteresAceitos = '#(),.|/:çãõáéíúóâê1234567890';  // caracteres especiais aceitos nas descrições de variáveis e parâmetros
         # Define o arquivo e caminho da classe
@@ -130,13 +130,13 @@ class DocumentaFuncao {
 
             # Deprecated (sendo descontinuado)
             if (stristr($line, "@deprecated")) {
-                $this->deprecatedMetodo[$this->numMetodo] = TRUE;
+                $this->deprecatedMetodo[$this->numMetodo] = true;
             }
 
             # Parâmetros de um método
             if (stristr($line, "@param")) {
 
-                $descParam = NULL;
+                $descParam = null;
 
                 # Pega a linha de parâmetros
                 $piecesParam = str_word_count($line, 1, $caracteresAceitos);
@@ -305,7 +305,7 @@ class DocumentaFuncao {
 
     public function get_deprecatedMetodo() {
         /**
-         * Fornece array de TRUE OR FALSE para informar se o método está sendo, ou não, descontinuado
+         * Fornece array de true OR false para informar se o método está sendo, ou não, descontinuado
          *
          * @syntax $documenta->get_deprecatedMetodo();
           ` */

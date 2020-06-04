@@ -11,12 +11,12 @@ class Doc extends Bd {
     private $servidor = "localhost";        // servidor
     private $usuario = "root";              // usuário
     private $senha = "chewbacca";           // senha
-    #private $senha = NULL;           // senha
+    #private $senha = null;           // senha
     private $banco = "information_schema";  // nome do banco
     private $sgdb = "mysql";                // sgdb
     private $tabela;                        // tabela
     private $idCampo;                       // o nome do campo id
-    private $log = TRUE;                    // habilita o log
+    private $log = true;                    // habilita o log
 
     /**
      * Método Construtor
@@ -63,13 +63,13 @@ class Doc extends Bd {
     /**
      * Método Gravar
      */
-    public function gravar($campos = NULL, $valor = NULL, $idValor = NULL, $tabela = NULL, $idCampo = NULL, $alerta = TRUE) {
+    public function gravar($campos = null, $valor = null, $idValor = null, $tabela = null, $idCampo = null, $alerta = true) {
         parent::gravar($campos, $valor, $idValor, $this->tabela, $this->idCampo, $alerta);
 
         # Grava o status na tabela servi�o sempre que a tabela movimento for atualizada
         if ($this->tabela == 'tbmovimento') {
             $lastId = parent::get_lastId();  # salva o last id da primeira grava��o (a que importa)
-            parent::gravar(array('status', 'encarregado'), array($valor[3], $valor[4]), $valor[6], 'tbservico', 'idservico', FALSE);
+            parent::gravar(array('status', 'encarregado'), array($valor[3], $valor[4]), $valor[6], 'tbservico', 'idservico', false);
             parent::set_lastId($lastId);  # recupera o last id para o arquivo de log
         }
     }
@@ -79,9 +79,9 @@ class Doc extends Bd {
     /**
      * Método Excluir
      */
-    public function excluir($idValor = NULL, $tabela = NULL, $idCampo = 'id') {
-        $erro = FALSE;  // Flag de erro
-        $msgErro = NULL; // Recipiente das mensagens de erro
+    public function excluir($idValor = null, $tabela = null, $idCampo = 'id') {
+        $erro = false;  // Flag de erro
+        $msgErro = null; // Recipiente das mensagens de erro
 
         if ($this->tabela == 'tbregra') {
             # Verifica se existe alguma permissão com a regra a ser excluída
@@ -90,7 +90,7 @@ class Doc extends Bd {
                         WHERE idRegra = ' . $idValor;
             $numRows = parent::count($select);
             if ($numRows > 0) {
-                $erro = TRUE;
+                $erro = true;
                 $msgErro = 'Existem ' . $numRows . ' permissão(ões) cadastrada(s) para essa regra. A mesma não pode ser excluída!!';
             }
         }
@@ -100,11 +100,11 @@ class Doc extends Bd {
             # Exibe o alerta
             $alert = new Alert($msgErro);
             $alert->show();
-            return 0; # False -> o FALSE não funcionou então colocou 0
+            return 0; # false -> o false não funcionou então colocou 0
         } else {
             # efetua a exclusão
             parent::excluir($idValor, $this->tabela, $this->idCampo);
-            return 1; # True 		
+            return 1; # true 		
         }
     }
 

@@ -6,7 +6,7 @@
  * By Alat
  */
 # Servidor logado 
-$idUsuario = NULL;
+$idUsuario = null;
 
 # Configuração
 include ("_config.php");
@@ -76,7 +76,7 @@ if ($acesso) {
 
     # Menu Principal
     $menu = new Menu("menuProcedimentos");
-    $grupoarquivo = NULL;
+    $grupoarquivo = null;
     $sistemas = ["Framework", "Grh", "Área do Servidor"];
 
     $menu->add_item('titulo', 'Sistemas', '#', 'Acessa a documentação do sistema.');
@@ -116,7 +116,7 @@ if ($acesso) {
 
             # Menu Principal
             $menu = new Menu("menuProcedimentos");
-            $grupoarquivo = NULL;
+            $grupoarquivo = null;
             $sistemas = [["Framework", PASTA_CLASSES_GERAIS, PASTA_FUNCOES_GERAIS . '/funcoes.gerais.php'],
                 ["Grh", PASTA_CLASSES_GRH, PASTA_FUNCOES_GRH . '/funcoes.especificas.php'],
                 ["Area do Servidor", PASTA_CLASSES, PASTA_FUNCOES . '/funcoes.especificas.php']];
@@ -174,7 +174,7 @@ if ($acesso) {
 
             # Menu Principal
             $menu = new Menu("menuProcedimentos");
-            $grupoarquivo = NULL;
+            $grupoarquivo = null;
             $sistemas = [["Framework", PASTA_CLASSES_GERAIS, PASTA_FUNCOES_GERAIS . '/funcoes.gerais.php'],
                 ["Grh", PASTA_CLASSES_GRH, PASTA_FUNCOES_GRH . '/funcoes.especificas.php'],
                 ["Area do Servidor", PASTA_CLASSES, PASTA_FUNCOES . '/funcoes.especificas.php']];
@@ -232,7 +232,7 @@ if ($acesso) {
 
             # Menu Principal
             $menu = new Menu("menuProcedimentos");
-            $grupoarquivo = NULL;
+            $grupoarquivo = null;
             $sistemas = [["Framework", PASTA_CLASSES_GERAIS, PASTA_FUNCOES_GERAIS . '/funcoes.gerais.php'],
                 ["Grh", PASTA_CLASSES_GRH, PASTA_FUNCOES_GRH . '/funcoes.especificas.php'],
                 ["Area do Servidor", PASTA_CLASSES, PASTA_FUNCOES . '/funcoes.especificas.php']];

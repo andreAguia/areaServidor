@@ -3,7 +3,7 @@
 class Importa {
 
     private $nomeTabela;
-    private $novoNomeTabela = NULL;     // Usado para quando se quer alterar o nome da tabela
+    private $novoNomeTabela = null;     // Usado para quando se quer alterar o nome da tabela
     private $campoId;
     private $descricao;
     private $nomeVelho;
@@ -13,7 +13,7 @@ class Importa {
 
 #################################################################
 
-    public function __construct($nomeTabela = NULL, $campoId = NULL, $descricao = NULL) {
+    public function __construct($nomeTabela = null, $campoId = null, $descricao = null) {
         $this->nomeTabela = $nomeTabela;
         $this->campoId = $campoId;
         $this->descricao = $descricao;
@@ -21,25 +21,25 @@ class Importa {
 
 #################################################################    
 
-    public function novoNomeTabela($novoNomeTabela = NULL) {
+    public function novoNomeTabela($novoNomeTabela = null) {
         $this->novoNomeTabela = $novoNomeTabela;
     }
 
 #################################################################    
 
-    public function mudarNome($descricao = NULL) {
+    public function mudarNome($descricao = null) {
         $this->descricao = $descricao;
     }
 
 #################################################################    
 
-    public function criarCampo($criarCampo = NULL) {
+    public function criarCampo($criarCampo = null) {
         $this->criarCampo = $criarCampo;
     }
 
 #################################################################      
 
-    public function ignoraCampos($ignoraCampos = NULL) {
+    public function ignoraCampos($ignoraCampos = null) {
         if (is_null($ignoraCampos)) {
             $this->ignoraCampos = array("");
         } else {
@@ -67,8 +67,8 @@ class Importa {
         }
 
         # pega os nomes das tabelas e joga em um array
-        $tabela = NULL; // array de tabelas
-        $campos = NULL; // array de campos
+        $tabela = null; // array de tabelas
+        $campos = null; // array de campos
 
         while ($row = mysql_fetch_row($result)) {
             $tabela[] = $row[0];
@@ -106,27 +106,27 @@ class Importa {
                 case in_array($camp['Field'], $this->ignoraCampos):
                     break;
                 case $this->campoId :
-                    $sql .= $this->campoId . " INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,";
+                    $sql .= $this->campoId . " INT(11) UNSIGNED NOT null AUTO_INCREMENT,";
                     break;
                 case "matricula" :
-                    $sql .= "idServidor INT(11) UNSIGNED NOT NULL,";
+                    $sql .= "idServidor INT(11) UNSIGNED NOT null,";
                     break;
                 case "obs":
-                    $altera = "ALTER TABLE pessoal.$this->nomeTabela CHANGE COLUMN obs obs LONGTEXT NULL DEFAULT NULL;";
+                    $altera = "ALTER TABLE pessoal.$this->nomeTabela CHANGE COLUMN obs obs LONGTEXT null DEFAULT null;";
                     # altera o campo no banco pessoal
                     mysql_select_db("pessoal") or die(mysql_error());
                     mysql_query($altera) Or die(mysql_error());
 
                     $sql .= $camp['Field'] . " LONGTEXT";
-                    if ((isset($camp['NULL'])) AND ($camp['NULL'] == "YES")) {
-                        $sql .= " NOT NULL";
+                    if ((isset($camp['null'])) AND ($camp['null'] == "YES")) {
+                        $sql .= " NOT null";
                     }
                     $sql .= ",";
                     break;
                 default :
                     $sql .= $camp['Field'] . " " . $camp['Type'];
-                    if ((isset($camp['NULL'])) AND ($camp['NULL'] == "YES")) {
-                        $sql .= " NOT NULL";
+                    if ((isset($camp['null'])) AND ($camp['null'] == "YES")) {
+                        $sql .= " NOT null";
                     }
                     $sql .= ",";
                     break;
@@ -192,7 +192,7 @@ class Importa {
                         break;
                     default :
                         if ((is_null($row[$camp['Field']])) OR ($row[$camp['Field']] == "")) {
-                            $sql .= 'NULL,';
+                            $sql .= 'null,';
                         } else {
                             $sql .= '"' . utf8_decode($row[$camp['Field']]) . '",';
                         }
