@@ -16,7 +16,6 @@ class AreaServidor {
     public static function cabecalho($titulo = null) {
         # tag do cabeçalho
         echo '<header>';
-        br();
 
         # Verifica se a imagem é comemorativa
         $dia = date("d");
