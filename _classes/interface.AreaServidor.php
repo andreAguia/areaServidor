@@ -6,14 +6,16 @@
  * 
  * By Alat
  */
-class AreaServidor {
+class AreaServidor
+{
 
     /**
      * Método cabecalho
      * 
      * Exibe o cabecalho
      */
-    public static function cabecalho($titulo = null) {
+    public static function cabecalho($titulo = null)
+    {
         # tag do cabeçalho
         echo '<header>';
 
@@ -59,7 +61,8 @@ class AreaServidor {
      * 
      * @param    string $idUsuario -> Usuário logado
      */
-    public static function rodape($idUsuario) {
+    public static function rodape($idUsuario)
+    {
 
         # Exibe faixa azul
         $grid = new Grid();
@@ -70,7 +73,7 @@ class AreaServidor {
 
         # Exibe a versão do sistema
         $intra = new Intra();
-        $grid = new Grid();
+        $grid  = new Grid();
         $grid->abreColuna(4);
         p('Usuário : ' . $intra->get_usuario($idUsuario), 'usuarioLogado');
         $grid->fechaColuna();
@@ -91,12 +94,13 @@ class AreaServidor {
      * 
      * @param    string $idServidor -> idServidor do servidor
      */
-    public static function listaDadosUsuario($idUsuario) {
+    public static function listaDadosUsuario($idUsuario)
+    {
         # Conecta com o banco de dados
         $servidor = new Pessoal();
-        $intra = new Intra();
+        $intra    = new Intra();
 
-        $idServidor = $intra->get_idServidor($idUsuario);
+        $idServidor  = $intra->get_idServidor($idUsuario);
         $nomeUsuario = $intra->get_nickUsuario($idUsuario);
 
         $select = 'SELECT "' . $nomeUsuario . '",
@@ -113,15 +117,15 @@ class AreaServidor {
                    WHERE idServidor = ' . $idServidor;
 
         $conteudo = $servidor->select($select, true);
-        $label = array("Usuário", "Servidor", "Perfil", "Cargo", "Admissão", "Lotação", "Situação");
+        $label    = array("Usuário", "Servidor", "Perfil", "Cargo", "Admissão", "Lotação", "Situação");
         $function = array(null, null, null, null, "date_to_php");
-        $classe = array(null, null, null, "pessoal", null, "pessoal", "pessoal");
-        $metodo = array(null, null, null, "get_Cargo", null, "get_Lotacao", "get_Situacao");
+        $classe   = array(null, null, null, "pessoal", null, "pessoal", "pessoal");
+        $metodo   = array(null, null, null, "get_Cargo", null, "get_Lotacao", "get_Situacao");
 
-        $formatacaoCondicional = array(array('coluna' => 0,
-                'valor' => $nomeUsuario,
+        $formatacaoCondicional = array(array('coluna'   => 0,
+                'valor'    => $nomeUsuario,
                 'operador' => '=',
-                'id' => 'listaDados'));
+                'id'       => 'listaDados'));
 
         # Monta a tabela
         $tabela = new Tabela();
@@ -151,7 +155,8 @@ class AreaServidor {
      * 
      * @param    string $idUsuario -> Usuário logado
      */
-    public static function menuPrincipal($idUsuario) {
+    public static function menuPrincipal($idUsuario)
+    {
 
         # Cria Grid
         $grid = new Grid();
@@ -186,7 +191,8 @@ class AreaServidor {
      * 
      * @param    string $idUsuario -> Usuário logado
      */
-    public static function menuAdministracao($idUsuario) {
+    public static function menuAdministracao($idUsuario)
+    {
 
         # Cria Grid
         $grid = new Grid();
@@ -219,7 +225,8 @@ class AreaServidor {
      * 
      * Exibe o menu de Servidores da Universidade
      */
-    private static function moduloServidoresUniversidade($idUsuario) {
+    private static function moduloServidoresUniversidade($idUsuario)
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -271,7 +278,8 @@ class AreaServidor {
      * 
      * Exibe o menu de Legislação
      */
-    private static function moduloSobreServidor() {
+    private static function moduloSobreServidor()
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -314,7 +322,8 @@ class AreaServidor {
      * 
      * Exibe o menu de Legislação
      */
-    private static function modulolinksExternos() {
+    private static function modulolinksExternos()
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -356,7 +365,8 @@ class AreaServidor {
      * 
      * Exibe o menu de Gestão de Usuários
      */
-    private static function moduloUsuarios($idUsuario) {
+    private static function moduloUsuarios($idUsuario)
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -412,7 +422,8 @@ class AreaServidor {
      * 
      * Exibe o menu de Gestão da configuraçõa dos Sistemas
      */
-    private static function moduloAdministracaoSistemas($idUsuario) {
+    private static function moduloAdministracaoSistemas($idUsuario)
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -469,7 +480,8 @@ class AreaServidor {
      * 
      * Exibe o menu de Gestão do Banco de dados
      */
-    private static function moduloBanco($idUsuario) {
+    private static function moduloBanco($idUsuario)
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -535,7 +547,8 @@ class AreaServidor {
      * 
      * Exibe o menu de Informações do Servidor Web
      */
-    private static function moduloServidor($idUsuario) {
+    private static function moduloServidor($idUsuario)
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -575,7 +588,8 @@ class AreaServidor {
      * 
      * Exibe o menu de Gestão de Projetos
      */
-    private static function moduloProjetos($idUsuario) {
+    private static function moduloProjetos($idUsuario)
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -635,7 +649,8 @@ class AreaServidor {
      * 
      * Exibe informações do Servidor Web
      */
-    public static function moduloServidorWeb() {
+    public static function moduloServidorWeb()
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -704,7 +719,8 @@ class AreaServidor {
      * 
      * Exibe informações do Servidor Php
      */
-    public static function moduloServidorPhp() {
+    public static function moduloServidorPhp()
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -773,7 +789,8 @@ class AreaServidor {
      * 
      * Exibe o menu de Informações do Servidor Web
      */
-    private static function moduloSistemas($idUsuario) {
+    private static function moduloSistemas($idUsuario)
+    {
 
         $painel = new Callout();
         $painel->abre();
@@ -786,13 +803,15 @@ class AreaServidor {
         # Inicia o menu
         $menu = new MenuGrafico(1);
 
-        # Informação do PHP
-        $botao = new BotaoGrafico();
-        $botao->set_label("Sistema de Gestão<br/>de Coontratos");
-        $botao->set_title("Sistema de Gestão de Coontratos");
-        $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
-        $botao->set_url('../../../contratos/sistema/areaInicial.php');
-        $menu->add_item($botao);
+        # Sistema de gestão de contratos
+        if (Verifica::acesso($idUsuario, 9)) {
+            $botao = new BotaoGrafico();
+            $botao->set_label("Sistema de Gestão<br/>de Coontratos");
+            $botao->set_title("Sistema de Gestão de Coontratos");
+            $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('../../../contratos/sistema/cadastroContrato.php');
+            $menu->add_item($botao);
+        }
 
         $menu->show();
         $painel->fecha();

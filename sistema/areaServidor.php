@@ -16,18 +16,18 @@ $acesso = Verifica::acesso($idUsuario);
 
 if ($acesso) {
     # Conecta ao Banco de Dados
-    $intra = new Intra();
+    $intra    = new Intra();
     $servidor = new Pessoal();
 
     # Pega o idServidor do usuário logado
     $idServidor = $intra->get_idServidor($idUsuario);
-    $idPerfil = $servidor->get_idPerfil($idServidor);
+    $idPerfil   = $servidor->get_idPerfil($idServidor);
 
     # Pega o idServidor Pesquisado da rotina de pasta digitaliozada
     $idServidorPesquisado = get("idServidorPesquisado");
 
     # Verifica a fase do programa
-    $fase = get('fase', 'menu'); # Qual a fase
+    $fase         = get('fase', 'menu'); # Qual a fase
     # Pega os parâmetros
     $parametroAno = post('parametroAno', get_session('parametroAno', date("Y")));
 
@@ -53,6 +53,14 @@ if ($acesso) {
     set_session('parametroPerfil');
     set_session('parametroSituacao');
     set_session('sessionParametro');
+
+    # Esvazia as sessions do sistema de Contrato
+    if (Verifica::acesso($idUsuario, 9)) {
+        set_session('parametroAno');
+        set_session('parametroStatus');
+        set_session('parametroModalidade');
+        set_session('parametroEmpresa');
+    }
 
     $grid1 = new Grid();
     $grid1->abreColuna(12);
@@ -119,7 +127,7 @@ if ($acesso) {
             # Grava no log a atividade
             $atividade = 'Visualizou o organograma da Uenf na área do servidor';
             $Objetolog = new Intra();
-            $data = date("Y-m-d H:i:s");
+            $data      = date("Y-m-d H:i:s");
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
@@ -159,7 +167,7 @@ if ($acesso) {
             # Grava no log a atividade
             $atividade = 'Visualizou o próprio histórico de férias na área do servidor';
             $Objetolog = new Intra();
-            $data = date("Y-m-d H:i:s");
+            $data      = date("Y-m-d H:i:s");
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
@@ -176,8 +184,8 @@ if ($acesso) {
 
             # Cria um array com os anos possíveis
             $anoInicial = 1999;
-            $anoAtual = date('Y');
-            $anos = arrayPreenche($anoInicial, $anoAtual + 2);
+            $anoAtual   = date('Y');
+            $anos       = arrayPreenche($anoInicial, $anoAtual + 2);
 
             $controle = new Input('parametroAno', 'combo', 'Ano:', 1);
             $controle->set_size(8);
@@ -191,7 +199,7 @@ if ($acesso) {
 
             $form->show();
 
-            $afast = new Afastamento();
+            $afast     = new Afastamento();
             $afast->set_idServidor($idServidor);
             $afast->set_ano($parametroAno);
             $afast->exibeTabela();
@@ -199,7 +207,7 @@ if ($acesso) {
             # Grava no log a atividade
             $atividade = 'Visualizou o próprio histórico de afastamento na área do servidor';
             $Objetolog = new Intra();
-            $data = date("Y-m-d H:i:s");
+            $data      = date("Y-m-d H:i:s");
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
@@ -257,7 +265,7 @@ if ($acesso) {
             # Grava no log a atividade
             $atividade = 'Visualizou os servidores em férias do próprio setor na área do servidor';
             $Objetolog = new Intra();
-            $data = date("Y-m-d H:i:s");
+            $data      = date("Y-m-d H:i:s");
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
