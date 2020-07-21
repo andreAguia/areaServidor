@@ -198,23 +198,26 @@ class AreaServidor
         $grid = new Grid();
 
         # Primeira Coluna
-        $grid->abreColuna(12, 6);
-
-        # Módulos
+        $grid->abreColuna(12, 4);
         self::moduloUsuarios($idUsuario);
+        $grid->fechaColuna();
+        
+        $grid->abreColuna(12, 4);
         self::moduloAdministracaoSistemas($idUsuario);
-        self::moduloBanco($idUsuario);
-
         $grid->fechaColuna();
-
-        # Segunda Coluna
-        $grid->abreColuna(12, 6);
-
-        # Módulos
-        self::moduloProjetos($idUsuario);
+        
+        $grid->abreColuna(12, 4);
+        self::moduloProjetos($idUsuario);        
+        $grid->fechaColuna();
+        
+        $grid->abreColuna(12, 4);
         self::moduloServidor($idUsuario);
-
         $grid->fechaColuna();
+        
+        $grid->abreColuna(12, 8);
+        self::moduloBanco($idUsuario);
+        $grid->fechaColuna();
+        
         $grid->fechaGrid();
     }
 
@@ -378,7 +381,7 @@ class AreaServidor
         br();
 
         # Inicia o menu
-        $menu = new MenuGrafico(4);
+        $menu = new MenuGrafico(2);
 
         # Administração de Usuários
         $botao = new BotaoGrafico();
@@ -435,7 +438,7 @@ class AreaServidor
         br();
 
         # Inicia o menu
-        $menu = new MenuGrafico(4);
+        $menu = new MenuGrafico(2);
 
         # Variáveis de Configuração
         $botao = new BotaoGrafico();
@@ -560,7 +563,7 @@ class AreaServidor
         br();
 
         # Inicia o menu
-        $menu = new MenuGrafico(4);
+        $menu = new MenuGrafico(2);
 
         # Informação do PHP
         $botao = new BotaoGrafico();
@@ -601,7 +604,7 @@ class AreaServidor
         br();
 
         # Inicia o menu
-        $menu = new MenuGrafico(4);
+        $menu = new MenuGrafico(2);
 
         # Controle de procedimentos
         $botao = new BotaoGrafico();
