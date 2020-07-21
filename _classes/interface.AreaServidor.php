@@ -23,11 +23,14 @@ class AreaServidor
         $dia = date("d");
         $mes = date("m");
 
-        if (($dia == 8)AND($mes == 3)) {
+        if (($dia == 8)AND($mes == 3))
+        {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_mulher.jpg', 'Dia Internacional da Mulher', 190, 60);
-        } elseif (($mes == 12) AND ($dia < 26)) {
+        } elseif (($mes == 12) AND ($dia < 26))
+        {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_natal.png', 'Feliz Natal', 200, 60);
-        } else {
+        } else
+        {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf.png', 'Uenf - Universidade Estadual do Norte Fluminense', 190, 60);
         }
 
@@ -36,7 +39,8 @@ class AreaServidor
         $imagem->show();
         $cabec->fecha();
 
-        if (!(is_null($titulo))) {
+        if (!(is_null($titulo)))
+        {
             br();
             # Limita o tamanho da tela
             $grid = new Grid();
@@ -73,7 +77,7 @@ class AreaServidor
 
         # Exibe a versão do sistema
         $intra = new Intra();
-        $grid  = new Grid();
+        $grid = new Grid();
         $grid->abreColuna(4);
         p('Usuário : ' . $intra->get_usuario($idUsuario), 'usuarioLogado');
         $grid->fechaColuna();
@@ -98,9 +102,9 @@ class AreaServidor
     {
         # Conecta com o banco de dados
         $servidor = new Pessoal();
-        $intra    = new Intra();
+        $intra = new Intra();
 
-        $idServidor  = $intra->get_idServidor($idUsuario);
+        $idServidor = $intra->get_idServidor($idUsuario);
         $nomeUsuario = $intra->get_nickUsuario($idUsuario);
 
         $select = 'SELECT "' . $nomeUsuario . '",
@@ -117,15 +121,15 @@ class AreaServidor
                    WHERE idServidor = ' . $idServidor;
 
         $conteudo = $servidor->select($select, true);
-        $label    = array("Usuário", "Servidor", "Perfil", "Cargo", "Admissão", "Lotação", "Situação");
+        $label = array("Usuário", "Servidor", "Perfil", "Cargo", "Admissão", "Lotação", "Situação");
         $function = array(null, null, null, null, "date_to_php");
-        $classe   = array(null, null, null, "pessoal", null, "pessoal", "pessoal");
-        $metodo   = array(null, null, null, "get_Cargo", null, "get_Lotacao", "get_Situacao");
+        $classe = array(null, null, null, "pessoal", null, "pessoal", "pessoal");
+        $metodo = array(null, null, null, "get_Cargo", null, "get_Lotacao", "get_Situacao");
 
-        $formatacaoCondicional = array(array('coluna'   => 0,
-                'valor'    => $nomeUsuario,
+        $formatacaoCondicional = array(array('coluna' => 0,
+                'valor' => $nomeUsuario,
                 'operador' => '=',
-                'id'       => 'listaDados'));
+                'id' => 'listaDados'));
 
         # Monta a tabela
         $tabela = new Tabela();
@@ -162,24 +166,20 @@ class AreaServidor
         $grid = new Grid();
 
         # Primeira Coluna
-        $grid->abreColuna(12, 6);
+        $grid->abreColuna(12, 4);
         self::moduloSobreServidor();
         $grid->fechaColuna();
 
         # Segunda Coluna
-        $grid->abreColuna(12, 6);
+        $grid->abreColuna(12, 4);
         self::moduloServidoresUniversidade($idUsuario);
-
-        if (Verifica::acesso($idUsuario, 9)) {
-
-            $grid->fechaColuna();
-
-            # Sistemas
-            $grid->abreColuna(12, 6);
-            self::moduloSistemas($idUsuario);
-        }
-
         $grid->fechaColuna();
+
+        # Sistemas
+        $grid->abreColuna(12, 4);
+        self::moduloSistemas($idUsuario);
+        $grid->fechaColuna();
+        
         $grid->fechaGrid();
     }
 
@@ -235,9 +235,10 @@ class AreaServidor
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(4);
+        $menu = new MenuGrafico(2);
 
-        if (Verifica::acesso($idUsuario, 3)) {
+        if (Verifica::acesso($idUsuario, 3))
+        {
             $botao = new BotaoGrafico();
             $botao->set_label('Geral');
             $botao->set_url('servidorGeral.php');
@@ -288,7 +289,7 @@ class AreaServidor
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(2);
 
         $botao = new BotaoGrafico();
         $botao->set_label('Histórico de Afastamentos');
@@ -701,10 +702,13 @@ class AreaServidor
             'ORIG_PATH_INFO');
 
         echo '<table cellpadding="10">';
-        foreach ($indicesServer as $arg) {
-            if (isset($_SERVER[$arg])) {
+        foreach ($indicesServer as $arg)
+        {
+            if (isset($_SERVER[$arg]))
+            {
                 echo '<tr><td>' . $arg . '</td><td>' . $_SERVER[$arg] . '</td></tr>';
-            } else {
+            } else
+            {
                 echo '<tr><td>' . $arg . '</td><td>-</td></tr>';
             }
         }
@@ -771,10 +775,13 @@ class AreaServidor
             'ORIG_PATH_INFO');
 
         echo '<table cellpadding="10">';
-        foreach ($indicesServer as $arg) {
-            if (isset($_SERVER[$arg])) {
+        foreach ($indicesServer as $arg)
+        {
+            if (isset($_SERVER[$arg]))
+            {
                 echo '<tr><td>' . $arg . '</td><td>' . $_SERVER[$arg] . '</td></tr>';
-            } else {
+            } else
+            {
                 echo '<tr><td>' . $arg . '</td><td>-</td></tr>';
             }
         }
@@ -802,9 +809,18 @@ class AreaServidor
 
         # Inicia o menu
         $menu = new MenuGrafico(1);
+        
+        # Sei
+        $botao = new BotaoGrafico();
+        $botao->set_title('Sistema Eletrônico de informações');
+        $botao->set_imagem(PASTA_FIGURAS . "sei.png", 220, 72);
+        $botao->set_url("https://sei.fazenda.rj.gov.br/sip/login.php?sigla_orgao_sistema=ERJ&sigla_sistema=SEI&infra_url=L3NlaS8=");
+        $botao->set_target("_blank");
+        $menu->add_item($botao);
 
         # Sistema de gestão de contratos
-        if (Verifica::acesso($idUsuario, 9)) {
+        if (Verifica::acesso($idUsuario, 9))
+        {
             $botao = new BotaoGrafico();
             $botao->set_label("Sistema de Gestão<br/>de Coontratos");
             $botao->set_title("Sistema de Gestão de Coontratos");
