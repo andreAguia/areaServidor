@@ -528,6 +528,8 @@ class Intra extends Bd {
 
         $campos = array('idUsuario', 'data', 'atividade', 'tabela', 'idValor', 'tipo', 'idServidor', 'ip', 'browser');
         $valor = array($idUsuario, $data, $atividade, $tabela, $idValor, $tipo, $idServidor, IP, BROWSER_NAME . ' ' . BROWSER_VERSION);
+        
+       # var_dump($valor,$campos);
         parent::gravar($campos, $valor, null, 'tblog', 'idlog', false);
     }
 
