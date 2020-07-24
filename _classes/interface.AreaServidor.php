@@ -23,14 +23,11 @@ class AreaServidor
         $dia = date("d");
         $mes = date("m");
 
-        if (($dia == 8)AND($mes == 3))
-        {
+        if (($dia == 8)AND($mes == 3)) {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_mulher.jpg', 'Dia Internacional da Mulher', 190, 60);
-        } elseif (($mes == 12) AND ($dia < 26))
-        {
+        } elseif (($mes == 12) AND ($dia < 26)) {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_natal.png', 'Feliz Natal', 200, 60);
-        } else
-        {
+        } else {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf.png', 'Uenf - Universidade Estadual do Norte Fluminense', 190, 60);
         }
 
@@ -39,8 +36,7 @@ class AreaServidor
         $imagem->show();
         $cabec->fecha();
 
-        if (!(is_null($titulo)))
-        {
+        if (!(is_null($titulo))) {
             br();
             # Limita o tamanho da tela
             $grid = new Grid();
@@ -65,27 +61,27 @@ class AreaServidor
      * 
      * @param    string $idUsuario -> Usuário logado
      */
-    public static function rodape($idUsuario)
+    public static function rodape($idUsuario, $barra = true)
     {
-
-        # Exibe faixa azul
+        # Limita a tela
         $grid = new Grid();
-        $grid->abreColuna(12);
-        titulo();
-        $grid->fechaColuna();
-        $grid->fechaGrid();
+        
+        # Exibe faixa azul
+        if ($barra) {           
+            $grid->abreColuna(12);
+            titulo();
+            $grid->fechaColuna();
+        }
 
         # Exibe a versão do sistema
+        $grid->abreColuna(6);
         $intra = new Intra();
-        $grid = new Grid();
-        $grid->abreColuna(4);
         p('Usuário : ' . $intra->get_usuario($idUsuario), 'usuarioLogado');
         $grid->fechaColuna();
-        $grid->abreColuna(4);
-        p('Versão: ' . VERSAO, 'versao');
-        $grid->fechaColuna();
-        $grid->abreColuna(4);
-        p(BROWSER_NAME . " - " . IP, 'ip');
+        
+        # Exibe o desenvolvedor
+        $grid->abreColuna(6);
+        p("Desenvolvido por André Águia", 'pauthor');
         $grid->fechaColuna();
         $grid->fechaGrid();
     }
@@ -179,7 +175,7 @@ class AreaServidor
         $grid->abreColuna(12, 4);
         self::moduloSistemas($idUsuario);
         $grid->fechaColuna();
-        
+
         $grid->fechaGrid();
     }
 
@@ -201,23 +197,23 @@ class AreaServidor
         $grid->abreColuna(12, 4);
         self::moduloUsuarios($idUsuario);
         $grid->fechaColuna();
-        
+
         $grid->abreColuna(12, 4);
         self::moduloAdministracaoSistemas($idUsuario);
         $grid->fechaColuna();
-        
+
         $grid->abreColuna(12, 4);
-        self::moduloProjetos($idUsuario);        
+        self::moduloProjetos($idUsuario);
         $grid->fechaColuna();
-        
+
         $grid->abreColuna(12, 4);
         self::moduloServidor($idUsuario);
         $grid->fechaColuna();
-        
+
         $grid->abreColuna(12, 8);
         self::moduloBanco($idUsuario);
         $grid->fechaColuna();
-        
+
         $grid->fechaGrid();
     }
 
@@ -240,8 +236,7 @@ class AreaServidor
 
         $menu = new MenuGrafico(2);
 
-        if (Verifica::acesso($idUsuario, 3))
-        {
+        if (Verifica::acesso($idUsuario, 3)) {
             $botao = new BotaoGrafico();
             $botao->set_label('Geral');
             $botao->set_url('servidorGeral.php');
@@ -705,13 +700,10 @@ class AreaServidor
             'ORIG_PATH_INFO');
 
         echo '<table cellpadding="10">';
-        foreach ($indicesServer as $arg)
-        {
-            if (isset($_SERVER[$arg]))
-            {
+        foreach ($indicesServer as $arg) {
+            if (isset($_SERVER[$arg])) {
                 echo '<tr><td>' . $arg . '</td><td>' . $_SERVER[$arg] . '</td></tr>';
-            } else
-            {
+            } else {
                 echo '<tr><td>' . $arg . '</td><td>-</td></tr>';
             }
         }
@@ -778,13 +770,10 @@ class AreaServidor
             'ORIG_PATH_INFO');
 
         echo '<table cellpadding="10">';
-        foreach ($indicesServer as $arg)
-        {
-            if (isset($_SERVER[$arg]))
-            {
+        foreach ($indicesServer as $arg) {
+            if (isset($_SERVER[$arg])) {
                 echo '<tr><td>' . $arg . '</td><td>' . $_SERVER[$arg] . '</td></tr>';
-            } else
-            {
+            } else {
                 echo '<tr><td>' . $arg . '</td><td>-</td></tr>';
             }
         }
@@ -812,7 +801,7 @@ class AreaServidor
 
         # Inicia o menu
         $menu = new MenuGrafico(1);
-        
+
         # Sei
         $botao = new BotaoGrafico();
         $botao->set_title('Sistema Eletrônico de informações');
@@ -822,8 +811,7 @@ class AreaServidor
         $menu->add_item($botao);
 
         # Sistema de gestão de contratos
-        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10))
-        {
+        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
             $botao = new BotaoGrafico();
             $botao->set_label("Sistema de Gestão<br/>de Contratos");
             $botao->set_title("Sistema de Gestão de Contratos");

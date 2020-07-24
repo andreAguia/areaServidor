@@ -18,6 +18,12 @@ p#ip{
     color: #02548b;
 }
 
+p#pauthor{
+    font-size: 11px;
+    text-align: right;
+    color: #02548b;
+}
+
 p#usuarioLogado{
     font-size: 11px;
     text-align: left;
