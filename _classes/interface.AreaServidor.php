@@ -818,15 +818,15 @@ class AreaServidor
         $botao->set_title('Sistema Eletrônico de informações');
         $botao->set_imagem(PASTA_FIGURAS . "sei.png", 220, 72);
         $botao->set_url("https://sei.fazenda.rj.gov.br/sip/login.php?sigla_orgao_sistema=ERJ&sigla_sistema=SEI&infra_url=L3NlaS8=");
-        $botao->set_target("_blank");
+        #$botao->set_target("_blank");
         $menu->add_item($botao);
 
         # Sistema de gestão de contratos
-        if (Verifica::acesso($idUsuario, 9))
+        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10))
         {
             $botao = new BotaoGrafico();
-            $botao->set_label("Sistema de Gestão<br/>de Coontratos");
-            $botao->set_title("Sistema de Gestão de Coontratos");
+            $botao->set_label("Sistema de Gestão<br/>de Contratos");
+            $botao->set_title("Sistema de Gestão de Contratos");
             $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
             $botao->set_url('../../../contratos/sistema/cadastroContrato.php');
             $menu->add_item($botao);

@@ -7,7 +7,8 @@
  * 
  * By Alat
  */
-class Verifica {
+class Verifica
+{
 
     /**
      * Método Construtor
@@ -15,7 +16,8 @@ class Verifica {
      * @param $idUsuario string $idUsuario do servidor logado
      * @param $rotina integer codigo numérico da rotina a ser verificada
      */
-    static function acesso($idUsuario, $rotina = null) {
+    static function acesso($idUsuario, $rotina = null)
+    {
         # Flag de permissão do acesso
         $acesso = true;
         $manutencao = false;
@@ -44,8 +46,18 @@ class Verifica {
 
         # Verifica de o usuário logado tem permissão para essa rotina 
         if (!is_null($rotina)) {
-            if (!($intra->verificaPermissao($idUsuario, $rotina))) {
-                $acesso = false;
+
+            if (is_array($rotina)) {
+                foreach ($rotina as $tt) {
+                    if (($intra->verificaPermissao($idUsuario, $tt))) {
+                        $acesso = true;
+                        break;
+                    }
+                }
+            } else {
+                if (!($intra->verificaPermissao($idUsuario, $rotina))) {
+                    $acesso = false;
+                }
             }
         }
 
