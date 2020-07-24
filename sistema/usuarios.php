@@ -480,6 +480,52 @@ if ($acesso) {
                 $grid->abreColuna(6);
 
                 # select
+                $select = "SELECT distinct idRegra,
+                                  nome,
+                                  descricao,
+                                  idRegra
+                             FROM tbregra
+                             WHERE idRegra NOT IN (SELECT idRegra 
+                                         FROM tbpermissao
+                                        WHERE idUsuario = $id
+                                          AND tbregra.idRegra = tbpermissao.idRegra)
+                         ORDER BY nome";
+
+                $conteudo = $intra->select($select, true);
+
+                $tabela = new Tabela();
+                $tabela->set_conteudo($conteudo);
+                $tabela->set_titulo("Permissões Disponíveis");
+                $tabela->set_label(array("Num", "Regra", "Descrição", "Incluir"));
+                $tabela->set_width(array(10,30,60));
+                $tabela->set_align(array("center", "left", "left"));
+
+                #$tabela->set_excluir('?fase=gravarPermissao&id='.$id);
+                $tabela->set_idCampo('idRegra');
+                #$tabela->set_nomeGetId("idRegra");
+                # Botão de inclusao
+                $botao = new BotaoGrafico();
+                $botao->set_label('');
+                $botao->set_title('Servidores com permissão a essa regra');
+                $botao->set_url("?fase=incluirPermissao&id=$id&idRegra=");
+                $botao->set_imagem(PASTA_FIGURAS . 'adicionar.png', 20, 20);
+
+                # Coloca o objeto link na tabela			
+                $tabela->set_link(array("", "", "", $botao));
+
+
+                if (count($conteudo) > 0) {
+                    $tabela->show();
+                } else {
+                    tituloTable("Permissões Disponíveis");
+                    br();
+                    callout('Nenhuma permissão disponível !!', 'secondary');
+                }
+
+                $grid->fechaColuna();
+                $grid->abreColuna(6);
+                
+                # select
                 $select = 'SELECT tbregra.idRegra,
                                   tbregra.nome,
                                   tbregra.descricao,									
@@ -494,7 +540,7 @@ if ($acesso) {
                 $tabela->set_conteudo($conteudo);
                 $tabela->set_titulo("Permissões Incluídas");
                 $tabela->set_label(array("Num", "Regra", "Descrição", "Excluir"));
-                #$tabela->set_width(array(7,20,66));
+                $tabela->set_width(array(10,30,60));
                 $tabela->set_align(array("center", "left", "left"));
 
                 #$tabela->set_excluir('?fase=excluirPermissao&id='.$id);
@@ -518,54 +564,6 @@ if ($acesso) {
                     tituloTable("Permissões Incluídas");
                     br();
                     callout('Usuário sem permissão incluída no sistema !!', 'secondary');
-                }
-
-                ###
-
-                $grid->fechaColuna();
-                $grid->abreColuna(6);
-
-                # select
-                $select = "SELECT distinct idRegra,
-                                  nome,
-                                  descricao,
-                                  idRegra
-                             FROM tbregra
-                             WHERE idRegra NOT IN (SELECT idRegra 
-                                         FROM tbpermissao
-                                        WHERE idUsuario = $id
-                                          AND tbregra.idRegra = tbpermissao.idRegra)
-                         ORDER BY nome";
-
-                $conteudo = $intra->select($select, true);
-
-                $tabela = new Tabela();
-                $tabela->set_conteudo($conteudo);
-                $tabela->set_titulo("Permissões Disponíveis");
-                $tabela->set_label(array("Num", "Regra", "Descrição", "Incluir"));
-                #$tabela->set_width(array(7,20,66));
-                $tabela->set_align(array("center", "left", "left"));
-
-                #$tabela->set_excluir('?fase=gravarPermissao&id='.$id);
-                $tabela->set_idCampo('idRegra');
-                #$tabela->set_nomeGetId("idRegra");
-                # Botão de inclusao
-                $botao = new BotaoGrafico();
-                $botao->set_label('');
-                $botao->set_title('Servidores com permissão a essa regra');
-                $botao->set_url("?fase=incluirPermissao&id=$id&idRegra=");
-                $botao->set_imagem(PASTA_FIGURAS . 'adicionar.png', 20, 20);
-
-                # Coloca o objeto link na tabela			
-                $tabela->set_link(array("", "", "", $botao));
-
-
-                if (count($conteudo) > 0) {
-                    $tabela->show();
-                } else {
-                    tituloTable("Permissões Disponíveis");
-                    br();
-                    callout('Nenhuma permissão disponível !!', 'secondary');
                 }
 
                 $grid->fechaColuna();
