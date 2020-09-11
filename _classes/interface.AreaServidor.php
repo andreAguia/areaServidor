@@ -801,15 +801,36 @@ class AreaServidor
 
         # Inicia o menu
         $menu = new MenuGrafico(1);
+        $menu->set_espacoEntreLink(true);
 
         # Sei
         $botao = new BotaoGrafico();
-        $botao->set_title('Sistema Eletrônico de informações');
-        $botao->set_imagem(PASTA_FIGURAS . "sei.png", 220, 72);
+        $botao->set_title('Sistema Eletrônico de Informações');
+        #$botao->set_label("Sei");
+        $botao->set_imagem(PASTA_FIGURAS . "sei.png", 220, 60);
         $botao->set_url("https://sei.fazenda.rj.gov.br/sip/login.php?sigla_orgao_sistema=ERJ&sigla_sistema=SEI&infra_url=L3NlaS8=");
-        #$botao->set_target("_blank");
+        $botao->set_target("_blank");
         $menu->add_item($botao);
-
+        
+        # SigFis
+        $botao = new BotaoGrafico();
+        $botao->set_title('Sistema Integrado de Gestão Fiscal');
+        #$botao->set_label("SigFis");
+        $botao->set_imagem(PASTA_FIGURAS . "sigfis.jpg", 180, 50);
+        $botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
+        $botao->set_target("_blank");
+        $menu->add_item($botao);
+        
+        # SigFis
+        $botao = new BotaoGrafico();
+        $botao->set_title('Sistema Integrado de Gestão Orçamentária, Financeira e Contábil do Rio de Janeiro');
+        #$botao->set_label("Siafe");
+        $botao->set_imagem(PASTA_FIGURAS . "siafe.png", 180, 50);
+        $botao->set_url("http://www.fazenda.rj.gov.br/siaferio/adfAuthentication?success_url=/faces/wcnav_defaultSelection");
+        $botao->set_target("_blank");
+        $menu->add_item($botao);
+        
+       
         # Sistema de gestão de contratos
         if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
             $botao = new BotaoGrafico();
