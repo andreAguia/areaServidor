@@ -106,6 +106,14 @@ if ($acesso) {
 
             $menu = new MenuGrafico(5);
             br();
+            
+            # Transformação de Regime
+            $botao = new BotaoGrafico();
+            $botao->set_label('Regime');
+            $botao->set_url('importacaoRegime.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Preenche com a data da transformação do regime');
+            $menu->add_item($botao);
 
             # Dependentes
             $botao = new BotaoGrafico();
@@ -114,13 +122,14 @@ if ($acesso) {
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Importação da Tabela de Dependentes do SigRH');
             #$menu->add_item($botao);
+            
             # Férias
             $botao = new BotaoGrafico();
             $botao->set_label('Férias');
             $botao->set_url('importacaoFerias.php');
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Importação da Tabela de Férias do SigRH');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
 
             # Progressão e Enquadramento
             $botao = new BotaoGrafico();
