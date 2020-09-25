@@ -821,13 +821,13 @@ class AreaServidor
         $botao->set_target("_blank");
         $menu->add_item($botao);
         
-        # SigFis
+        # Siafe
         $botao = new BotaoGrafico();
         $botao->set_title('Sistema Integrado de Gestão Orçamentária, Financeira e Contábil do Rio de Janeiro');
         #$botao->set_label("Siafe");
         $botao->set_imagem(PASTA_FIGURAS . "siafe.png", 180, 50);
-        $botao->set_url("http://www.fazenda.rj.gov.br/siaferio/adfAuthentication?success_url=/faces/wcnav_defaultSelection");
-        $botao->set_target("_blank");
+        $botao->set_url("https://www5.fazenda.rj.gov.br/SiafeRio/faces/login.jsp;jsessionid=FfPAOZiFLVOws9w_lr7lfkdC1rdXFlgoZ4b0lI9DofE59ZJZilH4!-1875128395");
+        $botao->set_target("aba");
         $menu->add_item($botao);
         
        
