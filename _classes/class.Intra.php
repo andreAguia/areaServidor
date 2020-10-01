@@ -528,8 +528,8 @@ class Intra extends Bd {
 
         $campos = array('idUsuario', 'data', 'atividade', 'tabela', 'idValor', 'tipo', 'idServidor', 'ip', 'browser');
         $valor = array($idUsuario, $data, $atividade, $tabela, $idValor, $tipo, $idServidor, IP, BROWSER_NAME . ' ' . BROWSER_VERSION);
-        
-       # var_dump($valor,$campos);
+
+        # var_dump($valor,$campos);
         parent::gravar($campos, $valor, null, 'tblog', 'idlog', false);
     }
 
@@ -671,13 +671,12 @@ class Intra extends Bd {
      */
     public function get_versaoAtual() {
 
-        $select = "SELECT versao,data		  
+        $select = "SELECT versao, data		  
                      FROM tbatualizacao
                  ORDER BY data desc
                  LIMIT 1";
 
-        $result = parent::select($select, false);
-        return $result;
+        return parent::select($select, false);
     }
 
     ###########################################################
@@ -693,11 +692,10 @@ class Intra extends Bd {
                      FROM tbatualizacao
                  ORDER BY data desc";
 
-        $result = parent::select($select);
-        return $result;
+        return parent::select($select);
     }
 
-    ###########################################################
+    ##########################################################################################
 
     /**
      * Método get_numProcesso
