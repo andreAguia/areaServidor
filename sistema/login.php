@@ -35,8 +35,10 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
     $page->iniciaPagina();
 
     # Cabeçalho
-    AreaServidor::cabecalho("Login do Sistema");
-    br(2);
+    if ($fase <> "diaServidor") {
+        AreaServidor::cabecalho("Login do Sistema");
+        br(2);
+    }
 
     ################################################################################
 
@@ -185,7 +187,10 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
                     # Verifica se o servidor está aniversariando hoje
                     if ($pessoal->aniversariante($idServidor)) {
                         loadPage('?fase=parabens');
+                    } elseif (date("m-d") == "10-28") {
+                        loadPage('?fase=diaServidor');
                     } else {
+
                         if (Verifica::acesso($idUsuario, 2)) {
                             loadPage("../../grh/grhSistema/grh.php");
                         } else {
@@ -290,6 +295,50 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
 
             # Grava no log a atividade
             $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Recebeu os parabéns do sistema pelo aniversário.', null, null, 7);
+
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            break;
+
+        ################################################################################
+
+        case "diaServidor":
+            # Acesso ao sistema GRH
+            $pagina = 'areaServidor.php';
+            if (Verifica::acesso($idUsuario, 2)) {
+                $pagina = '../../grh/grhSistema/grh.php';
+            } else {
+                $pagina = 'areaServidor.php';
+            }
+
+            # Botão
+            $grid = new Grid();
+            $grid->abreColuna(12);
+            br();
+            $menu = new MenuBar();
+
+            # Botão 
+            $linkBotaoVoltar = new Button('Continua');
+            $linkBotaoVoltar->set_title('Continua');
+            $linkBotaoVoltar->set_url($pagina);
+            $menu->add_link($linkBotaoVoltar, "right");
+
+            $menu->show();
+
+            $div = new Div("center");
+            $div->abre();
+            p('<h5>Querido servidor, parabéns pelo</h5>');
+            
+            $img = new Imagem(PASTA_FIGURAS . "servidor.jpg", "Parabéns Servidor", '500', '500');
+            $img->show();
+            
+            $div->fecha();
+            br();
+                        
+            p('O serviço público é uma vocação, é trabalhar todos os dias por uma sociedade melhor !!<br>A GRH te deseja um Feliz Dia do Servidor Público.','center');
+
+            # Grava no log a atividade
+            $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Recebeu os parabéns do sistema pelo dia do servidor público.', null, null, 7);
 
             $grid->fechaColuna();
             $grid->fechaGrid();
