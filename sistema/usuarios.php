@@ -96,21 +96,19 @@ if ($acesso) {
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
 
-    # Parametros da tabela
-    #$objeto->set_label(array("Status","Id","Usuário","Nome","Permissões",Último Acesso", "Lotação","Cargo","Padrão","Bloquear","Perm."));
-    $objeto->set_label(array("Status", "Id", "Usuário", "Nome", "Permissões", "Último Acesso", "Lotação", "Cargo", "Email", "Editar"));
-    #$objeto->set_width(array(8,2,5,25,10,15,20,10,5));
-    $objeto->set_align(array("center", "center", "center", "left", "left", "center", "center", "left", "left"));
+    # Parametros da tabela    
+    $objeto->set_label(array("Status", "Id", "Usuário", "Servidor", "Permissões", "Último Acesso", "Email", "Editar"));
+    $objeto->set_align(array("center", "center", "left", "left", "left", "center", "left"));
 
-    # Formatacao Condicional
-    $objeto->set_formatacaoCondicional(array(array('coluna' => 6,
-            'valor' => 'UENF-DGA-GRH',
-            'operador' => '<>',
-            'id' => 'logExclusao')
-    ));
+//    # Formatacao Condicional
+//    $objeto->set_formatacaoCondicional(array(array('coluna' => 6,
+//            'valor' => 'UENF-DGA-GRH',
+//            'operador' => '<>',
+//            'id' => 'logExclusao')
+//    ));
 
-    $objeto->set_classe(array(null, null, null, "pessoal", null, null, "pessoal", "pessoal", "pessoal"));
-    $objeto->set_metodo(array(null, null, null, "get_nome", null, null, "get_lotacao", "get_cargo", "get_emailUenf"));
+    $objeto->set_classe(array(null, null, null, "pessoal", null, null, "pessoal"));
+    $objeto->set_metodo(array(null, null, null, "get_nomeECargoELotacao", null, null, "get_emailUenf"));
     $objeto->set_funcao(array("statusUsuario", null, null, null, "get_permissoes", "datetime_to_php"));
 
     $objeto->set_botaoExcluir(false);
@@ -124,7 +122,7 @@ if ($acesso) {
     $botao->set_imagem(PASTA_FIGURAS . 'bullet_edit.png', 20, 20);
 
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array("", "", "", "", "", "", "", "", "", $botao));
+    $objeto->set_link(array("", "", "", "", "", "", "", $botao));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -144,28 +142,28 @@ if ($acesso) {
     array_unshift($result, array(0, null)); # Adiciona o valor de nulo
     # Campos para o formulario
     $objeto->set_campos(array(
-        array('linha' => 1,
-            'col' => 3,
-            'nome' => 'usuario',
-            'label' => 'Usuário:',
-            'tipo' => 'texto',
+        array('linha'     => 1,
+            'col'       => 3,
+            'nome'      => 'usuario',
+            'label'     => 'Usuário:',
+            'tipo'      => 'texto',
             'autofocus' => true,
-            'required' => true,
-            'unique' => true,
-            'size' => 15),
+            'required'  => true,
+            'unique'    => true,
+            'size'      => 15),
         array('linha' => 1,
-            'col' => 9,
-            'nome' => 'idServidor',
+            'col'   => 9,
+            'nome'  => 'idServidor',
             'label' => 'Nome (servidor):',
-            'tipo' => 'combo',
+            'tipo'  => 'combo',
             'array' => $result,
-            'size' => 20),
+            'size'  => 20),
         array('linha' => 2,
-            'col' => 12,
-            'nome' => 'obs',
+            'col'   => 12,
+            'nome'  => 'obs',
             'label' => 'Observação:',
-            'tipo' => 'texto',
-            'size' => 30)
+            'tipo'  => 'texto',
+            'size'  => 30)
     ));
 
     # Log
@@ -400,18 +398,18 @@ if ($acesso) {
                     $tabela->set_align(array("center", "center", "center", "center", "center", "center", "left"));
                     $tabela->set_funcao(array(null, "datetime_to_php", null, null, null, "exibeNomeTitle"));
 
-                    $tabela->set_formatacaoCondicional(array(array('coluna' => 0,
-                            'valor' => 0,
+                    $tabela->set_formatacaoCondicional(array(array('coluna'   => 0,
+                            'valor'    => 0,
                             'operador' => '=',
-                            'id' => 'logLogin'),
-                        array('coluna' => 0,
-                            'valor' => 3,
+                            'id'       => 'logLogin'),
+                        array('coluna'   => 0,
+                            'valor'    => 3,
                             'operador' => '=',
-                            'id' => 'logExclusao'),
-                        array('coluna' => 0,
-                            'valor' => 5,
+                            'id'       => 'logExclusao'),
+                        array('coluna'   => 0,
+                            'valor'    => 5,
                             'operador' => '=',
-                            'id' => 'logLoginIncorreto')
+                            'id'       => 'logLoginIncorreto')
                     ));
 
                     # Imagem Condicional
@@ -423,34 +421,34 @@ if ($acesso) {
                     $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS . 'loginIncorreto.png', 'Login Incorreto', 15, 15);
                     $imagemBackup = new Imagem(PASTA_FIGURAS . 'backup2.png', 'Backup', 15, 15);
 
-                    $tabela->set_imagemCondicional(array(array('coluna' => 0,
-                            'valor' => 0,
+                    $tabela->set_imagemCondicional(array(array('coluna'   => 0,
+                            'valor'    => 0,
                             'operador' => '=',
-                            'imagem' => $imagemLogin),
-                        array('coluna' => 0,
-                            'valor' => 1,
+                            'imagem'   => $imagemLogin),
+                        array('coluna'   => 0,
+                            'valor'    => 1,
                             'operador' => '=',
-                            'imagem' => $imagemInclusao),
-                        array('coluna' => 0,
-                            'valor' => 2,
+                            'imagem'   => $imagemInclusao),
+                        array('coluna'   => 0,
+                            'valor'    => 2,
                             'operador' => '=',
-                            'imagem' => $imagemAlterar),
-                        array('coluna' => 0,
-                            'valor' => 3,
+                            'imagem'   => $imagemAlterar),
+                        array('coluna'   => 0,
+                            'valor'    => 3,
                             'operador' => '=',
-                            'imagem' => $imagemExclusao),
-                        array('coluna' => 0,
-                            'valor' => 4,
+                            'imagem'   => $imagemExclusao),
+                        array('coluna'   => 0,
+                            'valor'    => 4,
                             'operador' => '=',
-                            'imagem' => $imagemRelatorio),
-                        array('coluna' => 0,
-                            'valor' => 5,
+                            'imagem'   => $imagemRelatorio),
+                        array('coluna'   => 0,
+                            'valor'    => 5,
                             'operador' => '=',
-                            'imagem' => $imagemLoginIncorreto),
-                        array('coluna' => 0,
-                            'valor' => 6,
+                            'imagem'   => $imagemLoginIncorreto),
+                        array('coluna'   => 0,
+                            'valor'    => 6,
                             'operador' => '=',
-                            'imagem' => $imagemBackup)
+                            'imagem'   => $imagemBackup)
                     ));
                     $tabela->show();
                     $grid2->fechaColuna();
@@ -497,7 +495,7 @@ if ($acesso) {
                 $tabela->set_conteudo($conteudo);
                 $tabela->set_titulo("Permissões Disponíveis");
                 $tabela->set_label(array("Num", "Regra", "Descrição", "Incluir"));
-                $tabela->set_width(array(10,30,60));
+                $tabela->set_width(array(10, 30, 60));
                 $tabela->set_align(array("center", "left", "left"));
 
                 #$tabela->set_excluir('?fase=gravarPermissao&id='.$id);
@@ -524,7 +522,7 @@ if ($acesso) {
 
                 $grid->fechaColuna();
                 $grid->abreColuna(6);
-                
+
                 # select
                 $select = 'SELECT tbregra.idRegra,
                                   tbregra.nome,
@@ -540,7 +538,7 @@ if ($acesso) {
                 $tabela->set_conteudo($conteudo);
                 $tabela->set_titulo("Permissões Incluídas");
                 $tabela->set_label(array("Num", "Regra", "Descrição", "Excluir"));
-                $tabela->set_width(array(10,30,60));
+                $tabela->set_width(array(10, 30, 60));
                 $tabela->set_align(array("center", "left", "left"));
 
                 #$tabela->set_excluir('?fase=excluirPermissao&id='.$id);

@@ -161,7 +161,9 @@ class Procedimento {
 
             # Dados do Pai
             $dadosPai = $this->get_dadosProcedimento($idPai);
-            $pai = $dadosPai['titulo'];
+            if (!empty($dadosPai['titulo'])) {
+                $pai = $dadosPai['titulo'];
+            }
 
             # Monta o painel
             $painel = new Callout();
@@ -183,7 +185,7 @@ class Procedimento {
             }
 
             # Exibe o titulo do pai (quando houver)
-            if (!vazio($pai)) {
+            if (!empty($pai)) {
                 p($pai, "procedimentoPai");
             }
 
