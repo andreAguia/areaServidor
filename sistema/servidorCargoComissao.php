@@ -112,7 +112,7 @@ if ($acesso) {
             $controle->set_valor($parametroCargoComissao);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(1);
-            $controle->set_col(12);
+            $controle->set_col(6);
             $form->add_item($controle);
             $form->show();
 
