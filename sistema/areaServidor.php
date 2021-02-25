@@ -45,8 +45,9 @@ if ($acesso) {
     set_session('servidorLotacao');
     set_session('servidorCargoComissao');
 
-    # Limpa as sessions usadas servidor geral
+    # Limpa as sessions usadas servidor geral e contatos
     set_session('parametroNomeMat');
+    set_session('parametroNome');
     set_session('parametroCargo');
     set_session('parametroCargoComissao');
     set_session('parametroLotacao');

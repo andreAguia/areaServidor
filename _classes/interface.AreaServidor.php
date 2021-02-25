@@ -158,7 +158,6 @@ class AreaServidor
      */
     public static function menuPrincipal($idUsuario)
     {
-
         # Cria Grid
         $grid = new Grid();
 
@@ -243,6 +242,15 @@ class AreaServidor
             $botao->set_url('servidorGeral.php');
             $botao->set_imagem(PASTA_FIGURAS . 'admin.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Lista geral de servidores');
+            $menu->add_item($botao);
+        }
+        
+         if (Verifica::acesso($idUsuario, 11)) {
+            $botao = new BotaoGrafico();
+            $botao->set_label('Contatos');
+            $botao->set_url('servidorContatos.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'contatos.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Lista dos contatos dos servidores');
             $menu->add_item($botao);
         }
 
