@@ -30,6 +30,18 @@ p#usuarioLogado{
     color: #02548b;
 }
 
+
+
+/*******************************************
+ * Método Pessoa->get_lotacao
+ *******************************************/
+
+span#orgaoCedido{
+    color: #0000cc;
+    font-size: 11px;
+    cursor:pointer;
+}
+
 /*******************************************
  * Rotina de Documentação
  *******************************************/
