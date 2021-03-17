@@ -5,24 +5,42 @@
  * 
  * By Alat
  */
-# Classes
+
+/*
+ *  Classes
+ */
 define("PASTA_CLASSES_GERAIS", "../../_framework/_classesGerais/"); # Classes Gerais
 define("PASTA_CLASSES_GRH", "../../grh/_classes/");                 # Classes do sistema de Pessoal 
 define("PASTA_CLASSES", "../_classes/");                            # Classes Específicas
-# Funções
+
+/*
+ *  Funções
+ */
 define("PASTA_FUNCOES_GERAIS", "../../_framework/_funcoesGerais/");  # Funções Gerais
 define("PASTA_FUNCOES", "../_funcoes/");                             # Funções Específicas
 define("PASTA_FUNCOES_GRH", "../../grh/_funcoes/");                  # Funções Específicas GRH
-# Figuras
+
+/*
+ *  Figuras
+ */
 define("PASTA_FIGURAS_GERAIS", "../../_framework/_imgGerais/");     # Figuras Gerais
 define("PASTA_FIGURAS_GRH", "../../grh/_img/");                     # Figuras Gerais
 define("PASTA_FIGURAS", "../_img/");                                # Figuras Específicas
-# Estilos
+
+/*
+ *  Estilos
+ */
 define("PASTA_ESTILOS_GERAIS", "../../_framework/_cssGerais/");     # Estilos Gerais (Foundation)
 define("PASTA_ESTILOS", "../_css/");                                # Estilos Específicos
-# Uploads
+
+/*
+ *  Arquivos
+ */
 define("PASTA_FOTOS", "../../_arquivos/fotos/");                     # Fotos dos Servidores
-# Tags aceitas em campos com htmlTag = true
+
+/*
+ *  Tags aceitas em campos com htmlTag = true
+ */
 define('TAGS', '<p></p><a></a><br/><br><div></div><table></table><tr></tr><td></td><th></th><strong></strong>'
         . '<em></em><u></u><sub></sub><sup></sup><ol></ol><li></li><ul></ul><hr><span></span><h1></h1>'
         . '<h2></h2><h3></h3><h4></h4><h5></h5><pre></pre>');
@@ -67,21 +85,22 @@ include_once (PASTA_FUNCOES_GRH . "funcoes.especificas.php");
 
 # Dados do Browser
 $browser = get_BrowserName();
-define("BROWSER_NAME", $browser['browser']); # Nome do browser
-define("BROWSER_VERSION", $browser['version']); # Versão do browser
+define("BROWSER_NAME", $browser['browser']);
+define("BROWSER_VERSION", $browser['version']);
+
 # Pega o ip e nome da máquina
-define("IP", getenv("REMOTE_ADDR"));     # Ip da máquina
+define("IP", getenv("REMOTE_ADDR"));
+
 # Sistema Operacional
 define("SO", get_So());
 
-setlocale(LC_ALL, 'pt_BR');
-setlocale(LC_CTYPE, 'pt_BR');
-
 # Carrega as session
-$idUsuario = get_session('idUsuario');  // Servidor Logado
+$idUsuario = get_session('idUsuario');
+
 # Define o horário
 date_default_timezone_set("America/Sao_Paulo");
 setlocale(LC_ALL, 'pt_BR');
+setlocale(LC_CTYPE, 'pt_BR');
 
 /**
  * Função que é chamada automaticamente pelo sistema
