@@ -413,11 +413,15 @@ class Intra extends Bd {
     public function get_usuario($idUsuario) {
 
         $select = "SELECT usuario		  
-                         FROM tbusuario
-                        WHERE idUsuario = '" . $idUsuario . "'";
+                     FROM tbusuario
+                    WHERE idUsuario = '{$idUsuario}'";
 
         $result = parent::select($select, false);
-        return $result[0];
+        if (empty($result[0])) {
+            return null;
+        } else {
+            return $result[0];
+        }
     }
 
     ###########################################################
