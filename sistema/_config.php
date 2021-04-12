@@ -74,7 +74,7 @@ $nomeMes = array(null,
     "Dezembro");
 
 /* Inicia a sessão */
-$lifetime = 2000;
+$lifetime = 20000;
 session_start();
 setcookie(session_name(), session_id(), time() + $lifetime);
 
