@@ -65,8 +65,8 @@ class Verifica {
         # Verifica o ip da máquina
         $ipManutencao = $intra->get_variavel('ipAdmin'); // ip isento da mensagem
         $ipMaquina = $_SERVER['REMOTE_ADDR'];         // ip da máquina
+        
         # Verifica se está em Manutenção
-
         if ($intra->get_variavel('manutencao')) {
             if ($ipManutencao <> $ipMaquina) {
                 $manutencao = true;

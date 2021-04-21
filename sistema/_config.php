@@ -45,7 +45,9 @@ define('TAGS', '<p></p><a></a><br/><br><div></div><table></table><tr></tr><td></
         . '<em></em><u></u><sub></sub><sup></sup><ol></ol><li></li><ul></ul><hr><span></span><h1></h1>'
         . '<h2></h2><h3></h3><h4></h4><h5></h5><pre></pre>');
 
-# Cria array dos meses
+/*
+ *  Cria array dos meses
+ */
 $mes = array(array("1", "Janeiro"),
     array("2", "Fevereiro"),
     array("3", "Março"),
@@ -74,25 +76,33 @@ $nomeMes = array(null,
     "Dezembro");
 
 # Inicia a Session
-session_start();
+if (!isset($_SESSION)){
+    session_start();
+}
 
-# Funções	
+/*
+ *  Funções
+ */
 include_once (PASTA_FUNCOES_GERAIS . "funcoes.gerais.php");
 include_once (PASTA_FUNCOES . "funcoes.especificas.php");
 include_once (PASTA_FUNCOES_GRH . "funcoes.especificas.php");
 
 # Dados do Browser
 $browser = get_BrowserName();
+
+# Nome do browser
 define("BROWSER_NAME", $browser['browser']);
+
+# Versão do browser
 define("BROWSER_VERSION", $browser['version']);
 
-# Pega o ip e nome da máquina
+# Pega o ip da máquina
 define("IP", getenv("REMOTE_ADDR"));
 
 # Sistema Operacional
 define("SO", get_So());
 
-# Carrega as session
+# Carrega as session do servidor logado
 $idUsuario = get_session('idUsuario');
 
 # Define o horário
@@ -125,13 +135,18 @@ function autoload($classe) {
 
 spl_autoload_register("autoload");
 
-# Sobre o Sistema
+/*
+ *  Sobre o Sistema
+ */
 $intra = new Intra();
 define("SISTEMA", $intra->get_variavel("sistemaIntra"));             # Nome do sistema
 define("DESCRICAO", $intra->get_variavel("sistemaIntraDescricao"));  # Descrição do sistema
 define("AUTOR", $intra->get_variavel("sistemaAutor"));               # Autor do sistema
 define("EMAILAUTOR", $intra->get_variavel("sistemaAutorEmail"));     # Autor do sistema
-# Versão do sistema
+
+/*
+ *  Versão do sistema
+ */
 $versao = $intra->get_versaoAtual();
 define("VERSAO", $versao[0]);                    # Versão do Sistema 								
 define("ATUALIZACAO", date_to_php($versao[1]));  # Última Atualização
