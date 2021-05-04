@@ -95,16 +95,13 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
             if (($mes == 12) AND ($dia < 26)) {
                 $imagem = new Imagem(PASTA_FIGURAS . 'natal.gif', 'Boas Festas Servidor', 603, 143);
                 $imagem->show();
-                $pulo = 1;
-            } else {
-                $pulo = 6;
             }
 
             $grid->fechaColuna();
             $grid->fechaGrid();
 
             # Mensagem do Dia 
-            br($pulo);
+            br();
             $grid = new Grid("center");
             $grid->abreColuna(8);
 
