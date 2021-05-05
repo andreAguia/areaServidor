@@ -7,25 +7,11 @@
  */
 
 ########################################################33
+# Iniciando a sessão
 
-# Inicia a Session
-// Configure timeout to 5 horas
-$timeout = 18000;
-
-// Set the maxlifetime of session
-ini_set("session.gc_maxlifetime", $timeout);
-
-// Also set the session cookie timeout
-ini_set("session.cookie_lifetime", $timeout);
-
-// Now start the session 
-session_start();
-
-// Update the timeout of session cookie
-$sessionName = session_name();
-
-if (isset($_COOKIE[$sessionName])) {
-    setcookie($sessionName, $_COOKIE[$sessionName], time() + $timeout, '/');
+if (session_status() !== PHP_SESSION_ACTIVE) { 
+    session_cache_expire(300);
+    session_start();
 }
 
 ########################################################
