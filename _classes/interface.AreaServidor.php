@@ -160,17 +160,26 @@ class AreaServidor
     {
         # Cria Grid
         $grid = new Grid();
+        $grid->abreColuna(12,8);
+        
+            $grid2 = new Grid();
 
-        # Primeira Coluna
-        $grid->abreColuna(12, 4);
-        self::moduloSobreServidor();
+            # Primeira Coluna
+            $grid2->abreColuna(12, 6);
+            self::moduloSobreServidor();
+            $grid2->fechaColuna();
+
+            # Segunda Coluna
+            $grid2->abreColuna(12, 6);
+            self::moduloSispatri();
+            $grid2->fechaColuna();           
+
+            $grid2->fechaGrid();
+        
+            self::moduloServidoresUniversidade($idUsuario);    
+        
         $grid->fechaColuna();
-
-        # Segunda Coluna
-        $grid->abreColuna(12, 4);
-        self::moduloServidoresUniversidade($idUsuario);
-        $grid->fechaColuna();
-
+        
         # Sistemas
         $grid->abreColuna(12, 4);
         self::moduloSistemas($idUsuario);
@@ -234,7 +243,7 @@ class AreaServidor
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(2);
+        $menu = new MenuGrafico(5);
 
         if (Verifica::acesso($idUsuario, 3)) {
             $botao = new BotaoGrafico();
@@ -854,5 +863,22 @@ class AreaServidor
         $painel->fecha();
     }
 
-    ###########################################################
+    ######################################################################################################################
+
+    /**
+     * Método moduloSispatri
+     */
+    private static function moduloSispatri() {
+
+        $botao = new BotaoGrafico();
+        $botao->set_label();
+        $botao->set_url("https://www.servidor.rj.gov.br/portal-web/index");
+        $botao->set_imagem(PASTA_FIGURAS . 'sispatri2.png', '90%', '90%');
+        $botao->set_title('Sistema de Registros de Bens dos Agentes Públicos');
+        #$botao->set_target("_blank");
+        $botao->show();
+        br();
+    }
+
+    ######################################################################################################################
 }
