@@ -27,7 +27,7 @@ if ($acesso) {
 
     $select = 'SELECT DIR,
                      CONCAT(GER," - ",nome),
-                     ramais
+                     contatos
                 FROM tblotacao
                WHERE UADM = "FENORTE"
                  AND ativo = "Sim"
@@ -49,8 +49,8 @@ if ($acesso) {
 
     $relatorio = new Relatorio('relatorioRamal');
     $relatorio->set_titulo('FENORTE');
-    $relatorio->set_subtitulo('Telefones e Ramais');
-    $relatorio->set_label(array('Diretoria', 'Setor', 'Ramais'));
+    $relatorio->set_subtitulo('Contatos');
+    $relatorio->set_label(array('Diretoria', 'Setor', 'Contatos'));
     $relatorio->set_width(array(0, 40, 30));
     $relatorio->set_align(array("center", "left"));
     $relatorio->set_conteudo($result);
@@ -68,7 +68,7 @@ if ($acesso) {
     $servidor = new Pessoal();
     $select = 'SELECT DIR,
                      CONCAT(GER," - ",nome),
-                     ramais
+                     contatos
                 FROM tblotacao
                WHERE UADM = "TECNORTE" 
                  AND ativo = "Sim"
@@ -81,7 +81,7 @@ if ($acesso) {
     $relatorio = new Relatorio('relatorioRamal');
     $relatorio->set_titulo('TECNORTE');
     $relatorio->set_subtitulo('Telefones e Ramais');
-    $relatorio->set_label(array('Diretoria', 'Setor', 'Ramais'));
+    $relatorio->set_label(array('Diretoria', 'Setor', 'Contatos'));
     $relatorio->set_width(array(0, 40, 30));
     $relatorio->set_align(array("center", "left"));
     $relatorio->set_conteudo($result);
@@ -95,4 +95,3 @@ if ($acesso) {
 
     $page->terminaPagina();
 }
-?>
