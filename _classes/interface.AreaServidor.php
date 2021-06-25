@@ -165,12 +165,12 @@ class AreaServidor
             $grid2 = new Grid();
 
             # Primeira Coluna
-            $grid2->abreColuna(12, 6);
+            $grid2->abreColuna(12, 7);
             self::moduloSobreServidor();
             $grid2->fechaColuna();
 
             # Segunda Coluna
-            $grid2->abreColuna(12, 6);
+            $grid2->abreColuna(12, 5);
             self::moduloSispatri();
             $grid2->fechaColuna();           
 
@@ -305,7 +305,7 @@ class AreaServidor
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(2);
+        $menu = new MenuGrafico(3);
 
         $botao = new BotaoGrafico();
         $botao->set_label('Histórico de Afastamentos');
@@ -870,14 +870,14 @@ class AreaServidor
      */
     private static function moduloSispatri() {
 
+        br(2);
         $botao = new BotaoGrafico();
         $botao->set_label();
         $botao->set_url("https://www.servidor.rj.gov.br/portal-web/portal/publico/Noticia/detalhar?hdnNoticia=1152");
-        $botao->set_imagem(PASTA_FIGURAS . 'sispatri2.png', '90%', '90%');
+        $botao->set_imagem(PASTA_FIGURAS . 'sispatri2.png', '100%', '100%');
         $botao->set_title('Sistema de Registros de Bens dos Agentes Públicos');
         #$botao->set_target("_blank");
         $botao->show();
-        br();
     }
 
     ######################################################################################################################
