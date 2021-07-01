@@ -117,9 +117,11 @@ if ($acesso) {
             # Menu Principal
             $menu = new Menu("menuProcedimentos");
             $grupoarquivo = null;
-            $sistemas = [["Framework", PASTA_CLASSES_GERAIS, PASTA_FUNCOES_GERAIS . '/funcoes.gerais.php'],
+            $sistemas = [
+                ["Framework", PASTA_CLASSES_GERAIS, PASTA_FUNCOES_GERAIS . '/funcoes.gerais.php'],
                 ["Grh", PASTA_CLASSES_GRH, PASTA_FUNCOES_GRH . '/funcoes.especificas.php'],
-                ["Area do Servidor", PASTA_CLASSES, PASTA_FUNCOES . '/funcoes.especificas.php']];
+                ["Area do Servidor", PASTA_CLASSES, PASTA_FUNCOES . '/funcoes.especificas.php']
+            ];
 
             # Percorre os sistemas
             foreach ($sistemas as $categorias) {
@@ -175,9 +177,11 @@ if ($acesso) {
             # Menu Principal
             $menu = new Menu("menuProcedimentos");
             $grupoarquivo = null;
-            $sistemas = [["Framework", PASTA_CLASSES_GERAIS, PASTA_FUNCOES_GERAIS . '/funcoes.gerais.php'],
+            $sistemas = [
+                ["Framework", PASTA_CLASSES_GERAIS, PASTA_FUNCOES_GERAIS . '/funcoes.gerais.php'],
                 ["Grh", PASTA_CLASSES_GRH, PASTA_FUNCOES_GRH . '/funcoes.especificas.php'],
-                ["Area do Servidor", PASTA_CLASSES, PASTA_FUNCOES . '/funcoes.especificas.php']];
+                ["Area do Servidor", PASTA_CLASSES, PASTA_FUNCOES . '/funcoes.especificas.php']
+            ];
 
             # Percorre os sistemas
             foreach ($sistemas as $categorias) {
@@ -217,7 +221,6 @@ if ($acesso) {
 
             $grid->fechaColuna();
             $grid->fechaGrid();
-
 
             $callout->fecha();
             break;
