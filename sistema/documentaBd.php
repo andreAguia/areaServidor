@@ -90,7 +90,7 @@ if ($acesso) {
     $tabela->set_editar("documentaTabela.php?banco=$banco");
     $tabela->set_idCampo('TABLE_NAME');
     $tabela->set_nomeColunaEditar('Ver');
-    $tabela->set_editarBotao('ver.png');
+    $tabela->set_editarBotao('olho.png');
 
     if (count($conteudo) == 0) {
         br();
