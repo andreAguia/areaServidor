@@ -133,6 +133,31 @@ class Intra extends Bd {
     ###########################################################
 
     /**
+     * Método get_variavel
+     * 
+     * Método que exibe o conteúdo de uma variável de configuração
+     * 
+     * @param	string	$var	-> o nome da variável
+     */
+    public function get_variavelComentario($variavel) {
+        $select = 'SELECT comentario
+                     FROM tbvariaveis
+                    WHERE nome = "' . $variavel . '"';
+        $valor = parent::select($select, false);
+        $count = parent::count($select);
+
+        if ($count > 0) {
+            return $valor[0];
+        } else {
+            alert('Variável não existemte');
+            return null;
+        }
+    }
+
+    ###########################################################
+
+
+    /**
      * Método get_idVariavel
      * Informa o id de uma variável
      * 
