@@ -6,16 +6,14 @@
  * 
  * By Alat
  */
-class AreaServidor
-{
+class AreaServidor {
 
     /**
      * Método cabecalho
      * 
      * Exibe o cabecalho
      */
-    public static function cabecalho($titulo = null)
-    {
+    public static function cabecalho($titulo = null) {
         # tag do cabeçalho
         echo '<header>';
 
@@ -61,13 +59,12 @@ class AreaServidor
      * 
      * @param    string $idUsuario -> Usuário logado
      */
-    public static function rodape($idUsuario, $barra = true)
-    {
+    public static function rodape($idUsuario, $barra = true) {
         # Limita a tela
         $grid = new Grid();
-        
+
         # Exibe faixa azul
-        if ($barra) {           
+        if ($barra) {
             $grid->abreColuna(12);
             titulo();
             $grid->fechaColuna();
@@ -78,11 +75,11 @@ class AreaServidor
         $intra = new Intra();
         p('Usuário : ' . $intra->get_usuario($idUsuario), 'usuarioLogado');
         $grid->fechaColuna();
-        
+
         # Exibe o desenvolvedor
         $grid->abreColuna(6);
         #p("Desenvolvido por André Águia", 'pauthor');
-        p("UENF - Universidade Estadual do Norte Fluminense Darcy Ribeiro",'pauthor');
+        p("UENF - Universidade Estadual do Norte Fluminense Darcy Ribeiro", 'pauthor');
         $grid->fechaColuna();
         $grid->fechaGrid();
     }
@@ -95,8 +92,7 @@ class AreaServidor
      * 
      * @param    string $idServidor -> idServidor do servidor
      */
-    public static function listaDadosUsuario($idUsuario)
-    {
+    public static function listaDadosUsuario($idUsuario) {
         # Conecta com o banco de dados
         $servidor = new Pessoal();
         $intra = new Intra();
@@ -156,30 +152,21 @@ class AreaServidor
      * 
      * @param    string $idUsuario -> Usuário logado
      */
-    public static function menuPrincipal($idUsuario)
-    {
+    public static function menuPrincipal($idUsuario) {
         # Cria Grid
         $grid = new Grid();
-        $grid->abreColuna(12,8);
-        
-            $grid2 = new Grid();
+        $grid->abreColuna(12, 4);
 
-            # Primeira Coluna
-            $grid2->abreColuna(12, 7);
-            self::moduloSobreServidor();
-            $grid2->fechaColuna();
+        self::moduloServidoresUniversidade($idUsuario);
 
-            # Segunda Coluna
-            $grid2->abreColuna(12, 5);
-            self::moduloSispatri();
-            $grid2->fechaColuna();           
-
-            $grid2->fechaGrid();
-        
-            self::moduloServidoresUniversidade($idUsuario);    
-        
         $grid->fechaColuna();
-        
+
+        $grid->abreColuna(12, 4);
+
+        self::moduloSobreServidor();
+
+        $grid->fechaColuna();
+
         # Sistemas
         $grid->abreColuna(12, 4);
         self::moduloSistemas($idUsuario);
@@ -196,8 +183,7 @@ class AreaServidor
      * 
      * @param    string $idUsuario -> Usuário logado
      */
-    public static function menuAdministracao($idUsuario)
-    {
+    public static function menuAdministracao($idUsuario) {
 
         # Cria Grid
         $grid = new Grid();
@@ -233,8 +219,7 @@ class AreaServidor
      * 
      * Exibe o menu de Servidores da Universidade
      */
-    private static function moduloServidoresUniversidade($idUsuario)
-    {
+    private static function moduloServidoresUniversidade($idUsuario) {
 
         $painel = new Callout();
         $painel->abre();
@@ -243,7 +228,7 @@ class AreaServidor
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(5);
+        $menu = new MenuGrafico(2);
 
         if (Verifica::acesso($idUsuario, 3)) {
             $botao = new BotaoGrafico();
@@ -253,8 +238,8 @@ class AreaServidor
             $botao->set_title('Lista geral de servidores');
             $menu->add_item($botao);
         }
-        
-         if (Verifica::acesso($idUsuario, 11)) {
+
+        if (Verifica::acesso($idUsuario, 11)) {
             $botao = new BotaoGrafico();
             $botao->set_label('Contatos');
             $botao->set_url('servidorContatos.php');
@@ -295,8 +280,7 @@ class AreaServidor
      * 
      * Exibe o menu de Legislação
      */
-    private static function moduloSobreServidor()
-    {
+    private static function moduloSobreServidor() {
 
         $painel = new Callout();
         $painel->abre();
@@ -305,7 +289,7 @@ class AreaServidor
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(2);
 
         $botao = new BotaoGrafico();
         $botao->set_label('Histórico de Afastamentos');
@@ -339,8 +323,7 @@ class AreaServidor
      * 
      * Exibe o menu de Legislação
      */
-    private static function modulolinksExternos()
-    {
+    private static function modulolinksExternos() {
 
         $painel = new Callout();
         $painel->abre();
@@ -382,8 +365,7 @@ class AreaServidor
      * 
      * Exibe o menu de Gestão de Usuários
      */
-    private static function moduloUsuarios($idUsuario)
-    {
+    private static function moduloUsuarios($idUsuario) {
 
         $painel = new Callout();
         $painel->abre();
@@ -439,8 +421,7 @@ class AreaServidor
      * 
      * Exibe o menu de Gestão da configuraçõa dos Sistemas
      */
-    private static function moduloAdministracaoSistemas($idUsuario)
-    {
+    private static function moduloAdministracaoSistemas($idUsuario) {
 
         $painel = new Callout();
         $painel->abre();
@@ -497,8 +478,7 @@ class AreaServidor
      * 
      * Exibe o menu de Gestão do Banco de dados
      */
-    private static function moduloBanco($idUsuario)
-    {
+    private static function moduloBanco($idUsuario) {
 
         $painel = new Callout();
         $painel->abre();
@@ -564,8 +544,7 @@ class AreaServidor
      * 
      * Exibe o menu de Informações do Servidor Web
      */
-    private static function moduloServidor($idUsuario)
-    {
+    private static function moduloServidor($idUsuario) {
 
         $painel = new Callout();
         $painel->abre();
@@ -605,8 +584,7 @@ class AreaServidor
      * 
      * Exibe o menu de Gestão de Projetos
      */
-    private static function moduloProjetos($idUsuario)
-    {
+    private static function moduloProjetos($idUsuario) {
 
         $painel = new Callout();
         $painel->abre();
@@ -666,8 +644,7 @@ class AreaServidor
      * 
      * Exibe informações do Servidor Web
      */
-    public static function moduloServidorWeb()
-    {
+    public static function moduloServidorWeb() {
 
         $painel = new Callout();
         $painel->abre();
@@ -736,8 +713,7 @@ class AreaServidor
      * 
      * Exibe informações do Servidor Php
      */
-    public static function moduloServidorPhp()
-    {
+    public static function moduloServidorPhp() {
 
         $painel = new Callout();
         $painel->abre();
@@ -806,8 +782,7 @@ class AreaServidor
      * 
      * Exibe o menu de Informações do Servidor Web
      */
-    private static function moduloSistemas($idUsuario)
-    {
+    private static function moduloSistemas($idUsuario) {
 
         $painel = new Callout();
         $painel->abre();
@@ -821,34 +796,6 @@ class AreaServidor
         $menu = new MenuGrafico(1);
         $menu->set_espacoEntreLink(true);
 
-        # Sei
-        $botao = new BotaoGrafico();
-        $botao->set_title('Sistema Eletrônico de Informações');
-        #$botao->set_label("Sei");
-        $botao->set_imagem(PASTA_FIGURAS . "sei.png", 220, 60);
-        $botao->set_url("https://sei.fazenda.rj.gov.br/sip/login.php?sigla_orgao_sistema=ERJ&sigla_sistema=SEI&infra_url=L3NlaS8=");
-        $botao->set_target("_blank");
-        $menu->add_item($botao);
-        
-        # SigFis
-        $botao = new BotaoGrafico();
-        $botao->set_title('Sistema Integrado de Gestão Fiscal');
-        #$botao->set_label("SigFis");
-        $botao->set_imagem(PASTA_FIGURAS . "sigfis.jpg", 180, 50);
-        $botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
-        $botao->set_target("_blank");
-        $menu->add_item($botao);
-        
-        # Siafe
-        $botao = new BotaoGrafico();
-        $botao->set_title('Sistema Integrado de Gestão Orçamentária, Financeira e Contábil do Rio de Janeiro');
-        #$botao->set_label("Siafe");
-        $botao->set_imagem(PASTA_FIGURAS . "siafe.png", 180, 50);
-        $botao->set_url("https://www5.fazenda.rj.gov.br/SiafeRio/faces/login.jsp;jsessionid=FfPAOZiFLVOws9w_lr7lfkdC1rdXFlgoZ4b0lI9DofE59ZJZilH4!-1875128395");
-        $botao->set_target("aba");
-        $menu->add_item($botao);
-        
-       
         # Sistema de gestão de contratos
         if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
             $botao = new BotaoGrafico();
@@ -858,6 +805,33 @@ class AreaServidor
             $botao->set_url('../../../contratos/sistema/cadastroContrato.php');
             $menu->add_item($botao);
         }
+
+        # Sei
+        $botao = new BotaoGrafico();
+        $botao->set_title('Sistema Eletrônico de Informações');
+        #$botao->set_label("Sei");
+        $botao->set_imagem(PASTA_FIGURAS . "sei.png", 220, 60);
+        $botao->set_url("https://sei.fazenda.rj.gov.br/sip/login.php?sigla_orgao_sistema=ERJ&sigla_sistema=SEI&infra_url=L3NlaS8=");
+        $botao->set_target("_blank");
+        $menu->add_item($botao);
+
+        # SigFis
+        $botao = new BotaoGrafico();
+        $botao->set_title('Sistema Integrado de Gestão Fiscal');
+        #$botao->set_label("SigFis");
+        $botao->set_imagem(PASTA_FIGURAS . "sigfis.jpg", 180, 50);
+        $botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
+        $botao->set_target("_blank");
+        $menu->add_item($botao);
+
+        # Siafe
+        $botao = new BotaoGrafico();
+        $botao->set_title('Sistema Integrado de Gestão Orçamentária, Financeira e Contábil do Rio de Janeiro');
+        #$botao->set_label("Siafe");
+        $botao->set_imagem(PASTA_FIGURAS . "siafe.png", 180, 50);
+        $botao->set_url("https://www5.fazenda.rj.gov.br/SiafeRio/faces/login.jsp;jsessionid=FfPAOZiFLVOws9w_lr7lfkdC1rdXFlgoZ4b0lI9DofE59ZJZilH4!-1875128395");
+        $botao->set_target("aba");
+        $menu->add_item($botao);
 
         $menu->show();
         $painel->fecha();
