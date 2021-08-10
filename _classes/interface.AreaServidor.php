@@ -155,23 +155,45 @@ class AreaServidor {
     public static function menuPrincipal($idUsuario) {
         # Cria Grid
         $grid = new Grid();
-        $grid->abreColuna(12, 4);
 
-        self::moduloServidoresUniversidade($idUsuario);
+        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
 
-        $grid->fechaColuna();
+            # Sistemas Externos
+            $grid->abreColuna(12, 8);
+            self::moduloSistemasExternos($idUsuario);
+            $grid->fechaColuna();
 
-        $grid->abreColuna(12, 4);
+            # Sistemas Internos
+            $grid->abreColuna(12, 4);
+            self::moduloSistemasInternos($idUsuario);
+            $grid->fechaColuna();
 
-        self::moduloSobreServidor();
+            # Dados da Universidade
+            $grid->abreColuna(12, 6);
+            self::moduloServidoresUniversidade($idUsuario);
+            $grid->fechaColuna();
 
-        $grid->fechaColuna();
+            # Dados do Usuário logado
+            $grid->abreColuna(12, 6);
+            self::moduloSobreServidor();
+            $grid->fechaColuna();
+        } else {
 
-        # Sistemas
-        $grid->abreColuna(12, 4);
-        self::moduloSistemas($idUsuario);
-        $grid->fechaColuna();
+            # Sistemas Externos
+            $grid->abreColuna(12);
+            self::moduloSistemasExternos($idUsuario);
+            $grid->fechaColuna();
 
+            # Dados da Universidade
+            $grid->abreColuna(12, 6);
+            self::moduloServidoresUniversidade($idUsuario);
+            $grid->fechaColuna();
+
+            # Àrea lateral
+            $grid->abreColuna(12, 6);
+            self::moduloSobreServidor();
+            $grid->fechaColuna();
+        }
         $grid->fechaGrid();
     }
 
@@ -228,7 +250,15 @@ class AreaServidor {
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(2);
+        # Varia o menu de acordo com o usuário
+        $itens = 3;
+
+        # Muda para 4 itens se tiver apenas mais um item
+        if (Verifica::acesso($idUsuario, 3) XOR Verifica::acesso($idUsuario, 11)) {
+            $itens = 4;
+        }
+
+        $menu = new MenuGrafico($itens);
 
         if (Verifica::acesso($idUsuario, 3)) {
             $botao = new BotaoGrafico();
@@ -289,7 +319,7 @@ class AreaServidor {
         $tamanhoImage = 64;
         br();
 
-        $menu = new MenuGrafico(2);
+        $menu = new MenuGrafico(3);
 
         $botao = new BotaoGrafico();
         $botao->set_label('Histórico de Afastamentos');
@@ -778,17 +808,17 @@ class AreaServidor {
     ###########################################################
 
     /**
-     * Método moduloSistemas
+     * Método moduloSistemasInternos
      * 
      * Exibe o menu de Informações do Servidor Web
      */
-    private static function moduloSistemas($idUsuario) {
+    private static function moduloSistemasInternos($idUsuario) {
 
         $painel = new Callout();
         $painel->abre();
 
         # Título
-        titulo('Sistemas');
+        titulo('Sistemas Internos');
         $tamanhoImage = 64;
         br();
 
@@ -799,12 +829,42 @@ class AreaServidor {
         # Sistema de gestão de contratos
         if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
             $botao = new BotaoGrafico();
-            $botao->set_label("Sistema de Gestão<br/>de Contratos");
+            $botao->set_label("Sistema de Gestão de Contratos");
             $botao->set_title("Sistema de Gestão de Contratos");
             $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
             $botao->set_url('../../../contratos/sistema/cadastroContrato.php');
             $menu->add_item($botao);
         }
+        $menu->show();
+        $painel->fecha();
+    }
+
+    ###########################################################
+
+    /**
+     * Método moduloSistemas
+     * 
+     * Exibe o menu de Informações do Servidor Web
+     */
+    private static function moduloSistemasExternos($idUsuario) {
+
+        $painel = new Callout();
+        $painel->abre();
+
+        # Título
+        titulo('Sistemas');
+        $tamanhoImage = 64;
+        br();
+        $itens = 3;
+
+        # Altera o menu de acordo com o usuário
+        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
+            $itens = 2;
+        }
+
+        # Inicia o menu
+        $menu = new MenuGrafico($itens);
+        $menu->set_espacoEntreLink(true);
 
         # Sei
         $botao = new BotaoGrafico();
@@ -819,8 +879,9 @@ class AreaServidor {
         $botao = new BotaoGrafico();
         $botao->set_title('Sistema Integrado de Gestão Fiscal');
         #$botao->set_label("SigFis");
-        $botao->set_imagem(PASTA_FIGURAS . "sigfis.jpg", 180, 50);
-        $botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
+        $botao->set_imagem(PASTA_FIGURAS . "tce.png", 180, 50);
+        #$botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
+        $botao->set_url("https://www.tcerj.tc.br/portalnovo/login");
         $botao->set_target("_blank");
         $menu->add_item($botao);
 
@@ -832,6 +893,17 @@ class AreaServidor {
         $botao->set_url("https://www5.fazenda.rj.gov.br/SiafeRio/faces/login.jsp;jsessionid=FfPAOZiFLVOws9w_lr7lfkdC1rdXFlgoZ4b0lI9DofE59ZJZilH4!-1875128395");
         $botao->set_target("aba");
         $menu->add_item($botao);
+
+        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
+            # SigFis Antigo
+            $botao = new BotaoGrafico();
+            $botao->set_title('Sistema Antigo');
+            #$botao->set_label("SigFis");
+            $botao->set_imagem(PASTA_FIGURAS . "sigfis.jpg", 180, 50);
+            $botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
+            $botao->set_target("_blank");
+            $menu->add_item($botao);
+        }
 
         $menu->show();
         $painel->fecha();
