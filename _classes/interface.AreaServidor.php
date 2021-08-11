@@ -881,7 +881,7 @@ class AreaServidor {
         #$botao->set_label("SigFis");
         $botao->set_imagem(PASTA_FIGURAS . "tce.png", 180, 50);
         #$botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
-        $botao->set_url("https://www.tcerj.tc.br/portalnovo/login");
+        $botao->set_url("https://www.tce.rj.gov.br/etcerj/");
         $botao->set_target("_blank");
         $menu->add_item($botao);
 
