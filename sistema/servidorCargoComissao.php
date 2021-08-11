@@ -105,6 +105,8 @@ if ($acesso) {
                                               WHERE ativo
                                           ORDER BY tbtipocomissao.simbolo');
 
+            array_unshift($result, array('*', '-- Todos --'));
+
             $controle = new Input('parametroCargoComissao', 'combo', 'Cargo em Comissão:', 1);
             $controle->set_size(30);
             $controle->set_title('Filtra por Cargo');
@@ -117,23 +119,32 @@ if ($acesso) {
             $form->show();
 
             # select
-            $select = 'SELECT DISTINCT tbservidor.idFuncional,
-                            tbservidor.matricula,
-                            tbpessoa.nome,
-                            tbcomissao.dtNom,
-                            idComissao,
-                            concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
-                       FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
-                                       LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
-                                       LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
-                                            JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
-                       WHERE tbcomissao.dtExo is null AND tbtipocomissao.idTipoComissao = "' . $parametroCargoComissao . '"                
-                  ORDER BY tbpessoa.nome';
+            $select = 'SELECT distinct tbservidor.idFuncional,
+                              tbpessoa.nome,
+                              concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao),
+                              tbcomissao.idComissao,
+                              tbcomissao.dtNom,
+                              tbperfil.nome
+                FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa) 
+                                LEFT JOIN tbperfil ON (tbservidor.idPerfil = tbperfil.idPerfil)
+                                LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
+                                LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
+                                     JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
+              WHERE tbservidor.situacao = 1
+                AND tbcomissao.dtExo is null';
+
+            # cargo em comissão
+            if ($parametroCargoComissao <> "*") {
+                $select .= ' AND tbtipocomissao.idTipoComissao = "' . $parametroCargoComissao . '"
+                        ORDER BY tbdescricaocomissao.descricao, tbcomissao.dtNom';
+            } else {
+                $select .= ' ORDER BY tbtipocomissao.idTipoComissao, tbdescricaocomissao.descricao, tbcomissao.dtNom';
+            }
 
             $result = $pessoal->select($select);
-            $label = array('IdFuncional', 'Matrícula', 'Nome', 'Nomeação', 'Nome do Cargo');
-            $align = array("center", "center", "left", "center", "left");
-            $function = array(null, "dv", null, "date_to_php", "descricaoComissao");
+            $label = array('IdFuncional', 'Nome', 'Cargo', 'Descrição', 'Nomeação', 'Perfil');
+            $align = array("center", "left", "left", "left");
+            $function = array(null, null, null, "descricaoComissao", "date_to_php");
 
             # Monta a tabela
             $tabela = new Tabela();
@@ -142,6 +153,8 @@ if ($acesso) {
             $tabela->set_titulo("Servidores Ativos nomeados para o cargo");
             $tabela->set_align($align);
             $tabela->set_funcao($function);
+            $tabela->set_rowspan(2);
+            $tabela->set_grupoCorColuna(2);
             $tabela->show();
 
             $grid->fechaColuna();
@@ -156,17 +169,43 @@ if ($acesso) {
         ###############################
         # Cria um relatório com a seleção atual
         case "relatorio" :
-            # Lista de Servidores Ativos
-            $lista = new ListaServidores('Servidores');
 
+            # Select
+            $select = 'SELECT distinct tbservidor.idFuncional,
+                              tbpessoa.nome,
+                              tbcomissao.idComissao,
+                              tbcomissao.dtNom,
+                              tbperfil.nome,
+                              concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
+                FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa) 
+                                LEFT JOIN tbperfil ON (tbservidor.idPerfil = tbperfil.idPerfil)
+                                LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
+                                LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
+                                     JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
+              WHERE tbservidor.situacao = 1
+                AND tbcomissao.dtExo is null';
+
+            # cargo em comissão
             if ($parametroCargoComissao <> "*") {
-                $lista->set_cargoComissao($parametroCargoComissao);
+                $select .= ' AND tbtipocomissao.idTipoComissao = "' . $parametroCargoComissao . '"';
             }
 
-            # Somente servidores ativos
-            $lista->set_situacao(1);
+            $select .= ' ORDER BY tbtipocomissao.idTipoComissao, tbdescricaocomissao.descricao, tbcomissao.dtNom';
 
-            $lista->showRelatorio();
+            $result = $pessoal->select($select);
+
+            $relatorio = new Relatorio();
+            $relatorio->set_titulo('Relatório de Servidores com Cargos em Comissão');
+            $relatorio->set_subtitulo('Agrupados por Cargo - Ordenados pelo Nome');
+            $relatorio->set_label(array('IdFuncional', 'Nome', 'Descrição', 'Nomeação', 'Perfil', ''));
+            $relatorio->set_funcao(array(null, null, "descricaoComissao", "date_to_php"));
+            #$relatorio->set_width(array(10,30,20,0,25,10));
+            $relatorio->set_align(array("center", "left", "left", "center", "center"));
+            #$relatorio->set_classe(array(null,null,null,null,"Pessoal"));
+            #$relatorio->set_metodo(array(null,null,null,null,"get_Lotacao"));
+            $relatorio->set_conteudo($result);
+            $relatorio->set_numGrupo(5);
+            $relatorio->show();
             break;
 
         ##################################################################
