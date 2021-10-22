@@ -199,8 +199,9 @@ if ($acesso) {
             # Divide a página em 2 colunas
             $grid = new Grid();
             $grid->abreColuna(2);
+            br();
 
-            $menu = new Menu("menuVertical2");
+            $menu = new Menu("menuVertical");
             $result = $intra->select('SELECT distinct categoria, categoria
                                               FROM tbvariaveis                                
                                           ORDER BY 1');
@@ -215,7 +216,6 @@ if ($acesso) {
             }
             $menu->show();
             $objeto->set_botaoListarExtra($menu);
-            br();
 
             $grid->fechaColuna();
 
