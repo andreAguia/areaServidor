@@ -60,7 +60,7 @@ if ($acesso) {
 
             $menu->show();
 
-            titulo('Importação de Progressão e Enquadramento de arquivo do Excell para o banco de dados');
+            titulo('Importação de Progressão de arquivo do Excell para o banco de dados');
             break;
 
         #########################################################################
@@ -272,7 +272,7 @@ if ($acesso) {
                 br();
                 echo "$problemaPerfil Registros de não estatutérios e não celetistas";
                 br();
-                echo "$problemaAdmissao Registros com progressão/Enquadramento antes de ser admitido";
+                echo "$problemaAdmissao Registros com progressão antes de ser admitido";
                 br();
                 echo "$problemaSalario Registros sem encontrar valor do salario";
 
@@ -307,7 +307,7 @@ if ($acesso) {
             # Arquivo a ser importado
             $arquivo = "../importacao/fen005.csv";
 
-            titulo('Importação da tabela de Progressão & Enquadramento');
+            titulo('Importação da tabela de Progressão');
 
             # Cria um painel
             $painel = new Callout();
@@ -461,7 +461,7 @@ if ($acesso) {
                 br();
                 echo "$problemaPerfil Registros de não estatutérios e não celetistas";
                 br();
-                echo "$problemaAdmissao Registros com progressão/Enquadramento antes de ser admitido";
+                echo "$problemaAdmissao Registros com progressão antes de ser admitido";
                 br();
                 echo "$problemaSalario Registros sem encontrar valor do salario";
             } else {

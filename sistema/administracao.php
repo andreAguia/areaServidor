@@ -131,12 +131,12 @@ if ($acesso) {
             $botao->set_title('Importação da Tabela de Férias do SigRH');
             #$menu->add_item($botao);
 
-            # Progressão e Enquadramento
+            # Progressão
             $botao = new BotaoGrafico();
-            $botao->set_label('Progressão e Enquadramento');
+            $botao->set_label('Progressão');
             $botao->set_url('importaProgressao.php');
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Importação da Tabela de Progressão e enquadramento');
+            $botao->set_title('Importação da Tabela de Progressão');
             #$menu->add_item($botao);
             # Faltas
             $botao = new BotaoGrafico();
