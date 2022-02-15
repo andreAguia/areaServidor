@@ -37,7 +37,8 @@ if ($acesso) {
     }
 
     # Zera sessions
-    set_session('categoria');   // session de pesquisa da rotina de configuraçoes
+    set_session('categoria');
+    
     # Limita o tamanho da tela
     $grid1 = new Grid();
     $grid1->abreColuna(12);
@@ -107,13 +108,21 @@ if ($acesso) {
             $menu = new MenuGrafico(5);
             br();
             
+            # Atualização do plano
+            $botao = new BotaoGrafico();
+            $botao->set_label('Atualização do plano');
+            $botao->set_url('atualizacaoPlano.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Atualiza a tabela de acordo com o Decreto 47933 / 2022');
+            $menu->add_item($botao);
+            
             # Transformação de Regime
             $botao = new BotaoGrafico();
             $botao->set_label('Regime');
             $botao->set_url('importacaoRegime.php');
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Preenche com a data da transformação do regime');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
 
             # Dependentes
             $botao = new BotaoGrafico();
