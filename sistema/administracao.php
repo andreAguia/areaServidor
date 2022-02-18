@@ -105,70 +105,70 @@ if ($acesso) {
             # Define o tamanho do ícone
             $tamanhoImage = 60;
 
-            $menu = new MenuGrafico(5);
-            br();
-            
-            # Atualização do plano
-            $botao = new BotaoGrafico();
-            $botao->set_label('Atualização do plano');
-            $botao->set_url('atualizacaoPlano.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Atualiza a tabela de acordo com o Decreto 47933 / 2022');
-            $menu->add_item($botao);
-            
-            # Transformação de Regime
-            $botao = new BotaoGrafico();
-            $botao->set_label('Regime');
-            $botao->set_url('importacaoRegime.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Preenche com a data da transformação do regime');
-            #$menu->add_item($botao);
-
-            # Dependentes
-            $botao = new BotaoGrafico();
-            $botao->set_label('Dependentes');
-            $botao->set_url('importacaoDependentes.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Importação da Tabela de Dependentes do SigRH');
-            #$menu->add_item($botao);
-            
-            # Férias
-            $botao = new BotaoGrafico();
-            $botao->set_label('Férias');
-            $botao->set_url('importacaoFerias.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Importação da Tabela de Férias do SigRH');
-            #$menu->add_item($botao);
-
-            # Progressão
-            $botao = new BotaoGrafico();
-            $botao->set_label('Progressão');
-            $botao->set_url('importaProgressao.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Importação da Tabela de Progressão');
-            #$menu->add_item($botao);
-            # Faltas
-            $botao = new BotaoGrafico();
-            $botao->set_label('Faltas');
-            $botao->set_url('importacaoFaltas.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Importação da Tabela de Faltas do SigRH');
-            #$menu->add_item($botao);
-            # Contatos
-            $botao = new BotaoGrafico();
-            $botao->set_label('Contatos');
-            $botao->set_url('?fase=contatos');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Importação da antiga tabela de contatos');
-            #$menu->add_item($botao);
-            # sispatri
-            $botao = new BotaoGrafico();
-            $botao->set_label('Sispatri');
-            $botao->set_url('?fase=sispatri');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
-            #$menu->add_item($botao);
-            $menu->show();
+//            $menu = new MenuGrafico(5);
+//            br();
+//            
+//            # Atualização do plano
+//            $botao = new BotaoGrafico();
+//            $botao->set_label('Atualização do plano');
+//            $botao->set_url('atualizacaoPlano.php');
+//            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+//            $botao->set_title('Atualiza a tabela de acordo com o Decreto 47933 / 2022');
+//            #$menu->add_item($botao);
+//            
+//            # Transformação de Regime
+//            $botao = new BotaoGrafico();
+//            $botao->set_label('Regime');
+//            $botao->set_url('importacaoRegime.php');
+//            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+//            $botao->set_title('Preenche com a data da transformação do regime');
+//            #$menu->add_item($botao);
+//
+//            # Dependentes
+//            $botao = new BotaoGrafico();
+//            $botao->set_label('Dependentes');
+//            $botao->set_url('importacaoDependentes.php');
+//            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+//            $botao->set_title('Importação da Tabela de Dependentes do SigRH');
+//            #$menu->add_item($botao);
+//            
+//            # Férias
+//            $botao = new BotaoGrafico();
+//            $botao->set_label('Férias');
+//            $botao->set_url('importacaoFerias.php');
+//            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+//            $botao->set_title('Importação da Tabela de Férias do SigRH');
+//            #$menu->add_item($botao);
+//
+//            # Progressão
+//            $botao = new BotaoGrafico();
+//            $botao->set_label('Progressão');
+//            $botao->set_url('importaProgressao.php');
+//            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+//            $botao->set_title('Importação da Tabela de Progressão');
+//            #$menu->add_item($botao);
+//            # Faltas
+//            $botao = new BotaoGrafico();
+//            $botao->set_label('Faltas');
+//            $botao->set_url('importacaoFaltas.php');
+//            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+//            $botao->set_title('Importação da Tabela de Faltas do SigRH');
+//            #$menu->add_item($botao);
+//            # Contatos
+//            $botao = new BotaoGrafico();
+//            $botao->set_label('Contatos');
+//            $botao->set_url('?fase=contatos');
+//            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+//            $botao->set_title('Importação da antiga tabela de contatos');
+//            #$menu->add_item($botao);
+//            # sispatri
+//            $botao = new BotaoGrafico();
+//            $botao->set_label('Sispatri');
+//            $botao->set_url('?fase=sispatri');
+//            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+//            $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
+//            #$menu->add_item($botao);
+//            $menu->show();
             break;
 
 ########################################################################################
