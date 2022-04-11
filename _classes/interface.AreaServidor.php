@@ -496,6 +496,15 @@ class AreaServidor {
         $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
         $botao->set_url('documentacao.php');
         $menu->add_item($botao);
+        
+        # Menu de Documentos
+        $botao = new BotaoGrafico();
+        $botao->set_label('Menu de Documentos');
+        #$botao->set_target('blank');
+        $botao->set_title('Menu de Documentos do sistema GRH');
+        $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
+        $botao->set_url("../../grh/grhSistema/cadastroMenuDocumentos.php");
+        $menu->add_item($botao);
 
         $menu->show();
         $painel->fecha();
