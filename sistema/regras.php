@@ -68,9 +68,9 @@ if ($acesso) {
     $objeto->set_orderChamador('?fase=listar');
 
     # Parametros da tabela
-    $objeto->set_label(array("Num", "Nome", "Descrição", "Servidores", "Ver"));
-    $objeto->set_width(array(5, 25, 45, 10, 5));
-    $objeto->set_align(array("center", "left", "left"));
+    $objeto->set_label(["Num", "Nome", "Descrição", "Servidores", "Ver"]);
+    $objeto->set_width([5, 25, 45, 10, 5]);
+    $objeto->set_align(["center", "left", "left"]);
 
     # select da lista
     $objeto->set_selectLista('SELECT idRegra,
@@ -96,8 +96,8 @@ if ($acesso) {
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
 
-    $objeto->set_classe(array(null, null, null, "Intra"));
-    $objeto->set_metodo(array(null, null, null, "get_numeroUsuariosPermissao"));
+    $objeto->set_classe([null, null, null, "Intra"]);
+    $objeto->set_metodo([null, null, null, "get_numeroUsuariosPermissao"]);
 
     # Botão de exibição dos servidores com permissão a essa regra
     $botao = new BotaoGrafico();
