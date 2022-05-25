@@ -187,10 +187,13 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
                     } elseif (date("m-d") == "10-28") {
                         loadPage('?fase=diaServidor');
                     } else {
-
-                        if (Verifica::acesso($idUsuario, 2)) {
+                        # Redireciona para o sistema GRH
+                        if (Verifica::acesso($idUsuario, [2, 12])) {
                             loadPage("../../grh/grhSistema/grh.php");
-                        } else {
+                        }
+
+                        # Redireciona para a área do Servidor
+                        if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
                             loadPage('areaServidor.php');
                         }
                     }
@@ -225,6 +228,19 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
 
                     # Grava no log a atividade
                     $intra->registraLog(null, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') em Computador não autorizado (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', null, null, 5);
+
+                    # Retorna a página de login
+                    loadPage('login.php');
+                    break;
+
+                ##################################################
+
+                case 6: // Usuário não ativo
+                    # Informa o Erro
+                    alert('O Usuário não é servidor ativo da Uenf.');
+
+                    # Grava no log a atividade
+                    $intra->registraLog(null, date("Y-m-d H:i:s"), 'Tentativa de Login com usuário (' . $usuario . ') não ativo na Uenf (' . BROWSER_NAME . ' ' . BROWSER_VERSION . ' - ' . SO . ')', null, null, 5);
 
                     # Retorna a página de login
                     loadPage('login.php');
@@ -325,14 +341,14 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
             $div = new Div("center");
             $div->abre();
             p('<h5>Querido servidor, parabéns pelo</h5>');
-            
+
             $img = new Imagem(PASTA_FIGURAS . "servidor.jpg", "Parabéns Servidor", '500', '500');
             $img->show();
-            
+
             $div->fecha();
             br();
-                        
-            p('O serviço público é uma vocação, é trabalhar todos os dias por uma sociedade melhor !!<br>A GRH te deseja um Feliz Dia do Servidor Público.','center');
+
+            p('O serviço público é uma vocação, é trabalhar todos os dias por uma sociedade melhor !!<br>A GRH te deseja um Feliz Dia do Servidor Público.', 'center');
 
             # Grava no log a atividade
             $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Recebeu os parabéns do sistema pelo dia do servidor público.', null, null, 7);

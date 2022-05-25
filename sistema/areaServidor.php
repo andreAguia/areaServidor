@@ -12,7 +12,7 @@ $idUsuario = null;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario);
+$acesso = Verifica::acesso($idUsuario, [1, 3, 9, 10, 11]);
 
 if ($acesso) {
     # Conecta ao Banco de Dados
@@ -67,8 +67,7 @@ if ($acesso) {
     $grid1 = new Grid();
     $grid1->abreColuna(12);
 
-    switch ($fase)
-    {
+    switch ($fase) {
         # Exibe o Menu Inicial
         case "menu" :
             # Cria um menu
@@ -206,7 +205,7 @@ if ($acesso) {
             $afast->set_idServidor($idServidor);
             $afast->set_ano($parametroAno);
             $afast->exibeTabela();
-            
+
             # Grava no log a atividade
             $atividade = 'Visualizou o próprio histórico de afastamento na área do servidor';
             $Objetolog = new Intra();

@@ -17,7 +17,7 @@ class Verifica {
      */
     static function acesso($idUsuario, $rotina = null) {
         # Flag de permissão do acesso
-        $acesso = true;
+        $acesso = false;
         $manutencao = false;
 
         $intra = new Intra();
@@ -32,7 +32,7 @@ class Verifica {
             $acesso = false;
         }
 
-        # Verifica se $idUsuario é nula acesso bloqueado para a área do servidor
+        # Verifica se $idUsuario é nula (usuário bloqueado)
         if (($intra->get_senha($idUsuario) == '') and ($idUsuario <> 0)) {
             $acesso = false;
         }
@@ -47,14 +47,14 @@ class Verifica {
 
             if (is_array($rotina)) {
                 foreach ($rotina as $tt) {
-                    if (($intra->verificaPermissao($idUsuario, $tt))) {
+                    if ($intra->verificaPermissao($idUsuario, $tt)) {
                         $acesso = true;
                         break;
                     }
                 }
             } else {
-                if (!($intra->verificaPermissao($idUsuario, $rotina))) {
-                    $acesso = false;
+                if ($intra->verificaPermissao($idUsuario, $rotina)) {
+                    $acesso = true;
                 }
             }
         }

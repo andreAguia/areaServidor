@@ -156,7 +156,7 @@ class AreaServidor {
         # Cria Grid
         $grid = new Grid();
 
-        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
+        if (Verifica::acesso($idUsuario, [1, 9, 10])) {
 
             # Sistemas Externos
             $grid->abreColuna(12, 8);
@@ -177,7 +177,9 @@ class AreaServidor {
             $grid->abreColuna(12, 6);
             self::moduloSobreServidor();
             $grid->fechaColuna();
-        } else {
+        }
+
+        if (Verifica::acesso($idUsuario, [3, 11, 12])) {
 
             # Sistemas Externos
             $grid->abreColuna(12);
@@ -250,17 +252,9 @@ class AreaServidor {
         $tamanhoImage = 64;
         br();
 
-        # Varia o menu de acordo com o usuário
-        $itens = 3;
+        $menu = new MenuGrafico(3);
 
-        # Muda para 4 itens se tiver apenas mais um item
-        if (Verifica::acesso($idUsuario, 3) XOR Verifica::acesso($idUsuario, 11)) {
-            $itens = 4;
-        }
-
-        $menu = new MenuGrafico($itens);
-
-        if (Verifica::acesso($idUsuario, 3)) {
+        if (Verifica::acesso($idUsuario, [1, 3])) {
             $botao = new BotaoGrafico();
             $botao->set_label('Geral');
             $botao->set_url('servidorGeral.php');
@@ -269,7 +263,7 @@ class AreaServidor {
             $menu->add_item($botao);
         }
 
-        if (Verifica::acesso($idUsuario, 11)) {
+        if (Verifica::acesso($idUsuario, [1, 11])) {
             $botao = new BotaoGrafico();
             $botao->set_label('Contatos');
             $botao->set_url('servidorContatos.php');
@@ -496,7 +490,7 @@ class AreaServidor {
         $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
         $botao->set_url('documentacao.php');
         $menu->add_item($botao);
-        
+
         # Menu de Documentos
         $botao = new BotaoGrafico();
         $botao->set_label('Menu de Documentos');
@@ -832,16 +826,31 @@ class AreaServidor {
         br();
 
         # Inicia o menu
-        $menu = new MenuGrafico(1);
+        if (Verifica::acesso($idUsuario, 1)) {
+            $menu = new MenuGrafico(2);
+        }
+
+        if (Verifica::acesso($idUsuario, [9, 10])) {
+            $menu = new MenuGrafico(1);
+        }
         $menu->set_espacoEntreLink(true);
 
         # Sistema de gestão de contratos
-        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
+        if (Verifica::acesso($idUsuario, [1, 9, 10])) {
             $botao = new BotaoGrafico();
-            $botao->set_label("Sistema de Gestão de Contratos");
+            $botao->set_label("Sistema de Contratos");
             $botao->set_title("Sistema de Gestão de Contratos");
             $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
             $botao->set_url('../../../contratos/sistema/cadastroContrato.php');
+            $menu->add_item($botao);
+        }
+
+        if (Verifica::acesso($idUsuario, 1)) {
+            $botao = new BotaoGrafico();
+            $botao->set_label('Sistema de Pessoal');
+            $botao->set_title('Sistema de Pessoal');
+            $botao->set_url('../../../grh/grhSistema/grh.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'servidores.png', $tamanhoImage, $tamanhoImage);
             $menu->add_item($botao);
         }
         $menu->show();
@@ -867,7 +876,7 @@ class AreaServidor {
         $itens = 3;
 
         # Altera o menu de acordo com o usuário
-        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
+        if (Verifica::acesso($idUsuario, 9)) {
             $itens = 2;
         }
 
@@ -903,7 +912,7 @@ class AreaServidor {
         $botao->set_target("aba");
         $menu->add_item($botao);
 
-        if (Verifica::acesso($idUsuario, 9) OR Verifica::acesso($idUsuario, 10)) {
+        if (Verifica::acesso($idUsuario, 9)) {
             # SigFis Antigo
             $botao = new BotaoGrafico();
             $botao->set_title('Sistema Antigo');

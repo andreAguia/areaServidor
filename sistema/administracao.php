@@ -56,7 +56,7 @@ if ($acesso) {
             $menu = new MenuBar();
 
             # Voltar
-            $linkVoltar = new Link("Voltar", "../../grh/grhSistema/grh.php");
+            $linkVoltar = new Link("Voltar", "areaServidor.php");
             $linkVoltar->set_class('button');
             $linkVoltar->set_title('Voltar');
             $menu->add_link($linkVoltar, "left");
@@ -65,7 +65,7 @@ if ($acesso) {
             $linkArea = new Link("Área do Servidor", "areaServidor.php");
             $linkArea->set_class('button');
             $linkArea->set_title('Área do Servidor');
-            $menu->add_link($linkArea, "right");
+            #$menu->add_link($linkArea, "right");
 
             $menu->show();
 

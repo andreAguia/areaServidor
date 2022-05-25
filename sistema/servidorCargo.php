@@ -12,7 +12,7 @@ $idUsuario = null;
 include ("_config.php");
 
 # Verifica se o usuário está logado
-$acesso = Verifica::acesso($idUsuario);
+$acesso = Verifica::acesso($idUsuario,[1, 3, 9, 10, 11]);
 
 if ($acesso) {
     # Conecta ao Banco de Dados

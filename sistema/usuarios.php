@@ -487,7 +487,7 @@ if ($acesso) {
                                          FROM tbpermissao
                                         WHERE idUsuario = $id
                                           AND tbregra.idRegra = tbpermissao.idRegra)
-                         ORDER BY nome";
+                         ORDER BY idRegra";
 
                 $conteudo = $intra->select($select, true);
 
@@ -530,7 +530,7 @@ if ($acesso) {
                                   tbpermissao.idPermissao
                              FROM tbregra LEFT JOIN tbpermissao on tbregra.idRegra = tbpermissao.idRegra
                             WHERE tbpermissao.idUsuario = ' . $id . '
-                         ORDER BY tbregra.nome';
+                         ORDER BY idRegra';
 
                 $conteudo = $intra->select($select, true);
 

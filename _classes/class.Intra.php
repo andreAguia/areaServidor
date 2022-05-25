@@ -156,7 +156,6 @@ class Intra extends Bd {
 
     ###########################################################
 
-
     /**
      * Método get_idVariavel
      * Informa o id de uma variável
@@ -218,6 +217,12 @@ class Intra extends Bd {
         # Verifica se o usuário existe
         if (is_null($idUsuario)) {
             return 0;
+        }
+
+        # Verifica se o usuário é ativo
+        $pessoal = new Pessoal();
+        if ($pessoal->get_idSituacao($this->get_idServidor($idUsuario)) <> 1) {
+            return 6;
         }
 
         # Verifica se a senha é nula. Seja pq nâo foi digitada ou pq o usuário está desabilitado.
@@ -460,33 +465,23 @@ class Intra extends Bd {
      * @param	integer $matricula	-> a matrícula
      * @param	integer	$idRegra	-> o id da regra
      */
-    public function verificaPermissao($idUsuario, $idRegra) {
+    public function verificaPermissao($idUsuario = null, $idRegra = null) {
         $select = 'SELECT idPermissao
                      FROM tbpermissao
                     WHERE idUsuario = ' . $idUsuario . ' AND idRegra = ' . $idRegra;
 
         # verifica se o id foi preenchido
-        if (is_null($idUsuario)) {
+        if (empty($idUsuario)) {
             return false;
         } else {
             $numReg = parent::count($select);
-
-            #echo $idUsuario."-".$idRegra."-".$numReg."-".CHAMADOR;
+            
+            #echo "idUsuario: {$idUsuario} - idRegra: {$idRegra} - numReg: {$numReg}";br();
             # verifica se tem permissão para esse usuário e essa regra 
             if ($numReg > 0) {
                 return true;
             } else {
-                # se não tiver para essa regra pode ter para admin
-                if ($idRegra == 1) {
-                    return false;
-                } else {
-                    # verifica se tem para admin
-                    if ($this->verificaPermissao($idUsuario, 1)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
+                return false;
             }
         }
     }

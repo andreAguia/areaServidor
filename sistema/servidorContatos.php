@@ -12,7 +12,7 @@ $idUsuario = null;
 include ("_config.php");
 
 # Verifica se o usuário está logado
-$acesso = Verifica::acesso($idUsuario);
+$acesso = Verifica::acesso($idUsuario, [1, 11]);
 
 if ($acesso) {
     # Conecta ao Banco de Dados
@@ -106,7 +106,7 @@ if ($acesso) {
             $tabela->set_titulo("Contatos dos Servidores Ativos");
             $tabela->set_conteudo($conteudo);
             $tabela->set_label(array("ID/Matrícula", "Servidor", "Lotação", "E-mails", "Telefones"));
-            $tabela->set_width(array(10,30,25,20,15));
+            $tabela->set_width(array(10, 30, 25, 20, 15));
             $tabela->set_align(array("center", "left", "left", "left", "left"));
             $tabela->set_classe(array("pessoal", "pessoal", "pessoal", "pessoal", "pessoal", "pessoal"));
             $tabela->set_metodo(array("get_idFuncionalEMatricula", "get_nomeECargo", "get_lotacao", "get_emails", "get_telefones"));
@@ -114,14 +114,14 @@ if ($acesso) {
             $tabela->set_textoRessaltado($parametroNome);
             $tabela->show();
         }
-    }else{
+    } else {
         tituloTable("Contatos dos Servidores Ativos");
-            $callout = new Callout();
-            $callout->abre();
-            br(2);
-            p('Digite um nome para pesquisar', 'center');
-            br();
-            $callout->fecha();
+        $callout = new Callout();
+        $callout->abre();
+        br(2);
+        p('Digite um nome para pesquisar', 'center');
+        br();
+        $callout->fecha();
     }
 
     $grid->fechaColuna();

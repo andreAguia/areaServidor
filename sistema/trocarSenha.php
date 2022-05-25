@@ -11,7 +11,7 @@ $idUsuario = null;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario);
+$acesso = Verifica::acesso($idUsuario, [1, 2, 3, 9, 10, 11, 12]);
 
 if ($acesso) {
 
@@ -42,7 +42,7 @@ if ($acesso) {
     switch ($fase) {
         case "":
             # Botão voltar
-            if (Verifica::acesso($idUsuario, 2)) {
+            if (Verifica::acesso($idUsuario, [1, 2])) {
                 $pagina = '../../grh/grhSistema/grh.php';
             } else {
                 $pagina = 'areaServidor.php';
@@ -69,10 +69,13 @@ if ($acesso) {
             # Exibe os dados do Servidor
             Grh::listaDadosServidor($intra->get_idServidor($idUsuario));
 
+            # Pega o nome do usuário logado
+            $nickUser = $intra->get_nickUsuario($idUsuario);
+            p("Usuário: {$nickUser}", "f14", "center");
+
             # Limita a tela
             $grid = new Grid("center");
             $grid->abreColuna(5);
-            br();
 
             titulo('Alteração da Senha');
 
