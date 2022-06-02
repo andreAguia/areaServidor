@@ -24,13 +24,17 @@ if ($acesso) {
 
     # pega o id se tiver)
     $id = soNumeros(get('id'));
+    
+    # Pega o parametro de pesquisa (se tiver)
+    if (is_null(post('parametro'))) {     # Se o parametro n?o vier por post (for nulo)
+        $parametro = retiraAspas(get_session('sessionParametro'));
+    } else {  # passa o parametro da session para a variavel parametro retirando as aspas
+        $parametro = post('parametro');                # Se vier por post, retira as aspas e passa para a variavel parametro
+        set_session('sessionParametro', $parametro);    # transfere para a session para poder recuperá-lo depois
+    }
 
     # pega o id do computador para quando for emitir ficha de OS
     $computador = get('regra');
-
-    # Ordem da tabela
-    $orderCampo = get('orderCampo');
-    $orderTipo = get('orderTipo');
 
     # Começa uma nova página
     $page = new Page();
@@ -53,19 +57,9 @@ if ($acesso) {
     # botão de voltar da lista   
     $objeto->set_voltarLista('administracao.php');
 
-    # ordenação
-    if (is_null($orderCampo)) {
-        $orderCampo = 1;
-    }
-
-    if (is_null($orderTipo)) {
-        $orderTipo = 'asc';
-    }
-
-    # ordem da lista
-    $objeto->set_orderCampo($orderCampo);
-    $objeto->set_orderTipo($orderTipo);
-    $objeto->set_orderChamador('?fase=listar');
+    # controle de pesquisa
+    $objeto->set_parametroLabel('Pesquisar');
+    $objeto->set_parametroValue($parametro);
 
     # Parametros da tabela
     $objeto->set_label(["Num", "Nome", "Descrição", "Servidores", "Ver"]);
@@ -79,7 +73,9 @@ if ($acesso) {
                                      idRegra,
                                      idRegra
                                 FROM tbregra
-                            ORDER BY ' . $orderCampo . ' ' . $orderTipo);
+                               WHERE nome LIKE "%' . $parametro . '%"
+                                  OR descricao LIKE "%' . $parametro . '%"
+                            ORDER BY idRegra');
 
     $objeto->set_botaoExcluir(true);
     $objeto->set_botaoIncluir(true);
