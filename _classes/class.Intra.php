@@ -540,7 +540,8 @@ class Intra extends Bd {
      * @param	$browser		string		o browser usado pelo usuário
 
      */
-    public function registraLog($idUsuario,
+    public function registraLog(
+            $idUsuario,
             $data,
             $atividade,
             $tabela = null,
