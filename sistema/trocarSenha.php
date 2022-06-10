@@ -168,7 +168,7 @@ if ($acesso) {
                 $atividade = 'Alterou a própria senha';
                 $intra->registraLog($idUsuario, $data, $atividade, 'tbusuario', $idUsuario, 2, $idServidor);
 
-                if (Verifica::acesso($idUsuario, 2)) {
+                if (Verifica::acesso($idUsuario, [1, 2])) {
                     loadPage("../../grh/grhSistema/grh.php");
                 } else {
                     loadPage('areaServidor.php');

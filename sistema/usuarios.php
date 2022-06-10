@@ -79,8 +79,10 @@ if ($acesso) {
                                       idServidor,
                                       idUsuario,
                                       idUsuario
-                                 FROM tbusuario
+                                 FROM tbusuario JOIN uenf_grh.tbservidor USING (idServidor)
+                                                JOIN uenf_grh.tbpessoa USING (idPessoa)
                                 WHERE usuario LIKE "%' . $parametro . '%"
+                                   OR uenf_grh.tbpessoa.nome LIKE "%' . $parametro . '%"
                              ORDER BY (senha is null), ultimoAcesso desc');
 
     # select do edita
