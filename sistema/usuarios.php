@@ -220,6 +220,7 @@ if ($acesso) {
                 $botaoPadrao = new Button("Padrão", '?fase=senhaPadrao&id=' . $id);
                 $botaoPadrao->set_title("Passa para senha padrão");
                 $botaoPadrao->set_class('success button');
+                $botaoPadrao->set_confirma('Tem certeza que deseja passar o usuário para a senha padrão?');
                 $menu1->add_link($botaoPadrao, "right");
             }
 
@@ -227,6 +228,7 @@ if ($acesso) {
             if ($statusUsuario <> 2) { # Verifica se já está bloqueado
                 if ($id <> $idUsuario) { # Impede o usuário bloquear a si próprio
                     $botaoBloquear = new Button("Bloquear", '?fase=bloquear&id=' . $id);
+                    $botaoBloquear->set_confirma('Tem certeza que deseja bloquear o usuário?');
                     $botaoBloquear->set_title("Bloqueia o acesso desse servidor a área do servidor. (passa a senha para null)");
                     $botaoBloquear->set_class('alert button');
                     $menu1->add_link($botaoBloquear, "right");
