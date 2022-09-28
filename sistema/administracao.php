@@ -308,9 +308,9 @@ if ($acesso) {
                                 $diaselec = $dia;
                                 $grid->abreColuna(3);
 
-                                $field = new Fieldset($dia);
-                                $field->set_class('fieldset');
+                                $field = new Fieldset();
                                 $field->abre();
+                                titulotable($dia);
                             }
                             # Exibe o arquivo
                             echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
