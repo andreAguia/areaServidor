@@ -277,6 +277,9 @@ if ($acesso) {
                 # Classificar os arquivos para a Ordem Crescente
                 sort($arrayArquivos, SORT_STRING);
 
+                # Abre a grid
+                $grid = new Grid("center");
+
                 # Mostra a listagem dos Arquivos
                 foreach ($arrayArquivos as $valorArquivos) {
 
@@ -291,13 +294,8 @@ if ($acesso) {
                     # Compara se é o ano desejado
                     if ($ano == $parametroAno) {
 
-                        # Abre a grid
-                        $grid = new Grid("center");
-
                         # Compara se já teve título do mês
                         if ($mes == $parametroMes) {
-
-
 
                             if ($dia <> $diaselec) {
                                 # Verifica se o dia é zero e não fechao fieldset
@@ -317,11 +315,11 @@ if ($acesso) {
                             # Exibe o arquivo
                             echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
                         }
-
-                        $grid->fechaColuna();
-                        $grid->fechaGrid();
                     }
                 }
+
+                $grid->fechaColuna();
+                $grid->fechaGrid();
             } else {
                 br(3);
                 p("Não existe nenhum arquivo de backup!", "center");
