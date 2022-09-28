@@ -302,14 +302,14 @@ if ($acesso) {
                                 if ($diaselec <> 0) {
                                     $field->fecha();
 
-                                    if (diaSemana("{$dia}/{$mes}/{$ano}") <> "Sábado") {
+                                    if (diaSemana("{$dia}/{$mes}/{$ano}") <> "Domingo") {
                                         $grid->fechaColuna();
                                     }
                                 }
 
                                 # muda o dia selecionado
                                 $diaselec = $dia;
-                                if (diaSemana("{$dia}/{$mes}/{$ano}") <> "Sábado") {
+                                if (diaSemana("{$dia}/{$mes}/{$ano}") <> "Domingo") {
                                     $grid->abreColuna(3);
                                 }
 
