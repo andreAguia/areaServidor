@@ -26,6 +26,9 @@ class EnviaEmail {
     private $mensagem = null;       // A mensagem
     private $assunto = null;        // O assunto
     private $anexo = array();       // array com anexos
+    
+    # Erro
+    public $erro;
 
     ###########################################################
 
@@ -178,7 +181,7 @@ class EnviaEmail {
 
         # Exibe uma mensagem de resultado
         if (!$enviado) {
-            alert("Não foi possível enviar o e-mail.\n $mail->ErrorInfo");
+            $this->erro = "Não foi possível enviar o e-mail.". $mail->ErrorInfo;
         }
     }
 
