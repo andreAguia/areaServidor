@@ -311,6 +311,7 @@ if ($acesso) {
                                 $field = new Fieldset();
                                 $field->abre();
                                 titulotable($dia);
+                                br();
                             }
                             # Exibe o arquivo
                             echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
