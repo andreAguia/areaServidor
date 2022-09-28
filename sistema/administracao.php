@@ -310,7 +310,7 @@ if ($acesso) {
 
                                 $field = new Fieldset();
                                 $field->abre();
-                                titulotable($dia);
+                                titulotable($dia." - ".diaSemana("{$dia}/{$mes}/{$ano}"));
                                 br();
                             }
                             # Exibe o arquivo
