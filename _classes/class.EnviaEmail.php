@@ -181,7 +181,7 @@ class EnviaEmail {
 
         # Exibe uma mensagem de resultado
         if (!$enviado) {
-            $this->erro = "Não foi possível enviar o e-mail.<br/>". $mail->ErrorInfo;
+            $this->erro = "Não foi possível enviar o e-mail de backup.<br/>". $mail->ErrorInfo;
         }
     }
 
