@@ -25,7 +25,9 @@ if ($acesso) {
     $metodo = get('sistema'); # Qual o sistema. Usado na rotina de Documentação
 
     $parametroAno = post('parametroAno', get_session('parametroAno', date("Y")));
+    $parametroMes = post('parametroMes', date("m"));
     set_session('parametroAno', $parametroAno);
+    set_session('parametroMes', $parametroMes);
 
     # Começa uma nova página
     $page = new Page();
@@ -38,7 +40,7 @@ if ($acesso) {
 
     # Zera sessions
     set_session('categoria');
-    
+
     # Limita o tamanho da tela
     $grid1 = new Grid();
     $grid1->abreColuna(12);
@@ -198,6 +200,14 @@ if ($acesso) {
             $linkBotao1->set_accessKey('V');
             $menu->add_link($linkBotao1, "left");
 
+            # Backup Manual
+            $linkBotao2 = new Link("Backup Manual", '?fase=backup');
+            $linkBotao2->set_class('button');
+            $linkBotao2->set_title('Backup manual do banco de dados');
+            $menu->add_link($linkBotao2, "right");
+
+            $menu->show();
+
             # Formulário de Pesquisa
             $form = new Form('?fase=pastaBackup');
 
@@ -206,24 +216,27 @@ if ($acesso) {
             $anoInicial = $anoAtual - 1;
             $anoExercicio = array($anoInicial, $anoAtual);
 
-            $controle = new Input('parametroAno', 'combo');
+            $controle = new Input('parametroAno', 'combo', 'Ano:', 1);
             $controle->set_size(50);
             $controle->set_title('Filtra por Ano exercício');
             $controle->set_array($anoExercicio);
             $controle->set_valor($parametroAno);
             $controle->set_onChange('formPadrao.submit();');
+            $controle->set_col(2);
             $controle->set_linha(1);
-            $controle->set_id("controlePesquisa");
             $form->add_item($controle);
-            $menu->add_link($form, "left");
 
-            # Backup Manual
-            $linkBotao2 = new Link("Backup Manual", '?fase=backup');
-            $linkBotao2->set_class('button');
-            $linkBotao2->set_title('Backup manual do banco de dados');
-            $menu->add_link($linkBotao2, "right");
+            $controle = new Input('parametroMes', 'combo', "Mês", 1);
+            $controle->set_size(30);
+            $controle->set_title('O mês do backup');
+            $controle->set_array($mes);
+            $controle->set_valor($parametroMes);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_col(3);
+            $controle->set_linha(1);
+            $form->add_item($controle);
 
-            $menu->show();
+            $form->show();
 
             ##############################
             # Título
@@ -281,23 +294,10 @@ if ($acesso) {
                     if ($ano == $parametroAno) {
 
                         # Compara se já teve título do mês
-                        if ($mes <> $mesAnterior) {
-
-                            # Fecha o fieldset se não for o primeiro
-                            if (!is_null($mesAnterior)) {
-                                $field->fecha();
-                                $grid->fechaColuna();
-                            }
-
-                            $mesAnterior = $mes;
-                            $grid->abreColuna(3);
-
-                            $field = new Fieldset(get_nomeMes($mes));
-                            $field->set_class('fieldset');
-                            $field->abre();
+                        if ($mes == $parametroMes) {                            
+                            # Exibe o arquivo
+                            echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
                         }
-
-                        echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
                     }
                 }
 
