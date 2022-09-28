@@ -13,7 +13,7 @@ class EnviaEmail {
     #private $senha = '';                           // Senha do servidor SMTP
 
     private $nomeUsuario = 'sistemagrh@uenf.br';    // Usuário do servidor SMTP
-    private $senha = 'syncmaster940bplus';          // Senha do servidor SMTP
+    private $senha = 'flatronw1643c';          // Senha do servidor SMTP
     # Do remetente
     private $de = "sistemagrh@uenf.br";        // Email do sistema 
     private $deNome = "Sistema de Pessoal";    // Nome
