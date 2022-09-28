@@ -301,16 +301,21 @@ if ($acesso) {
                                 # Verifica se o dia é zero e não fechao fieldset
                                 if ($diaselec <> 0) {
                                     $field->fecha();
-                                    $grid->fechaColuna();
+
+                                    if (diaSemana("{$dia}/{$mes}/{$ano}") <> "Sábado") {
+                                        $grid->fechaColuna();
+                                    }
                                 }
 
                                 # muda o dia selecionado
                                 $diaselec = $dia;
-                                $grid->abreColuna(3);
+                                if (diaSemana("{$dia}/{$mes}/{$ano}") <> "Sábado") {
+                                    $grid->abreColuna(3);
+                                }
 
                                 $field = new Fieldset();
                                 $field->abre();
-                                titulotable($dia." - ".diaSemana("{$dia}/{$mes}/{$ano}"));
+                                titulotable($dia . " - " . diaSemana("{$dia}/{$mes}/{$ano}"));
                                 br();
                             }
                             # Exibe o arquivo
