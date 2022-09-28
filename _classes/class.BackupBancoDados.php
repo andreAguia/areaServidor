@@ -137,7 +137,9 @@ class BackupBancoDados {
         $intra->registraLog($this->idUsuario, date("Y-m-d H:i:s"), "Backup $textoTipo realizado", null, null, 6);
 
         if (!empty($mail->erro)) {
-            $intra->registraLog($this->idUsuario, date("Y-m-d H:i:s"), "Erro no Envio do Email - " . $mail->erro, null, null, 6);
+            $intra->registraLog($this->idUsuario, date("Y-m-d H:i:s"), $mail->erro, null, null, 5);
+        }else{
+            $intra->registraLog($this->idUsuario, date("Y-m-d H:i:s"), "Email com o backup enviado com sucesso.", null, null, 6);
         }
     }
 
