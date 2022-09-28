@@ -277,8 +277,6 @@ if ($acesso) {
                 # Classificar os arquivos para a Ordem Crescente
                 sort($arrayArquivos, SORT_STRING);
 
-                $grid = new Grid("center");
-
                 # Mostra a listagem dos Arquivos
                 foreach ($arrayArquivos as $valorArquivos) {
 
@@ -299,10 +297,7 @@ if ($acesso) {
                             echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
                         }
                     }
-                }
-
-                $grid->fechaColuna();
-                $grid->fechaGrid();
+                }                
             } else {
                 br(3);
                 p("Não existe nenhum arquivo de backup!", "center");
