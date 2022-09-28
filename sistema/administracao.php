@@ -267,7 +267,7 @@ if ($acesso) {
 
             # Cria títulos de ordenação
             $mes = null;
-            $mesAnterior = null;
+            $diaselec = 0;
 
             if (isset($arrayArquivos)) {
                 # Limita ainda mais
@@ -291,13 +291,37 @@ if ($acesso) {
                     # Compara se é o ano desejado
                     if ($ano == $parametroAno) {
 
+                        # Abre a grid
+                        $grid = new Grid("center");
+
                         # Compara se já teve título do mês
-                        if ($mes == $parametroMes) {                            
+                        if ($mes == $parametroMes) {
+
+
+
+                            if ($dia <> $diaselec) {
+                                # Verifica se o dia é zero e não fechao fieldset
+                                if ($diaselec <> 0) {
+                                    $field->fecha();
+                                    $grid->fechaColuna();
+                                }
+
+                                # muda o dia selecionado
+                                $diaselec = $dia;
+                                $grid->abreColuna(3);
+
+                                $field = new Fieldset($dia);
+                                $field->set_class('fieldset');
+                                $field->abre();
+                            }
                             # Exibe o arquivo
                             echo "<a href=/_backup/$valorArquivos>Dia $dia - $hora:$minuto:$segundo</a><br />";
                         }
+
+                        $grid->fechaColuna();
+                        $grid->fechaGrid();
                     }
-                }                
+                }
             } else {
                 br(3);
                 p("Não existe nenhum arquivo de backup!", "center");
