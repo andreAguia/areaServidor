@@ -271,7 +271,7 @@ if ($acesso) {
 
             if (isset($arrayArquivos)) {
                 # Limita ainda mais
-                $grid = new Grid("center");
+                $grid = new Grid();
                 $grid->abreColuna(12);
 
                 # Classificar os arquivos para a Ordem Crescente
