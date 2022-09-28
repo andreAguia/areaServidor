@@ -9,23 +9,23 @@
  */
 class EnviaEmail {
     # Do email institucional
-    #private $nomeUsuario = 'sistemagrh@uenf.br';   // Usuário do servidor SMTP
-    #private $senha = '';                           // Senha do servidor SMTP
 
-    private $nomeUsuario = 'sistemagrh@uenf.br';    // Usuário do servidor SMTP
-    private $senha = 'flatronw1643c';          // Senha do servidor SMTP
+    private $nomeUsuario = 'sistemagrh@uenf.br';
+    private $senha = 'flatronw1643c';
+
     # Do remetente
-    private $de = "sistemagrh@uenf.br";        // Email do sistema 
-    private $deNome = "Sistema de Pessoal";    // Nome
+    private $de = "sistemagrh@uenf.br";
+    private $deNome = "Sistema de Pessoal";
+
     # Do destinatário
     private $para = array();
     private $comCopia = array();
     private $comCopiaOculta = array();
 
     # Da mensagem
-    private $mensagem = null;       // A mensagem
-    private $assunto = null;        // O assunto
-    private $anexo = array();       // array com anexos
+    private $mensagem = null;
+    private $assunto = null;
+    private $anexo = array();
     
     # Erro
     public $erro;
@@ -132,7 +132,8 @@ class EnviaEmail {
         // $mail->Host = gethostbyname('smtp.gmail.com');
         // if your network does not support SMTP over IPv6
         // Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-        $mail->Port = 587;
+        $mail->Port = 26;
+        //$mail->Port = 587;
 
         // Set the encryption system to use - ssl (deprecated) or tls
         $mail->SMTPSecure = 'tls';
@@ -181,7 +182,7 @@ class EnviaEmail {
 
         # Exibe uma mensagem de resultado
         if (!$enviado) {
-            $this->erro = "Não foi possível enviar o e-mail de backup.<br/>". $mail->ErrorInfo;
+            $this->erro = $mail->ErrorInfo;
         }
     }
 
