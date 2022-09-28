@@ -304,6 +304,8 @@ if ($acesso) {
 
                                     if (diaSemana("{$dia}/{$mes}/{$ano}") <> "Domingo") {
                                         $grid->fechaColuna();
+                                    }else{
+                                        br();
                                     }
                                 }
 
