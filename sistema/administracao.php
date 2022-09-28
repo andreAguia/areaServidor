@@ -278,7 +278,7 @@ if ($acesso) {
                 sort($arrayArquivos, SORT_STRING);
 
                 # Abre a grid
-                $grid = new Grid("center");
+                $grid = new Grid();
 
                 # Mostra a listagem dos Arquivos
                 foreach ($arrayArquivos as $valorArquivos) {
