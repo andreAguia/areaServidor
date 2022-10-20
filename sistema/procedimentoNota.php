@@ -36,9 +36,6 @@ if ($acesso) {
     $page = new Page();
     $page->iniciaPagina();
 
-    # Cabeçalho da Página
-    AreaServidor::cabecalho();
-
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
 

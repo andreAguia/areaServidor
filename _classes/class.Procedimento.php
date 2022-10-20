@@ -27,7 +27,7 @@ class Procedimento {
         #$painel = new Callout();
         #$painel->abre();
 
-        titulo("Menu");
+        titulotable("Menu");
 
         # Pega os procedimentos do menu Inicial: idPai = 0
         if (Verifica::acesso($idUsuario, 1)) {
@@ -53,9 +53,14 @@ class Procedimento {
         # Verifica se tem Categorias cadastradas
         if ($numCategorias > 0) {
 
-            # Inicia o menu
+            # Inicia o menu           
             $menu1 = new Menu("menuProcedimentos");
-            #$menu1->add_item('titulo1','Menu','?fase=menuCaderno');
+
+            # Novo procedimento somente para administradores
+            if (Verifica::acesso($idUsuario, 1)) {
+                $menu1->add_item('titulo', '-- Novo Procedimento --', 'procedimentoNota.php');
+            }
+
             # Percorre o array
             foreach ($dados as $valor) {
                 $texto = $valor[1];
@@ -151,7 +156,7 @@ class Procedimento {
         $grid = new Grid();
         $grid->abreColuna(12);
 
-        if (!vazio($dados)) {
+        if (!empty($dados)) {
 
             $link = $dados["link"];
             $texto = $dados['textoProcedimento'];
@@ -164,6 +169,8 @@ class Procedimento {
             if (!empty($dadosPai['titulo'])) {
                 $pai = $dadosPai['titulo'];
             }
+
+            titulotable("Procedimento");
 
             # Monta o painel
             $painel = new Callout();
