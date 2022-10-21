@@ -63,6 +63,14 @@ if ($acesso) {
         set_session('parametroEmpresa');
         set_session('inclusaoEmpresa');
     }
+    
+    # Limpa as sessions do sistema de contratos
+    set_session('parametroAno');
+    set_session('parametroStatus');
+    set_session('parametroModalidade');
+    set_session('parametroEmpresa');
+    set_session('parametroObjeto');
+    set_session('inclusaoEmpresa');
 
     $grid1 = new Grid();
     $grid1->abreColuna(12);
