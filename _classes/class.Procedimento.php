@@ -23,12 +23,6 @@ class Procedimento {
         # Acessa o banco de dados
         $intra = new Intra();
 
-        # Monta o painel
-        #$painel = new Callout();
-        #$painel->abre();
-
-        titulotable("Menu");
-
         # Pega os procedimentos do menu Inicial: idPai = 0
         if (Verifica::acesso($idUsuario, 1)) {
             $select = 'SELECT idProcedimento,
@@ -52,14 +46,18 @@ class Procedimento {
 
         # Verifica se tem Categorias cadastradas
         if ($numCategorias > 0) {
-
-            # Inicia o menu           
-            $menu1 = new Menu("menuProcedimentos");
-
+            
             # Novo procedimento somente para administradores
             if (Verifica::acesso($idUsuario, 1)) {
-                $menu1->add_item('titulo', '-- Novo Procedimento --', 'procedimentoNota.php');
+                br();
+                $linkIncluirProcedimento = new Link("Novo Procedimento", 'procedimentoNota.php?fase=editar');
+                $linkIncluirProcedimento->set_class('hollow button small');
+                $linkIncluirProcedimento->set_title('Incluir um novo Procedimento');
+                $linkIncluirProcedimento->show();
             }
+
+            # Inicia o menu           
+            $menu1 = new Menu("menuProcedimentos");            
 
             # Percorre o array
             foreach ($dados as $valor) {
@@ -97,9 +95,6 @@ class Procedimento {
             }
             $menu1->show();
         }
-
-        # Fecha o painel
-        #$painel->fecha();
     }
 
     ###########################################################
@@ -169,8 +164,6 @@ class Procedimento {
             if (!empty($dadosPai['titulo'])) {
                 $pai = $dadosPai['titulo'];
             }
-
-            titulotable("Procedimento");
 
             # Monta o painel
             $painel = new Callout();

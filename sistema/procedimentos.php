@@ -12,7 +12,7 @@ $idUsuario = null;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario,1);
+$acesso = Verifica::acesso($idUsuario, 1);
 
 if ($acesso) {
     # Conecta ao Banco de Dados
@@ -31,7 +31,7 @@ if ($acesso) {
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
-    
+
     # Cabeçalho da Página
     AreaServidor::cabecalho();
     br();
@@ -39,10 +39,9 @@ if ($acesso) {
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
-    
+
     titulo("Procedimentos");
-    br();
-    
+
     # Define o grid
     $col1P = 0;
     $col1M = 4;
