@@ -32,12 +32,34 @@ if ($acesso) {
     $page = new Page();
     $page->iniciaPagina();
 
-    # Cabeçalho da Página
-    AreaServidor::cabecalho();
-    br();
-
     # Limita o tamanho da tela
     $grid = new Grid();
+    $grid->abreColuna(4);
+
+    // Intencionalmente vzio
+
+    $grid->fechaColuna();
+    $grid->abreColuna(4);
+
+    # Cabeçalho da Página
+    AreaServidor::cabecalho();
+
+    $grid->fechaColuna();
+    $grid->abreColuna(4);
+    br();
+
+    # Botão Incluir
+    if (Verifica::acesso($idUsuario, 1)) {
+        $menu1 = new MenuBar();
+        $linkVoltar = new Link("Incluir", "procedimentoNota.php?fase=editar");
+        $linkVoltar->set_class('button');
+        $linkVoltar->set_title('Inclui um novo procedimento');
+        $menu1->add_link($linkVoltar, "right");
+        $menu1->show();
+    }
+
+    # Limita o tamanho da tela
+    $grid->fechaColuna();
     $grid->abreColuna(12);
 
     titulo("Procedimentos");
