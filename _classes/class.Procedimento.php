@@ -177,7 +177,7 @@ class Procedimento {
             $painel->abre();
 
             # Botão de Editar
-            if (!vazio($idUsuario)) {
+            if (!empty($idUsuario)) {
                 if (Verifica::acesso($idUsuario, 1)) {
                     $divBtn = new Div("editarProcedimento");
                     $divBtn->abre();
@@ -191,10 +191,10 @@ class Procedimento {
                 }
             }
 
-            # Exibe o titulo do pai (quando houver)
-            if (!empty($pai)) {
-                p($pai, "procedimentoPai");
-            }
+//            # Exibe o titulo do pai (quando houver)
+//            if (!empty($pai)) {
+//                p($pai, "procedimentoPai");
+//            }
 
             p($titulo, "procedimentoTitulo");
             p($descricao, "procedimentoDescricao");

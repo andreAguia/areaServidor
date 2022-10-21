@@ -34,7 +34,12 @@ if ($acesso) {
 
     # Começa uma nova página
     $page = new Page();
+    $page->set_jscript('<script>CKEDITOR.replace("textoProcedimento");</script>');
     $page->iniciaPagina();
+    
+    # Cabeçalho da Página
+    AreaServidor::cabecalho();
+    br();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();

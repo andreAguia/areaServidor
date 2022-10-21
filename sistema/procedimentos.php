@@ -31,11 +31,17 @@ if ($acesso) {
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
+    
+    # Cabeçalho da Página
+    AreaServidor::cabecalho();
+    br();
 
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
     
+    titulo("Procedimentos");
+    br();
     
     # Define o grid
     $col1P = 0;
