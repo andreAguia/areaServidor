@@ -46,15 +46,6 @@ class Procedimento {
 
         # Verifica se tem Categorias cadastradas
         if ($numCategorias > 0) {
-            
-            # Novo procedimento somente para administradores
-            if (Verifica::acesso($idUsuario, 1)) {
-                br();
-                $linkIncluirProcedimento = new Link("Novo Procedimento", 'procedimentoNota.php?fase=editar');
-                $linkIncluirProcedimento->set_class('hollow button small');
-                $linkIncluirProcedimento->set_title('Incluir um novo Procedimento');
-                $linkIncluirProcedimento->show();
-            }
 
             # Inicia o menu           
             $menu1 = new Menu("menuProcedimentos");            

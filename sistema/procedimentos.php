@@ -34,13 +34,23 @@ if ($acesso) {
 
     # Cabeçalho da Página
     AreaServidor::cabecalho();
-    br();
 
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
 
-    titulo("Procedimentos");
+    # Novo procedimento somente para administradores
+    if (Verifica::acesso($idUsuario, 1)) {
+        $menu1 = new MenuBar();        
+        $gerenciarProcedimento = new Link("Gerenciar", 'procedimentoNota.php');
+        $gerenciarProcedimento->set_class('button small');
+        $gerenciarProcedimento->set_title('Gerenciar os Procedimento');
+        $menu1->add_link($gerenciarProcedimento, "right");
+        
+        $menu1->show();
+    }else{
+        br();
+    }
 
     # Define o grid
     $col1P = 0;
@@ -54,6 +64,8 @@ if ($acesso) {
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna($col1P, $col1M, $col1L);
+    
+    titulotable("Menu");
 
     # Menu de Projetos
     $procedimento->menuPrincipal($idProcedimento, $idUsuario);
@@ -62,6 +74,7 @@ if ($acesso) {
 
     # Define a coluna de Conteúdo
     $grid->abreColuna($col2P, $col2M, $col2L);
+    titulotable("Procedimento");
 
     switch ($fase) {
 
