@@ -175,10 +175,10 @@ class Procedimento {
                 }
             }
 
-//            # Exibe o titulo do pai (quando houver)
-//            if (!empty($pai)) {
-//                p($pai, "procedimentoPai");
-//            }
+            # Exibe o titulo do pai (quando houver)
+            if (!empty($pai)) {
+                p($pai, "procedimentoPai");
+            }
 
             p($titulo, "procedimentoTitulo");
             p($descricao, "procedimentoDescricao");

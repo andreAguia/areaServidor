@@ -658,14 +658,14 @@ p#pDescricao {
  *******************************************/
 
 p#procedimentoPai{
-    font-size: 12px;
+    font-size: 13px;
     padding: 0px;
     margin: 0px;
     text-align: left;
 }
 
 p#procedimentoTitulo{
-    font-size: 18px;
+    font-size: 20px;
     padding: 0px;
     margin: 0px;
     text-align: center;
@@ -686,11 +686,11 @@ hr#procedimento{
 }
 
 div#divNota ul,li{
-    font-size: 12px;
+    font-size: 13px;
 }
 
 div#divNota ul{
-    font-size: 12px;
+    font-size: 13px;
     padding-top: 3px;
 }
 
@@ -701,7 +701,7 @@ div#divNota h1{
 }
 
 div#divNota h2{
-    font-size: 18px;
+    font-size: 16px;
     padding-bottom: 3px;
     padding-top: 3px;
 }
