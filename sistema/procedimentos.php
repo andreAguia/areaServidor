@@ -36,7 +36,7 @@ if ($acesso) {
     AreaServidor::cabecalho();
 
     # Limita o tamanho da tela
-    $grid->fechaColuna();
+    $grid = new Grid();
     $grid->abreColuna(12);
 
     # Novo procedimento somente para administradores
