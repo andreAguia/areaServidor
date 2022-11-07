@@ -32,6 +32,6 @@ mysqldump -u $USUARIO -p$SENHA $BANCO > $NOME3
 tar -zcf "$CAMINHO""$ARQUIVO".tar $NOME1 $NOME2 $NOME3
 
 # Apaga os arquivos originais nao compactados
-rm $NOME1
-rm $NOME2
-rm $NOME3
+#rm $NOME1
+#rm $NOME2
+#rm $NOME3
