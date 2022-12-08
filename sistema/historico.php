@@ -279,7 +279,8 @@ if ($acesso) {
     $tabela->set_classe(array("intra", null, null, null, null, "Pessoal"));
     $tabela->set_metodo(array("get_usuario", null, null, null, null, "get_nome"));
 
-    $tabela->set_formatacaoCondicional(array(array('coluna' => 6,
+    $tabela->set_formatacaoCondicional(array(
+        array('coluna' => 6,
             'valor' => 0,
             'operador' => '=',
             'id' => 'logLogin'),
