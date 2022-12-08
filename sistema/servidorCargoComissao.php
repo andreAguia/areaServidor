@@ -12,7 +12,7 @@ $idUsuario = null;
 include ("_config.php");
 
 # Verifica se o usuário está logado
-$acesso = Verifica::acesso($idUsuario,[1, 3, 9, 10, 11]);
+$acesso = Verifica::acesso($idUsuario, [1, 3, 9, 10, 11]);
 
 if ($acesso) {
     # Conecta ao Banco de Dados
@@ -27,19 +27,11 @@ if ($acesso) {
 
     # pega o id (se tiver)
     $id = soNumeros(get('id'));
-
-    # Pega os parâmetros
-    $parametroCargoComissao = post('parametroCargoComissao', get_session('servidorCargoComissao', 13)); // Se não tiver sido escolhido exibe o reitor (13)
-    # Agrupamento do Relatório
-    $agrupamentoEscolhido = post('agrupamento', 0);
-
+    
     # Session do Relatório
     $select = get_session('sessionSelect');
     $titulo = get_session('sessionTitulo');
     $subTitulo = get_session('sessionSubTitulo');
-
-    # Joga os parâmetros par as sessions
-    set_session('servidorCargoComissao', $parametroCargoComissao);
 
     # Ordem da tabela
     $orderCampo = get('orderCampo');
@@ -85,43 +77,12 @@ if ($acesso) {
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Voltar a página anterior');
             $menu1->add_link($linkBotao1, "right");
-
-            # Relatórios
-            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', null, 15, 15);
-            $botaoRel = new Button();
-            $botaoRel->set_title("Relatório dessa pesquisa");
-            $botaoRel->set_imagem($imagem);
-            $botaoRel->set_url("?fase=relatorio");
-            $botaoRel->set_target("_blank");
-            $menu1->add_link($botaoRel, "right");
             $menu1->show();
 
-            # Parâmetros
-            $form = new Form('?');
-
-            # Cargos
-            $result = $pessoal->select('SELECT tbtipocomissao.idTipoComissao,concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
-                                              FROM tbtipocomissao
-                                              WHERE ativo
-                                          ORDER BY tbtipocomissao.simbolo');
-
-            array_unshift($result, array('*', '-- Todos --'));
-
-            $controle = new Input('parametroCargoComissao', 'combo', 'Cargo em Comissão:', 1);
-            $controle->set_size(30);
-            $controle->set_title('Filtra por Cargo');
-            $controle->set_array($result);
-            $controle->set_valor($parametroCargoComissao);
-            $controle->set_onChange('formPadrao.submit();');
-            $controle->set_linha(1);
-            $controle->set_col(6);
-            $form->add_item($controle);
-            $form->show();
-
             # select
-            $select = 'SELECT distinct tbservidor.idFuncional,
+            $select = 'SELECT concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao),
+                              tbservidor.idFuncional,
                               tbpessoa.nome,
-                              concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao),
                               tbcomissao.idComissao,
                               tbcomissao.dtNom,
                               tbperfil.nome
@@ -130,16 +91,9 @@ if ($acesso) {
                                 LEFT JOIN tbcomissao ON(tbservidor.idServidor = tbcomissao.idServidor)
                                 LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
                                      JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
-              WHERE tbservidor.situacao = 1
-                AND tbcomissao.dtExo is null';
-
-            # cargo em comissão
-            if ($parametroCargoComissao <> "*") {
-                $select .= ' AND tbtipocomissao.idTipoComissao = "' . $parametroCargoComissao . '"
-                        ORDER BY tbdescricaocomissao.descricao, tbcomissao.dtNom';
-            } else {
-                $select .= ' ORDER BY tbtipocomissao.idTipoComissao, tbdescricaocomissao.descricao, tbcomissao.dtNom';
-            }
+                WHERE tbservidor.situacao = 1
+                  AND tbcomissao.dtExo is null
+             ORDER BY tbtipocomissao.idTipoComissao, tbdescricaocomissao.descricao, tbcomissao.dtNom';            
 
             $result = $pessoal->select($select);
             $label = array('IdFuncional', 'Nome', 'Cargo', 'Descrição', 'Nomeação', 'Perfil');
@@ -149,19 +103,21 @@ if ($acesso) {
             # Monta a tabela
             $tabela = new Tabela();
             $tabela->set_conteudo($result);
-            $tabela->set_label($label);
-            $tabela->set_titulo("Servidores Ativos nomeados para o cargo");
-            $tabela->set_align($align);
-            $tabela->set_funcao($function);
-            $tabela->set_rowspan(2);
-            $tabela->set_grupoCorColuna(2);
+            $tabela->set_label(['Cargo', 'IdFuncional', 'Nome', 'Descrição', 'Nomeação', 'Perfil']);
+            $tabela->set_titulo("Servidores Ativos Com Cargo Em Comissão");
+            $tabela->set_align(["left", "center", "left", "left"]);
+            $tabela->set_funcao([null, null, null, null, "date_to_php"]);
+            $tabela->set_classe([null, null, null, "CargoComissao"]);
+            $tabela->set_metodo([null, null, null, "get_descricaoCargo"]);
+            $tabela->set_rowspan(0);
+            $tabela->set_grupoCorColuna(0);
             $tabela->show();
 
             $grid->fechaColuna();
             $grid->fechaGrid();
 
             # Grava no log a atividade
-            $atividade = "Visualizou os servidores do cargo em comissão: " . $pessoal->get_nomeCargoComissao($parametroCargoComissao) . " na área do servidor";
+            $atividade = "Visualizou os servidores do cargo em comissão na área do servidor";
             $data = date("Y-m-d H:i:s");
             $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
@@ -183,14 +139,8 @@ if ($acesso) {
                                 LEFT JOIN tbdescricaocomissao USING (idDescricaoComissao)
                                      JOIN tbtipocomissao ON(tbcomissao.idTipoComissao=tbtipocomissao.idTipoComissao)
               WHERE tbservidor.situacao = 1
-                AND tbcomissao.dtExo is null';
-
-            # cargo em comissão
-            if ($parametroCargoComissao <> "*") {
-                $select .= ' AND tbtipocomissao.idTipoComissao = "' . $parametroCargoComissao . '"';
-            }
-
-            $select .= ' ORDER BY tbtipocomissao.idTipoComissao, tbdescricaocomissao.descricao, tbcomissao.dtNom';
+                AND tbcomissao.dtExo is null
+           ORDER BY tbtipocomissao.idTipoComissao, tbdescricaocomissao.descricao, tbcomissao.dtNom';
 
             $result = $pessoal->select($select);
 
@@ -223,15 +173,6 @@ if ($acesso) {
             $linkBotao1->set_title('Voltar a página anterior');
             $linkBotao1->set_accessKey('V');
             $menu1->add_link($linkBotao1, "left");
-
-            # Relatórios
-            $imagem = new Imagem(PASTA_FIGURAS . 'print.png', null, 15, 15);
-            $botaoRel = new Button();
-            $botaoRel->set_title("Relatório");
-            $botaoRel->set_imagem($imagem);
-            $botaoRel->set_url('../../grh/grhRelatorios/cargoComissaoAtivos.php');
-            $botaoRel->set_target("_blank");
-            $menu1->add_link($botaoRel, "right");
             $menu1->show();
 
             # Pega os dados

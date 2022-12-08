@@ -27,9 +27,24 @@ if ($acesso) {
     $idServidorPesquisado = get("idServidorPesquisado");
 
     # Verifica a fase do programa
-    $fase = get('fase', 'menu'); # Qual a fase
-    # Pega os parâmetros
-    $parametroAno = post('parametroAno', get_session('parametroAno', date("Y")));
+    $fase = get('fase', 'menu');
+
+    # Pega os parâmetros do calendário
+    $anoCalendario = post('ano', date("Y"));
+    $mesCalendario = post('mes', date("m"));
+
+    # Valida os valores
+    if ($anoCalendario < 1900 OR $anoCalendario > 2100) {
+        $anoCalendario = date("Y");
+    }
+
+    if ($mesCalendario < 1) {
+        $mesCalendario = 1;
+    }
+
+    if ($mesCalendario > 12) {
+        $mesCalendario = 12;
+    }
 
     # Começa uma nova página
     $page = new Page();
@@ -63,7 +78,7 @@ if ($acesso) {
         set_session('parametroEmpresa');
         set_session('inclusaoEmpresa');
     }
-    
+
     # Limpa as sessions do sistema de contratos
     set_session('parametroAno');
     set_session('parametroStatus');
@@ -117,7 +132,7 @@ if ($acesso) {
 
             #########################################################
             # Exibe o Menu
-            AreaServidor::menuPrincipal($idUsuario);
+            AreaServidor::menuPrincipal($idUsuario, $mesCalendario, $anoCalendario);
             br();
 
             #########################################################
@@ -150,26 +165,27 @@ if ($acesso) {
             Grh::listaDadosServidor($idServidor);
 
             # Pega os dados
-            $select = 'SELECT anoExercicio,
+            $select = "SELECT anoExercicio,
                              status,
                              dtInicial,
                              numDias,
-                             idFerias,
-                             ADDDATE(dtInicial,numDias-1)
+                             ADDDATE(dtInicial,numDias-1),
+                             idFerias                             
                         FROM tbferias
-                       WHERE idServidor = ' . $idServidor . '
-                    ORDER BY anoExercicio desc, dtInicial desc';
+                       WHERE idServidor = {$idServidor}
+                    ORDER BY anoExercicio desc, dtInicial desc";
 
             $result = $servidor->select($select);
 
             $tabela = new Tabela();
             $tabela->set_titulo("Histórico de Férias");
             $tabela->set_conteudo($result);
-            $tabela->set_label(array("Exercicio", "Status", "Data Inicial", "Dias", "P", "Data Final"));
-            $tabela->set_align(array("center"));
-            $tabela->set_funcao(array(null, null, 'date_to_php', null, null, 'date_to_php'));
-            $tabela->set_classe(array(null, null, null, null, 'pessoal'));
-            $tabela->set_metodo(array(null, null, null, null, "get_feriasPeriodo"));
+            $tabela->set_label(["Exercicio", "Status", "Data Inicial", "Dias", "Data Final", "P"]);
+            $tabela->set_align(["center"]);
+            $tabela->set_funcao([null, null, 'date_to_php', null, 'date_to_php']);
+            $tabela->set_classe([null, null, null, null, null, 'pessoal']);
+            $tabela->set_metodo([null, null, null, null, null, "get_feriasPeriodo"]);
+            $tabela->set_width([10, 10, 15, 5, 15, 5]);
             $tabela->set_rowspan(0);
             $tabela->set_grupoCorColuna(0);
             $tabela->show();
@@ -189,29 +205,8 @@ if ($acesso) {
             # Exibe os dados do Servidor            
             Grh::listaDadosServidor($idServidor);
 
-            # Formulário de Pesquisa
-            $form = new Form('?fase=afastamentoGeral');
-
-            # Cria um array com os anos possíveis
-            $anoInicial = 1999;
-            $anoAtual = date('Y');
-            $anos = arrayPreenche($anoInicial, $anoAtual + 2);
-
-            $controle = new Input('parametroAno', 'combo', 'Ano:', 1);
-            $controle->set_size(8);
-            $controle->set_title('Filtra por Ano');
-            $controle->set_array($anos);
-            $controle->set_valor($parametroAno);
-            $controle->set_onChange('formPadrao.submit();');
-            $controle->set_linha(1);
-            $controle->set_col(3);
-            $form->add_item($controle);
-
-            $form->show();
-
-            $afast = new ListaAfastamentos();
-            $afast->set_idServidor($idServidor);
-            $afast->set_ano($parametroAno);
+            $afast = new ListaAfastamentosServidor($idServidor);
+            $afast->exibeObs(false);
             $afast->exibeTabela();
 
             # Grava no log a atividade
@@ -262,11 +257,11 @@ if ($acesso) {
 
             $tabela = new Tabela();
             $tabela->set_titulo("Férias dos Servidores da " . $servidor->get_nomeLotacao($idLotacao) . " em $ano");
-            $tabela->set_label(array('Mês', 'Nome', 'Lotação', 'Exercício', 'Inicio', 'Dias', 'Fim', 'Período', 'Status', 'Situação'));
-            $tabela->set_align(array("center", "left", "left"));
-            $tabela->set_funcao(array("get_nomeMes", null, null, null, "date_to_php", null, null, null, null));
-            $tabela->set_classe(array(null, null, "pessoal", null, null, null, null, "pessoal"));
-            $tabela->set_metodo(array(null, null, "get_lotacaoSimples", null, null, null, null, "get_feriasPeriodo"));
+            $tabela->set_label(['Mês', 'Nome', 'Lotação', 'Exercício', 'Inicio', 'Dias', 'Fim', 'Período', 'Status', 'Situação']);
+            $tabela->set_align(["center", "left", "left"]);
+            $tabela->set_funcao(["get_nomeMes", null, null, null, "date_to_php", null, null, null, null]);
+            $tabela->set_classe([null, null, "pessoal", null, null, null, null, "pessoal"]);
+            $tabela->set_metodo([null, null, "get_lotacaoSimples", null, null, null, null, "get_feriasPeriodo"]);
             $tabela->set_conteudo($result);
             $tabela->set_rowspan(0);
             $tabela->set_grupoCorColuna(0);
