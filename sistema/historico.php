@@ -309,7 +309,8 @@ if ($acesso) {
     $imagemVer = new Imagem(PASTA_FIGURAS_GERAIS . 'olho.png', 'Visualizou', 20, 20);
     $imagemUpload = new Imagem(PASTA_FIGURAS . 'upload.png', 'Fez Upload', 20, 20);
 
-    $tabela->set_imagemCondicional(array(array('coluna' => 6,
+    $tabela->set_imagemCondicional(array(
+        array('coluna' => 6,
             'valor' => 0,
             'operador' => '=',
             'imagem' => $imagemLogin),
