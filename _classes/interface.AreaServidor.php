@@ -21,7 +21,7 @@ class AreaServidor {
         $dia = date("d");
         $mes = date("m");
 
-        if (($dia == 8)AND($mes == 3)) {
+        if (($dia == 8) AND ($mes == 3)) {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_mulher.jpg', 'Dia Internacional da Mulher', 190, 60);
         } elseif (($mes == 12) AND ($dia < 26)) {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_natal.png', 'Feliz Natal', 200, 60);
@@ -152,48 +152,28 @@ class AreaServidor {
      * 
      * @param    string $idUsuario -> Usuário logado
      */
-    public static function menuPrincipal($idUsuario) {
+    public static function menuPrincipal($idUsuario, $mes = null, $ano = null) {
         # Cria Grid
         $grid = new Grid();
 
         if (Verifica::acesso($idUsuario, [1, 9, 10])) {
 
             # Sistemas Externos
-            $grid->abreColuna(12, 8);
+            $grid->abreColuna(12, 6, 3);
+            self::moduloSistemasInternos($idUsuario);
             self::moduloSistemasExternos($idUsuario);
             $grid->fechaColuna();
 
             # Sistemas Internos
-            $grid->abreColuna(12, 4);
-            self::moduloSistemasInternos($idUsuario);
-            $grid->fechaColuna();
-
-            # Dados da Universidade
-            $grid->abreColuna(12, 6);
+            $grid->abreColuna(12, 6, 5);
+            self::moduloSobreServidor();
             self::moduloServidoresUniversidade($idUsuario);
             $grid->fechaColuna();
 
-            # Dados do Usuário logado
-            $grid->abreColuna(12, 6);
-            self::moduloSobreServidor();
-            $grid->fechaColuna();
-        }
-
-        if (Verifica::acesso($idUsuario, [3, 11, 12])) {
-
-            # Sistemas Externos
-            $grid->abreColuna(12);
-            self::moduloSistemasExternos($idUsuario);
-            $grid->fechaColuna();
-
             # Dados da Universidade
-            $grid->abreColuna(12, 6);
-            self::moduloServidoresUniversidade($idUsuario);
-            $grid->fechaColuna();
-
-            # Àrea lateral
-            $grid->abreColuna(12, 6);
-            self::moduloSobreServidor();
+            $grid->abreColuna(12, 6, 4);
+            $cal = new Calendario($mes, $ano);
+            $cal->show("?");
             $grid->fechaColuna();
         }
         $grid->fechaGrid();
@@ -248,7 +228,7 @@ class AreaServidor {
         $painel = new Callout();
         $painel->abre();
 
-        titulo('Servidores da Universidade');
+        titulo('Sobre a Universidade');
         $tamanhoImage = 64;
         br();
 
@@ -870,10 +850,9 @@ class AreaServidor {
         $painel->abre();
 
         # Título
-        titulo('Sistemas');
+        titulo('Sistemas Externos');
         $tamanhoImage = 64;
         br();
-        $itens = 3;
 
         # Altera o menu de acordo com o usuário
         if (Verifica::acesso($idUsuario, 9)) {
@@ -881,7 +860,7 @@ class AreaServidor {
         }
 
         # Inicia o menu
-        $menu = new MenuGrafico($itens);
+        $menu = new MenuGrafico(1);
         $menu->set_espacoEntreLink(true);
 
         # Sei
