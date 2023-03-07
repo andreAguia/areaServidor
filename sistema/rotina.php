@@ -81,7 +81,7 @@ if ($acesso) {
     $objeto->set_orderChamador('?fase=listar');
 
     # Caminhos
-    $objeto->set_linkEditar('?fase=editar');
+    $objeto->set_linkEditar('?fase=editaItem');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
     $objeto->set_linkExcluir('?fase=excluir');
@@ -97,7 +97,7 @@ if ($acesso) {
     $botao = new BotaoGrafico();
     $botao->set_label('');
     $botao->set_title('Editar Itens');
-    $botao->set_url("?fase=ver&id={$id}");
+    $botao->set_url("?fase=ver&id=");
     $botao->set_target("_blank");
     //$botao->set_url('?fase=editaItem&id=' . $id);
     $botao->set_imagem(PASTA_FIGURAS . 'olho.png', 20, 20);

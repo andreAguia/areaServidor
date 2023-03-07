@@ -25,7 +25,7 @@ if ($acesso) {
 
     # pega o id se tiver)
     $id = soNumeros(get('id'));
-    
+
     # Pega a rotina
     $idRotina = get_session('idRotina');
 
@@ -39,6 +39,7 @@ if ($acesso) {
 
     # Começa uma nova página
     $page = new Page();
+    $page->set_jscript('<script>CKEDITOR.replace("procedimento");</script>');
     $page->iniciaPagina();
 
     # Cabeçalho da Página
@@ -73,7 +74,8 @@ if ($acesso) {
     $objeto->set_selectEdita("SELECT numOrdem,
                                      quem,
                                      procedimento,
-                                     obs					    
+                                     obs,
+                                     idRotina
                                 FROM tbrotinaitens
                                WHERE idRotinaItens = {$id}");
 
@@ -87,7 +89,7 @@ if ($acesso) {
     $objeto->set_label(["#", "Quem", "Procedimento", "Obs"]);
     $objeto->set_width([5, 15, 35, 35]);
     $objeto->set_align(["center", "center", "left", "left"]);
-    
+
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
 
@@ -120,10 +122,12 @@ if ($acesso) {
             'linha' => 1),
         array('nome' => 'procedimento',
             'label' => 'Procedimento:',
-            'tipo' => 'textarea',
+            'tipo' => 'editor',
             'size' => array(90, 5),
-            'title' => 'Observações.',
+            'title' => 'Procedimento.',
             'col' => 12,
+            'tagHtml' => true,
+            'size' => array(90, 5),
             'linha' => 2),
         array('nome' => 'obs',
             'label' => 'Obs:',
@@ -139,6 +143,12 @@ if ($acesso) {
             'padrao' => $idRotina,
             'linha' => 4),
     ));
+
+    # Cargos Ativos
+    $botao = new Button("Editar Tarefa", "rotina.php?fase=editar&id={$idRotina}");
+    $botao->set_title("Edita os dados da tarefa");
+
+    $objeto->set_botaoListarExtra([$botao]);
 
     # Log
     $objeto->set_idUsuario($idUsuario);
