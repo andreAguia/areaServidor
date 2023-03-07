@@ -171,8 +171,12 @@ if ($acesso) {
             break;
 
         case "editaItem" :
-            set_session('idRotina', $id);
-            loadPage("rotinaItens.php");
+            if (empty($id)) {
+                loadPage("?fase=editar");
+            } else {
+                set_session('idRotina', $id);
+                loadPage("rotinaItens.php");
+            }
             break;
 
         case "ver" :
