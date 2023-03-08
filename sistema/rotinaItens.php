@@ -47,6 +47,15 @@ if ($acesso) {
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
+    
+    # Inicia lalores padrão para quando for incluir
+    if(empty($id)){
+        $numOrdemPadrao = $rotina->get_ultimoNumOrdem($idRotina) + 5;
+        $quemPadrao = $rotina->get_ultimoQuem($idRotina);        
+    }else{
+        $numOrdemPadrao = null;
+        $quemPadrao = null;
+    }
 
     ################################################################
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
@@ -112,6 +121,7 @@ if ($acesso) {
             'title' => 'Número de ordem.',
             'required' => true,
             'autofocus' => true,
+            'padrao' => $numOrdemPadrao,
             'col' => 2,
             'linha' => 1),
         array('nome' => 'quem',
@@ -120,6 +130,8 @@ if ($acesso) {
             'size' => 100,
             'title' => 'Nome da rotina.',
             'col' => 8,
+            'required' => true,
+            'padrao' => $quemPadrao,
             'linha' => 1),
         array('nome' => 'procedimento',
             'label' => 'Procedimento:',
@@ -127,6 +139,7 @@ if ($acesso) {
             'size' => array(90, 5),
             'title' => 'Procedimento.',
             'col' => 12,
+            'required' => true,
             'tagHtml' => true,
             'size' => array(90, 5),
             'linha' => 2),
