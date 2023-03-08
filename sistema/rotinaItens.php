@@ -86,9 +86,10 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(["#", "Quem", "Procedimento", "Obs"]);
+    $objeto->set_label(["Ordem", "Quem", "Procedimento", "Obs"]);
     $objeto->set_width([5, 15, 35, 35]);
     $objeto->set_align(["center", "center", "left", "left"]);
+    $objeto->set_numeroOrdem(true);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
