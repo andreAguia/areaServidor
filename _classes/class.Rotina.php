@@ -86,8 +86,7 @@ class Rotina {
          * @syntax $rotina->exibeRotina([$id]);  
          */
         # Pega os dados
-        $select = "SELECT numOrdem,
-                          quem,
+        $select = "SELECT quem,
                           procedimento,
                           obs
                      FROM tbrotinaitens
@@ -105,12 +104,11 @@ class Rotina {
         $tabela = new Tabela(null, "tabelaRotina");
         #$tabela->set_titulo();
         $tabela->set_conteudo($row);
-        $tabela->set_label(["#", "Quem", "Procedimento", "Obs"]);
-        $tabela->set_width([10, 15, 55, 20]);
-        $tabela->set_align(["center", "center", "left", "left"]);
-        $tabela->set_funcao([null, null, "trim"]);
+        $tabela->set_label(["Quem", "Procedimento", "Obs"]);
+        $tabela->set_width([15, 55, 20]);
+        $tabela->set_align(["center", "left", "left"]);
         $tabela->set_totalRegistro(false);
-        #$tabela->set_numeroOrdem(true);
+        $tabela->set_numeroOrdem(true);
         $tabela->show();
     }
 
