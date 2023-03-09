@@ -58,7 +58,7 @@ class Rotina {
 
         $intra = new Intra();
         $row = $intra->select($select, false);
-        
+
         if (empty($row)) {
             return null;
         } else {
@@ -83,7 +83,7 @@ class Rotina {
 
         $intra = new Intra();
         $row = $intra->select($select, false);
-        
+
         if (empty($row)) {
             return null;
         } else {
@@ -130,7 +130,7 @@ class Rotina {
 
         $intra = new Intra();
         $row = $intra->select($select);
-
+        
         p($this->get_nomeRotina($id), "rotinaTitulo");
         p($this->get_descricaoRotina($id), "rotinaDescricao");
         br();
@@ -147,7 +147,7 @@ class Rotina {
         $tabela->show();
     }
 
-     ###########################################################
+    ###########################################################
 
     public function get_ultimoNumOrdem($id = null) {
         /**
@@ -161,11 +161,11 @@ class Rotina {
         $select = "SELECT numOrdem
                      FROM tbrotinaitens
                      WHERE idRotina = {$id}
-                    ORDER BY numOrdem DESC LIMIT 1";     
+                    ORDER BY numOrdem DESC LIMIT 1";
 
         $intra = new Intra();
         $row = $intra->select($select, false);
-        
+
         if (empty($row)) {
             return 0;
         } else {
@@ -187,11 +187,11 @@ class Rotina {
         $select = "SELECT quem
                      FROM tbrotinaitens
                      WHERE idRotina = {$id}
-                    ORDER BY numOrdem DESC LIMIT 1";     
+                    ORDER BY numOrdem DESC LIMIT 1";
 
         $intra = new Intra();
         $row = $intra->select($select, false);
-        
+
         if (empty($row)) {
             return null;
         } else {
