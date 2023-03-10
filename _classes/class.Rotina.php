@@ -202,10 +202,55 @@ class Rotina {
     ###########################################################
 
     public function exibeDadosRotinaPrincipal($id = null) {
-        
+
         p($this->get_categoriaRotina($id), "rotinaTitulo");
         p($this->get_nomeRotina($id), "rotinaTitulo");
         p($this->get_descricaoRotina($id), "rotinaDescricao");
+    }
+
+    ###########################################################
+
+    public function exibeRotinaCategoria($categoria = null) {
+        /**
+         * exibe tabela com rotina
+         * 
+         * @param $id integer null o id
+         * 
+         * @syntax $rotina->exibeRotina([$id]);  
+         */
+        # Acessa o banco de dados
+        $intra = new Intra();
+
+        # Pega as rotinas desta categoria
+        $select = "SELECT idRotina,
+                          nome,
+                          descricao
+                     FROM tbrotina
+                    WHERE categoria = '{$categoria}'";
+
+        $row1 = $intra->select($select);
+        
+        # Verifica quantas rotinas existem nesta catagoria
+        if ($intra->count($select) == 1) {
+            $this->exibeRotina($row1[0][0]);
+        } else {
+
+            foreach ($row1 as $item) {
+                $label[] = $item['nome'];
+            }
+            
+            $tab = new Tab($label);
+            
+            foreach ($row1 as $item) {
+                $tab->abreConteudo();
+                
+                $this->exibeRotina($item[0]);
+                
+                $tab->fechaConteudo();
+            }
+            $tab->show();
+            br();
+        }
     }
 
     ###########################################################
