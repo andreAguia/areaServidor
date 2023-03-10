@@ -58,8 +58,10 @@ if ($acesso) {
     }
 
     ################################################################
+    
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome($rotina->get_nomeRotina($idRotina));
+    $objeto->set_nome("{$rotina->get_categoriaRotina($idRotina)} - {$rotina->get_nomeRotina($idRotina)}");
+    $objeto->set_subtitulo("{$rotina->get_descricaoRotina($idRotina)}");
 
     # botão de voltar da lista
     $objeto->set_voltarLista('rotina.php');
@@ -159,7 +161,7 @@ if ($acesso) {
     ));
 
     # Cargos Ativos
-    $botao = new Button("Editar Tarefa", "rotina.php?fase=editar&id={$idRotina}");
+    $botao = new Button("Editar Rotina Principal", "rotina.php?fase=editar&id={$idRotina}");
     $botao->set_title("Edita os dados da tarefa");
 
     $objeto->set_botaoListarExtra([$botao]);

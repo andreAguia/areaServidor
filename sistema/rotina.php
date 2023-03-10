@@ -87,7 +87,7 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(["Id", "Categoria", "Nome", "Descrição", "Obs", "Itens", "Ver"]);
+    $objeto->set_label(["Id", "Rotina", "Sub-Rotina", "Descrição", "Obs", "Itens", "Ver"]);
     $objeto->set_width([5, 15, 20, 20, 20, 5, 5]);
     $objeto->set_align(["center", "left", "left", "left", "left"]);
     $objeto->set_classe([null, null, null, null, null, "Rotina"]);
@@ -123,7 +123,7 @@ if ($acesso) {
     # Campos para o formulario
     $objeto->set_campos(array(
         array('nome' => 'categoria',
-            'label' => 'Categoria:',
+            'label' => 'Rotina Principal:',
             'tipo' => 'texto',
             'size' => 100,
             'title' => 'Categoria da rotina.',
@@ -132,7 +132,7 @@ if ($acesso) {
             'col' => 4,
             'linha' => 1),
         array('nome' => 'nome',
-            'label' => 'Nome:',
+            'label' => 'Sub-Rotina:',
             'tipo' => 'texto',
             'size' => 100,
             'title' => 'Nome da rotina.',

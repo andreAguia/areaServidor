@@ -130,8 +130,8 @@ class Rotina {
 
         $intra = new Intra();
         $row = $intra->select($select);
-        
-        p($this->get_nomeRotina($id), "rotinaTitulo");
+
+        p("{$this->get_categoriaRotina($id) } - {$this->get_nomeRotina($id)}", "rotinaTitulo");
         p($this->get_descricaoRotina($id), "rotinaDescricao");
         br();
 
@@ -197,6 +197,15 @@ class Rotina {
         } else {
             return $row[0];
         }
+    }
+
+    ###########################################################
+
+    public function exibeDadosRotinaPrincipal($id = null) {
+        
+        p($this->get_categoriaRotina($id), "rotinaTitulo");
+        p($this->get_nomeRotina($id), "rotinaTitulo");
+        p($this->get_descricaoRotina($id), "rotinaDescricao");
     }
 
     ###########################################################
