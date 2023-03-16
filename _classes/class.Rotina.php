@@ -227,11 +227,11 @@ class Rotina {
                           descricao
                      FROM tbrotina
                     WHERE categoria = '{$categoria}'";
-
+ 
         $row1 = $intra->select($select);
         
         # Verifica quantas rotinas existem nesta catagoria
-        if ($intra->count($select) == 1) {
+        if ($intra->count($select) == 1) {           
             $this->exibeRotina($row1[0][0]);
         } else {
 
