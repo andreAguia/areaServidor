@@ -131,20 +131,32 @@ class Rotina {
         $intra = new Intra();
         $row = $intra->select($select);
 
-        p("{$this->get_categoriaRotina($id) } - {$this->get_nomeRotina($id)}", "rotinaTitulo");
-        p($this->get_descricaoRotina($id), "rotinaDescricao");
-        br();
+        if (empty($row)) {
+            $grid = new Grid("center");
+            $grid->abreColuna(8);
+            br(3);
 
-        # Monta a tabela
-        $tabela = new Tabela(null, "tabelaRotina");
-        #$tabela->set_titulo();
-        $tabela->set_conteudo($row);
-        $tabela->set_label(["Quem", "Procedimento", "Obs"]);
-        $tabela->set_width([15, 55, 20]);
-        $tabela->set_align(["center", "left", "left"]);
-        $tabela->set_totalRegistro(false);
-        $tabela->set_numeroOrdem(true);
-        $tabela->show();
+            calloutAlert("Não Existe Informação Cadastrada");
+
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+        } else {
+
+            p("{$this->get_categoriaRotina($id) } - {$this->get_nomeRotina($id)}", "rotinaTitulo");
+            p($this->get_descricaoRotina($id), "rotinaDescricao");
+            br();
+
+            # Monta a tabela
+            $tabela = new Tabela(null, "tabelaRotina");
+            #$tabela->set_titulo();
+            $tabela->set_conteudo($row);
+            $tabela->set_label(["Quem", "Procedimento", "Obs"]);
+            $tabela->set_width([15, 55, 20]);
+            $tabela->set_align(["center", "left", "left"]);
+            $tabela->set_totalRegistro(false);
+            $tabela->set_numeroOrdem(true);
+            $tabela->show();
+        }
     }
 
     ###########################################################
@@ -227,29 +239,41 @@ class Rotina {
                           descricao
                      FROM tbrotina
                     WHERE categoria = '{$categoria}'";
- 
+
         $row1 = $intra->select($select);
-        
-        # Verifica quantas rotinas existem nesta catagoria
-        if ($intra->count($select) == 1) {           
-            $this->exibeRotina($row1[0][0]);
+
+        if (empty($row1)) {
+            $grid = new Grid("center");
+            $grid->abreColuna(8);
+            br(3);
+
+            calloutAlert("Não Existe Informação Cadastrada");
+
+            $grid->fechaColuna();
+            $grid->fechaGrid();
         } else {
 
-            foreach ($row1 as $item) {
-                $label[] = $item['nome'];
+            # Verifica quantas rotinas existem nesta catagoria
+            if ($intra->count($select) == 1) {
+                $this->exibeRotina($row1[0][0]);
+            } else {
+
+                foreach ($row1 as $item) {
+                    $label[] = $item['nome'];
+                }
+
+                $tab = new Tab($label);
+
+                foreach ($row1 as $item) {
+                    $tab->abreConteudo();
+
+                    $this->exibeRotina($item[0]);
+
+                    $tab->fechaConteudo();
+                }
+                $tab->show();
+                br();
             }
-            
-            $tab = new Tab($label);
-            
-            foreach ($row1 as $item) {
-                $tab->abreConteudo();
-                
-                $this->exibeRotina($item[0]);
-                
-                $tab->fechaConteudo();
-            }
-            $tab->show();
-            br();
         }
     }
 
