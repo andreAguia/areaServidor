@@ -108,6 +108,24 @@ class Procedimento {
 
     ###########################################################
 
+    function get_idProcedimento($titulo) {
+
+        /**
+         * Fornece o id de um titulo
+         */
+        $intra = new Intra();
+
+        # Pega os dados
+        $select = "SELECT idProcedimento
+                     FROM tbprocedimento
+                    WHERE titulo = '{$titulo}'";
+
+        $dados = $intra->select($select, false);
+        return $dados['idProcedimento'];
+    }
+
+    ###########################################################
+
     function get_filhosProcedimento($idProcedimento, $idUsuario = null) {
 
         /**
@@ -212,6 +230,67 @@ class Procedimento {
 
         $grid->fechaColuna();
         $grid->fechaGrid();
+    }
+
+    ###########################################################
+
+    public function exibeProcedimentoFilhos($pai = null) {
+        /**
+         * exibe tabela com rotina
+         * 
+         * @param $id integer null o id
+         * 
+         * @syntax $rotina->exibeRotina([$id]);  
+         */
+        # Acessa o banco de dados
+        $intra = new Intra();
+        
+        # Pega o idPai de um pai
+        $idPai = $this->get_idProcedimento($pai);
+
+        # Pega as rotinas desta categoria
+        $select = "SELECT idProcedimento,
+                          titulo,
+                          descricao
+                     FROM tbprocedimento
+                    WHERE idPai = '{$idPai}'
+                 ORDER BY numOrdem";
+
+        $row1 = $intra->select($select);
+
+        if (empty($row1)) {
+            $grid = new Grid("center");
+            $grid->abreColuna(8);
+            br(3);
+
+            calloutAlert("Não Existe Informação Cadastrada");
+
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+        } else {
+
+            # Verifica quantas rotinas existem nesta catagoria
+            if ($intra->count($select) == 1) {
+                $this->exibeProcedimento($row1[0][0]);
+            } else {
+
+                foreach ($row1 as $item) {
+                    $label[] = $item['titulo'];
+                }
+
+                $tab = new Tab($label);
+
+                foreach ($row1 as $item) {
+                    $tab->abreConteudo();
+
+                    $this->exibeProcedimento($item[0]);
+
+                    $tab->fechaConteudo();
+                }
+                $tab->show();
+                br();
+            }
+        }
     }
 
     ###########################################################
