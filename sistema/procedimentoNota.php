@@ -84,11 +84,13 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
+    
+    $objeto->set_rowspan(3);
+    $objeto->set_grupoCorColuna(3);
 
     # Parametros da tabela
-    $objeto->set_label(array("Id", "Ordem", "Visibilidade", "Pai", "Título", "Descrição"));
-    #$objeto->set_width(array(5,10,10,25,35));
-    $objeto->set_align(array("center", "center", "center", "left", "left", "left"));
+    $objeto->set_label(["Id", "Ordem", "Visibilidade", "Pai", "Título", "Descrição"]);
+    $objeto->set_align(["center", "center", "center", "left", "left", "left"]);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
