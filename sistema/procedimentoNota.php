@@ -85,8 +85,8 @@ if ($acesso) {
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
     
-    $objeto->set_rowspan(3);
-    $objeto->set_grupoCorColuna(3);
+//    $objeto->set_rowspan(3);
+//    $objeto->set_grupoCorColuna(3);
 
     # Parametros da tabela
     $objeto->set_label(["Id", "Ordem", "Visibilidade", "Pai", "Título", "Descrição"]);
