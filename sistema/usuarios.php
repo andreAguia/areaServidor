@@ -70,7 +70,7 @@ if ($acesso) {
     $objeto->set_parametroValue($parametro);
 
     # select da lista
-    $objeto->set_selectLista('SELECT idUsuario,                                      
+    $objeto->set_selectLista("SELECT idUsuario,                                      
                                       idUsuario,
                                       usuario,
                                       idServidor,
@@ -83,16 +83,17 @@ if ($acesso) {
                                       idUsuario
                                  FROM tbusuario JOIN uenf_grh.tbservidor USING (idServidor)
                                                 JOIN uenf_grh.tbpessoa USING (idPessoa)
-                                WHERE usuario LIKE "%' . $parametro . '%"
-                                   OR uenf_grh.tbpessoa.nome LIKE "%' . $parametro . '%"
-                             ORDER BY (senha is null), ultimoAcesso desc');
+                                WHERE usuario LIKE '%{$parametro}%'
+                                   OR uenf_grh.tbpessoa.nome LIKE '%{$parametro}%'
+                                   OR idUsuario = '{$parametro}'
+                             ORDER BY (senha is null), ultimoAcesso desc");
 
     # select do edita
-    $objeto->set_selectEdita('SELECT usuario,
+    $objeto->set_selectEdita("SELECT usuario,
                                      idServidor,
                                      obs
                                 FROM tbusuario
-                               WHERE idUsuario = ' . $id);
+                               WHERE idUsuario = {$id}");
 
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
