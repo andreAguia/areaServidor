@@ -54,8 +54,10 @@ if ($acesso) {
 
     ################################################################
     # Exibe os dados do Usuario
-    $objeto->set_rotinaExtraEditar("get_DadosServidor");
-    $objeto->set_rotinaExtraEditarParametro($intra->get_idServidor($id));
+    if (!empty($id)) {
+        $objeto->set_rotinaExtraEditar("get_DadosServidor");
+        $objeto->set_rotinaExtraEditarParametro($intra->get_idServidor($id));
+    }
 
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
     $objeto->set_nome('Usuários');
@@ -68,7 +70,7 @@ if ($acesso) {
     $objeto->set_parametroValue($parametro);
 
     # select da lista
-    $objeto->set_selectLista('SELECT idUsuario,
+    $objeto->set_selectLista('SELECT idUsuario,                                      
                                       idUsuario,
                                       usuario,
                                       idServidor,
@@ -99,19 +101,11 @@ if ($acesso) {
     $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela    
-    $objeto->set_label(array("Status", "Id", "Usuário", "Servidor", "Permissões", "Último Acesso", "Email", "Editar"));
-    $objeto->set_align(array("center", "center", "left", "left", "left", "center", "left"));
-
-//    # Formatacao Condicional
-//    $objeto->set_formatacaoCondicional(array(array('coluna' => 6,
-//            'valor' => 'UENF-DGA-GRH',
-//            'operador' => '<>',
-//            'id' => 'logExclusao')
-//    ));
-
-    $objeto->set_classe(array(null, null, null, "pessoal", null, null, "pessoal"));
-    $objeto->set_metodo(array(null, null, null, "get_nomeECargoELotacao", null, null, "get_emailUenf"));
-    $objeto->set_funcao(array("statusUsuario", null, null, null, "get_permissoes", "datetime_to_php"));
+    $objeto->set_label(["Status", "Id", "Usuário", "Servidor", "Permissões", "Último Acesso", "Email", "Editar"]);
+    $objeto->set_align(["center", "center", "center", "left", "left", "center", "left"]);
+    $objeto->set_classe([null, null, null, "pessoal", null, null, "pessoal"]);
+    $objeto->set_metodo([null, null, null, "get_nomeECargoELotacao", null, null, "get_emailUenf"]);
+    $objeto->set_funcao(["statusUsuario", null, null, null, "get_permissoes", "datetime_to_php"]);
 
     $objeto->set_botaoExcluir(false);
     $objeto->set_botaoEditar(false);
@@ -124,7 +118,7 @@ if ($acesso) {
     $botao->set_imagem(PASTA_FIGURAS . 'bullet_edit.png', 20, 20);
 
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array("", "", "", "", "", "", "", $botao));
+    $objeto->set_link([null, null, null, null, null, null, null, $botao]);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -136,36 +130,42 @@ if ($acesso) {
     $objeto->set_idCampo('idUsuario');
 
     # Pega os dados da combo nome
-    $result = $pessoal->select('SELECT idServidor, 
-                                       tbpessoa.nome
+    $result = $pessoal->select('SELECT tbservidor.idServidor, 
+                                       tbpessoa.nome,
+                                       concat(IFnull(tblotacao.DIR,"")," - ",IFnull(tblotacao.GER,"")) lotacao
                                   FROM tbservidor JOIN tbpessoa USING(idPessoa)
+                                                  JOIN tbhistlot ON (tbservidor.idServidor = tbhistlot.idServidor)
+                                                  JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
                                  WHERE tbservidor.situacao = 1
-                              ORDER BY tbpessoa.nome');
-    array_unshift($result, array(0, null)); # Adiciona o valor de nulo
+                                 AND tbhistlot.data = (select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)
+                              ORDER BY lotacao, tbpessoa.nome');
+    array_unshift($result, array(0, null));
+
     # Campos para o formulario
     $objeto->set_campos(array(
-        array('linha'     => 1,
-            'col'       => 3,
-            'nome'      => 'usuario',
-            'label'     => 'Usuário:',
-            'tipo'      => 'texto',
-            'autofocus' => true,
-            'required'  => true,
-            'unique'    => true,
-            'size'      => 15),
         array('linha' => 1,
-            'col'   => 9,
-            'nome'  => 'idServidor',
-            'label' => 'Nome (servidor):',
-            'tipo'  => 'combo',
-            'array' => $result,
-            'size'  => 20),
+            'col' => 3,
+            'nome' => 'usuario',
+            'label' => 'Usuário:',
+            'tipo' => 'texto',
+            'autofocus' => true,
+            'required' => true,
+            'unique' => true,
+            'size' => 15),
         array('linha' => 2,
-            'col'   => 12,
-            'nome'  => 'obs',
+            'col' => 9,
+            'nome' => 'idServidor',
+            'label' => 'Nome (servidor):',
+            'tipo' => 'combo',
+            'optgroup' => true,
+            'array' => $result,
+            'size' => 20),
+        array('linha' => 2,
+            'col' => 12,
+            'nome' => 'obs',
             'label' => 'Observação:',
-            'tipo'  => 'texto',
-            'size'  => 30)
+            'tipo' => 'texto',
+            'size' => 30)
     ));
 
     # Log
@@ -402,18 +402,18 @@ if ($acesso) {
                     $tabela->set_align(array("center", "center", "center", "center", "center", "center", "left"));
                     $tabela->set_funcao(array(null, "datetime_to_php", null, null, null, "exibeNomeTitle"));
 
-                    $tabela->set_formatacaoCondicional(array(array('coluna'   => 0,
-                            'valor'    => 0,
+                    $tabela->set_formatacaoCondicional(array(array('coluna' => 0,
+                            'valor' => 0,
                             'operador' => '=',
-                            'id'       => 'logLogin'),
-                        array('coluna'   => 0,
-                            'valor'    => 3,
+                            'id' => 'logLogin'),
+                        array('coluna' => 0,
+                            'valor' => 3,
                             'operador' => '=',
-                            'id'       => 'logExclusao'),
-                        array('coluna'   => 0,
-                            'valor'    => 5,
+                            'id' => 'logExclusao'),
+                        array('coluna' => 0,
+                            'valor' => 5,
                             'operador' => '=',
-                            'id'       => 'logLoginIncorreto')
+                            'id' => 'logLoginIncorreto')
                     ));
 
                     # Imagem Condicional
@@ -425,34 +425,34 @@ if ($acesso) {
                     $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS . 'loginIncorreto.png', 'Login Incorreto', 15, 15);
                     $imagemBackup = new Imagem(PASTA_FIGURAS . 'backup2.png', 'Backup', 15, 15);
 
-                    $tabela->set_imagemCondicional(array(array('coluna'   => 0,
-                            'valor'    => 0,
+                    $tabela->set_imagemCondicional(array(array('coluna' => 0,
+                            'valor' => 0,
                             'operador' => '=',
-                            'imagem'   => $imagemLogin),
-                        array('coluna'   => 0,
-                            'valor'    => 1,
+                            'imagem' => $imagemLogin),
+                        array('coluna' => 0,
+                            'valor' => 1,
                             'operador' => '=',
-                            'imagem'   => $imagemInclusao),
-                        array('coluna'   => 0,
-                            'valor'    => 2,
+                            'imagem' => $imagemInclusao),
+                        array('coluna' => 0,
+                            'valor' => 2,
                             'operador' => '=',
-                            'imagem'   => $imagemAlterar),
-                        array('coluna'   => 0,
-                            'valor'    => 3,
+                            'imagem' => $imagemAlterar),
+                        array('coluna' => 0,
+                            'valor' => 3,
                             'operador' => '=',
-                            'imagem'   => $imagemExclusao),
-                        array('coluna'   => 0,
-                            'valor'    => 4,
+                            'imagem' => $imagemExclusao),
+                        array('coluna' => 0,
+                            'valor' => 4,
                             'operador' => '=',
-                            'imagem'   => $imagemRelatorio),
-                        array('coluna'   => 0,
-                            'valor'    => 5,
+                            'imagem' => $imagemRelatorio),
+                        array('coluna' => 0,
+                            'valor' => 5,
                             'operador' => '=',
-                            'imagem'   => $imagemLoginIncorreto),
-                        array('coluna'   => 0,
-                            'valor'    => 6,
+                            'imagem' => $imagemLoginIncorreto),
+                        array('coluna' => 0,
+                            'valor' => 6,
                             'operador' => '=',
-                            'imagem'   => $imagemBackup)
+                            'imagem' => $imagemBackup)
                     ));
                     $tabela->show();
                     $grid2->fechaColuna();
@@ -515,7 +515,6 @@ if ($acesso) {
                 # Coloca o objeto link na tabela			
                 $tabela->set_link(array("", "", "", $botao));
 
-
                 if (count($conteudo) > 0) {
                     $tabela->show();
                 } else {
@@ -555,7 +554,6 @@ if ($acesso) {
                 $botao1->set_title('Excluir essa permissão');
                 $botao1->set_url("?fase=excluirPermissao&id=$id&idPermissao=");
                 $botao1->set_imagem(PASTA_FIGURAS . 'bullet_cross.png', 20, 20);
-
 
                 # Coloca o objeto link na tabela			
                 $tabela->set_link(array("", "", "", $botao1));
