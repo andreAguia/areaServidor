@@ -12,7 +12,7 @@ $idUsuario = null;
 include ("_config.php");
 
 # Permissão de Acesso
-$acesso = Verifica::acesso($idUsuario, 1);
+$acesso = Verifica::acesso($idUsuario, [1, 2, 12]);
 
 if ($acesso) {
     # Conecta ao Banco de Dados
@@ -41,14 +41,14 @@ if ($acesso) {
 
     # Novo procedimento somente para administradores
     if (Verifica::acesso($idUsuario, 1)) {
-        $menu1 = new MenuBar();        
+        $menu1 = new MenuBar();
         $gerenciarProcedimento = new Link("Gerenciar", 'procedimentoNota.php');
         $gerenciarProcedimento->set_class('button small');
         $gerenciarProcedimento->set_title('Gerenciar os Procedimento');
         $menu1->add_link($gerenciarProcedimento, "right");
-        
+
         $menu1->show();
-    }else{
+    } else {
         br();
     }
 
@@ -64,7 +64,7 @@ if ($acesso) {
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna($col1P, $col1M, $col1L);
-    
+
     titulotable("Menu");
 
     # Menu de Projetos

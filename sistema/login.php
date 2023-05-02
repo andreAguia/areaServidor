@@ -255,7 +255,7 @@ if (($intra->get_variavel('manutencao')) AND ($ipManutencao <> $ipMaquina)) {
         case "parabens":
             # Acesso ao sistema GRH
             $pagina = 'areaServidor.php';
-            if (Verifica::acesso($idUsuario, 2)) {
+            if (Verifica::acesso($idUsuario, [2, 12])) {
                 $pagina = '../../grh/grhSistema/grh.php';
             } else {
                 $pagina = 'areaServidor.php';
