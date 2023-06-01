@@ -88,7 +88,7 @@ if ($acesso) {
             $imagem = new Imagem(PASTA_FIGURAS . 'lista.png', null, 15, 15);
             $botaoLot = new Button();
             $botaoLot->set_title("Listagem de cargos");
-            $botaoLot->set_url("../../grh/grhRelatorios/cargoNivel.php");
+            $botaoLot->set_url("../../grh/grhRelatorios/cargo.nivel.php");
             $botaoLot->set_imagem($imagem);
             $botaoLot->set_target("_blank");
             $menu1->add_link($botaoLot, "right");

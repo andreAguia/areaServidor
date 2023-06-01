@@ -188,9 +188,12 @@ if ($acesso) {
             $form->add_item($controle);
 
             # Perfil
-            $result = $pessoal->select('SELECT idperfil, nome
-                                              FROM tbperfil                                
-                                          ORDER BY 1');
+            $result = $pessoal->select('SELECT idperfil, 
+                                               nome, 
+                                               tipo
+                                          FROM tbperfil
+                                         WHERE tipo <> "Outros"  
+                                      ORDER BY tipo, nome');
             array_unshift($result, array('*', '-- Todos --'));
 
             $controle = new Input('parametroPerfil', 'combo', 'Perfil:', 1);
@@ -198,6 +201,7 @@ if ($acesso) {
             $controle->set_title('Filtra por Perfil');
             $controle->set_array($result);
             $controle->set_valor($parametroPerfil);
+            $controle->set_optgroup(true);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(2);
             $controle->set_col(3);

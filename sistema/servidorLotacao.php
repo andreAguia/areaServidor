@@ -89,7 +89,7 @@ if ($acesso) {
             $botaoLot = new Button();
             $botaoLot->set_title("Listagem de lotações ativas");
             $botaoLot->set_imagem($imagem);
-            $botaoLot->set_url('../../grh/grhRelatorios/lotacao.php');
+            $botaoLot->set_url('../../grh/grhRelatorios/lotacao.ativa.php');
             $botaoLot->set_target("_blank");
             $menu1->add_link($botaoLot, "right");
 
