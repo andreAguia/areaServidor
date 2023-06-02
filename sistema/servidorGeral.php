@@ -207,15 +207,6 @@ if ($acesso) {
             $controle->set_col(3);
             $form->add_item($controle);
 
-            # submit
-            #$controle = new Input('submit','submit');
-            #$controle->set_valor('Pesquisar');
-            #$controle->set_size(20);
-            #$controle->set_accessKey('P');
-            #$controle->set_linha(3);
-            #$controle->set_col(2);
-            #$form->add_item($controle);
-
             $form->show();
 
             # Lista de Servidores Ativos
@@ -243,6 +234,9 @@ if ($acesso) {
             if ($parametroPerfil <> "*") {
                 $lista->set_perfil($parametroPerfil);
                 $lista->set_paginacao(false);
+            }else{
+                # esconde o tipo outros
+                $lista->set_escondeTipoPerfil("Outros");
             }
 
             if ($parametroSituacao <> "*") {

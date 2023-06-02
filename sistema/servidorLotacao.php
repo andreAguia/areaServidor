@@ -151,6 +151,9 @@ if ($acesso) {
 
             # Retira o detalhado
             $lista->set_detalhado(false);
+            
+            # Retira os bolsistas e estagiários
+            $lista->set_escondeTipoPerfil("Outros");
 
             $lista->showTabela();
 
