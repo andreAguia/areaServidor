@@ -945,7 +945,7 @@ class AreaServidor {
         # Conecta ao Banco de Dados
         $intra = new Intra();
 
-        p("Data do Último Upload: " . $intra->get_variavel('backupArquivosData'), "f12");
+        p("Data do Último Upload: " . $intra->get_variavel('dataUploadArquivos'), "f12");
 
         $painel->fecha();
     }
