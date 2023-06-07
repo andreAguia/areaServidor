@@ -174,6 +174,11 @@ class AreaServidor {
             $grid->abreColuna(12, 6, 4);
             $cal = new Calendario($mes, $ano);
             $cal->show("?");
+
+            if (Verifica::acesso($idUsuario, 1)) {
+                self::moduloInfo();
+            }
+
             $grid->fechaColuna();
         }
         $grid->fechaGrid();
@@ -921,6 +926,28 @@ class AreaServidor {
         $botao->set_title('Sistema de Registros de Bens dos Agentes Públicos');
         #$botao->set_target("_blank");
         $botao->show();
+    }
+
+    ######################################################################################################################
+
+    /**
+     * Método moduloInfo
+     * 
+     */
+    private static function moduloInfo() {
+
+        $painel = new Callout();
+        $painel->abre();
+        
+        titulo('Informações Especiais (adm)');
+        br();
+
+        # Conecta ao Banco de Dados
+        $intra = new Intra();
+
+        p("Data do Último Upload: " . $intra->get_variavel('backupArquivosData'), "f12");
+
+        $painel->fecha();
     }
 
     ######################################################################################################################
