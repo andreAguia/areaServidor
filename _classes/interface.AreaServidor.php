@@ -938,14 +938,30 @@ class AreaServidor {
 
         $painel = new Callout();
         $painel->abre();
-        
-        titulo('Informações Especiais (adm)');
+
+        titulo('Arquivos PDFs');
         br();
 
         # Conecta ao Banco de Dados
         $intra = new Intra();
 
-        p("Data do Último Upload: " . $intra->get_variavel('dataUploadArquivos'), "f12");
+        $ultimoUpload = $intra->get_variavel('dataUploadArquivos');
+        $ultimoBackup = $intra->get_variavel('dataBackupArquivos');
+
+        p("Data do último upload: {$ultimoUpload}<br/>Data do último backup: {$ultimoBackup}", "f12", "center");
+
+        # Div para centralizar
+        $div = new Div("center");
+        $div->abre();
+        
+        # informa se deve ou não fazer o backup
+        if (dataMaior($ultimoUpload, $ultimoBackup) == $ultimoBackup) {
+            label("Backup Atualizado", "success", "center");
+        } else {
+            label("Fazer Backup!!", "alert");
+        }
+        
+        $div->fecha();
 
         $painel->fecha();
     }
