@@ -945,23 +945,35 @@ class AreaServidor {
         # Conecta ao Banco de Dados
         $intra = new Intra();
 
+        # Pega as data cadastradas
         $ultimoUpload = $intra->get_variavel('dataUploadArquivos');
         $ultimoBackup = $intra->get_variavel('dataBackupArquivos');
 
+        # Exibe as datas
         p("Data do último upload: {$ultimoUpload}<br/>Data do último backup: {$ultimoBackup}", "f12", "center");
-
+        
+        # Altera o formado das datas
+        $upload = datetime_to_bd($ultimoUpload);
+        $backup = datetime_to_bd($ultimoBackup);
+        
         # Div para centralizar
         $div = new Div("center");
         $div->abre();
-        
+
         # informa se deve ou não fazer o backup
-        if (dataMaior($ultimoUpload, $ultimoBackup) == $ultimoBackup) {
+        if (strtotime($backup) > strtotime($upload)) {
             label("Backup Atualizado", "success", "center");
         } else {
             label("Fazer Backup!!", "alert");
         }
-        
+
         $div->fecha();
+
+        # Editar
+        $botaoEditar = new Link("Alterar Data", "?fase=mudaData");
+        $botaoEditar->set_class('tiny button secondary');
+        $botaoEditar->set_title('Altera a data do backup');
+        $botaoEditar->show();
 
         $painel->fecha();
     }

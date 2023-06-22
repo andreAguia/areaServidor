@@ -275,6 +275,16 @@ if ($acesso) {
             break;
 
 ##################################################################
+
+        case "mudaData" :
+
+            # Muda a data
+            $intra->set_variavel('dataBackupArquivos', date("d/m/Y H:i:s"));
+            
+            loadPage("?");
+            break;
+
+##################################################################
     }
 
     $grid1->fechaColuna();
