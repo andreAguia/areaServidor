@@ -62,23 +62,18 @@ class Verifica {
         /**
          * Verifica se está em Manutenção
          */
-        # Verifica o ip da máquina
-        $ipManutencao = $intra->get_variavel('ipAdmin'); // ip isento da mensagem
-        $ipMaquina = $_SERVER['REMOTE_ADDR'];         // ip da máquina
-        
         # Verifica se está em Manutenção
         if ($intra->get_variavel('manutencao')) {
-            if ($ipManutencao <> $ipMaquina) {
+            # Somente admin acessam o sistema em manutenção
+            if (!$intra->verificaPermissao($idUsuario, 1))
                 $manutencao = true;
-            }
         }
 
         # Exibe a mensagem de manutenção
         if ($manutencao) {
-            loadPage("../manutencao.php");
+            loadPage("../sistema/manutencao.php");
         } else {
             return $acesso;
         }
     }
-
 }
