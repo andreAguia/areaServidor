@@ -51,7 +51,9 @@ switch ($fase) {
             $callout = new Callout("alert");
             $callout->abre();
 
-            p("Atenção! Sistema em Manutenção!<br/>Somente usuário Administradores podem acessar", "center");
+            p("Atenção! Sistema em manutenção!"
+                    . "<br/>Somente usuários administradores podem acessar"
+                    . "<br/>Aguarde alguns minutos e tente novamente", "center");
 
             $callout->fecha();
         }
