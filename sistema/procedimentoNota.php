@@ -138,6 +138,12 @@ if ($acesso) {
                             ORDER BY categoria, nome');
     array_unshift($rotina, array(null, null));
 
+    # Pega os dados da combo de categoria
+    $categoriaLista = $intra->select('SELECT distinct categoria
+                                FROM tbprocedimento
+                            ORDER BY categoria');
+    array_unshift($rotina, array(null, null));
+
     # Campos para o formulario
     $objeto->set_campos([
         array('linha' => 1,
@@ -153,6 +159,7 @@ if ($acesso) {
             'nome' => 'categoria',
             'label' => 'Categoria:',
             'tipo' => 'texto',
+            'datalist' => $categoriaLista,
             'required' => true,
             'col' => 4,
             'size' => 100),
