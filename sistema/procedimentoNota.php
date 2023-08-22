@@ -130,7 +130,7 @@ if ($acesso) {
 
     # Tipo de label do formulário
     $objeto->set_formlabelTipo(1);
-    
+
     # Pega os dados da combo de rotina
     $rotina = $intra->select('SELECT idRotina,
                                      CONCAT(categoria," - ",nome)
@@ -142,7 +142,13 @@ if ($acesso) {
     $categoriaLista = $intra->select('SELECT distinct categoria
                                 FROM tbprocedimento
                             ORDER BY categoria');
-    array_unshift($rotina, array(null, null));
+    array_unshift($categoriaLista, array(null, null));
+
+    # Pega os dados da combo de categoria
+    $subCategoriaLista = $intra->select('SELECT distinct subCategoria
+                                FROM tbprocedimento
+                            ORDER BY subCategoria');
+    array_unshift($subCategoriaLista, array(null, null));
 
     # Campos para o formulario
     $objeto->set_campos([
@@ -167,6 +173,7 @@ if ($acesso) {
             'nome' => 'subCategoria',
             'label' => 'sub-Categoria:',
             'tipo' => 'texto',
+            'datalist' => $subCategoriaLista,
             'required' => true,
             'col' => 5,
             'size' => 100),
@@ -251,7 +258,7 @@ if ($acesso) {
 
             $objeto->set_botaoEditarExtra([$botao]);
         }
-    }elseif($procedimento->get_tipo($id) == 3) {
+    } elseif ($procedimento->get_tipo($id) == 3) {
 
         # Botão de Upload
         if (!empty($id)) {
@@ -277,7 +284,7 @@ if ($acesso) {
         case "gravar" :
             $objeto->$fase($id);
             break;
-        
+
         case "excluir" :
             $objeto->set_linkListar('?');
             $objeto->$fase($id);
