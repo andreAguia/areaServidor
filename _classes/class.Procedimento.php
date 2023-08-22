@@ -10,82 +10,152 @@ class Procedimento {
      */
     ##########################################################
 
-    public function menuPrincipal($idProcedimento = null, $idUsuario = null) {
+    public function menuPrincipal($subCategoria = null, $idProcedimento = null) {
         /**
          * Exibe o menu de categoria.
          *
          * @syntax Procedimento::menuCategorias;
-         *
-         * @param $idCategoria    integer null o id da categoria a ser ressaltado no menu informando que está sendo editada.
+         *         
          * @param $idProcedimento integer null o id do procedimento a ser ressaltado no menu informando que está sendo editada.
          *
          */
         # Acessa o banco de dados
         $intra = new Intra();
 
-        # Pega os procedimentos do menu Inicial: idPai = 0
-        if (Verifica::acesso($idUsuario, 1)) {
-            $select = 'SELECT idProcedimento,
-                              titulo,
-                              descricao
-                         FROM tbprocedimento
-                        WHERE idPai = 0
-                  ORDER BY idPai, numOrdem';
-        } else {
-            $select = 'SELECT idProcedimento,
-                              titulo,
-                              descricao
-                         FROM tbprocedimento
-                        WHERE idPai = 0
-                          AND visibilidade = 1
-                  ORDER BY idPai, numOrdem';
+        # Prepara o array JáAbertos
+        $abertos[] = null;                      // Cria o Array com o valor nullo
+        $jaAbertos = get_session("abertos");    // Carrega ele com os valores anteriores (se tiver)
+
+        if (!empty($jaAbertos)) {
+
+            foreach ($jaAbertos as $item) {
+                # Se já tivero iten, retira do array
+                $key = array_search($item, $abertos);
+                if ($key !== false) {
+                    unset($abertos[$key]);
+                } else {
+                    array_push($abertos, $item);
+                }
+            }
         }
 
-        $dados = $intra->select($select);
-        $numCategorias = $intra->count($select);
+        # Verifica se tem subCategoria e adiciona no array
+        if (!empty($subCategoria)) {
+            $key = array_search($subCategoria, $abertos);
+            if ($key !== false) {
+                unset($abertos[$key]);
+            } else {
+                array_push($abertos, $subCategoria);
+            }
+        }
 
-        # Verifica se tem Categorias cadastradas
-        if ($numCategorias > 0) {
+        # Categorias
+        $arrayCategorias = $this->get_menuCategorias();
+        if(empty($arrayCategorias)){
+            return;
+        }
 
-            # Inicia o menu           
-            $menu1 = new Menu("menuProcedimentos");            
+        # Inicia o menu           
+        $menu1 = new Menu("menuProcedimentos");
 
-            # Percorre o array
-            foreach ($dados as $valor) {
-                $texto = $valor[1];
+        # Exibe os itens
+        foreach ($arrayCategorias as $valor) {
+            $menu1->add_item('titulo', '<b>' . $valor["categoria"] . '</b>');
+            $categoriaAnterior = $valor["categoria"];
+            $subCategoriaAnterior = null;
+            $tituloAnterior = null;
 
-                $menu1->add_item('titulo', '<b>' . $texto . '</b>', '?fase=exibeProcedimento&idProcedimento=' . $valor[0], $valor[2]);
+            # Pega as subCategorias
+            $arraySubCategorias = $this->get_menuSubCategorias($valor["categoria"]);
 
-                # Verifica se tem filhos
-                $filhos = $this->get_filhosProcedimento($valor[0], $idUsuario);
+            foreach ($arraySubCategorias as $valor2) {
+                # Exibe as subcategorias se estiver aberto
+                $menu1->add_item('link', $valor2["subCategoria"], '?fase=exibeProcedimento&subCategoria=' . $valor2["subCategoria"]);
 
-                if (!is_null($filhos > 0)) {
-                    foreach ($filhos as $valorFilhos) {
+                # Verifica se abre o itens
+                if (in_array($valor2["subCategoria"], $abertos)) {
+                    # Pega os itens
+                    $arrayTitulos = $this->get_menuTitulos($valor2["subCategoria"]);
 
-                        if ($idProcedimento == $valorFilhos[0]) {
-                            $menu1->add_item('link', '<b>' . $valorFilhos[1] . '</b>', '?fase=exibeProcedimento&idProcedimento=' . $valorFilhos[0], $valorFilhos[2]);
+                    foreach ($arrayTitulos as $valor3) {
+                        if ($idProcedimento == $valor3['idProcedimento']) {
+                            $menu1->add_item('sublink', "<b>- {$valor3['titulo']}</b>", '?fase=exibeProcedimento&idProcedimento=' . $valor3["idProcedimento"]);
                         } else {
-                            $menu1->add_item('link', $valorFilhos[1], '?fase=exibeProcedimento&idProcedimento=' . $valorFilhos[0], $valorFilhos[2]);
-                        }
-
-                        # Verifica se tem netos
-                        $netos = $this->get_filhosProcedimento($valorFilhos[0], $idUsuario);
-
-                        if (!is_null($netos > 0)) {
-
-                            foreach ($netos as $valorNetos) {
-                                if ($idProcedimento == $valorNetos[0]) {
-                                    $menu1->add_item('sublink', "<strong>" . $valorNetos[1] . '</strong>', '?fase=exibeProcedimento&idProcedimento=' . $valorNetos[0], $valorNetos[2]);
-                                } else {
-                                    $menu1->add_item('sublink', $valorNetos[1], '?fase=exibeProcedimento&idProcedimento=' . $valorNetos[0], $valorNetos[2]);
-                                }
-                            }
+                            $menu1->add_item('sublink', "- {$valor3['titulo']}", '?fase=exibeProcedimento&idProcedimento=' . $valor3["idProcedimento"]);
                         }
                     }
                 }
             }
-            $menu1->show();
         }
+
+        # exibe o menu
+        $menu1->show();
+
+        # trata o array para gtravar na session
+        if (!empty($jaAbertos)) {
+            $abertos = array_filter($abertos);  // apaga os valores em branco (se tiver)
+            $abertos = array_unique($abertos);  // retira as duplicatas
+        }
+
+        set_session('abertos', $abertos);
+    }
+
+    ##########################################################
+
+    function get_menuCategorias() {
+
+        /**
+         * Fornece as categorias para o menu
+         */
+        $intra = new Intra();
+
+        $select = "SELECT categoria,
+                          idProcedimento
+                     FROM tbprocedimento
+                    WHERE categoria IS NOT NULL 
+                 GROUP BY categoria
+                 ORDER BY categoria";
+
+        return $intra->select($select);
+    }
+
+    ##########################################################
+
+    function get_menuSubCategorias($categoria) {
+
+        /**
+         * Fornece as subCategorias para o menu
+         */
+        $intra = new Intra();
+
+        $select = "SELECT subCategoria,
+                          idProcedimento
+                     FROM tbprocedimento
+                    WHERE subCategoria IS NOT NULL 
+                      AND categoria = '{$categoria}'
+                 GROUP BY subCategoria       
+                 ORDER BY subCategoria";
+
+        return $intra->select($select);
+    }
+
+    ##########################################################
+
+    function get_menuTitulos($subCategoria) {
+
+        /**
+         * Fornece titulos para o menu
+         */
+        $intra = new Intra();
+
+        $select = "SELECT titulo,
+                           idProcedimento
+                      FROM tbprocedimento
+                     WHERE titulo IS NOT NULL 
+                       AND subCategoria = '{$subCategoria}'
+                  ORDER BY numOrdem, titulo";
+
+        return $intra->select($select);
     }
 
     ###########################################################
@@ -101,14 +171,12 @@ class Procedimento {
         $select = "SELECT *
                      FROM tbprocedimento
                     WHERE idProcedimento = $idProcedimento";
-
-        $dados = $intra->select($select, false);
-        return $dados;
+        return $intra->select($select, false);
     }
 
     ###########################################################
 
-    function get_idProcedimento($titulo) {
+    function get_tipo($idProcedimento) {
 
         /**
          * Fornece o id de um titulo
@@ -116,40 +184,22 @@ class Procedimento {
         $intra = new Intra();
 
         # Pega os dados
-        $select = "SELECT idProcedimento
+        $select = "SELECT tipo
                      FROM tbprocedimento
-                    WHERE titulo = '{$titulo}'";
+                    WHERE idProcedimento = '{$idProcedimento}'";
 
         $dados = $intra->select($select, false);
-        return $dados['idProcedimento'];
-    }
 
-    ###########################################################
-
-    function get_filhosProcedimento($idProcedimento, $idUsuario = null) {
-
-        /**
-         * Fornece todos os dados da categoria
-         */
-        # Pega os dados
-        $select = "SELECT *
-                   FROM tbprocedimento
-                  WHERE idPai = $idProcedimento
-                  ORDER BY numOrdem";
-
-        if (!Verifica::acesso($idUsuario, 1)) {
-            $select .= " AND visibilidade = 1";
+        if (empty($dados[0])) {
+            return null;
+        } else {
+            return $dados[0];
         }
-
-        $intra = new Intra();
-        $dados = $intra->select($select);
-
-        return $dados;
     }
 
     ###########################################################
 
-    function exibeProcedimento($idProcedimento, $idUsuario = null) {
+    function exibeProcedimento($idProcedimento, $editar = false) {
 
         /**
          * Fornece todos os dados da categoria
@@ -160,137 +210,179 @@ class Procedimento {
         $grid = new Grid();
         $grid->abreColuna(12);
 
+        # Div onde vai exibir o procedimento
+        $div = new Div("divNota");
+        $div->abre();
+
         if (!empty($dados)) {
 
-            $link = $dados["link"];
-            $texto = $dados['textoProcedimento'];
-            $titulo = $dados['titulo'];
-            $descricao = $dados['descricao'];
-            $idPai = $dados['idPai'];
+            # Exibe de acordo com o tipo do arquivo
+            switch ($dados["tipo"]) {
+                case 1 : // documento
+                    br();
+                    # Botão de Editar
+                    if ($editar) {
+                        $divBtn = new Div("editarProcedimento");
+                        $divBtn->abre();
 
-            # Dados do Pai
-            $dadosPai = $this->get_dadosProcedimento($idPai);
-            if (!empty($dadosPai['titulo'])) {
-                $pai = $dadosPai['titulo'];
-            }
+                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
+                        $btnEditar->set_class('button secondary');
+                        $btnEditar->set_title('Editar o Procedimento');
+                        $btnEditar->show();
 
-            # Monta o painel
-            $painel = new Callout();
-            $painel->abre();
+                        $divBtn->fecha();
+                    }
 
-            # Botão de Editar
-            if (!empty($idUsuario)) {
-                if (Verifica::acesso($idUsuario, 1)) {
-                    $divBtn = new Div("editarProcedimento");
-                    $divBtn->abre();
+                    # Exibe o titulo
+                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
+                    br();
 
-                    $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
-                    $btnEditar->set_class('button secondary');
-                    $btnEditar->set_title('Editar o Procedimento');
-                    $btnEditar->show();
+                    p($dados['titulo'], "procedimentoTitulo");
+                    p($dados['descricao'], "procedimentoDescricao");
+                    hr("procedimento");
 
-                    $divBtn->fecha();
-                }
-            }
+                    if (empty($dados['textoProcedimento'])) {
+                        br(4);
+                        p("Não há conteúdo", "center");
+                        br(10);
+                    } else {
+                        echo $dados['textoProcedimento'];
+                    }
+                    break;
+                case 2: // arquivo jpg
+                    br();
+                    # Botão de Editar
+                    if ($editar) {
+                        $divBtn = new Div("editarProcedimento");
+                        $divBtn->abre();
 
-            # Exibe o titulo do pai (quando houver)
-            if (!empty($pai)) {
-                p($pai, "procedimentoPai");
-            }
+                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
+                        $btnEditar->set_class('button secondary');
+                        $btnEditar->set_title('Editar o Procedimento');
+                        $btnEditar->show();
 
-            p($titulo, "procedimentoTitulo");
-            p($descricao, "procedimentoDescricao");
-            hr("procedimento");
+                        $divBtn->fecha();
+                    }
 
-            # Div onde vai exibir o procedimento
-            $div = new Div("divNota");
-            $div->abre();
+                    # Exibe o titulo
+                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
+                    br();
 
-            if (vazio($link)) {
+                    p($dados['titulo'], "procedimentoTitulo");
+                    p($dados['descricao'], "procedimentoDescricao");
+                    br();
 
-                if (vazio($texto)) {
-                    br(4);
-                    p("Não há conteúdo", "center");
-                    br(4);
-                } else {
-                    echo $texto;
-                }
-            } else {
-                $figura = new Imagem(PASTA_FIGURAS . $link, $descricao, '100%', '100%');
-                $figura->show();
+                    # Define o arquivo
+                    $arquivo = PASTA_PROCEDIMENTOS . $idProcedimento . '.jpg';
+
+                    if (file_exists($arquivo)) {
+                        $figura = new Imagem($arquivo, $dados['descricao'], '100%', '100%');
+                        $figura->show();
+                    } else {
+                        br(4);
+                        p("Não há conteúdo", "center");
+                        br(10);
+                    }
+                    break;
+                case 3: // arquivo pdf
+                    br();
+                    # Botão de Editar
+                    if ($editar) {
+                        $divBtn = new Div("editarProcedimento");
+                        $divBtn->abre();
+
+                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
+                        $btnEditar->set_class('button secondary');
+                        $btnEditar->set_title('Editar o Procedimento');
+                        $btnEditar->show();
+
+                        $divBtn->fecha();
+                    }
+
+                    # Exibe o titulo
+                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
+                    br();
+
+                    p($dados['titulo'], "procedimentoTitulo");
+                    p($dados['descricao'], "procedimentoDescricao");
+                    br();
+
+                    # Define o arquivo
+                    $arquivo = PASTA_PROCEDIMENTOS . $idProcedimento . '.pdf';
+
+                    if (file_exists($arquivo)) {
+                        echo '<iframe src="' . PASTA_PROCEDIMENTOS . $idProcedimento . '.pdf" height="1000px" width="100%" marginwidth ="0" marginheight ="0" style="border:1px solid #d7d7d7;"></iframe>';
+                    } else {
+                        # Monta o painel
+                        $painel = new Callout();
+                        $painel->abre();
+
+                        # Exibe o titulo
+                        p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
+                        br();
+
+                        p($dados['titulo'], "procedimentoTitulo");
+                        p($dados['descricao'], "procedimentoDescricao");
+                        hr("procedimento");
+
+                        br(4);
+                        p("Não há conteúdo", "center");
+                        br(10);
+                        $painel->fecha();
+                    }
+                    break;
+                case 4: // link
+                    br();
+                    # Botão de Editar
+                    if ($editar) {
+                        $divBtn = new Div("editarProcedimento");
+                        $divBtn->abre();
+
+                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
+                        $btnEditar->set_class('button secondary');
+                        $btnEditar->set_title('Editar o Procedimento');
+                        $btnEditar->show();
+
+                        $divBtn->fecha();
+                    }
+
+                    # Exibe o titulo
+                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
+                    br();
+
+                    p($dados['titulo'], "procedimentoTitulo");
+                    p($dados['descricao'], "procedimentoDescricao");
+                    br();
+
+                    echo "<iframe src='{$dados['link']}' height='1000px' width='100%' marginwidth ='0' marginheight ='0' style='border:1px solid #d7d7d7;'></iframe>";
+                    break;
+                case 5: // rotina
+                    br();
+                    # Botão de Editar
+                    if ($editar) {
+                        $divBtn = new Div("editarProcedimento");
+                        $divBtn->abre();
+
+                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
+                        $btnEditar->set_class('button secondary');
+                        $btnEditar->set_title('Editar o Procedimento');
+                        $btnEditar->show();
+
+                        $divBtn->fecha();
+                    }
+
+                    # Exibe o titulo
+                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
+                    br();
+
+                    $rotina = new Rotina();
+                    $rotina->exibeRotina($dados['idRotina']);
+                    break;
             }
             $div->fecha();
-
-            # Fecha o painel
-            $painel->fecha();
-        } else {
-            br(5);
-            p("Não há dados para serem exibidos", "center");
         }
-
         $grid->fechaColuna();
         $grid->fechaGrid();
-    }
-
-    ###########################################################
-
-    public function exibeProcedimentoFilhos($pai = null) {
-        /**
-         * exibe tabela com rotina
-         * 
-         * @param $id integer null o id
-         * 
-         * @syntax $rotina->exibeRotina([$id]);  
-         */
-        # Acessa o banco de dados
-        $intra = new Intra();
-        
-        # Pega o idPai de um pai
-        $idPai = $this->get_idProcedimento($pai);
-
-        # Pega as rotinas desta categoria
-        $select = "SELECT idProcedimento,
-                          titulo,
-                          descricao
-                     FROM tbprocedimento
-                    WHERE idPai = '{$idPai}'
-                 ORDER BY numOrdem";
-
-        $row1 = $intra->select($select);
-
-        if (empty($row1)) {
-            $grid = new Grid("center");
-            $grid->abreColuna(8);
-            br(3);
-
-            calloutAlert("Não Existe Informação Cadastrada");
-
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-        } else {
-
-            # Verifica quantas rotinas existem nesta catagoria
-            if ($intra->count($select) == 1) {
-                $this->exibeProcedimento($row1[0][0]);
-            } else {
-
-                foreach ($row1 as $item) {
-                    $label[] = $item['titulo'];
-                }
-
-                $tab = new Tab($label);
-
-                foreach ($row1 as $item) {
-                    $tab->abreConteudo();
-
-                    $this->exibeProcedimento($item[0]);
-
-                    $tab->fechaConteudo();
-                }
-                $tab->show();
-                br();
-            }
-        }
     }
 
     ###########################################################

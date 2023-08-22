@@ -45,7 +45,8 @@ define("PASTA_ESTILOS", "../_css/");                                # Estilos Es
 /*
  *  Arquivos
  */
-define("PASTA_FOTOS", "../../_arquivos/fotos/");                     # Fotos dos Servidores
+define("PASTA_FOTOS", "../../_arquivos/fotos/");                    # Fotos dos Servidores
+define("PASTA_PROCEDIMENTOS", "../../_arquivos/procedimentos/");    # arquivos para a rotina de procedimentos
 
 /*
  *  Tags aceitas em campos com htmlTag = true

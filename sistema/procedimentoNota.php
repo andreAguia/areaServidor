@@ -32,11 +32,21 @@ if ($acesso) {
         set_session('sessionParametro', $parametro);    # transfere para a session para poder recuperá-lo depois
     }
 
+    # Define os tipos de documentos
+    $arrayTipos = [
+        [null, null],
+        [1, "Documento"],
+        [2, "Arquivo JPG"],
+        [3, "Arquivo PDF"],
+        [4, "Link"],
+        [5, "Rotina"],
+    ];
+
     # Começa uma nova página
     $page = new Page();
-    $page->set_jscript('<script>CKEDITOR.replace("textoProcedimento");</script>');
+    $page->set_jscript("<script>CKEDITOR.replace('textoProcedimento');</script>");
     $page->iniciaPagina();
-    
+
     # Cabeçalho da Página
     AreaServidor::cabecalho();
     br();
@@ -56,41 +66,58 @@ if ($acesso) {
     $objeto->set_parametroValue($parametro);
 
     # select da lista
-    $objeto->set_selectLista('SELECT FILHO.idProcedimento,
-                                      FILHO.numOrdem,
-                                      IF(FILHO.visibilidade = 1,"Público","Admin"),
-                                      PAI.titulo,
-                                      FILHO.titulo,
-                                      FILHO.descricao,
-                                      FILHO.idProcedimento
-                                 FROM tbprocedimento FILHO LEFT JOIN tbprocedimento PAI ON (FILHO.idPai = PAI.idProcedimento)
-                                WHERE FILHO.titulo LIKE "%' . $parametro . '%"
-                                   OR FILHO.descricao LIKE "%' . $parametro . '%" 
-                                   OR PAI.titulo LIKE "%' . $parametro . '%"     
-                             ORDER BY PAI.titulo, FILHO.numOrdem');
+    $selectListar = "SELECT idProcedimento,
+                            categoria,
+                            subCategoria,
+                            numOrdem,
+                            titulo,
+                            descricao,
+                            CASE tipo";
+
+    foreach ($arrayTipos as $item) {
+        if (!empty($item[0])) {
+            $selectListar .= " WHEN {$item[0]} THEN '{$item[1]}' ";
+        }
+    }
+
+    $selectListar .= " ELSE '' ";
+
+    $selectListar .= "     END,
+                           visibilidade                                     
+                      FROM tbprocedimento 
+                     WHERE categoria LIKE '%{$parametro}%'
+                        OR subCategoria LIKE '%{$parametro}%'
+                        OR titulo LIKE '%{$parametro}%'
+                  ORDER BY categoria, subCategoria, numOrdem, titulo";
+
+    $objeto->set_selectLista($selectListar);
+
     # select do edita
-    $objeto->set_selectEdita('SELECT titulo,
+    $objeto->set_selectEdita("SELECT tipo,
+                                     categoria,
+                                     subCategoria,
+                                     titulo,
                                      descricao,
-                                     idPai,
-                                     link,
                                      numOrdem,
-                                     visibilidade,                                     
+                                     visibilidade,
+                                     link,
+                                     idRotina,
                                      textoProcedimento
                                 FROM tbprocedimento
-                               WHERE idProcedimento = ' . $id);
+                               WHERE idProcedimento = {$id}");
 
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkExcluir('?fase=excluir');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
-    
-//    $objeto->set_rowspan(3);
-//    $objeto->set_grupoCorColuna(3);
 
     # Parametros da tabela
-    $objeto->set_label(["Id", "Ordem", "Visibilidade", "Pai", "Título", "Descrição"]);
-    $objeto->set_align(["center", "center", "center", "left", "left", "left"]);
+    $objeto->set_label(["Id", "Categoria", "Sub-categoria", "Ordem", "Título", "Descrição", "Tipo", "Visibilidade"]);
+    $objeto->set_align(["center", "center", "center", "center", "left", "left"]);
+
+    $objeto->set_rowspan([1, 2]);
+    $objeto->set_grupoCorColuna(1);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -103,47 +130,54 @@ if ($acesso) {
 
     # Tipo de label do formulário
     $objeto->set_formlabelTipo(1);
-
-    # Pega os dados da combo de Categoria
-    $result3 = $intra->select('SELECT idProcedimento,
-                                      titulo
-                                 FROM tbprocedimento
-                             ORDER BY titulo');
-    array_push($result3, array(0, "Principal"));
+    
+    # Pega os dados da combo de rotina
+    $rotina = $intra->select('SELECT idRotina,
+                                     CONCAT(categoria," - ",nome)
+                                FROM tbrotina
+                            ORDER BY categoria, nome');
+    array_unshift($rotina, array(null, null));
 
     # Campos para o formulario
     $objeto->set_campos([
         array('linha' => 1,
+            'col' => 3,
+            'nome' => 'tipo',
+            'label' => 'Tipo:',
+            'tipo' => 'combo',
+            'required' => true,
+            'autofocus' => true,
+            'array' => $arrayTipos,
+            'size' => 15),
+        array('linha' => 1,
+            'nome' => 'categoria',
+            'label' => 'Categoria:',
+            'tipo' => 'texto',
+            'required' => true,
+            'col' => 4,
+            'size' => 100),
+        array('linha' => 1,
+            'nome' => 'subCategoria',
+            'label' => 'sub-Categoria:',
+            'tipo' => 'texto',
+            'required' => true,
+            'col' => 5,
+            'size' => 100),
+        array('linha' => 2,
             'nome' => 'titulo',
             'label' => 'Título:',
             'tipo' => 'texto',
             'required' => true,
-            'autofocus' => true,
             'col' => 6,
             'size' => 100),
-        array('linha' => 1,
+        array('linha' => 2,
             'nome' => 'descricao',
             'title' => 'Descrição detalhada da Categoria',
             'label' => 'Descrição:',
             'tipo' => 'texto',
             'col' => 6,
             'size' => 250),
-        array('linha' => 2,
-            'nome' => 'idPai',
-            'label' => 'Pai:',
-            'tipo' => 'combo',
-            'required' => true,
-            'array' => $result3,
-            'col' => 4,
-            'size' => 30),
-        array('linha' => 2,
-            'nome' => 'link',
-            'title' => 'link',
-            'label' => 'Diagrama (da pasta de diagramas):',
-            'tipo' => 'texto',
-            'col' => 4,
-            'size' => 250),
-        array('linha' => 2,
+        array('linha' => 3,
             'nome' => 'numOrdem',
             'autofocus' => true,
             'label' => 'numOrdem:',
@@ -151,15 +185,30 @@ if ($acesso) {
             'required' => true,
             'col' => 2,
             'size' => 4),
-        array('linha' => 2,
+        array('linha' => 3,
             'nome' => 'visibilidade',
-            'label' => 'Visibilidade:',
+            'label' => 'Visivel:',
             'tipo' => 'combo',
             'required' => true,
-            'array' => array(array(1, "Público"), array(2, "Admin")),
+            'array' => array(array(1, "Sim"), array(2, "Não")),
             'col' => 2,
             'size' => 15),
-        array('linha' => 3,
+        array('linha' => 4,
+            'nome' => 'link',
+            'title' => 'link',
+            'label' => 'Link Externo: (Quando for link)',
+            'tipo' => 'texto',
+            'col' => 12,
+            'size' => 250),
+        array('linha' => 5,
+            'nome' => 'idRotina',
+            'title' => 'link',
+            'label' => 'Rotina: (Quando for rotina)',
+            'tipo' => 'combo',
+            'array' => $rotina,
+            'col' => 12,
+            'size' => 250),
+        array('linha' => 7,
             'nome' => 'textoProcedimento',
             'label' => 'Texto:',
             'tipo' => 'editor',
@@ -174,6 +223,42 @@ if ($acesso) {
     $objeto->set_voltarForm('procedimentos.php?fase=exibeProcedimento');
     $objeto->set_linkListar('procedimentos.php?fase=exibeProcedimento');
 
+    $procedimento = new Procedimento();
+
+    # Dados da rotina de Upload
+    $pasta = PASTA_PROCEDIMENTOS;
+    $nome = "Arquivo";
+    $tabela = "tbprocedimento";
+
+    # Carrega a rotina de acordo com o tipo de documento: jpg ou pdf
+    if ($procedimento->get_tipo($id) == 2) {
+
+        # Botão de Upload
+        if (!empty($id)) {
+
+            # Botão de Upload
+            $botao = new Button("Upload {$nome}");
+            $botao->set_url("procedimentoNotaUploadImagem.php?fase=upload&id={$id}");
+            $botao->set_title("Faz o Upload do {$nome}");
+            $botao->set_target("_blank");
+
+            $objeto->set_botaoEditarExtra([$botao]);
+        }
+    }elseif($procedimento->get_tipo($id) == 3) {
+
+        # Botão de Upload
+        if (!empty($id)) {
+
+            # Botão de Upload
+            $botao = new Button("Upload {$nome}");
+            $botao->set_url("procedimentoNotaUploadPdf.php?fase=upload&id={$id}");
+            $botao->set_title("Faz o Upload do {$nome}");
+            $botao->set_target("_blank");
+
+            $objeto->set_botaoEditarExtra([$botao]);
+        }
+    }
+
     ################################################################
     switch ($fase) {
         case "" :
@@ -182,8 +267,12 @@ if ($acesso) {
             break;
 
         case "editar" :
-        case "excluir" :
         case "gravar" :
+            $objeto->$fase($id);
+            break;
+        
+        case "excluir" :
+            $objeto->set_linkListar('?');
             $objeto->$fase($id);
             break;
     }

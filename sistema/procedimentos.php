@@ -24,6 +24,7 @@ if ($acesso) {
 
     # Pega od Ids
     $idProcedimento = get('idProcedimento', get_session('idProcedimento'));
+    $subCategoria = get('subCategoria');
 
     # Joga os parâmetros par as sessions
     set_session('idProcedimento', $idProcedimento);
@@ -48,32 +49,26 @@ if ($acesso) {
         $menu1->add_link($gerenciarProcedimento, "right");
 
         $menu1->show();
-    } else {
+    }else{
         br();
     }
 
-    # Define o grid
-    $col1P = 0;
-    $col1M = 4;
-    $col1L = 3;
-
-    $col2P = 12 - $col1P;
-    $col2M = 12 - $col1M;
-    $col2L = 12 - $col1L;
-
     # Limita o tamanho da tela
     $grid = new Grid();
-    $grid->abreColuna($col1P, $col1M, $col1L);
+    $grid->abreColuna(6, 4, 3);
 
     titulotable("Menu");
 
-    # Menu de Projetos
-    $procedimento->menuPrincipal($idProcedimento, $idUsuario);
+    $div = new Div("divProcedimentos");
+    $div->abre();
+
+    # Menu
+    $procedimento->menuPrincipal($subCategoria, $idProcedimento);
+    $div->fecha();
 
     $grid->fechaColuna();
-
     # Define a coluna de Conteúdo
-    $grid->abreColuna($col2P, $col2M, $col2L);
+    $grid->abreColuna(6, 8, 9);
     titulotable("Procedimento");
 
     switch ($fase) {
@@ -83,15 +78,13 @@ if ($acesso) {
         ############################################################################################################################# 
 
         case "" :
-
-            break;
-
-        ############################################################################
-
         case "exibeProcedimento" :
-
             if (!empty($idProcedimento)) {
-                $procedimento->exibeProcedimento($idProcedimento, $idUsuario);
+                if (Verifica::acesso($idUsuario, 1)) {
+                    $procedimento->exibeProcedimento($idProcedimento, true);
+                } else {
+                    $procedimento->exibeProcedimento($idProcedimento);
+                }
             }
             break;
 
