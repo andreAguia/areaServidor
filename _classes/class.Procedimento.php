@@ -400,6 +400,8 @@ class Procedimento {
         
         # Pega os itens de uma subCategoria
         $row = $this->get_menuTitulos($subCategoria);
+        
+        p($subCategoria,"f20","center");
 
         if (empty($row)) {
             $grid = new Grid("center");
