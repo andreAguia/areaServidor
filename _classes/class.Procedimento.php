@@ -386,4 +386,55 @@ class Procedimento {
     }
 
     ###########################################################
+
+    public function exibeProcedimentoSubCategoria($subCategoria) {
+        /**
+         * exibe os procedimentos da subCategoria
+         * 
+         * @param $id integer null o id
+         * 
+         * @syntax $rotina->exibeRotina([$id]);  
+         */
+        # Acessa o banco de dados
+        $intra = new Intra();
+        
+        # Pega os itens de uma subCategoria
+        $row = $this->get_menuTitulos($subCategoria);
+
+        if (empty($row)) {
+            $grid = new Grid("center");
+            $grid->abreColuna(8);
+            br(3);
+
+            calloutAlert("Não Existe Informação Cadastrada");
+
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+        } else {
+
+            # Verifica quantas rotinas existem nesta catagoria
+            if (count($row)  == 1) {
+                $this->exibeProcedimento($row["idProcedimento"]);
+            } else {
+
+                foreach ($row as $item) {
+                    $label[] = $item['titulo'];
+                }
+
+                $tab = new Tab($label);
+
+                foreach ($row as $item) {
+                    $tab->abreConteudo();
+
+                    $this->exibeProcedimento($item["idProcedimento"]);
+
+                    $tab->fechaConteudo();
+                }
+                $tab->show();
+                br();
+            }
+        }
+    }
+
+    ###########################################################
 }
