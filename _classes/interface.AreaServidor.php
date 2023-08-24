@@ -608,9 +608,12 @@ class AreaServidor {
         $painel->abre();
 
         # Título
-        titulo('Projetos');
-        $tamanhoImage = 64;
+        titulo('Projetos Ativos');
+        
+        br();        
+        tituloTable('Ativos');
         br();
+        $tamanhoImage = 64;
 
         # Inicia o menu
         $menu = new MenuGrafico(2);
@@ -624,6 +627,24 @@ class AreaServidor {
         $botao->set_title('Sistema de procedimentos');
         $menu->add_item($botao);
 
+        # Controle de Rotinas 2
+        $botao = new BotaoGrafico();
+        $botao->set_label('Rotinas');
+        $botao->set_url('rotina.php');
+        #$botao->set_url('pastaDigitalizada.php');
+        $botao->set_imagem(PASTA_FIGURAS . 'rotina.jpg', $tamanhoImage, $tamanhoImage);
+        $botao->set_title('Sistema de controle de manuais de procedimentos');
+        $menu->add_item($botao);
+
+        $menu->show();
+        
+        br();
+        tituloTable('Arquivados');
+        br();
+        
+        # Inicia o menu
+        $menu = new MenuGrafico(2);
+        
         # Variáveis de Configuração
         $botao = new BotaoGrafico();
         $botao->set_label('Tarefas');
@@ -640,16 +661,7 @@ class AreaServidor {
         $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
         $botao->set_title('Sistema de notas dos sistemas');
         $botao->set_target("_blank");
-        $menu->add_item($botao);
-
-        # Controle de Rotinas 2
-        $botao = new BotaoGrafico();
-        $botao->set_label('Rotinas');
-        $botao->set_url('rotina.php');
-        #$botao->set_url('pastaDigitalizada.php');
-        $botao->set_imagem(PASTA_FIGURAS . 'rotina.jpg', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Sistema de controle de manuais de procedimentos');
-        $menu->add_item($botao);
+        $menu->add_item($botao);        
 
         $menu->show();
         $painel->fecha();
