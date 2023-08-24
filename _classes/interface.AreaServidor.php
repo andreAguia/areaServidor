@@ -608,7 +608,7 @@ class AreaServidor {
         $painel->abre();
 
         # Título
-        titulo('Projetos Ativos');
+        titulo('Projetos');
         
         br();        
         tituloTable('Ativos');
