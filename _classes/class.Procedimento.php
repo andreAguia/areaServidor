@@ -153,6 +153,7 @@ class Procedimento {
                       FROM tbprocedimento
                      WHERE titulo IS NOT NULL 
                        AND subCategoria = '{$subCategoria}'
+                       AND visibilidade = 1    
                   ORDER BY numOrdem, titulo";
 
         return $intra->select($select);
