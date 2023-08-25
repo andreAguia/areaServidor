@@ -59,7 +59,7 @@ if ($acesso) {
     $objeto->set_nome('Procedimentos');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('procedimentos.php');
+    $objeto->set_voltarLista("procedimentos.php?idProcedimento={$id}");    
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');
@@ -234,8 +234,8 @@ if ($acesso) {
     $objeto->set_idUsuario($idUsuario);
 
     # Alterações para acessar diretamente da visualização dos procedimentos
-    $objeto->set_voltarForm('procedimentos.php?fase=exibeProcedimento');
-    $objeto->set_linkListar('procedimentos.php?fase=exibeProcedimento');
+    $objeto->set_voltarForm("procedimentos.php?idProcedimento={$id}");
+    $objeto->set_linkListar("procedimentos.php?idProcedimento={$id}");
 
     $procedimento = new Procedimento();
 

@@ -23,11 +23,11 @@ if ($acesso) {
     $fase = get('fase');
 
     # Pega od Ids
-    $idProcedimento = get('idProcedimento', get_session('idProcedimento'));
+    $idProcedimento = get('idProcedimento');
     $subCategoria = get('subCategoria');
 
     # Joga os parâmetros par as sessions
-    set_session('idProcedimento', $idProcedimento);
+    #set_session('idProcedimento', $idProcedimento);
 
     # Começa uma nova página
     $page = new Page();
