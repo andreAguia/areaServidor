@@ -80,7 +80,7 @@ class Procedimento {
 
                     foreach ($arrayTitulos as $valor3) {
                         if ($idProcedimento == $valor3['idProcedimento']) {
-                            $menu1->add_item('sublink', "<b>- {$valor3['titulo']}</b>", '?fase=exibeProcedimento&idProcedimento=' . $valor3["idProcedimento"]);
+                            $menu1->add_item('sublink', "<b>= {$valor3['titulo']}</b>", '?fase=exibeProcedimento&idProcedimento=' . $valor3["idProcedimento"]);
                         } else {
                             $menu1->add_item('sublink', "- {$valor3['titulo']}", '?fase=exibeProcedimento&idProcedimento=' . $valor3["idProcedimento"]);
                         }
