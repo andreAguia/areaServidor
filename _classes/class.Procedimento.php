@@ -10,7 +10,7 @@ class Procedimento {
      */
     ##########################################################
 
-    public function menuPrincipal($subCategoria = null, $idProcedimento = null) {
+    public function menuPrincipal($subCategoria = null, $idProcedimento = null, $editar = false) {
         /**
          * Exibe o menu de categoria.
          *
@@ -21,6 +21,7 @@ class Procedimento {
          */
         # Acessa o banco de dados
         $intra = new Intra();
+        br();
 
         # Prepara o array JáAbertos
         $abertos[] = null;                      // Cria o Array com o valor nullo
@@ -51,7 +52,7 @@ class Procedimento {
 
         # Categorias
         $arrayCategorias = $this->get_menuCategorias();
-        if(empty($arrayCategorias)){
+        if (empty($arrayCategorias)) {
             return;
         }
 
@@ -88,6 +89,11 @@ class Procedimento {
             }
         }
 
+        if ($editar) {
+            $menu1->add_item('titulo', '<b>Gerenciar</b>');
+            $menu1->add_item('link', "Editar Procedimentos", 'procedimentoNota.php');
+        }
+
         # exibe o menu
         $menu1->show();
 
@@ -98,6 +104,7 @@ class Procedimento {
         }
 
         set_session('abertos', $abertos);
+        br(10);
     }
 
     ##########################################################
@@ -398,11 +405,11 @@ class Procedimento {
          */
         # Acessa o banco de dados
         $intra = new Intra();
-        
+
         # Pega os itens de uma subCategoria
         $row = $this->get_menuTitulos($subCategoria);
-        
-        p($subCategoria,"f20","center");
+
+        p($subCategoria, "f20", "center");
 
         if (empty($row)) {
             $grid = new Grid("center");
@@ -416,7 +423,7 @@ class Procedimento {
         } else {
 
             # Verifica quantas rotinas existem nesta catagoria
-            if (count($row)  == 1) {
+            if (count($row) == 1) {
                 $this->exibeProcedimento($row["idProcedimento"]);
             } else {
 

@@ -33,43 +33,37 @@ if ($acesso) {
     $page = new Page();
     $page->iniciaPagina();
 
-    # Cabeçalho da Página
-    AreaServidor::cabecalho();
-
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
 
-    # Novo procedimento somente para administradores
-    if (Verifica::acesso($idUsuario, 1)) {
-        $menu1 = new MenuBar();
-        $gerenciarProcedimento = new Link("Gerenciar", 'procedimentoNota.php');
-        $gerenciarProcedimento->set_class('button small');
-        $gerenciarProcedimento->set_title('Gerenciar os Procedimento');
-        $menu1->add_link($gerenciarProcedimento, "right");
+    $top = new TitleBar("Procedimentos da GRH");
+    $top->show();
 
-        $menu1->show();
-    }else{
-        br();
-    }
+    # Define o grid
+    $col1P = 6;
+    $col1M = 4;
+    $col1L = 4;
+
+    $col2P = 12 - $col1P;
+    $col2M = 12 - $col1M;
+    $col2L = 12 - $col1L;
 
     # Limita o tamanho da tela
     $grid = new Grid();
-    $grid->abreColuna(6, 4, 3);
-
-    titulotable("Menu");
-
-    $div = new Div("divProcedimentos");
-    $div->abre();
+    $grid->abreColuna($col1P, $col1M, $col1L);
 
     # Menu
-    $procedimento->menuPrincipal($subCategoria, $idProcedimento);
-    $div->fecha();
+    if (Verifica::acesso($idUsuario, 1)) {
+        $procedimento->menuPrincipal($subCategoria, $idProcedimento, true);
+    } else {
+        $procedimento->menuPrincipal($subCategoria, $idProcedimento);
+    }
 
     $grid->fechaColuna();
+
     # Define a coluna de Conteúdo
-    $grid->abreColuna(6, 8, 9);
-    titulotable("Procedimento");
+    $grid->abreColuna($col2P, $col2M, $col2L);
 
     switch ($fase) {
 
