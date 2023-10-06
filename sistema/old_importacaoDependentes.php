@@ -365,7 +365,7 @@ if ($acesso) {
                                 $obs = "Importado. Valor anterior: " . $parentesco;
 
                                 # Grava na tabela
-                                $campos = array("idPessoa", "nome", "dtNasc", "cpf", "parentesco", "sexo", "obs");
+                                $campos = array("idPessoa", "nome", "dtNasc", "cpf", "idParentesco", "sexo", "obs");
                                 $valor = array($idPessoa, plm($dependente), $nascimento, $cpf, $idParentesco, $sexo, $obs);
                                 $pessoal->gravar($campos, $valor, null, "tbdependente", "idDependente", false);
                                 echo "$contador - IMPORTADO";
