@@ -107,8 +107,8 @@ if ($acesso) {
             # Define o tamanho do ícone
             $tamanhoImage = 60;
 
-//            $menu = new MenuGrafico(5);
-//            br();
+            $menu = new MenuGrafico(5);
+            br();
 //            
 //            # Atualização do plano
 //            $botao = new BotaoGrafico();
@@ -149,6 +149,7 @@ if ($acesso) {
 //            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
 //            $botao->set_title('Importação da Tabela de Progressão');
 //            #$menu->add_item($botao);
+//            
 //            # Faltas
 //            $botao = new BotaoGrafico();
 //            $botao->set_label('Faltas');
@@ -156,6 +157,7 @@ if ($acesso) {
 //            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
 //            $botao->set_title('Importação da Tabela de Faltas do SigRH');
 //            #$menu->add_item($botao);
+//            
 //            # Contatos
 //            $botao = new BotaoGrafico();
 //            $botao->set_label('Contatos');
@@ -163,6 +165,7 @@ if ($acesso) {
 //            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
 //            $botao->set_title('Importação da antiga tabela de contatos');
 //            #$menu->add_item($botao);
+//            
 //            # sispatri
 //            $botao = new BotaoGrafico();
 //            $botao->set_label('Sispatri');
@@ -170,7 +173,16 @@ if ($acesso) {
 //            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
 //            $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
 //            #$menu->add_item($botao);
-//            $menu->show();
+//            
+            # AuxEducacao
+            $botao = new BotaoGrafico();
+            $botao->set_label('Auxílio Educação');
+            $botao->set_url('?fase=auxEducacao');
+            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Prepara o banco de dados para o cadastro do Aux Educação');
+            $menu->add_item($botao);
+
+            $menu->show();
             break;
 
 ########################################################################################
@@ -304,7 +316,7 @@ if ($acesso) {
 
                                     if (diaSemana("{$diaselec}/{$mes}/{$ano}") <> "Sábado") {
                                         $grid->fechaColuna();
-                                    }else{
+                                    } else {
                                         br();
                                     }
                                 }
@@ -313,7 +325,7 @@ if ($acesso) {
                                 if (diaSemana("{$diaselec}/{$mes}/{$ano}") <> "Sábado") {
                                     $grid->abreColuna(3);
                                 }
-                                
+
                                 # muda o dia selecionado
                                 $diaselec = $dia;
 
@@ -443,6 +455,52 @@ if ($acesso) {
             echo "</table>";
             #loadPage("?");
             break;
+
+        ########################################################################################
+
+        case "auxEducacao" :
+
+            # Inicia a classe
+            $auxEducacao = new AuxilioEducacao();
+
+            # Acessa o banc de dados
+            $select = 'SELECT * FROM tbdependente ORDER BY nome';
+            $row = $servidor->select($select);
+
+            foreach ($row as $dados) {
+
+                # Pega os parentescos com direito au auxEducação
+                $tipos = $auxEducacao->get_arrayTipoParentescoAuxEduca();
+
+                # Verifica se tem direito
+                if (in_array($dados["idParentesco"], $tipos)) {
+
+                    # Pega as datas limites
+                    $anos21 = get_dataIdade(date_to_php($dados["dtNasc"]), 21);
+                    $anos24 = get_dataIdade(date_to_php($dados["dtNasc"]), 24);
+
+                    # Data Histórica Inicial
+                    $intra = new Intra();
+                    $dataHistoricaInicial = $intra->get_variavel('dataHistoricaInicialAuxEducacao');
+
+                    # Verifica se perdeu o direito antes da data histórica
+                    if (dataMenor($dataHistoricaInicial, $anos24) == $anos24) {
+                        # Grava na tabela
+                        $campos = array("auxEducacao");
+                        $valor = array("Não");
+                        $servidor->gravar($campos, $valor, $dados["idDependente"], "tbdependente", "idDependente");
+                    } else {
+                        # Grava na tabela
+                        $campos = array("auxEducacao");
+                        $valor = array("Sim");
+                        $servidor->gravar($campos, $valor, $dados["idDependente"], "tbdependente", "idDependente");
+                    }
+                }
+            }            
+            loadPage("?");
+            break;
+
+########################################################################################
     }
     $grid1->fechaColuna();
     $grid1->fechaGrid();
