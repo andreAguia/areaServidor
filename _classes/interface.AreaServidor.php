@@ -175,6 +175,9 @@ class AreaServidor {
             $cal = new Calendario($mes, $ano);
             $cal->show("?");
 
+            $calend = new CalendarioPgto();
+            $calend->exibeCalendario();
+
             if (Verifica::acesso($idUsuario, 1)) {
                 self::moduloInfo();
             }
@@ -609,8 +612,8 @@ class AreaServidor {
 
         # Título
         titulo('Projetos');
-        
-        br();        
+
+        br();
         tituloTable('Ativos');
         br();
         $tamanhoImage = 64;
@@ -637,14 +640,14 @@ class AreaServidor {
         $menu->add_item($botao);
 
         $menu->show();
-        
+
         br();
         tituloTable('Arquivados');
         br();
-        
+
         # Inicia o menu
         $menu = new MenuGrafico(2);
-        
+
         # Variáveis de Configuração
         $botao = new BotaoGrafico();
         $botao->set_label('Tarefas');
@@ -661,7 +664,7 @@ class AreaServidor {
         $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
         $botao->set_title('Sistema de notas dos sistemas');
         $botao->set_target("_blank");
-        $menu->add_item($botao);        
+        $menu->add_item($botao);
 
         $menu->show();
         $painel->fecha();
@@ -963,11 +966,11 @@ class AreaServidor {
 
         # Exibe as datas
         p("Data do último upload: {$ultimoUpload}<br/>Data do último backup: {$ultimoBackup}", "f12", "center");
-        
+
         # Altera o formado das datas
         $upload = datetime_to_bd($ultimoUpload);
         $backup = datetime_to_bd($ultimoBackup);
-        
+
         # Div para centralizar
         $div = new Div("center");
         $div->abre();
