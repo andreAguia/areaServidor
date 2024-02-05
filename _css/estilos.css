@@ -312,7 +312,7 @@ p#vagaCargo{
 }
 
 p#vagaId{
-    font-size: 12px;    
+    font-size: 12px;
     padding: 0px;
     margin: -10px;
     color:#8a8a8a;
@@ -334,6 +334,19 @@ a#editarVaga{
  *******************************************/
 tr#listaDados{
     background-color: #D7D7D7;
+}
+
+p#pidFuncional{
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+}
+
+p#pmatricula{
+    padding: 0px;
+    margin: 0px;
+    font-size: 12px;
+    color: green;
 }
 
 /*******************************************
@@ -750,5 +763,6 @@ p#pAssuntoProcesso {
     font-size: 14px;
     text-align: center;
     margin: 0;
-    padding: 8px;;
+    padding: 8px;
+    ;
 }
