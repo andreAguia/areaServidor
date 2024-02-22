@@ -272,12 +272,12 @@ if ($acesso) {
     $tabela = new Tabela();
     $tabela->set_titulo("Histórico do Dia");
     $tabela->set_conteudo($row);
-    $tabela->set_label(array("Usuário", "Data", "IP", "Tabela", "Id", "Servidor", "Tipo", "Atividade"));
-    $tabela->set_width(array(8, 8, 8, 10, 5, 15, 5, 36));
-    $tabela->set_align(array("center", "center", "center", "center", "center", "left", "center", "left"));
-    $tabela->set_funcao(array(null, "datetime_to_php"));
-    $tabela->set_classe(array("intra", null, null, null, null, "Pessoal"));
-    $tabela->set_metodo(array("get_usuario", null, null, null, null, "get_nome"));
+    $tabela->set_label(["Usuário", "Data", "IP", "Tabela", "Id", "Servidor", "Tipo", "Atividade"]);
+    $tabela->set_width([8, 8, 8, 10, 5, 15, 5, 36]);
+    $tabela->set_align(["center", "center", "center", "center", "center", "left", "center", "left"]);
+    $tabela->set_funcao([null, "datetime_to_php"]);
+    $tabela->set_classe(["intra", null, null, null, null, "Pessoal"]);
+    $tabela->set_metodo(["get_usuario", null, null, null, null, "get_nome"]);
 
     $tabela->set_formatacaoCondicional(array(
         array('coluna' => 6,
