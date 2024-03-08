@@ -30,7 +30,7 @@ $page = new Page();
 $page->iniciaPagina();
 
 # Cabeçalho
-if ($fase <> "diaServidor") {
+if ($fase <> "diaServidor" AND $fase <> "diaMulher") {
     AreaServidor::cabecalho("Login do Sistema");
     br(2);
 }
@@ -333,7 +333,7 @@ switch ($fase) {
             $pagina = 'areaServidor.php';
         }
 
-        # Botão
+        # Define a largura da página
         $grid = new Grid();
         $grid->abreColuna(12);
         br();
@@ -366,7 +366,7 @@ switch ($fase) {
         $grid->fechaGrid();
         break;
 
-     ################################################################################
+    ################################################################################
 
     case "diaMulher":
         # Acesso ao sistema GRH
@@ -376,11 +376,11 @@ switch ($fase) {
         } else {
             $pagina = 'areaServidor.php';
         }
-
-        # Botão
+        
+         # Define a largura da página
         $grid = new Grid();
         $grid->abreColuna(12);
-       
+        br();
         $menu = new MenuBar();
 
         # Botão 
@@ -393,14 +393,13 @@ switch ($fase) {
 
         $div = new Div("center");
         $div->abre();
-
         $img = new Imagem(PASTA_FIGURAS . "mulher.jpg", "Parabéns Mulheres", '500', '500');
         $img->show();
 
         $div->fecha();
         br();
 
-        p('⁠No Dia Internacional da Mulher, eu troco os parabéns, as flores e os chocolates<br/>por respeito, igualdade e voz, todos os outros dias do ano.', 'center');
+        p('⁠No Dia Internacional da Mulher, eu troco os parabéns, as flores e os chocolates<br/>por respeito, igualdade e voz, todos os outros dias do ano.', 'center');        
 
         # Grava no log a atividade
         $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Recebeu os parabéns do sistema pelo dia das mulheres.', null, null, 7);
