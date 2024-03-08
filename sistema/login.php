@@ -193,6 +193,8 @@ switch ($fase) {
                     loadPage('?fase=parabens');
                 } elseif (date("m-d") == "10-28") {
                     loadPage('?fase=diaServidor');
+                } elseif (date("m-d") == "03-08") {
+                    loadPage('?fase=diaMulher');
                 } else {
                     # Redireciona para o sistema GRH
                     if (Verifica::acesso($idUsuario, [2, 12])) {
@@ -359,6 +361,49 @@ switch ($fase) {
 
         # Grava no log a atividade
         $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Recebeu os parabéns do sistema pelo dia do servidor público.', null, null, 7);
+
+        $grid->fechaColuna();
+        $grid->fechaGrid();
+        break;
+
+     ################################################################################
+
+    case "diaMulher":
+        # Acesso ao sistema GRH
+        $pagina = 'areaServidor.php';
+        if (Verifica::acesso($idUsuario, 2)) {
+            $pagina = '../../grh/grhSistema/grh.php';
+        } else {
+            $pagina = 'areaServidor.php';
+        }
+
+        # Botão
+        $grid = new Grid();
+        $grid->abreColuna(12);
+       
+        $menu = new MenuBar();
+
+        # Botão 
+        $linkBotaoVoltar = new Button('Continua');
+        $linkBotaoVoltar->set_title('Continua');
+        $linkBotaoVoltar->set_url($pagina);
+        $menu->add_link($linkBotaoVoltar, "right");
+
+        $menu->show();
+
+        $div = new Div("center");
+        $div->abre();
+
+        $img = new Imagem(PASTA_FIGURAS . "mulher.jpg", "Parabéns Mulheres", '500', '500');
+        $img->show();
+
+        $div->fecha();
+        br();
+
+        p('⁠No Dia Internacional da Mulher, eu troco os parabéns, as flores e os chocolates<br/>por respeito, igualdade e voz, todos os outros dias do ano.', 'center');
+
+        # Grava no log a atividade
+        $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Recebeu os parabéns do sistema pelo dia das mulheres.', null, null, 7);
 
         $grid->fechaColuna();
         $grid->fechaGrid();
