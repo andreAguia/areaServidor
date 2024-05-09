@@ -76,6 +76,7 @@ if ($acesso) {
         set_session('parametroStatus');
         set_session('parametroModalidade');
         set_session('parametroEmpresa');
+        set_session('parametroSetorRequisitante');
         set_session('inclusaoEmpresa');
     }
 
