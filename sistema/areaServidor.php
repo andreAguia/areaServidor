@@ -70,22 +70,14 @@ if ($acesso) {
     set_session('parametroSituacao');
     set_session('sessionParametro');
 
-    # Esvazia as sessions do sistema de Contrato
-    if (Verifica::acesso($idUsuario, 9)) {
-        set_session('parametroAno');
-        set_session('parametroStatus');
-        set_session('parametroModalidade');
-        set_session('parametroEmpresa');
-        set_session('parametroSetorRequisitante');
-        set_session('inclusaoEmpresa');
-    }
-
     # Limpa as sessions do sistema de contratos
     set_session('parametroAno');
     set_session('parametroStatus');
     set_session('parametroModalidade');
     set_session('parametroEmpresa');
+    set_session('parametroNatureza');
     set_session('parametroObjeto');
+    set_session('parametroSetorRequisitante');
     set_session('inclusaoEmpresa');
 
     $grid1 = new Grid();
