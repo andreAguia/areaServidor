@@ -67,7 +67,6 @@ class BackupBancoDados {
 
         # Envia o arquivo por email
         $pedaco1 = date_to_php($pedaco1, ".");
-
         $assunto = "Backup de " . $pedaco1 . " as " . $pedaco2;
 
         # Pega o tipo do backup
@@ -97,9 +96,10 @@ class BackupBancoDados {
         # Pega os email a serem usados nas variáveis
         $para = $intra->get_variavel("backupEmailPara");
         $copia = $intra->get_variavel("backupEmailCopia");
+        $senha = $intra->get_variavel("senhaEmail");
 
         # Inicia o email
-        $mail = new EnviaEmail($assunto, $mensagem);
+        $mail = new EnviaEmail($assunto, $mensagem,$senha);
 
         # Define o endereço de origem
         $numPara = explode(",", $para);

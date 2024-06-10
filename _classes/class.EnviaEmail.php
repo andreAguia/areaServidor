@@ -11,7 +11,7 @@ class EnviaEmail {
     # Do email institucional
 
     private $nomeUsuario = 'sistemagrh@uenf.br';
-    private $senha = 'flatronw1643c';
+    private $senha = null;
 
     # Do remetente
     private $de = "sistemagrh@uenf.br";
@@ -38,9 +38,10 @@ class EnviaEmail {
      * @param $assunto  string null O assunto do email
      * @param $mensagem string null A mensagem a ser enviada
      */
-    public function __construct($assunto, $mensagem) {
+    public function __construct($assunto, $mensagem, $senha) {
         $this->mensagem = $mensagem;
         $this->assunto = $assunto;
+        $this->senha = $senha;
     }
 
     ###########################################################

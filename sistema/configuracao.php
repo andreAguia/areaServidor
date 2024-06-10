@@ -128,9 +128,9 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("Categoria", "Nome", "Comentário", "Valor"));
-    #$objeto->set_width(array(10,10,10,60));		
-    $objeto->set_align(array("center", "left", "left", "left"));
+    $objeto->set_label(["Categoria", "Nome", "Comentário", "Valor"]);
+    $objeto->set_width([10,10,50,20]);		
+    $objeto->set_align(["center", "left", "left", "left"]);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -140,9 +140,6 @@ if ($acesso) {
 
     # Nome do campo id
     $objeto->set_idCampo('idVariaveis');
-
-    # Tipo de label do formulário
-    $objeto->set_formlabelTipo(1);
 
     # Pega as etiquetas cadastradas
     $select = 'SELECT distinct categoria
