@@ -158,16 +158,30 @@ class AreaServidor {
 
         if (Verifica::acesso($idUsuario, [1, 9, 10])) {
 
+            # Classes
+            $pessoal = new Pessoal();
+            $intra = new Intra();
+
+            # Verifica se é bolsista / estagiário           
+            $tipoPerfil = $pessoal->get_perfilTipo($pessoal->get_idPerfil($intra->get_idServidor($idUsuario)));
+
             # Sistemas Externos
             $grid->abreColuna(12, 6, 3);
             self::moduloSistemasInternos($idUsuario);
-            self::moduloSistemasExternos($idUsuario);
+            if ($tipoPerfil <> "Outros") {
+                self::moduloSistemasExternos($idUsuario);
+            }
             $grid->fechaColuna();
 
             # Sistemas Internos
             $grid->abreColuna(12, 6, 5);
-            self::moduloSobreServidor();
-            self::moduloServidoresUniversidade($idUsuario);
+            if ($tipoPerfil <> "Outros") {
+                self::moduloSobreServidor();
+                self::moduloServidoresUniversidade($idUsuario);
+            } else {
+                self::moduloServidoresUniversidade($idUsuario);
+                self::moduloSistemasExternos($idUsuario);
+            }
             $grid->fechaColuna();
 
             # Dados da Universidade
@@ -175,8 +189,10 @@ class AreaServidor {
             $cal = new Calendario($mes, $ano);
             $cal->show("?");
 
-            $calend = new CalendarioPgto();
-            $calend->exibeCalendario();
+            if ($tipoPerfil <> "Outros") {
+                $calend = new CalendarioPgto();
+                $calend->exibeCalendario();
+            }
 
             if (Verifica::acesso($idUsuario, 1)) {
                 self::moduloInfo();
@@ -871,16 +887,24 @@ class AreaServidor {
 
         # Título
         titulo('Sistemas Externos');
-        $tamanhoImage = 64;
         br();
 
+        # Classes
+        $pessoal = new Pessoal();
+        $intra = new Intra();
+
+        # Verifica se é bolsista / estagiário           
+        $tipoPerfil = $pessoal->get_perfilTipo($pessoal->get_idPerfil($intra->get_idServidor($idUsuario)));
+
         # Altera o menu de acordo com o usuário
-        if (Verifica::acesso($idUsuario, 9)) {
+        if ($tipoPerfil == "Outros") {
             $itens = 2;
+        } else {
+            $itens = 1;
         }
 
         # Inicia o menu
-        $menu = new MenuGrafico(1);
+        $menu = new MenuGrafico($itens);
         $menu->set_espacoEntreLink(true);
 
         # Sei
