@@ -25,7 +25,8 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # pega o idServidor (se tiver) quando for exibir somente o histórico de um servidor
-    $idServidor = soNumeros(get('idServidor'));
+    $idServidor = soNumeros(get('idServidor', get_session('idServidor')));
+    set_session('idServidor', $idServidor);
 
     # Pega o parametro de pesquisa (se tiver)
     $parametro = retiraAspas(post('parametro', get_session('parametro', date("Y-m-d"))));
