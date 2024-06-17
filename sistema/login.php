@@ -45,7 +45,7 @@ switch ($fase) {
 
         # Login 
         $grid = new Grid("center");
-        $grid->abreColuna(10, 5);
+        $grid->abreColuna(10, 5, 4);
 
         if ($intra->get_variavel('manutencao')) {
             $callout = new Callout("alert");
