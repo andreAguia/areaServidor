@@ -94,10 +94,10 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("Data", "Versão", "Alterações"));
-    $objeto->set_width(array(10, 10, 70));
-    $objeto->set_align(array("center", "center", "left"));
-    $objeto->set_funcao(array("date_to_php"));
+    $objeto->set_label(["Data", "Versão", "Alterações"]);
+    $objeto->set_width([10, 10, 70]);
+    $objeto->set_align(["center", "center", "left"]);
+    $objeto->set_funcao(["date_to_php", null, 'formataAtribuicao']);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -107,9 +107,6 @@ if ($acesso) {
 
     # Nome do campo id
     $objeto->set_idCampo('idatualizacao');
-
-    # Tipo de label do formulário
-    $objeto->set_formlabelTipo(1);
 
     # Campos para o formulario
     $objeto->set_campos(array(
