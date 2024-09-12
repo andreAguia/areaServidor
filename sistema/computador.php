@@ -5,6 +5,7 @@
  *  
  * By Alat
  */
+
 # Servidor logado 
 $idUsuario = null;
 
