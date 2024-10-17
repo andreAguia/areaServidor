@@ -175,6 +175,7 @@ class AreaServidor {
 
             # Sistemas Internos
             $grid->abreColuna(12, 6, 5);
+            self::moduloEventos();
             if ($tipoPerfil <> "Outros") {
                 self::moduloSobreServidor();
                 self::moduloServidoresUniversidade($idUsuario);
@@ -965,6 +966,18 @@ class AreaServidor {
         $botao->set_title('Sistema de Registros de Bens dos Agentes Públicos');
         #$botao->set_target("_blank");
         $botao->show();
+    }
+
+    ######################################################################################################################
+
+    /**
+     * Método moduloEventos
+     */
+    private static function moduloEventos() {
+
+        $figura = new Imagem(PASTA_FIGURAS . 'semanaServidor.png', null, '100%', '100%');
+        $figura->set_title('Semana do Servidor');
+        $figura->show();
     }
 
     ######################################################################################################################
