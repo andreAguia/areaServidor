@@ -175,7 +175,7 @@ class AreaServidor {
 
             # Sistemas Internos
             $grid->abreColuna(12, 6, 5);
-            self::moduloEventos();
+            #self::moduloEventos();
             if ($tipoPerfil <> "Outros") {
                 self::moduloSobreServidor();
                 self::moduloServidoresUniversidade($idUsuario);
