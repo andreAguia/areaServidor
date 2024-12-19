@@ -154,6 +154,7 @@ class Rotina {
             $tabela->set_label(["Marcador", "Quem", "Procedimento", "Obs"]);
             $tabela->set_width([10, 15, 45, 20]);
             $tabela->set_align(["center", "center", "left", "left"]);
+            $tabela->set_funcao(["bold"]);
             $tabela->set_totalRegistro(false);
             $tabela->set_numeroOrdem(true);
             $tabela->show();
