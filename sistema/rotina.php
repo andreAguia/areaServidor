@@ -57,17 +57,17 @@ if ($acesso) {
     $objeto->set_parametroValue($parametro);
 
     # select da lista
-    $objeto->set_selectLista('SELECT idRotina,
+    $objeto->set_selectLista("SELECT idRotina,
                                      categoria,
                                      nome,
                                      descricao,
                                      obs,
                                      idRotina
                                 FROM tbrotina
-                               WHERE categoria LIKE "%' . $parametro . '%"
-                                  OR nome LIKE "%' . $parametro . '%"	
-                                  OR descricao LIKE "%' . $parametro . '%" 
-                            ORDER BY categoria, nome');
+                               WHERE categoria LIKE '%{$parametro}%'
+                                  OR nome LIKE '%{$parametro}%'	
+                                  OR descricao LIKE '%{$parametro}%' 
+                            ORDER BY categoria, nome");
 
     # select do edita
     $objeto->set_selectEdita("SELECT categoria,

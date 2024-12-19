@@ -47,18 +47,17 @@ if ($acesso) {
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
-    
+
     # Inicia lalores padrão para quando for incluir
-    if(empty($id)){
+    if (empty($id)) {
         $numOrdemPadrao = $rotina->get_ultimoNumOrdem($idRotina) + 5;
-        $quemPadrao = $rotina->get_ultimoQuem($idRotina);        
-    }else{
+        $quemPadrao = $rotina->get_ultimoQuem($idRotina);
+    } else {
         $numOrdemPadrao = null;
         $quemPadrao = null;
     }
 
     ################################################################
-    
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
     $objeto->set_nome("{$rotina->get_categoriaRotina($idRotina)} - {$rotina->get_nomeRotina($idRotina)}");
     $objeto->set_subtitulo("{$rotina->get_descricaoRotina($idRotina)}");
@@ -72,6 +71,7 @@ if ($acesso) {
 
     # select da lista
     $objeto->set_selectLista("SELECT numOrdem,
+                                     marcador,
                                      quem,
                                      procedimento,
                                      obs,
@@ -83,6 +83,7 @@ if ($acesso) {
 
     # select do edita
     $objeto->set_selectEdita("SELECT numOrdem,
+                                     marcador,
                                      quem,
                                      procedimento,
                                      obs,
@@ -97,9 +98,9 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(["Ordem", "Quem", "Procedimento", "Obs"]);
-    $objeto->set_width([5, 15, 35, 35]);
-    $objeto->set_align(["center", "center", "left", "left"]);
+    $objeto->set_label(["Ordem", "Marcador", "Quem", "Procedimento", "Obs"]);
+    $objeto->set_width([5, 10, 15, 30, 30]);
+    $objeto->set_align(["center", "center", "center", "left", "left"]);
     $objeto->set_numeroOrdem(true);
 
     # Classe do banco de dados
@@ -119,11 +120,18 @@ if ($acesso) {
         array('nome' => 'numOrdem',
             'label' => 'Numero de Ordem:',
             'tipo' => 'texto',
-            'size' => 3,
+            'size' => 2,
             'title' => 'Número de ordem.',
             'required' => true,
             'autofocus' => true,
             'padrao' => $numOrdemPadrao,
+            'col' => 2,
+            'linha' => 1),
+        array('nome' => 'marcador',
+            'label' => 'Marcador:',
+            'tipo' => 'texto',
+            'size' => 10,
+            'title' => 'Marcador para mudança de fluxo.',
             'col' => 2,
             'linha' => 1),
         array('nome' => 'quem',

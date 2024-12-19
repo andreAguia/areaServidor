@@ -121,7 +121,8 @@ class Rotina {
          * @syntax $rotina->exibeRotina([$id]);  
          */
         # Pega os dados
-        $select = "SELECT quem,
+        $select = "SELECT marcador,
+                          quem,
                           procedimento,
                           obs
                      FROM tbrotinaitens
@@ -142,7 +143,7 @@ class Rotina {
             $grid->fechaGrid();
         } else {
 
-            p("{$this->get_categoriaRotina($id) } - {$this->get_nomeRotina($id)}", "rotinaTitulo");
+            p("{$this->get_categoriaRotina($id)} - {$this->get_nomeRotina($id)}", "rotinaTitulo");
             p($this->get_descricaoRotina($id), "rotinaDescricao");
             br();
 
@@ -150,9 +151,9 @@ class Rotina {
             $tabela = new Tabela(null, "tabelaRotina");
             #$tabela->set_titulo();
             $tabela->set_conteudo($row);
-            $tabela->set_label(["Quem", "Procedimento", "Obs"]);
-            $tabela->set_width([15, 55, 20]);
-            $tabela->set_align(["center", "left", "left"]);
+            $tabela->set_label(["Marcador", "Quem", "Procedimento", "Obs"]);
+            $tabela->set_width([10, 15, 45, 20]);
+            $tabela->set_align(["center", "center", "left", "left"]);
             $tabela->set_totalRegistro(false);
             $tabela->set_numeroOrdem(true);
             $tabela->show();
