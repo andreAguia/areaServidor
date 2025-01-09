@@ -294,10 +294,10 @@ class Intra extends Bd {
 
     /**
      * Método set_senha
-     * muda a senha de um usu�rio
+     * muda a senha de um usuário
      * 
      * @param	string 	$idUsuario 	-> o usuario
-     * @param 	string	$senha		-> senha (n�o criptofrafada) a ser gravada (se nulo grava-se a senha padr�o)
+     * @param 	string	$senha		-> senha (não criptofrafada) a ser gravada (se nulo grava-se a senha padr�o)
      */
     public function set_senha($idUsuario, $senha = null, $alert = true) {
         # Verifica se a senha foi informada
@@ -466,9 +466,9 @@ class Intra extends Bd {
      * @param	integer	$idRegra	-> o id da regra
      */
     public function verificaPermissao($idUsuario = null, $idRegra = null) {
-        $select = 'SELECT idPermissao
+        $select = "SELECT idPermissao
                      FROM tbpermissao
-                    WHERE idUsuario = ' . $idUsuario . ' AND idRegra = ' . $idRegra;
+                    WHERE idUsuario ={$idUsuario} AND idRegra = {$idRegra}";
 
         # verifica se o id foi preenchido
         if (empty($idUsuario)) {

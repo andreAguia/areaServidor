@@ -275,14 +275,15 @@ switch ($fase) {
         $grid->abreColuna(6);
 
         # Define as várias imagens de parabéns que existem no diretório
-        $imagens = array("parabens.jpg",
+        $imagens = [
+            "parabens.jpg",
             "parabens1.gif",
             "parabens2.gif",
             "parabens3.gif",
             "parabens4.gif",
             "parabens5.gif",
             "parabens6.gif",
-            "parabens7.gif");
+            "parabens7.gif"];
 
         # Escolhe aleatoriamente uma delas
         $escolhida = array_rand($imagens);

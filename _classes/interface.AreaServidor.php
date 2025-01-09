@@ -156,7 +156,7 @@ class AreaServidor {
         # Cria Grid
         $grid = new Grid();
 
-        if (Verifica::acesso($idUsuario, [1, 9, 10])) {
+        if (Verifica::acesso($idUsuario, [1, 3, 9, 10])) {
 
             # Classes
             $pessoal = new Pessoal();
@@ -165,15 +165,18 @@ class AreaServidor {
             # Verifica se é bolsista / estagiário           
             $tipoPerfil = $pessoal->get_perfilTipo($pessoal->get_idPerfil($intra->get_idServidor($idUsuario)));
 
-            # Sistemas Externos
+            # Coluna da esquerda
             $grid->abreColuna(12, 6, 3);
-            self::moduloSistemasInternos($idUsuario);
+            if (Verifica::acesso($idUsuario, [1, 9, 10])) {
+                self::moduloSistemasInternos($idUsuario);
+            }
+            
             if ($tipoPerfil <> "Outros") {
                 self::moduloSistemasExternos($idUsuario);
             }
             $grid->fechaColuna();
 
-            # Sistemas Internos
+            # Coluna do meio
             $grid->abreColuna(12, 6, 5);
             #self::moduloEventos();
             if ($tipoPerfil <> "Outros") {
@@ -974,7 +977,7 @@ class AreaServidor {
      * Método moduloEventos
      */
     private static function moduloEventos() {
-        
+
         $botao = new BotaoGrafico();
         $botao->set_label();
         $botao->set_url("../../_arquivos/documentos/42.pdf");
