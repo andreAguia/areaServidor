@@ -26,16 +26,26 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro')))         # Se o parametro não vier por post (for nulo)
-        $parametro = retiraAspas(get_session('sessionParametro'));# passa o parametro da session para a variavel parametro retirando as aspas
+    if (is_null(post('parametro')))
+        $parametro = retiraAspas(get_session('sessionParametro'));
     else {
-        $parametro = post('parametro');        # Se vier por post, retira as aspas e passa para a variavel parametro			
-        set_session('sessionParametro', $parametro);      # transfere para a session para poder recuperá-lo depois
+        $parametro = post('parametro');
+        set_session('sessionParametro', $parametro);
     }
 
-    # Ordem da tabela
-    $orderCampo = get('orderCampo');
-    $orderTipo = get('order_tipo');
+    # Pega as versões desse ano
+    $selectVersao = "SELECT versao FROM tbatualizacao WHERE YEAR(data) = YEAR(NOW()) ORDER BY data desc, versao desc";
+    $row = $intra->select($selectVersao, false);
+
+    if (empty($row[0])) {
+        $padraoVersao = date("y") . ".01";
+    } else {
+        $extensao = strrchr($row[0], '.');
+        $num = $extensao ? strtolower(substr($extensao, 1)) : '';
+        $num++;
+
+        $padraoVersao = date("y") . "." . sprintf("%02d", $num);
+    }
 
     # Começa uma nova página
     $page = new Page();
@@ -58,34 +68,22 @@ if ($acesso) {
     $objeto->set_parametroLabel('Pesquisar nos campos Versão e/ou Data:');
     $objeto->set_parametroValue($parametro);
 
-    # ordenação
-    if (is_null($orderCampo))
-        $orderCampo = 1;
-
-    if (is_null($orderTipo))
-        $orderTipo = 'desc';
-
     # select da lista
-    $objeto->set_selectLista('SELECT data,
+    $objeto->set_selectLista("SELECT data,
                                      versao,
                                      alteracoes,
                                      idatualizacao
                                 FROM tbatualizacao
-                               WHERE versao LIKE "%' . $parametro . '%"
-                                  OR data LIKE "%' . $parametro . '%" 
-                            ORDER BY ' . $orderCampo . ' ' . $orderTipo);
+                               WHERE versao LIKE '%{$parametro}%'
+                                  OR data LIKE '%{$parametro}%'
+                            ORDER BY 1 desc");
 
     # select do edita
-    $objeto->set_selectEdita('SELECT versao,
+    $objeto->set_selectEdita("SELECT versao,
                                      data,
                                      alteracoes						    
                                 FROM tbatualizacao
-                               WHERE idatualizacao = ' . $id);
-
-    # ordem da lista
-    $objeto->set_orderCampo($orderCampo);
-    $objeto->set_orderTipo($orderTipo);
-    $objeto->set_orderChamador('?fase=listar');
+                               WHERE idatualizacao = {$id}");
 
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
@@ -116,19 +114,22 @@ if ($acesso) {
             'size' => 20,
             'title' => 'Versão do Sistema.',
             'required' => true,
-            'autofocus' => true,
+            'padrao' => $padraoVersao,
             'col' => 3,
             'linha' => 1),
         array('linha' => 1,
             'nome' => 'data',
+            'required' => true,
             'label' => 'Data:',
             'tipo' => 'date',
+            'padrao' => date("Y-m-d"),
             'title' => 'Data da atualização',
             'col' => 3,
             'size' => 15),
         array('nome' => 'alteracoes',
             'label' => 'Alterações:',
             'tipo' => 'textarea',
+            'autofocus' => true,
             'size' => array(90, 12),
             'title' => 'Alterações detalhadas desta versão.',
             'col' => 12,
