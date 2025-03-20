@@ -50,7 +50,7 @@ if ($acesso) {
         $grid->abreColuna(12);
 
         # Botão voltar
-        $linkBotao1 = new Link("Voltar", 'administracao.php');
+        $linkBotao1 = new Link("Voltar", 'areaServidor.php?fase=sistema');
         $linkBotao1->set_class('button');
         $linkBotao1->set_title('Volta para a página anterior');
         $linkBotao1->set_accessKey('V');
@@ -80,7 +80,7 @@ if ($acesso) {
     }
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('areaServidor.php?fase=sistema');
 
     # ordenação
     if (is_null($orderCampo)) {
@@ -203,7 +203,7 @@ if ($acesso) {
                                               FROM tbvariaveis                                
                                           ORDER BY 1');
 
-            $menu->add_item('titulo', "Categoria", "#");
+            $menu->add_item('titulo1', "Categoria", "#");
             foreach ($result as $value) {
                 $menu->add_item('link', $value[0], "?categoria=" . $value[0]);
                 #$botao = new Link($value[0],"?categoria=".$value[0]);

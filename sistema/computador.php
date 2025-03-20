@@ -53,7 +53,7 @@ if ($acesso) {
     $objeto->set_nome('Computador');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('areaServidor.php?fase=usuarios');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
@@ -113,9 +113,6 @@ if ($acesso) {
 
     # Nome do campo id
     $objeto->set_idCampo('idComputador');
-
-    # Tipo de label do formulário
-    $objeto->set_formlabelTipo(1);
 
     # Pega os dados da combo Usuario
     $comboUsuario = $intra->select('SELECT idusuario,

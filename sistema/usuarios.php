@@ -63,7 +63,7 @@ if ($acesso) {
     $objeto->set_nome('Usuários');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('areaServidor.php?fase=usuarios');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');

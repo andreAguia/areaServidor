@@ -77,14 +77,18 @@ if ($acesso) {
     $form->show();
 
     $select = "SELECT tbservidor.idServidor,
-                              tbservidor.idServidor,
-                              tbservidor.idServidor,
-                              tbservidor.idServidor,
-                              tbservidor.dtAdmissao
-                         FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
-                        WHERE tbpessoa.nome LIKE '%{$parametroNome}%'
-                          AND situacao = 1  
-                     ORDER BY tbpessoa.nome";
+                      tbservidor.idServidor,
+                      tbservidor.idServidor,
+                      tblotacao.ramais,
+                      tbservidor.idServidor,
+                      tbservidor.dtAdmissao
+                 FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
+                                 LEFT JOIN tbhistlot ON (tbservidor.idServidor = tbhistlot.idServidor)
+                                 LEFT JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
+                WHERE tbpessoa.nome LIKE '%{$parametroNome}%'
+                  AND tbhistlot.data = (select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)  
+                  AND situacao = 1  
+             ORDER BY tbpessoa.nome";
 
     if (!empty($parametroNome)) {
         # Executa o select 
@@ -105,11 +109,12 @@ if ($acesso) {
 
             $tabela->set_titulo("Contatos dos Servidores Ativos");
             $tabela->set_conteudo($conteudo);
-            $tabela->set_label(array("ID/Matrícula", "Servidor", "Lotação", "E-mails", "Telefones"));
-            $tabela->set_width(array(10, 30, 25, 20, 15));
-            $tabela->set_align(array("center", "left", "left", "left", "left"));
-            $tabela->set_classe(array("pessoal", "pessoal", "pessoal", "pessoal", "pessoal", "pessoal"));
-            $tabela->set_metodo(array("get_idFuncionalEMatricula", "get_nomeECargo", "get_lotacao", "get_emails", "get_telefones"));
+            $tabela->set_label(["ID/Matrícula", "Servidor", "Lotação", "Ramais", "E-mails", "Telefones"]);
+            $tabela->set_width([10, 20, 10, 25, 15, 15]);
+            $tabela->set_align(["center", "left", "left", "left", "left"]);
+            $tabela->set_classe(["pessoal", "pessoal", "pessoal", null, "pessoal", "pessoal", "pessoal"]);
+            $tabela->set_metodo(["get_idFuncionalEMatricula", "get_nomeECargo", "get_lotacao", null, "get_emails", "get_telefones"]);
+            $tabela->set_funcao([null, null, null, "nl2br2"]);
             $tabela->set_totalRegistro(true);
             $tabela->set_textoRessaltado($parametroNome);
             $tabela->show();

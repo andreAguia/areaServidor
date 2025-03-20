@@ -52,7 +52,6 @@ if ($acesso) {
     switch ($fase) {
         case "" :
 
-
             titulo("Atualização de Salário");
 
             br(4);

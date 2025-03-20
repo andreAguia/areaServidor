@@ -12,6 +12,12 @@ p#versao{
     color: #02548b;
 }
 
+a#versao{
+    font-size: 11px;
+    text-align: center;
+    color: #02548b;
+}
+
 p#ip{
     font-size: 11px;
     text-align: right;
@@ -763,4 +769,11 @@ p#pAssuntoProcesso {
     margin: 0;
     padding: 8px;
     ;
+}
+
+/*******************************************
+ * Aniversariante do dia
+ *******************************************/
+tr#aniversariante td{
+    background-color: #99ccff;
 }

@@ -86,7 +86,7 @@ if ($acesso) {
             $menu1 = new MenuBar();
 
             # Voltar
-            $linkBotao1 = new Link("Voltar", "areaServidor.php");
+            $linkBotao1 = new Link("Voltar", "areaServidor.php?fase=");
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Voltar a página anterior');
             $linkBotao1->set_accessKey('V');
@@ -210,7 +210,7 @@ if ($acesso) {
             $form->show();
 
             # Lista de Servidores Ativos
-            $lista = new ListaServidores('Servidores');
+            $lista = new ListaServidores2('Servidores');
             if (!is_null($parametroNomeMat)) {
                 $lista->set_matNomeId($parametroNomeMat);
                 $lista->set_paginacao(false);

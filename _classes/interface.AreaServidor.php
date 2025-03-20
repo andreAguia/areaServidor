@@ -51,7 +51,7 @@ class AreaServidor {
         echo '</header>';
     }
 
-    ##########################################################
+    #################################################################
 
     /**
      * Método rodape
@@ -84,7 +84,181 @@ class AreaServidor {
         $grid->fechaGrid();
     }
 
-    ###########################################################
+    #################################################################
+
+    /**
+     * Método moduloSistemasInternos
+     * 
+     * Exibe o menu de Sistemas Internos
+     */
+    public static function moduloSistemasInternos($idUsuario) {
+
+        # Título
+        titulo('Sistemas Internos');
+        $tamanhoImage = 64;
+        br();
+
+        # Inicia o menu
+        if (Verifica::acesso($idUsuario, 1)) {
+            $menu = new MenuGrafico(2);
+        }
+
+        if (Verifica::acesso($idUsuario, [9, 10])) {
+            $menu = new MenuGrafico(1);
+        }
+        $menu->set_espacoEntreLink(true);
+
+        # Sistema de gestão de contratos
+        if (Verifica::acesso($idUsuario, [1, 9, 10])) {
+            $botao = new BotaoGrafico();
+            $botao->set_label("Sistema de Contratos");
+            $botao->set_title("Sistema de Gestão de Contratos");
+            $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('../../../contratos/sistema/cadastroContrato.php');
+            $menu->add_item($botao);
+        }
+
+        if (Verifica::acesso($idUsuario, 1)) {
+            $botao = new BotaoGrafico();
+            $botao->set_label('Sistema de Pessoal');
+            $botao->set_title('Sistema de Pessoal');
+            $botao->set_url('../../../grh/grhSistema/grh.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'servidores.png', $tamanhoImage, $tamanhoImage);
+            $menu->add_item($botao);
+        }
+        $menu->show();
+    }
+
+    #################################################################
+
+    /**
+     * Método moduloSistemasExternos
+     * 
+     * Exibe o menu de de Sistemas Externos
+     */
+    public static function moduloSistemasExternos($idUsuario) {
+
+        # Título
+        titulo('Sistemas Externos');
+        br();
+
+        # Classes
+        $pessoal = new Pessoal();
+        $intra = new Intra();
+
+        # Verifica se é bolsista / estagiário           
+        $tipoPerfil = $pessoal->get_perfilTipo($pessoal->get_idPerfil($intra->get_idServidor($idUsuario)));
+
+        # Altera o menu de acordo com o usuário
+        if ($tipoPerfil == "Outros") {
+            $itens = 2;
+        } else {
+            $itens = 1;
+        }
+
+        # Inicia o menu
+        $menu = new MenuGrafico($itens);
+        $menu->set_espacoEntreLink(true);
+
+        # Sei
+        $botao = new BotaoGrafico();
+        $botao->set_title('Sistema Eletrônico de Informações');
+        #$botao->set_label("Sei");
+        $botao->set_imagem(PASTA_FIGURAS . "sei.png", 220, 60);
+        $botao->set_url("https://sei.fazenda.rj.gov.br/sip/login.php?sigla_orgao_sistema=ERJ&sigla_sistema=SEI&infra_url=L3NlaS8=");
+        $botao->set_target("_blank");
+        $menu->add_item($botao);
+
+        # SigFis
+        $botao = new BotaoGrafico();
+        $botao->set_title('Sistema Integrado de Gestão Fiscal');
+        #$botao->set_label("SigFis");
+        $botao->set_imagem(PASTA_FIGURAS . "tce.png", 180, 50);
+        #$botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
+        $botao->set_url("https://www.tce.rj.gov.br/etcerj/");
+        $botao->set_target("_blank");
+        $menu->add_item($botao);
+
+        # Siafe
+        $botao = new BotaoGrafico();
+        $botao->set_title('Sistema Integrado de Gestão Orçamentária, Financeira e Contábil do Rio de Janeiro');
+        #$botao->set_label("Siafe");
+        $botao->set_imagem(PASTA_FIGURAS . "siafe.png", 180, 50);
+        $botao->set_url("https://www5.fazenda.rj.gov.br/SiafeRio/faces/login.jsp;jsessionid=FfPAOZiFLVOws9w_lr7lfkdC1rdXFlgoZ4b0lI9DofE59ZJZilH4!-1875128395");
+        $botao->set_target("aba");
+        $menu->add_item($botao);
+
+        if (Verifica::acesso($idUsuario, 9)) {
+            # SigFis Antigo
+            $botao = new BotaoGrafico();
+            $botao->set_title('Sistema Antigo');
+            #$botao->set_label("SigFis");
+            $botao->set_imagem(PASTA_FIGURAS . "sigfis.jpg", 180, 50);
+            $botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
+            $botao->set_target("_blank");
+            $menu->add_item($botao);
+        }
+
+        $menu->show();
+    }
+
+    #################################################################
+
+    /**
+     * Método moduloNoticias
+     */
+    public static function moduloNoticias() {
+
+        titulo("Notícias");
+        br();
+
+        $botao = new BotaoGrafico();
+        $botao->set_label();
+        $botao->set_url("https://www.servidor.rj.gov.br/portal-web/portal/publico/Noticia/detalhar?hdnNoticia=1152");
+        $botao->set_imagem(PASTA_FIGURAS . 'sispatri2.png', '100%', '100%');
+        $botao->set_title('Sistema de Registros de Bens dos Agentes Públicos');
+        #$botao->set_target("_blank");
+        $botao->show();
+
+        br();
+
+        $botao = new BotaoGrafico();
+        $botao->set_label();
+        $botao->set_url("../../_arquivos/documentos/42.pdf");
+        $botao->set_imagem(PASTA_FIGURAS . 'semanaServidor.png', '100%', '100%');
+        $botao->set_title('Semana do Servidor');
+        $botao->set_target("_blank");
+        $botao->show();
+        br(2);
+    }
+
+    #################################################################
+
+    /**
+     * Método moduloSobre
+     */
+    public static function moduloSobre() {
+        
+        titulo(SISTEMA);
+        
+        # Exibe a Versão e o usuário logado
+        br(8);
+        p(SISTEMA, 'grhTitulo');
+
+        # Div
+        $div = new Div("center");
+        $div->abre();
+        
+        $linkAdm = new Link("Versão: " . VERSAO . " - Atualizado em: " . ATUALIZACAO, null);
+        $linkAdm->set_id('versao');
+        $linkAdm->set_target('_blank');
+        $linkAdm->show();
+        
+        $div->fecha();
+    }
+
+    #################################################################
+    #################################################################
 
     /**
      * Método listaDadosUsuario
@@ -147,69 +321,6 @@ class AreaServidor {
     ##########################################################
 
     /**
-     * Método menuPrincipal
-     * Exibe oo rodapé
-     * 
-     * @param    string $idUsuario -> Usuário logado
-     */
-    public static function menuPrincipal($idUsuario, $mes = null, $ano = null) {
-        # Cria Grid
-        $grid = new Grid();
-
-        if (Verifica::acesso($idUsuario, [1, 3, 9, 10])) {
-
-            # Classes
-            $pessoal = new Pessoal();
-            $intra = new Intra();
-
-            # Verifica se é bolsista / estagiário           
-            $tipoPerfil = $pessoal->get_perfilTipo($pessoal->get_idPerfil($intra->get_idServidor($idUsuario)));
-
-            # Coluna da esquerda
-            $grid->abreColuna(12, 6, 3);
-            if (Verifica::acesso($idUsuario, [1, 9, 10])) {
-                self::moduloSistemasInternos($idUsuario);
-            }
-            
-            if ($tipoPerfil <> "Outros") {
-                self::moduloSistemasExternos($idUsuario);
-            }
-            $grid->fechaColuna();
-
-            # Coluna do meio
-            $grid->abreColuna(12, 6, 5);
-            #self::moduloEventos();
-            if ($tipoPerfil <> "Outros") {
-                self::moduloSobreServidor();
-                self::moduloServidoresUniversidade($idUsuario);
-            } else {
-                self::moduloServidoresUniversidade($idUsuario);
-                self::moduloSistemasExternos($idUsuario);
-            }
-            $grid->fechaColuna();
-
-            # Dados da Universidade
-            $grid->abreColuna(12, 6, 4);
-            $cal = new Calendario($mes, $ano);
-            $cal->show("?");
-
-            if ($tipoPerfil <> "Outros") {
-                $calend = new CalendarioPgto();
-                $calend->exibeCalendario();
-            }
-
-            if (Verifica::acesso($idUsuario, 1)) {
-                self::moduloInfo();
-            }
-
-            $grid->fechaColuna();
-        }
-        $grid->fechaGrid();
-    }
-
-    ##########################################################
-
-    /**
      * Método menuAdministracao
      * Exibe oo rodapé
      * 
@@ -242,152 +353,6 @@ class AreaServidor {
         $grid->fechaColuna();
 
         $grid->fechaGrid();
-    }
-
-    ###########################################################
-
-    /**
-     * Método moduloServidoresUniversidade
-     * 
-     * Exibe o menu de Servidores da Universidade
-     */
-    private static function moduloServidoresUniversidade($idUsuario) {
-
-        $painel = new Callout();
-        $painel->abre();
-
-        titulo('Sobre a Universidade');
-        $tamanhoImage = 64;
-        br();
-
-        $menu = new MenuGrafico(3);
-
-        if (Verifica::acesso($idUsuario, [1, 3])) {
-            $botao = new BotaoGrafico();
-            $botao->set_label('Geral');
-            $botao->set_url('servidorGeral.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'admin.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Lista geral de servidores');
-            $menu->add_item($botao);
-        }
-
-        if (Verifica::acesso($idUsuario, [1, 11])) {
-            $botao = new BotaoGrafico();
-            $botao->set_label('Contatos');
-            $botao->set_url('servidorContatos.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'contatos.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Lista dos contatos dos servidores');
-            $menu->add_item($botao);
-        }
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('por Lotação');
-        $botao->set_url('servidorLotacao.php');
-        $botao->set_imagem(PASTA_FIGURAS . 'computador.png', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Lista de servidores por lotação');
-        $menu->add_item($botao);
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('por Cargo Efetivo');
-        $botao->set_url('servidorCargo.php');
-        $botao->set_imagem(PASTA_FIGURAS . 'cracha.png', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Lista de servidores por cargo efetivo');
-        $menu->add_item($botao);
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('por Cargo em Comissão');
-        $botao->set_url('servidorCargoComissao.php');
-        $botao->set_imagem(PASTA_FIGURAS . 'comissao.png', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Lista de servidores por cargo em comissão');
-        $menu->add_item($botao);
-        $menu->show();
-
-        $painel->fecha();
-    }
-
-    ###########################################################
-
-    /**
-     * Método moduloTabelaAuxiliares
-     * 
-     * Exibe o menu de Legislação
-     */
-    private static function moduloSobreServidor() {
-
-        $painel = new Callout();
-        $painel->abre();
-
-        titulo('Sobre o Servidor');
-        $tamanhoImage = 64;
-        br();
-
-        $menu = new MenuGrafico(3);
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('Histórico de Afastamentos');
-        $botao->set_url('?fase=afastamentoGeral');
-        $botao->set_imagem(PASTA_FIGURAS . 'afastamento.png', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Exibe o seu histórico de licenças e afastamentos');
-        $menu->add_item($botao);
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('Histórico de Férias');
-        $botao->set_url('?fase=historicoFerias');
-        $botao->set_imagem(PASTA_FIGURAS . 'ferias.jpg', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Exibe o seu histórico de férias');
-        $menu->add_item($botao);
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('Férias do seu Setor');
-        $botao->set_url('?fase=feriasSetor');
-        $botao->set_imagem(PASTA_FIGURAS . 'feriasSetor.png', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Exibe as férias dos servidores do seu setor');
-        $menu->add_item($botao);
-
-        $menu->show();
-        $painel->fecha();
-    }
-
-    ###########################################################
-
-    /**
-     * Método moduloTabelaAuxiliares
-     * 
-     * Exibe o menu de Legislação
-     */
-    private static function modulolinksExternos() {
-
-        $painel = new Callout();
-        $painel->abre();
-
-        tituloTable('Sobre o Servidor');
-        $tamanhoImage = 64;
-
-        $menu = new MenuGrafico(3);
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('Histórico de Licença');
-        $botao->set_url('?fase=historicoLicenca');
-        $botao->set_imagem(PASTA_FIGURAS . 'licenca.jpg', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Exibe o seu histórico de licenças e afastamentos');
-        $menu->add_item($botao);
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('Histórico de Férias');
-        $botao->set_url('?fase=historicoFerias');
-        $botao->set_imagem(PASTA_FIGURAS . 'ferias.jpg', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Exibe o seu histórico de férias');
-        $menu->add_item($botao);
-
-        $botao = new BotaoGrafico();
-        $botao->set_label('Férias do seu Setor');
-        $botao->set_url('?fase=feriasSetor');
-        $botao->set_imagem(PASTA_FIGURAS . 'feriasSetor.png', $tamanhoImage, $tamanhoImage);
-        $botao->set_title('Exibe as férias dos servidores do seu setor');
-        $menu->add_item($botao);
-
-        $menu->show();
-        $painel->fecha();
     }
 
     ###########################################################
@@ -585,7 +550,7 @@ class AreaServidor {
      * 
      * Exibe o menu de Informações do Servidor Web
      */
-    private static function moduloServidor($idUsuario) {
+    public static function moduloServidor($idUsuario) {
 
         $painel = new Callout();
         $painel->abre();
@@ -828,215 +793,5 @@ class AreaServidor {
         $painel->fecha();
     }
 
-    ###########################################################
-
-    /**
-     * Método moduloSistemasInternos
-     * 
-     * Exibe o menu de Informações do Servidor Web
-     */
-    private static function moduloSistemasInternos($idUsuario) {
-
-        $painel = new Callout();
-        $painel->abre();
-
-        # Título
-        titulo('Sistemas Internos');
-        $tamanhoImage = 64;
-        br();
-
-        # Inicia o menu
-        if (Verifica::acesso($idUsuario, 1)) {
-            $menu = new MenuGrafico(2);
-        }
-
-        if (Verifica::acesso($idUsuario, [9, 10])) {
-            $menu = new MenuGrafico(1);
-        }
-        $menu->set_espacoEntreLink(true);
-
-        # Sistema de gestão de contratos
-        if (Verifica::acesso($idUsuario, [1, 9, 10])) {
-            $botao = new BotaoGrafico();
-            $botao->set_label("Sistema de Contratos");
-            $botao->set_title("Sistema de Gestão de Contratos");
-            $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('../../../contratos/sistema/cadastroContrato.php');
-            $menu->add_item($botao);
-        }
-
-        if (Verifica::acesso($idUsuario, 1)) {
-            $botao = new BotaoGrafico();
-            $botao->set_label('Sistema de Pessoal');
-            $botao->set_title('Sistema de Pessoal');
-            $botao->set_url('../../../grh/grhSistema/grh.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'servidores.png', $tamanhoImage, $tamanhoImage);
-            $menu->add_item($botao);
-        }
-        $menu->show();
-        $painel->fecha();
-    }
-
-    ###########################################################
-
-    /**
-     * Método moduloSistemas
-     * 
-     * Exibe o menu de Informações do Servidor Web
-     */
-    private static function moduloSistemasExternos($idUsuario) {
-
-        $painel = new Callout();
-        $painel->abre();
-
-        # Título
-        titulo('Sistemas Externos');
-        br();
-
-        # Classes
-        $pessoal = new Pessoal();
-        $intra = new Intra();
-
-        # Verifica se é bolsista / estagiário           
-        $tipoPerfil = $pessoal->get_perfilTipo($pessoal->get_idPerfil($intra->get_idServidor($idUsuario)));
-
-        # Altera o menu de acordo com o usuário
-        if ($tipoPerfil == "Outros") {
-            $itens = 2;
-        } else {
-            $itens = 1;
-        }
-
-        # Inicia o menu
-        $menu = new MenuGrafico($itens);
-        $menu->set_espacoEntreLink(true);
-
-        # Sei
-        $botao = new BotaoGrafico();
-        $botao->set_title('Sistema Eletrônico de Informações');
-        #$botao->set_label("Sei");
-        $botao->set_imagem(PASTA_FIGURAS . "sei.png", 220, 60);
-        $botao->set_url("https://sei.fazenda.rj.gov.br/sip/login.php?sigla_orgao_sistema=ERJ&sigla_sistema=SEI&infra_url=L3NlaS8=");
-        $botao->set_target("_blank");
-        $menu->add_item($botao);
-
-        # SigFis
-        $botao = new BotaoGrafico();
-        $botao->set_title('Sistema Integrado de Gestão Fiscal');
-        #$botao->set_label("SigFis");
-        $botao->set_imagem(PASTA_FIGURAS . "tce.png", 180, 50);
-        #$botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
-        $botao->set_url("https://www.tce.rj.gov.br/etcerj/");
-        $botao->set_target("_blank");
-        $menu->add_item($botao);
-
-        # Siafe
-        $botao = new BotaoGrafico();
-        $botao->set_title('Sistema Integrado de Gestão Orçamentária, Financeira e Contábil do Rio de Janeiro');
-        #$botao->set_label("Siafe");
-        $botao->set_imagem(PASTA_FIGURAS . "siafe.png", 180, 50);
-        $botao->set_url("https://www5.fazenda.rj.gov.br/SiafeRio/faces/login.jsp;jsessionid=FfPAOZiFLVOws9w_lr7lfkdC1rdXFlgoZ4b0lI9DofE59ZJZilH4!-1875128395");
-        $botao->set_target("aba");
-        $menu->add_item($botao);
-
-        if (Verifica::acesso($idUsuario, 9)) {
-            # SigFis Antigo
-            $botao = new BotaoGrafico();
-            $botao->set_title('Sistema Antigo');
-            #$botao->set_label("SigFis");
-            $botao->set_imagem(PASTA_FIGURAS . "sigfis.jpg", 180, 50);
-            $botao->set_url("https://www.tce.rj.gov.br/sigfisest/");
-            $botao->set_target("_blank");
-            $menu->add_item($botao);
-        }
-
-        $menu->show();
-        $painel->fecha();
-    }
-
-    ######################################################################################################################
-
-    /**
-     * Método moduloSispatri
-     */
-    private static function moduloSispatri() {
-
-        br(2);
-        $botao = new BotaoGrafico();
-        $botao->set_label();
-        $botao->set_url("https://www.servidor.rj.gov.br/portal-web/portal/publico/Noticia/detalhar?hdnNoticia=1152");
-        $botao->set_imagem(PASTA_FIGURAS . 'sispatri2.png', '100%', '100%');
-        $botao->set_title('Sistema de Registros de Bens dos Agentes Públicos');
-        #$botao->set_target("_blank");
-        $botao->show();
-    }
-
-    ######################################################################################################################
-
-    /**
-     * Método moduloEventos
-     */
-    private static function moduloEventos() {
-
-        $botao = new BotaoGrafico();
-        $botao->set_label();
-        $botao->set_url("../../_arquivos/documentos/42.pdf");
-        $botao->set_imagem(PASTA_FIGURAS . 'semanaServidor.png', '100%', '100%');
-        $botao->set_title('Semana do Servidor');
-        $botao->set_target("_blank");
-        $botao->show();
-        br(2);
-    }
-
-    ######################################################################################################################
-
-    /**
-     * Método moduloInfo
-     * 
-     */
-    private static function moduloInfo() {
-
-        $painel = new Callout();
-        $painel->abre();
-
-        titulo('Arquivos PDFs');
-        br();
-
-        # Conecta ao Banco de Dados
-        $intra = new Intra();
-
-        # Pega as data cadastradas
-        $ultimoUpload = $intra->get_variavel('dataUploadArquivos');
-        $ultimoBackup = $intra->get_variavel('dataBackupArquivos');
-
-        # Exibe as datas
-        p("Data do último upload: {$ultimoUpload}<br/>Data do último backup: {$ultimoBackup}", "f12", "center");
-
-        # Altera o formado das datas
-        $upload = datetime_to_bd($ultimoUpload);
-        $backup = datetime_to_bd($ultimoBackup);
-
-        # Div para centralizar
-        $div = new Div("center");
-        $div->abre();
-
-        # informa se deve ou não fazer o backup
-        if (strtotime($backup) > strtotime($upload)) {
-            label("Backup Atualizado", "success", "center");
-        } else {
-            label("Fazer Backup!!", "alert");
-        }
-
-        $div->fecha();
-
-        # Editar
-        $botaoEditar = new Link("Alterar Data", "?fase=mudaData");
-        $botaoEditar->set_class('tiny button secondary');
-        $botaoEditar->set_title('Altera a data do backup');
-        $botaoEditar->show();
-
-        $painel->fecha();
-    }
-
-    ######################################################################################################################
+    #################################################################
 }

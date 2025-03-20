@@ -52,7 +52,7 @@ if ($acesso) {
     $objeto->set_nome('Mensagem');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('areaServidor.php?fase=sistema');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
@@ -101,9 +101,6 @@ if ($acesso) {
 
     # Nome do campo id
     $objeto->set_idCampo('idmensagem');
-
-    # Tipo de label do formulário
-    $objeto->set_formlabelTipo(1);
 
     # Campos para o formulario
     $objeto->set_campos(array(
