@@ -123,7 +123,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     array_push($array, ['Dados da Universidade', 'por Cargo em Comissão', 'cargoComissao']);
     array_push($array, ['Dados da Universidade', 'por Cargo Efetivo', 'servidorCargo']);
     array_push($array, ['Dados da Universidade', 'por Lotação', 'porLotacao']);
-    array_push($array, ['Dados da Universidade', 'Organograma', 'organograma']);
+    #array_push($array, ['Dados da Universidade', 'Organograma', 'organograma']);
 
     # Acesso aos contatos dos servidores
     if (Verifica::acesso($idUsuario, [1, 11])) {
@@ -433,7 +433,8 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         case "organograma" :
             titulo("Organograma da UENF");
             br();
-            $figura = new Imagem('../../_arquivos/documentos/25.pdf', 'Organograma da UENF', '100%', '100%');
+            
+            loadPage('../../_arquivos/documentos/25.pdf', 'Organograma da UENF', '100%', '100%');
             $figura->show();
 
             # Grava no log a atividade
