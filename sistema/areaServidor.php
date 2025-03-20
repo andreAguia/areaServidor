@@ -433,7 +433,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         case "organograma" :
             titulo("Organograma da UENF");
             br();
-            $figura = new Imagem(PASTA_FIGURAS_GRH . 'organograma.png', 'Organograma da UENF', '100%', '100%');
+            $figura = new Imagem('../_arquivos/documentos/25.pdf', 'Organograma da UENF', '100%', '100%');
             $figura->show();
 
             # Grava no log a atividade
