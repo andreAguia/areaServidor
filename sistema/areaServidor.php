@@ -116,18 +116,18 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
     # Acesso a pesquisa geral
     if (Verifica::acesso($idUsuario, [1, 3])) {
-        array_push($array, ['Dados da Universidade', 'Pesquisa Geral', 'geral']);
+        array_push($array, ['Listagem de Servidores', 'Geral', 'geral']);
     }
 
-    array_push($array, ['Dados da Universidade', 'Férias em seu Setor', 'feriasSetor']);
-    array_push($array, ['Dados da Universidade', 'por Cargo em Comissão', 'cargoComissao']);
-    array_push($array, ['Dados da Universidade', 'por Cargo Efetivo', 'servidorCargo']);
-    array_push($array, ['Dados da Universidade', 'por Lotação', 'porLotacao']);
+    array_push($array, ['Listagem de Servidores', 'em Férias no seu Setor', 'feriasSetor']);
+    array_push($array, ['Listagem de Servidores', 'por Cargo em Comissão', 'cargoComissao']);
+    array_push($array, ['Listagem de Servidores', 'por Cargo Efetivo', 'servidorCargo']);
+    array_push($array, ['Listagem de Servidores', 'por Lotação', 'porLotacao']);
     #array_push($array, ['Dados da Universidade', 'Organograma', 'organograma']);
 
     # Acesso aos contatos dos servidores
     if (Verifica::acesso($idUsuario, [1, 11])) {
-        array_push($array, ['Dados da Universidade', 'E-mails e Telefones', 'contatos']);
+        array_push($array, ['Listagem de Servidores', 'com E-mails e Telefones', 'contatos']);
     }
 
     # Somente Administradores
