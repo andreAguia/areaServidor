@@ -238,9 +238,9 @@ class AreaServidor {
      * Método moduloSobre
      */
     public static function moduloSobre() {
-        
+
         titulo(SISTEMA);
-        
+
         # Exibe a Versão e o usuário logado
         br(8);
         p(SISTEMA, 'grhTitulo');
@@ -248,12 +248,10 @@ class AreaServidor {
         # Div
         $div = new Div("center");
         $div->abre();
-        
-        $linkAdm = new Link("Versão: " . VERSAO . " - Atualizado em: " . ATUALIZACAO, null);
-        $linkAdm->set_id('versao');
-        $linkAdm->set_target('_blank');
-        $linkAdm->show();
-        
+
+        p("Versão: " . VERSAO, 'versao');
+        p("(Atualizado em: " . ATUALIZACAO . ")", 'versao');
+
         $div->fecha();
     }
 
