@@ -327,6 +327,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $controle->set_array($result);
             $controle->set_valor($parametroComissao);
             $controle->set_onChange('formPadrao.submit();');
+            $controle->set_autofocus(true);
             $controle->set_linha(1);
             $controle->set_col(6);
             $form->add_item($controle);
@@ -399,6 +400,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $controle->set_array($result);
             $controle->set_valor($parametroCargo);
             $controle->set_onChange('formPadrao.submit();');
+            $controle->set_autofocus(true);
             $controle->set_linha(1);
             $controle->set_col(12);
             $form->add_item($controle);
@@ -681,6 +683,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $controle->set_valor($parametroLotacao);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(1);
+            $controle->set_autofocus(true);
             $controle->set_col(12);
             $form->add_item($controle);
             $form->show();
