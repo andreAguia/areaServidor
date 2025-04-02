@@ -27,23 +27,16 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     $idLotacao = $pessoal->get_idLotacao($idServidor);
 
     # Pega os parâmetros
-    $parametroCargo = post('parametroCargo', get_session('parametroCargo', $idCargo));
+    $parametroCargo = post('parametroCargo', get_session('parametroCargo', $pessoal->get_idCargo($idServidor)));
     $parametroComissao = post('parametroComissao', get_session('parametroComissao'));
-    $parametroLotacao = post('parametroLotacao', get_session('parametroLotacao', $idLotacao));
+    $parametroLotacao = post('parametroLotacao', get_session('parametroLotacao', $pessoal->get_idLotacao($idServidor)));
     $parametroMes = post('parametroMes', get_session('parametroMes', date('m')));
 
     # joga os parâmetros para a session
-    if ($fase == "geral") {
-        set_session('parametroCargo');
-        set_session('parametroComissao');
-        set_session('parametroLotacao');
-        set_session('parametroMes');
-    } else {
-        set_session('parametroCargo', $parametroCargo);
-        set_session('parametroComissao', $parametroComissao);
-        set_session('parametroLotacao', $parametroLotacao);
-        set_session('parametroMes', $parametroMes);
-    }
+    set_session('parametroCargo', $parametroCargo);
+    set_session('parametroComissao', $parametroComissao);
+    set_session('parametroLotacao', $parametroLotacao);
+    set_session('parametroMes', $parametroMes);
 
     # Pega o idServidor Pesquisado da rotina de pasta digitaliozada
     $idServidorPesquisado = get("idServidorPesquisado");
@@ -114,29 +107,24 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         array_push($array, ['Dados do Servidor', 'Histórico de Lic.Prêmio', 'historicoPremio']);
     }
 
-    # Acesso a pesquisa geral
-    if (Verifica::acesso($idUsuario, [1, 3])) {
-        array_push($array, ['Listagem de Servidores', 'Geral', 'geral']);
-    }
-
+    array_push($array, ['Listagem de Servidores', 'por Nome', 'nome']);
     array_push($array, ['Listagem de Servidores', 'em Férias no seu Setor', 'feriasSetor']);
     array_push($array, ['Listagem de Servidores', 'por Cargo em Comissão', 'cargoComissao']);
     array_push($array, ['Listagem de Servidores', 'por Cargo Efetivo', 'servidorCargo']);
     array_push($array, ['Listagem de Servidores', 'por Lotação', 'porLotacao']);
     #array_push($array, ['Dados da Universidade', 'Organograma', 'organograma']);
-
     # Acesso aos contatos dos servidores
     if (Verifica::acesso($idUsuario, [1, 11])) {
         array_push($array, ['Listagem de Servidores', 'com E-mails e Telefones', 'contatos']);
     }
 
     # Somente Administradores
-    if (Verifica::acesso($idUsuario, 1)) {
-        array_push($array, ['Administração', 'Gestão de Usuários', 'usuarios']);
-        array_push($array, ['Administração', 'Sistema', 'sistema']);
-        array_push($array, ['Administração', 'Estrutura', 'estrutura']);
-        array_push($array, ['Administração', 'Projetos', 'projetos']);
-    }
+//    if (Verifica::acesso($idUsuario, 1)) {
+//        array_push($array, ['Administração', 'Gestão de Usuários', 'usuarios']);
+//        array_push($array, ['Administração', 'Sistema', 'sistema']);
+//        array_push($array, ['Administração', 'Estrutura', 'estrutura']);
+//        array_push($array, ['Administração', 'Projetos', 'projetos']);
+//    }
 
     $agrupamento = "";
 
@@ -219,7 +207,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
 ##################################################################
 
-        case "aniversariantes" :            
+        case "aniversariantes" :
 
             # Mês 
             $form = new Form('?fase=aniversariantes');
@@ -435,7 +423,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         case "organograma" :
             titulo("Organograma da UENF");
             br();
-            
+
             loadPage('../../_arquivos/documentos/25.pdf', 'Organograma da UENF', '100%', '100%');
             $figura->show();
 
@@ -524,11 +512,189 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
 ##################################################################
 
-        case "geral" :
-            
-            // melhorar
+        case "nome" :
 
-            loadPage("servidorGeral.php");
+            # Permissão de Acesso
+            $acesso = Verifica::acesso($idUsuario, [1, 3]);
+
+            if ($acesso) {
+
+                # Pega os parâmetros
+                $parametroNomeMat = retiraAspas(post('parametroNomeMat', get_session('parametroNomeMat')));
+                $parametroCargo = post('parametroCargo', get_session('parametroCargo', '*'));
+                $parametroCargoComissao = post('parametroCargoComissao', get_session('parametroCargoComissao', '*'));
+                $parametroLotacao = post('parametroLotacao', get_session('parametroLotacao', $pessoal->get_idLotacao($idServidor)));
+                $parametroPerfil = post('parametroPerfil', get_session('parametroPerfil', '*'));
+                $parametroSituacao = post('parametroSituacao', get_session('parametroSituacao', 1));
+
+                # Agrupamento do Relatório
+                $agrupamentoEscolhido = post('agrupamento', 0);
+
+                # Joga os parâmetros par as sessions
+                set_session('parametroNomeMat', $parametroNomeMat);
+                set_session('parametroCargo', $parametroCargo);
+                set_session('parametroCargoComissao', $parametroCargoComissao);
+                set_session('parametroLotacao', $parametroLotacao);
+                set_session('parametroPerfil', $parametroPerfil);
+                set_session('parametroSituacao', $parametroSituacao);
+
+                # Verifica a paginacão
+                $paginacao = get('paginacao', get_session('parametroPaginacao', 0)); // Verifica se a paginação vem por get, senão pega a session
+                set_session('parametroPaginacao', $paginacao);
+
+                # Parâmetros
+                $form = new Form('?fase=nome');
+
+                # Nome ou Matrícula
+                $controle = new Input('parametroNomeMat', 'texto', 'Nome, Mat. ou Id:', 1);
+                $controle->set_size(55);
+                $controle->set_title('Nome, matrícula ou ID:');
+                $controle->set_valor($parametroNomeMat);
+                $controle->set_autofocus(true);
+                $controle->set_onChange('formPadrao.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(8);
+                $form->add_item($controle);
+
+                # Situação
+//                $result = $pessoal->select('SELECT idsituacao, situacao
+//                                              FROM tbsituacao                                
+//                                          ORDER BY 1');
+//                array_unshift($result, array('*', '-- Todos --'));
+//
+//                $controle = new Input('parametroSituacao', 'combo', 'Situação:', 1);
+//                $controle->set_size(30);
+//                $controle->set_title('Filtra por Situação');
+//                $controle->set_array($result);
+//                $controle->set_valor($parametroSituacao);
+//                $controle->set_onChange('formPadrao.submit();');
+//                $controle->set_linha(1);
+//                $controle->set_col(2);
+//                $form->add_item($controle);
+                # Cargos
+//                $result = $pessoal->select('SELECT tbcargo.idCargo,
+//                                               concat(tbtipocargo.cargo," - ",tbarea.area," - ",tbcargo.nome)
+//                                          FROM tbcargo LEFT JOIN tbtipocargo USING (idTipoCargo)
+//                                                       LEFT JOIN tbarea USING (idArea)
+//                                      ORDER BY 2');
+//                array_unshift($result, array('Professor', 'Professores'));
+//                array_unshift($result, array('*', '-- Todos --'));
+//
+//                $controle = new Input('parametroCargo', 'combo', 'Cargo - Área - Função:', 1);
+//                $controle->set_size(30);
+//                $controle->set_title('Filtra por Cargo');
+//                $controle->set_array($result);
+//                $controle->set_valor($parametroCargo);
+//                $controle->set_onChange('formPadrao.submit();');
+//                $controle->set_linha(1);
+//                $controle->set_col(8);
+//                $form->add_item($controle);
+                # Cargos em Comissão
+//                $result = $pessoal->select('SELECT tbtipocomissao.idTipoComissao,concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
+//                                              FROM tbtipocomissao
+//                                              WHERE ativo
+//                                          ORDER BY tbtipocomissao.simbolo');
+//                array_unshift($result, array('*', '-- Todos --'));
+//
+//                $controle = new Input('parametroCargoComissao', 'combo', 'Cargo em Comissão:', 1);
+//                $controle->set_size(30);
+//                $controle->set_title('Filtra por Cargo em Comissão');
+//                $controle->set_array($result);
+//                $controle->set_valor($parametroCargoComissao);
+//                $controle->set_onChange('formPadrao.submit();');
+//                $controle->set_linha(2);
+//                $controle->set_col(4);
+//                $form->add_item($controle);
+                # Lotação
+//                $result = $pessoal->select('(SELECT idlotacao, concat(IFnull(tblotacao.DIR,"")," - ",IFnull(tblotacao.GER,"")," - ",IFnull(tblotacao.nome,"")) lotacao
+//                                              FROM tblotacao
+//                                             WHERE ativo) UNION (SELECT distinct DIR, DIR
+//                                              FROM tblotacao
+//                                             WHERE ativo)
+//                                          ORDER BY 2');
+//                array_unshift($result, array('*', '-- Todos --'));
+//
+//                $controle = new Input('parametroLotacao', 'combo', 'Lotação:', 1);
+//                $controle->set_size(30);
+//                $controle->set_title('Filtra por Lotação');
+//                $controle->set_array($result);
+//                $controle->set_valor($parametroLotacao);
+//                $controle->set_onChange('formPadrao.submit();');
+//                $controle->set_linha(2);
+//                $controle->set_col(12);
+//                $form->add_item($controle);
+                # Perfil
+//                $result = $pessoal->select('SELECT idperfil, 
+//                                               nome, 
+//                                               tipo
+//                                          FROM tbperfil
+//                                         WHERE tipo <> "Outros"  
+//                                      ORDER BY tipo, nome');
+//                array_unshift($result, array('*', '-- Todos --'));
+//
+//                $controle = new Input('parametroPerfil', 'combo', 'Perfil:', 1);
+//                $controle->set_size(30);
+//                $controle->set_title('Filtra por Perfil');
+//                $controle->set_array($result);
+//                $controle->set_valor($parametroPerfil);
+//                $controle->set_optgroup(true);
+//                $controle->set_onChange('formPadrao.submit();');
+//                $controle->set_linha(2);
+//                $controle->set_col(3);
+//                $form->add_item($controle);
+
+                $form->show();
+
+                # Lista de Servidores Ativos
+                $lista = new ListaServidores2('Servidores');
+                if (!is_null($parametroNomeMat)) {
+                    $lista->set_matNomeId($parametroNomeMat);
+                    $lista->set_paginacao(false);
+
+                    # Somente Ativos
+                    $lista->set_situacao(1);
+
+                    # Retira a edição
+                    $lista->set_permiteEditar(false);
+                    $lista->set_paginacao(false);
+
+                    $lista->showTabela();
+                } else {
+                    tituloTable("Servidores");
+                    $callout = new Callout();
+                    $callout->abre();
+                    p("Informe o Nome, Matrícula ou idFuncional", 'f14', 'center');
+                    $callout->fecha();
+                }
+
+//                if ($parametroCargo <> "*") {
+//                    $lista->set_cargo($parametroCargo);
+//                    $lista->set_paginacao(false);
+//                }
+//
+//                if ($parametroCargoComissao <> "*") {
+//                    $lista->set_cargoComissao($parametroCargoComissao);
+//                    $lista->set_paginacao(false);
+//                }
+//
+//                if ($parametroLotacao <> "*") {
+//                    $lista->set_lotacao($parametroLotacao);
+//                    $lista->set_paginacao(false);
+//                }
+//
+//                if ($parametroPerfil <> "*") {
+//                    $lista->set_perfil($parametroPerfil);
+//                    $lista->set_paginacao(false);
+//                } else {
+//                    # esconde o tipo outros
+//                    $lista->set_escondeTipoPerfil("Outros");
+//                }
+//
+//                if ($parametroSituacao <> "*") {
+//                    $lista->set_situacao($parametroSituacao);
+//                    $lista->set_paginacao(false);
+//                }
+            }
             break;
 
 ##################################################################
@@ -712,7 +878,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 ##################################################################
 #   Administração
 ##################################################################
-        
+
         case "usuarios" :
             if (Verifica::acesso($idUsuario, 1)) {
                 # Título
