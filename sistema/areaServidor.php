@@ -113,6 +113,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     array_push($array, ['Listagem de Servidores', 'por Cargo Efetivo', 'servidorCargo']);
     array_push($array, ['Listagem de Servidores', 'por Lotação', 'porLotacao']);
     #array_push($array, ['Dados da Universidade', 'Organograma', 'organograma']);
+    
     # Acesso aos contatos dos servidores
     if (Verifica::acesso($idUsuario, [1, 11])) {
         array_push($array, ['Listagem de Servidores', 'com E-mails e Telefones', 'contatos']);
@@ -514,215 +515,84 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
         case "nome" :
 
-            # Permissão de Acesso
-            $acesso = Verifica::acesso($idUsuario, [1, 3]);
+            # Pega os parâmetros
+            $parametroNomeMat = retiraAspas(post('parametroNomeMat', get_session('parametroNomeMat')));
 
-            if ($acesso) {
+            # Joga os parâmetros par as sessions
+            set_session('parametroNomeMat', $parametroNomeMat);
 
-                # Pega os parâmetros
-                $parametroNomeMat = retiraAspas(post('parametroNomeMat', get_session('parametroNomeMat')));
-                $parametroCargo = post('parametroCargo', get_session('parametroCargo', '*'));
-                $parametroCargoComissao = post('parametroCargoComissao', get_session('parametroCargoComissao', '*'));
-                $parametroLotacao = post('parametroLotacao', get_session('parametroLotacao', $pessoal->get_idLotacao($idServidor)));
-                $parametroPerfil = post('parametroPerfil', get_session('parametroPerfil', '*'));
-                $parametroSituacao = post('parametroSituacao', get_session('parametroSituacao', 1));
+            # Parâmetros
+            $form = new Form('?fase=nome');
 
-                # Agrupamento do Relatório
-                $agrupamentoEscolhido = post('agrupamento', 0);
+            # Nome ou Matrícula
+            $controle = new Input('parametroNomeMat', 'texto', 'Nome, Mat. ou Id:', 1);
+            $controle->set_size(55);
+            $controle->set_title('Nome, matrícula ou ID:');
+            $controle->set_valor($parametroNomeMat);
+            $controle->set_autofocus(true);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(8);
+            $form->add_item($controle);
 
-                # Joga os parâmetros par as sessions
-                set_session('parametroNomeMat', $parametroNomeMat);
-                set_session('parametroCargo', $parametroCargo);
-                set_session('parametroCargoComissao', $parametroCargoComissao);
-                set_session('parametroLotacao', $parametroLotacao);
-                set_session('parametroPerfil', $parametroPerfil);
-                set_session('parametroSituacao', $parametroSituacao);
+            $form->show();
 
-                # Verifica a paginacão
-                $paginacao = get('paginacao', get_session('parametroPaginacao', 0)); // Verifica se a paginação vem por get, senão pega a session
-                set_session('parametroPaginacao', $paginacao);
+            # Lista de Servidores Ativos
+            $lista = new ListaServidores2('Servidores');
+            if (!is_null($parametroNomeMat)) {
+                $lista->set_matNomeId($parametroNomeMat);
+                $lista->set_paginacao(false);
 
-                # Parâmetros
-                $form = new Form('?fase=nome');
+                # Somente Ativos
+                $lista->set_situacao(1);
 
-                # Nome ou Matrícula
-                $controle = new Input('parametroNomeMat', 'texto', 'Nome, Mat. ou Id:', 1);
-                $controle->set_size(55);
-                $controle->set_title('Nome, matrícula ou ID:');
-                $controle->set_valor($parametroNomeMat);
-                $controle->set_autofocus(true);
-                $controle->set_onChange('formPadrao.submit();');
-                $controle->set_linha(1);
-                $controle->set_col(8);
-                $form->add_item($controle);
+                # Retira a edição
+                $lista->set_permiteEditar(false);
+                $lista->set_paginacao(false);
 
-                # Situação
-//                $result = $pessoal->select('SELECT idsituacao, situacao
-//                                              FROM tbsituacao                                
-//                                          ORDER BY 1');
-//                array_unshift($result, array('*', '-- Todos --'));
-//
-//                $controle = new Input('parametroSituacao', 'combo', 'Situação:', 1);
-//                $controle->set_size(30);
-//                $controle->set_title('Filtra por Situação');
-//                $controle->set_array($result);
-//                $controle->set_valor($parametroSituacao);
-//                $controle->set_onChange('formPadrao.submit();');
-//                $controle->set_linha(1);
-//                $controle->set_col(2);
-//                $form->add_item($controle);
-                # Cargos
-//                $result = $pessoal->select('SELECT tbcargo.idCargo,
-//                                               concat(tbtipocargo.cargo," - ",tbarea.area," - ",tbcargo.nome)
-//                                          FROM tbcargo LEFT JOIN tbtipocargo USING (idTipoCargo)
-//                                                       LEFT JOIN tbarea USING (idArea)
-//                                      ORDER BY 2');
-//                array_unshift($result, array('Professor', 'Professores'));
-//                array_unshift($result, array('*', '-- Todos --'));
-//
-//                $controle = new Input('parametroCargo', 'combo', 'Cargo - Área - Função:', 1);
-//                $controle->set_size(30);
-//                $controle->set_title('Filtra por Cargo');
-//                $controle->set_array($result);
-//                $controle->set_valor($parametroCargo);
-//                $controle->set_onChange('formPadrao.submit();');
-//                $controle->set_linha(1);
-//                $controle->set_col(8);
-//                $form->add_item($controle);
-                # Cargos em Comissão
-//                $result = $pessoal->select('SELECT tbtipocomissao.idTipoComissao,concat(tbtipocomissao.simbolo," - ",tbtipocomissao.descricao)
-//                                              FROM tbtipocomissao
-//                                              WHERE ativo
-//                                          ORDER BY tbtipocomissao.simbolo');
-//                array_unshift($result, array('*', '-- Todos --'));
-//
-//                $controle = new Input('parametroCargoComissao', 'combo', 'Cargo em Comissão:', 1);
-//                $controle->set_size(30);
-//                $controle->set_title('Filtra por Cargo em Comissão');
-//                $controle->set_array($result);
-//                $controle->set_valor($parametroCargoComissao);
-//                $controle->set_onChange('formPadrao.submit();');
-//                $controle->set_linha(2);
-//                $controle->set_col(4);
-//                $form->add_item($controle);
-                # Lotação
-//                $result = $pessoal->select('(SELECT idlotacao, concat(IFnull(tblotacao.DIR,"")," - ",IFnull(tblotacao.GER,"")," - ",IFnull(tblotacao.nome,"")) lotacao
-//                                              FROM tblotacao
-//                                             WHERE ativo) UNION (SELECT distinct DIR, DIR
-//                                              FROM tblotacao
-//                                             WHERE ativo)
-//                                          ORDER BY 2');
-//                array_unshift($result, array('*', '-- Todos --'));
-//
-//                $controle = new Input('parametroLotacao', 'combo', 'Lotação:', 1);
-//                $controle->set_size(30);
-//                $controle->set_title('Filtra por Lotação');
-//                $controle->set_array($result);
-//                $controle->set_valor($parametroLotacao);
-//                $controle->set_onChange('formPadrao.submit();');
-//                $controle->set_linha(2);
-//                $controle->set_col(12);
-//                $form->add_item($controle);
-                # Perfil
-//                $result = $pessoal->select('SELECT idperfil, 
-//                                               nome, 
-//                                               tipo
-//                                          FROM tbperfil
-//                                         WHERE tipo <> "Outros"  
-//                                      ORDER BY tipo, nome');
-//                array_unshift($result, array('*', '-- Todos --'));
-//
-//                $controle = new Input('parametroPerfil', 'combo', 'Perfil:', 1);
-//                $controle->set_size(30);
-//                $controle->set_title('Filtra por Perfil');
-//                $controle->set_array($result);
-//                $controle->set_valor($parametroPerfil);
-//                $controle->set_optgroup(true);
-//                $controle->set_onChange('formPadrao.submit();');
-//                $controle->set_linha(2);
-//                $controle->set_col(3);
-//                $form->add_item($controle);
-
-                $form->show();
-
-                # Lista de Servidores Ativos
-                $lista = new ListaServidores2('Servidores');
-                if (!is_null($parametroNomeMat)) {
-                    $lista->set_matNomeId($parametroNomeMat);
-                    $lista->set_paginacao(false);
-
-                    # Somente Ativos
-                    $lista->set_situacao(1);
-
-                    # Retira a edição
-                    $lista->set_permiteEditar(false);
-                    $lista->set_paginacao(false);
-
-                    $lista->showTabela();
-                } else {
-                    tituloTable("Servidores");
-                    $callout = new Callout();
-                    $callout->abre();
-                    p("Informe o Nome, Matrícula ou idFuncional", 'f14', 'center');
-                    $callout->fecha();
-                }
-
-//                if ($parametroCargo <> "*") {
-//                    $lista->set_cargo($parametroCargo);
-//                    $lista->set_paginacao(false);
-//                }
-//
-//                if ($parametroCargoComissao <> "*") {
-//                    $lista->set_cargoComissao($parametroCargoComissao);
-//                    $lista->set_paginacao(false);
-//                }
-//
-//                if ($parametroLotacao <> "*") {
-//                    $lista->set_lotacao($parametroLotacao);
-//                    $lista->set_paginacao(false);
-//                }
-//
-//                if ($parametroPerfil <> "*") {
-//                    $lista->set_perfil($parametroPerfil);
-//                    $lista->set_paginacao(false);
-//                } else {
-//                    # esconde o tipo outros
-//                    $lista->set_escondeTipoPerfil("Outros");
-//                }
-//
-//                if ($parametroSituacao <> "*") {
-//                    $lista->set_situacao($parametroSituacao);
-//                    $lista->set_paginacao(false);
-//                }
+                $lista->showTabela();
+            } else {
+                tituloTable("Servidores");
+                $callout = new Callout();
+                $callout->abre();
+                br(2);
+                p("Informe o Nome, Matrícula ou idFuncional", 'f14', 'center');
+                br();
+                $callout->fecha();
             }
             break;
 
 ##################################################################
 
         case "contatos" :
+            
+            # Permissão de Acesso
+            $acesso = Verifica::acesso($idUsuario, [1, 11]);
 
-            # Pega os parâmetros
-            $parametroNome = post('parametroNome', get_session('parametroNome'));
+            if ($acesso) {
 
-            # Joga os parâmetros par as sessions
-            set_session('parametroNome', $parametroNome);
+                # Pega os parâmetros
+                $parametroNome = post('parametroNome', get_session('parametroNome'));
 
-            # Parâmetros
-            $form = new Form('?fase=contatos');
+                # Joga os parâmetros par as sessions
+                set_session('parametroNome', $parametroNome);
 
-            # Nome ou Matrícula
-            $controle = new Input('parametroNome', 'texto', 'Nome:', 1);
-            $controle->set_size(55);
-            $controle->set_title('Nome do servidor:');
-            $controle->set_valor($parametroNome);
-            $controle->set_autofocus(true);
-            $controle->set_onChange('formPadrao.submit();');
-            $controle->set_linha(1);
-            $controle->set_col(6);
-            $form->add_item($controle);
-            $form->show();
+                # Parâmetros
+                $form = new Form('?fase=contatos');
 
-            $select = "SELECT tbservidor.idServidor,
+                # Nome ou Matrícula
+                $controle = new Input('parametroNome', 'texto', 'Nome:', 1);
+                $controle->set_size(55);
+                $controle->set_title('Nome do servidor:');
+                $controle->set_valor($parametroNome);
+                $controle->set_autofocus(true);
+                $controle->set_onChange('formPadrao.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(6);
+                $form->add_item($controle);
+                $form->show();
+
+                $select = "SELECT tbservidor.idServidor,
                       tbservidor.idServidor,
                       tblotacao.ramais,
                       tbservidor.idServidor
@@ -734,49 +604,50 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
                   AND situacao = 1  
              ORDER BY tbpessoa.nome";
 
-            if (!empty($parametroNome)) {
-                # Executa o select 
-                $conteudo = $pessoal->select($select);
-                $totReg = $pessoal->count($select);
+                if (!empty($parametroNome)) {
+                    # Executa o select 
+                    $conteudo = $pessoal->select($select);
+                    $totReg = $pessoal->count($select);
 
-                if ($totReg == 0) {
+                    if ($totReg == 0) {
+                        tituloTable("Contatos dos Servidores Ativos");
+                        $callout = new Callout();
+                        $callout->abre();
+                        br(2);
+                        p('Nenhum item encontrado !!', 'center');
+                        br();
+                        $callout->fecha();
+                    } else {
+                        # Monta a tabela
+                        $tabela = new Tabela();
+
+                        $tabela->set_titulo("Contatos dos Servidores Ativos");
+                        $tabela->set_conteudo($conteudo);
+                        $tabela->set_label(["ID/Matrícula", "Servidor", "Ramais", "Contatos"]);
+                        $tabela->set_width([10, 25, 40, 25]);
+                        $tabela->set_align(["center", "left", "left", "left"]);
+                        $tabela->set_classe(["pessoal", "pessoal", null, "pessoal", "pessoal"]);
+                        $tabela->set_metodo(["get_idFuncionalEMatricula", "get_nomeECargoELotacao", null, "get_contatos"]);
+                        $tabela->set_funcao([null, null, "nl2br2"]);
+                        $tabela->set_totalRegistro(true);
+                        $tabela->set_textoRessaltado($parametroNome);
+                        $tabela->show();
+                    }
+                } else {
                     tituloTable("Contatos dos Servidores Ativos");
                     $callout = new Callout();
                     $callout->abre();
                     br(2);
-                    p('Nenhum item encontrado !!', 'center');
+                    p('Digite um nome para pesquisar', 'center');
                     br();
                     $callout->fecha();
-                } else {
-                    # Monta a tabela
-                    $tabela = new Tabela();
-
-                    $tabela->set_titulo("Contatos dos Servidores Ativos");
-                    $tabela->set_conteudo($conteudo);
-                    $tabela->set_label(["ID/Matrícula", "Servidor", "Ramais", "Contatos"]);
-                    $tabela->set_width([10, 25, 40, 25]);
-                    $tabela->set_align(["center", "left", "left", "left"]);
-                    $tabela->set_classe(["pessoal", "pessoal", null, "pessoal", "pessoal"]);
-                    $tabela->set_metodo(["get_idFuncionalEMatricula", "get_nomeECargoELotacao", null, "get_contatos"]);
-                    $tabela->set_funcao([null, null, "nl2br2"]);
-                    $tabela->set_totalRegistro(true);
-                    $tabela->set_textoRessaltado($parametroNome);
-                    $tabela->show();
                 }
-            } else {
-                tituloTable("Contatos dos Servidores Ativos");
-                $callout = new Callout();
-                $callout->abre();
-                br(2);
-                p('Digite um nome para pesquisar', 'center');
-                br();
-                $callout->fecha();
-            }
 
-            # Grava no log a atividade
-            $atividade = "Pesquisou ({$parametroNome}) nos contatos dos servidores na área do servidor";
-            $data = date("Y-m-d H:i:s");
-            $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
+                # Grava no log a atividade
+                $atividade = "Pesquisou ({$parametroNome}) nos contatos dos servidores na área do servidor";
+                $data = date("Y-m-d H:i:s");
+                $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
+            }
             break;
 
 ##################################################################
@@ -873,305 +744,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $atividade = "Visualizou os servidores do cargo: " . $pessoal->get_nomeCargo($parametroCargo) . " na área do servidor";
             $data = date("Y-m-d H:i:s");
             $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
-            break;
-
-##################################################################
-#   Administração
-##################################################################
-
-        case "usuarios" :
-            if (Verifica::acesso($idUsuario, 1)) {
-                # Título
-                titulo('Usuários');
-                $tamanhoImage = 64;
-                br();
-
-                # Inicia o menu
-                $menu = new MenuGrafico(4);
-
-                # Administração de Usuários
-                $botao = new BotaoGrafico();
-                $botao->set_label('Usuários');
-                $botao->set_url('usuarios.php');
-                $botao->set_imagem(PASTA_FIGURAS . 'usuarios.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_title('Gerencia os Usuários');
-                $menu->add_item($botao);
-
-                # Regras
-                $botao = new BotaoGrafico();
-                $botao->set_label('Regras');
-                $botao->set_url('regras.php');
-                $botao->set_imagem(PASTA_FIGURAS . 'regras.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_title('Cadastro de Regras');
-                $menu->add_item($botao);
-
-                # Histórico Geral
-                $botao = new BotaoGrafico();
-                $botao->set_label('Histórico');
-                $botao->set_title('Histórico Geral do Sistema');
-                $botao->set_imagem(PASTA_FIGURAS . 'historico.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('historico.php');
-                $menu->add_item($botao);
-
-                # Computadores (IPs)
-                $botao = new BotaoGrafico();
-                $botao->set_label('Acesso ao Sistema');
-                $botao->set_title('Cadastro de computadores com acesso ao sistema');
-                $botao->set_imagem(PASTA_FIGURAS . 'computador.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('computador.php');
-                $menu->add_item($botao);
-
-                $menu->show();
-
-                # Grava no log a atividade
-                $atividade = "Visualizou a área de Usuários na área do servidor";
-                $data = date("Y-m-d H:i:s");
-                $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
-            } else {
-                loadPage("login.php");
-            }
-            break;
-
-##################################################################
-
-        case "sistema" :
-
-            if (Verifica::acesso($idUsuario, 1)) {
-                # Título
-                titulo('Sistema');
-                $tamanhoImage = 64;
-                br();
-
-                # Inicia o menu
-                $menu = new MenuGrafico(3);
-
-                # Menu de Documentos
-                $botao = new BotaoGrafico();
-                $botao->set_label('Menu de Documentos');
-                #$botao->set_target('blank');
-                $botao->set_title('Menu de Documentos do sistema GRH');
-                $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url("../../grh/grhSistema/cadastroMenuDocumentos.php");
-                $menu->add_item($botao);
-
-                # Cadastro de Atualizações
-                $botao = new BotaoGrafico();
-                $botao->set_label('Atualizações');
-                $botao->set_url('atualizacao.php');
-                $botao->set_imagem(PASTA_FIGURAS . 'atualizacao.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_title('Gerencia o cadastro de atualizações');
-                $menu->add_item($botao);
-
-                # Variáveis de Configuração
-                $botao = new BotaoGrafico();
-                $botao->set_label('Configurações');
-                $botao->set_url('configuracao.php');
-                $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
-                $menu->add_item($botao);
-
-                # Cadastro de Mensagens
-                $botao = new BotaoGrafico();
-                $botao->set_label('Mensagens');
-                $botao->set_title('Cadastro de Mensagens');
-                $botao->set_imagem(PASTA_FIGURAS . 'mensagem.jpg', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('mensagem.php');
-                $menu->add_item($botao);
-
-                # Documentação
-                $botao = new BotaoGrafico();
-                $botao->set_label('Documentação');
-                #$botao->set_target('blank');
-                $botao->set_title('Documentação do Sistema');
-                $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('documentacao.php');
-                $menu->add_item($botao);
-
-                $menu->show();
-
-                # Grava no log a atividade
-                $atividade = "Visualizou a área de Sistema na área do servidor";
-                $data = date("Y-m-d H:i:s");
-                $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
-            } else {
-                loadPage("login.php");
-            }
-            break;
-
-##################################################################
-
-        case "estrutura" :
-
-            if (Verifica::acesso($idUsuario, 1)) {
-
-                # Título
-                titulo('Banco de Dados');
-                $tamanhoImage = 64;
-                br();
-
-                # Inicia o menu
-                $menu = new MenuGrafico(3);
-
-                # Backup
-                $botao = new BotaoGrafico();
-                $botao->set_label('Backup');
-                $botao->set_title('Acessa a área de backup');
-                $botao->set_imagem(PASTA_FIGURAS . 'backup.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('?fase=pastaBackup');
-                $menu->add_item($botao);
-
-                # Importação
-                $botao = new BotaoGrafico();
-                $botao->set_label('Importação');
-                $botao->set_title('Executa a rotina de importação');
-                $botao->set_imagem(PASTA_FIGURAS . 'importacao.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('?fase=importacao');
-                $menu->add_item($botao);
-
-                # PhpMyAdmin
-                $botao = new BotaoGrafico();
-                $botao->set_label('PhpMyAdmin');
-                $botao->set_title('Executa o PhpMyAdmin');
-                $botao->set_target('_blank');
-                $botao->set_imagem(PASTA_FIGURAS . 'mysql.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('http://127.0.0.1/phpmyadmin');
-                $menu->add_item($botao);
-
-                # Registros órfãos
-                $botao = new BotaoGrafico();
-                $botao->set_label('Registros Órfãos');
-                $botao->set_title('Faz varredura para encontrar registros órfãos');
-                $botao->set_imagem(PASTA_FIGURAS . 'regOrf.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('registroOrfao.php');
-                $menu->add_item($botao);
-
-                # Documentação
-                $botao = new BotaoGrafico();
-                $botao->set_label('Documentação');
-                #$botao->set_target('blank');
-                $botao->set_title('Documentação do Banco de Dados');
-                $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('documentaBd.php');
-                $menu->add_item($botao);
-
-                $menu->show();
-
-                # Título
-                br();
-                titulo('Servidores');
-                br();
-
-                # Inicia o menu
-                $menu = new MenuGrafico(2);
-
-                # Informação do PHP
-                $botao = new BotaoGrafico();
-                $botao->set_label('Servidor PHP');
-                $botao->set_title('Informações sobre&#10;a versão do PHP');
-                $botao->set_imagem(PASTA_FIGURAS . 'phpInfo.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('?fase=servidorPhp');
-                $menu->add_item($botao);
-
-                # Informação do Servidor Web
-                $botao = new BotaoGrafico();
-                $botao->set_label('Servidor Web');
-                $botao->set_title('Informações sobre&#10;o servidor web');
-                $botao->set_imagem(PASTA_FIGURAS . 'webServer.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_url('?fase=servidorWeb');
-                $menu->add_item($botao);
-
-                $menu->show();
-
-                # Grava no log a atividade
-                $atividade = "Visualizou a área de Banco de Dados na área do servidor";
-                $data = date("Y-m-d H:i:s");
-                $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
-            } else {
-                loadPage("login.php");
-            }
-            break;
-
-##################################################################
-
-        case "projetos" :
-
-            if (Verifica::acesso($idUsuario, 1)) {
-
-                # Título
-                titulo('Projetos');
-
-                $grid2 = new Grid();
-                $grid2->abreColuna(12, 12, 6);
-
-                br();
-                tituloTable('Ativos');
-                br();
-                $tamanhoImage = 64;
-
-                # Inicia o menu
-                $menu = new MenuGrafico(2);
-
-                # Controle de procedimentos
-                $botao = new BotaoGrafico();
-                $botao->set_label('Procedimentos');
-                $botao->set_url('procedimentos.php');
-                $botao->set_target("_blank");
-                #$botao->set_url('pastaDigitalizada.php');
-                $botao->set_imagem(PASTA_FIGURAS . 'procedimentos.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_title('Sistema de procedimentos');
-                $menu->add_item($botao);
-
-                # Controle de Rotinas 2
-                $botao = new BotaoGrafico();
-                $botao->set_label('Rotinas');
-                $botao->set_url('rotina.php');
-                #$botao->set_url('pastaDigitalizada.php');
-                $botao->set_imagem(PASTA_FIGURAS . 'rotina.jpg', $tamanhoImage, $tamanhoImage);
-                $botao->set_title('Sistema de controle de manuais de procedimentos');
-                $menu->add_item($botao);
-
-                $menu->show();
-
-                $grid2->fechaColuna();
-                $grid2->abreColuna(12, 12, 6);
-
-                br();
-                tituloTable('Arquivados');
-                br();
-
-                # Inicia o menu
-                $menu = new MenuGrafico(2);
-
-                # Variáveis de Configuração
-                $botao = new BotaoGrafico();
-                $botao->set_label('Tarefas');
-                $botao->set_url('projeto.php');
-                $botao->set_imagem(PASTA_FIGURAS . 'atribuicoes.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_title('Sistema de gestão de tarefas');
-                $botao->set_target("_blank");
-                $menu->add_item($botao);
-
-                # Cadastro de Atualizações
-                $botao = new BotaoGrafico();
-                $botao->set_label('Notas');
-                $botao->set_url('projetoNota.php');
-                $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
-                $botao->set_title('Sistema de notas dos sistemas');
-                $botao->set_target("_blank");
-                $menu->add_item($botao);
-
-                $menu->show();
-
-                $grid1->fechaColuna();
-                $grid1->fechaGrid();
-
-                # Grava no log a atividade
-                $atividade = "Visualizou a área de Projetos na área do servidor";
-                $data = date("Y-m-d H:i:s");
-                $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
-            } else {
-                loadPage("login.php");
-            }
             break;
 
 ##################################################################
