@@ -44,8 +44,8 @@ if ($acesso) {
 
     $select1 = "SELECT COLUMN_NAME
                  FROM COLUMNS 
-                WHERE TABLE_SCHEMA = '" . $banco . "' 
-                  AND TABLE_NAME = '" . $table . "'";
+                WHERE TABLE_SCHEMA = 'uenf_{$banco}' 
+                  AND TABLE_NAME = '{$table}'";
     $conteudo1 = $servico->select($select1);
 
     # Pega os nomes das colunas
@@ -56,9 +56,8 @@ if ($acesso) {
     }
 
     # Pega o conteúdo da tabela
-    $select2 = "SELECT * FROM $banco.$table";
+    $select2 = "SELECT * FROM uenf_{$banco}.{$table}";
     $conteudo2 = $servico->select($select2);
-
 
     # Monta a tabela
     $tabela = new Tabela();

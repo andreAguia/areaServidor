@@ -36,15 +36,15 @@ if ($acesso) {
                       AVG_ROW_LENGTH,
                       DATA_LENGTH,
                       AUTO_INCREMENT
-                 FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$banco'";
+                 FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'uenf_{$banco}'";
 
     $conteudo = $servico->select($select);
 
     $relatorio = new Relatorio();
-    $relatorio->set_titulo($banco);
-    #$relatorio->set_subtitulo('Agrupados por Cargo - Ordenados pelo Nome');
-    $relatorio->set_label(array("Nome", "Descrição", "Motor", "Num. Registros", "Tamanho Médio", "Tamanho Total", "Auto Incremento"));
-    $relatorio->set_align(array("left", "left"));
+    $relatorio->set_titulo("Lista de Tabelas do Banco de Dados");
+    $relatorio->set_subtitulo($banco);
+    $relatorio->set_label(["Nome", "Descrição", "Motor", "Num. Registros", "Tamanho Médio", "Tamanho Total", "Auto Incremento"]);
+    $relatorio->set_align(["left", "left"]);
     $relatorio->set_conteudo($conteudo);
     $relatorio->show();
 

@@ -47,8 +47,8 @@ if ($acesso) {
 
     # Cria um menu
     $menu = new MenuBar();
-    $menu->add_link($linkBotaoVoltar, "left");
-    #$menu->add_link($linkBotaoEditar,"right");
+    #$menu->add_link($linkBotaoVoltar, "left");
+    $menu->add_link($linkBotaoEditar,"right");
     $menu->add_link($botaoRel, "right");
     $menu->show();
 
@@ -64,8 +64,8 @@ if ($acesso) {
                       COLUMN_DEFAULT,
                       IS_nullABLE
                  FROM COLUMNS 
-                WHERE TABLE_SCHEMA = '" . $banco . "' 
-                  AND TABLE_NAME = '" . $tabela . "'";
+                WHERE TABLE_SCHEMA = 'uenf_{$banco}' 
+                  AND TABLE_NAME = '{$tabela}'";
 
     $conteudo = $servico->select($select);
 
@@ -75,7 +75,8 @@ if ($acesso) {
 
     # Monta a tabela
     $tabela2 = new Tabela();
-    $tabela2->set_titulo($banco . " / " . $tabela);
+    $tabela2->set_titulo($banco);
+    $tabela2->set_subtitulo($tabela);
     $tabela2->set_conteudo($conteudo);
     $tabela2->set_label($label);
     $tabela2->set_align($align);

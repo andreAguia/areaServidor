@@ -21,21 +21,28 @@ if ($acesso) {
     # Verifica a fase do programa
     $banco = get('banco', 'grh');
 
+    # Define os bancos
+    $bancos = ["grh", "areaservidor", "contratos"];
+
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
+
+    # Cria um menu
+    $menu = new MenuBar();
 
     # Botão voltar
     $linkBotao1 = new Link("Voltar", 'administracao.php');
     $linkBotao1->set_class('button');
     $linkBotao1->set_title('Volta para a página anterior');
     $linkBotao1->set_accessKey('V');
+    $menu->add_link($linkBotao1, "left");
 
     # Diagramas
     $linkBotao4 = new Link("Diagramas", "documentaDiagrama.php?banco=$banco");
     $linkBotao4->set_class('button');
     $linkBotao4->set_title('Diagramas do sistema');
-    $linkBotao4->set_accessKey('D');
+    $menu->add_link($linkBotao4, "right");
 
     # Relatórios
     $imagem = new Imagem(PASTA_FIGURAS . 'print.png', null, 15, 15);
@@ -43,23 +50,27 @@ if ($acesso) {
     $botaoRel->set_title("Relatório");
     $botaoRel->set_onClick("window.open('../relatorios/documentaBd.php?banco=$banco','_blank','menubar=no,scrollbars=yes,location=no,directories=no,status=no,width=750,height=600');");
     $botaoRel->set_imagem($imagem);
-
-    # Cria um menu
-    $menu = new MenuBar();
-    $menu->add_link($linkBotao1, "left");
-    $menu->add_link($linkBotao4, "right");
     $menu->add_link($botaoRel, "right");
+
     $menu->show();
 
-    $grid->fechaColuna();
-    $grid->fechaGrid();
-
-    # Limita o tamanho da tela
-    $grid = new Grid();
-    $grid->abreColuna(12);
-
     # Cria um menu
     $menu = new MenuBar();
+
+    foreach ($bancos as $item) {
+        # Diagramas
+        $linkItem = new Link($item, "?banco=$item");
+
+        if ($banco == $item) {
+            $linkItem->set_class('button');
+        } else {
+            $linkItem->set_class('hollow button');
+        }
+        $linkItem->set_title('Banco de Dados');
+        $menu->add_link($linkItem, "right");
+    }
+
+    $menu->show();
 
     # Conecta com o banco de dados
     $servico = new Doc();
@@ -70,27 +81,31 @@ if ($acesso) {
                       TABLE_ROWS,
                       AVG_ROW_LENGTH,
                       DATA_LENGTH,
-                      AUTO_INCREMENT
-                 FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$banco'";
+                      AUTO_INCREMENT,
+                      TABLE_NAME
+                 FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'uenf_{$banco}'";
 
     $conteudo = $servico->select($select);
-
-    $label = array("Nome", "Descrição", "Motor", "Num. Registros", "Tamanho Médio", "Tamanho Total", "Auto Incremento");
-    #$function = array("datetime_to_php",null,null,null,"get_nome");
-    $align = array("left", "left");
 
     # Monta a tabela
     $tabela = new Tabela();
     $tabela->set_titulo("Banco: " . $banco);
     $tabela->set_conteudo($conteudo);
-    $tabela->set_label($label);
-    $tabela->set_align($align);
-    #$tabela->set_funcao($function); 
+    $tabela->set_label(["Nome", "Descrição", "Motor", "Num. Registros", "Tamanho Médio", "Tamanho Total", "Auto Incremento","Estrutura"]);
+    $tabela->set_align(["left", "left"]);
+    $tabela->set_width([20, 25, 10, 10, 10, 10, 10]);
     $tabela->set_numeroOrdem(true);
-    $tabela->set_editar("documentaTabela.php?banco=$banco");
-    $tabela->set_idCampo('TABLE_NAME');
-    $tabela->set_nomeColunaEditar('Ver');
-    $tabela->set_editarBotao('olho.png');
+    
+    # Botão de exibição dos servidores com permissão a essa regra
+    $botao = new BotaoGrafico();
+    $botao->set_label('');
+    $botao->set_title('Editar Usuário');
+    $botao->set_url("documentaTabela.php?banco={$banco}&id=");
+    $botao->set_target("_blank");
+    $botao->set_imagem(PASTA_FIGURAS . 'olho.png', 20, 20);
+
+    # Coloca o objeto link na tabela			
+    $tabela->set_link([null, null, null, null, null, null, null, $botao]);
 
     if (count($conteudo) == 0) {
         br();
