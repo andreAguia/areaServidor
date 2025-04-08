@@ -41,7 +41,8 @@ if ($acesso) {
                       IS_nullABLE
                  FROM COLUMNS 
                 WHERE TABLE_SCHEMA = 'uenf_{$banco}' 
-                  AND TABLE_NAME = '{$tabela}'";
+                  AND TABLE_NAME = '{$tabela}' 
+             ORDER BY ORDINAL_POSITION";
 
     $conteudo = $servico->select($select);
 
