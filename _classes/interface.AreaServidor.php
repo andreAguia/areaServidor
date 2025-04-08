@@ -205,31 +205,32 @@ class AreaServidor {
     #################################################################
 
     /**
-     * Método moduloNoticias
+     * Método moduloSispatri
      */
-    public static function moduloNoticias() {
+    public static function moduloSispatri() {
 
-        titulo("Notícias");
+        titulo("Sispatri");
         br();
 
         $botao = new BotaoGrafico();
         $botao->set_label();
-        $botao->set_url("https://www.servidor.rj.gov.br/portal-web/portal/publico/Noticia/detalhar?hdnNoticia=1152");
-        $botao->set_imagem(PASTA_FIGURAS . 'sispatri2.png', '100%', '100%');
+        $botao->set_url("https://www.rj.gov.br/servico/acessar-sispatri-declaracao-patrimonial-2023169");
+        $botao->set_imagem(PASTA_FIGURAS . 'Sispatri2025.jpg', '100%', '100%');
         $botao->set_title('Sistema de Registros de Bens dos Agentes Públicos');
-        #$botao->set_target("_blank");
-        $botao->show();
-
-        br();
-
-        $botao = new BotaoGrafico();
-        $botao->set_label();
-        $botao->set_url("../../_arquivos/documentos/42.pdf");
-        $botao->set_imagem(PASTA_FIGURAS . 'semanaServidor.png', '100%', '100%');
-        $botao->set_title('Semana do Servidor');
         $botao->set_target("_blank");
         $botao->show();
-        br(2);
+        br();
+        
+        p("A Superintendência de Gestão de Pessoas (SGP) informa que, já iniciou "
+                . "o prazo para envio da Declaração Anual de Bens e Valores (Sispatri)"
+                . " referente ao ano de 2025. "
+                . "<br/>Os agentes públicos ativos do Poder Executivo do"
+                . " Estado do Rio de Janeiro devem cumprir a obrigatoriedade "
+                . "administrativa até o dia 30 de junho, um mês após o término "
+                . "do prazo de entrega da declaração do Imposto de Renda Pessoa "
+                . "Física (IRPF) à Receita Federal (RF), ano-calendário 2024, "
+                . "por meio de portal exclusivo.<br/>"
+                . "Clique na imagem acima para ter acesso ao portal.","f14","justify");
     }
 
     #################################################################
