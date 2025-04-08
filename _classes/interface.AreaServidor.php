@@ -219,18 +219,6 @@ class AreaServidor {
         $botao->set_title('Sistema de Registros de Bens dos Agentes Públicos');
         $botao->set_target("_blank");
         $botao->show();
-        br();
-        
-        p("A Superintendência de Gestão de Pessoas (SGP) informa que, já iniciou "
-                . "o prazo para envio da Declaração Anual de Bens e Valores (Sispatri)"
-                . " referente ao ano de 2025. "
-                . "<br/>Os agentes públicos ativos do Poder Executivo do"
-                . " Estado do Rio de Janeiro devem cumprir a obrigatoriedade "
-                . "administrativa até o dia 30 de junho, um mês após o término "
-                . "do prazo de entrega da declaração do Imposto de Renda Pessoa "
-                . "Física (IRPF) à Receita Federal (RF), ano-calendário 2024, "
-                . "por meio de portal exclusivo.<br/>"
-                . "Clique na imagem acima para ter acesso ao portal.","f14","justify");
     }
 
     #################################################################
@@ -243,7 +231,7 @@ class AreaServidor {
         titulo(SISTEMA);
 
         # Exibe a Versão e o usuário logado
-        br(8);
+        br(2);
         p(SISTEMA, 'grhTitulo');
 
         # Div
@@ -254,6 +242,7 @@ class AreaServidor {
         p("(Atualizado em: " . ATUALIZACAO . ")", 'versao');
 
         $div->fecha();
+        br(2);
     }
 
     #################################################################

@@ -97,6 +97,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     # Array do menu
     $array = [
         ['Geral', 'Inicial', 'inicial'],
+        ['Geral', 'Calendário de Pagamento', 'pgto'],
         ['Geral', 'Aniversariantes', 'aniversariantes']
     ];
 
@@ -157,6 +158,9 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     $grid1->abreColuna(12, 9);
 
     switch ($fase) {
+        
+##################################################################
+        
         # Exibe o Menu Inicial
         case "inicial" :
 
@@ -190,8 +194,8 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $grid2 = new Grid();
             $grid2->abreColuna(12, 12, 6);
 
+            AreaServidor::moduloSobre();
             AreaServidor::moduloSispatri();
-            #AreaServidor::moduloSobre();
 
             $grid2->fechaColuna();
             $grid2->abreColuna(12, 12, 6);
@@ -199,12 +203,27 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             AreaServidor::moduloSistemasInternos($idUsuario);
             AreaServidor::moduloSistemasExternos($idUsuario);
 
+            $grid1->fechaColuna();
+            $grid1->fechaGrid();
+            break;
+
+##################################################################
+        
+        # Exibe o Menu Inicial
+        case "pgto" :
+//            $grid2 = new Grid();
+//            $grid2->abreColuna(12, 12, 6);
+
             # Calendário de pgto
             $calend = new CalendarioPgto();
             $calend->exibeCalendario();
 
-            $grid1->fechaColuna();
-            $grid1->fechaGrid();
+//            $grid2->fechaColuna();
+//            $grid2->abreColuna(12, 12, 6);
+//            
+//
+//            $grid1->fechaColuna();
+//            $grid1->fechaGrid();
             break;
 
 ##################################################################
