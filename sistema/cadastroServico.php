@@ -34,10 +34,6 @@ if ($acesso) {
         set_session('sessionParametro', $parametro);      # transfere para a session para poder recuperá-lo depois
     }
 
-    # Ordem da tabela
-    $orderCampo = get('orderCampo');
-    $orderTipo = get('order_tipo');
-
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
@@ -50,7 +46,7 @@ if ($acesso) {
 
     ################################################################
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome('Computador');
+    $objeto->set_nome('Serviço');
 
     # botão de voltar da lista
     $objeto->set_voltarLista('administracao.php');
@@ -59,40 +55,23 @@ if ($acesso) {
     $objeto->set_parametroLabel('Pesquisar:');
     $objeto->set_parametroValue($parametro);
 
-    # ordenação
-    if (is_null($orderCampo))
-        $orderCampo = 1;
-
-    if (is_null($orderTipo))
-        $orderTipo = 'asc';
-
     # select da lista
-    $objeto->set_selectLista('SELECT ip,
-                                     tbusuario.usuario,
-                                     patrimonio,
-                                     ginfo,
-                                     tbcomputador.obs,
-                                     idComputador
-                                FROM tbcomputador LEFT JOIN tbusuario USING (idusuario)
-                               WHERE ip LIKE "%' . $parametro . '%"
-                                  OR tbusuario.usuario LIKE "%' . $parametro . '%"	
-                                  OR patrimonio LIKE "%' . $parametro . '%"	
-                                  OR ginfo LIKE "%' . $parametro . '%"	    
-                            ORDER BY ' . $orderCampo . ' ' . $orderTipo);
+    $objeto->set_selectLista("SELECT idServico,
+                                     categoria,
+                                     nome,
+                                     oque
+                                FROM tbservico
+                            ORDER BY categoria, nome");
 
     # select do edita
-    $objeto->set_selectEdita('SELECT ip,
-                                     idUsuario,
-                                     patrimonio,
-                                     ginfo,
-                                     obs							    
-                                FROM tbcomputador
-                               WHERE idComputador = ' . $id);
-
-    # ordem da lista
-    $objeto->set_orderCampo($orderCampo);
-    $objeto->set_orderTipo($orderTipo);
-    $objeto->set_orderChamador('?fase=listar');
+    $objeto->set_selectEdita("SELECT categoria,
+                                     nome,
+                                     oque,
+                                     quem,
+                                     como,
+                                     obs
+                                FROM tbservico
+                                WHERE idServico = {$id}");
 
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
@@ -101,18 +80,18 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("IP", "Usuário", "Patrimônio", "GInfo", "Obs"));
-    $objeto->set_width(array(10, 15, 10, 10, 45));
-    $objeto->set_align(array("center", "center", "center", "center", "left"));
+    $objeto->set_label(["id", "Categoria", "Nome", "O Que"]);
+    $objeto->set_width([5, 15, 15, 50]);
+    $objeto->set_align(["center", "center", "center", "left"]);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
 
     # Nome da tabela
-    $objeto->set_tabela('tbcomputador');
+    $objeto->set_tabela('tbservico');
 
     # Nome do campo id
-    $objeto->set_idCampo('idComputador');
+    $objeto->set_idCampo('idServico');
 
     # Pega os dados da combo Usuario
     $comboUsuario = $intra->select('SELECT idusuario,
@@ -123,42 +102,49 @@ if ($acesso) {
 
     # Campos para o formulario
     $objeto->set_campos(array(
-        array('nome' => 'ip',
-            'label' => 'IP:',
+        array('nome' => 'categoria',
+            'label' => 'Categoria:',
             'tipo' => 'texto',
-            'size' => 20,
-            'title' => 'IP do computador.',
+            'size' => 100,
+            'title' => 'Categoria.',
             'required' => true,
             'autofocus' => true,
-            'col' => 3,
+            'col' => 6,
             'linha' => 1),
-        array('linha' => 1,
-            'nome' => 'idUsuario',
-            'label' => 'Usuário:',
-            'tipo' => 'combo',
-            'array' => $comboUsuario,
-            'title' => 'Usuário que normalmente usa essa máquina',
-            'col' => 3,
-            'size' => 15),
-        array('nome' => 'patrimonio',
-            'label' => 'Patrimônio:',
+        array('nome' => 'nome',
+            'label' => 'Nome:',
             'tipo' => 'texto',
-            'size' => 20,
-            'title' => 'Número de patrimônio do computador.',
-            'col' => 3,
+            'size' => 100,
+            'title' => 'Nome.',
+            'required' => true,
+            'col' => 6,
             'linha' => 1),
-        array('nome' => 'ginfo',
-            'label' => 'GInfo:',
-            'tipo' => 'texto',
-            'size' => 20,
-            'title' => 'Número da Ginfo do computador.',
-            'col' => 3,
-            'linha' => 1),
+        array('nome' => 'oque',
+            'label' => 'O Que é:',
+            'tipo' => 'textarea',
+            'size' => array(90, 8),
+            'title' => 'O que é.',
+            'col' => 12,
+            'linha' => 2),
+        array('nome' => 'quem',
+            'label' => 'Quem Tem Direito:',
+            'tipo' => 'textarea',
+            'size' => array(90, 8),
+            'title' => 'O que é.',
+            'col' => 12,
+            'linha' => 3),
+        array('nome' => 'como',
+            'label' => 'Como Solicitar:',
+            'tipo' => 'textarea',
+            'size' => array(90, 8),
+            'title' => 'O que é.',
+            'col' => 12,
+            'linha' => 4),
         array('nome' => 'obs',
             'label' => 'Obs:',
             'tipo' => 'textarea',
-            'size' => array(90, 5),
-            'title' => 'Observações.',
+            'size' => array(90, 8),
+            'title' => 'O que é.',
             'col' => 12,
             'linha' => 2)
     ));

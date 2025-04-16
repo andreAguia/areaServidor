@@ -44,7 +44,7 @@ if ($acesso) {
     $menu1 = new MenuBar("button-group");
 
     # Sair da Área do Servidor
-    $linkVoltar = new Link("Voltar", "areaServidor.php?fase=sistema");
+    $linkVoltar = new Link("Voltar", 'administracao.php');
     $linkVoltar->set_class('button');
     $linkVoltar->set_title('Voltar a página anterior');
     $menu1->add_link($linkVoltar, "left");

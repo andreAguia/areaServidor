@@ -52,7 +52,7 @@ if ($acesso) {
     $objeto->set_nome('Mensagem');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('areaServidor.php?fase=sistema');
+    $objeto->set_voltarLista('administracao.php');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');

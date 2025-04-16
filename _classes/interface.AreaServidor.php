@@ -324,13 +324,13 @@ class AreaServidor {
         self::moduloUsuarios($idUsuario);
         $grid->fechaColuna();
 
-        $grid->abreColuna(12, 4);
+        $grid->abreColuna(12, 8);
         self::moduloAdministracaoSistemas($idUsuario);
         $grid->fechaColuna();
 
-        $grid->abreColuna(12, 4);
-        self::moduloProjetos($idUsuario);
-        $grid->fechaColuna();
+//        $grid->abreColuna(12, 4);
+//        self::moduloProjetos($idUsuario);
+//        $grid->fechaColuna();
 
         $grid->abreColuna(12, 4);
         self::moduloServidor($idUsuario);
@@ -417,7 +417,7 @@ class AreaServidor {
         br();
 
         # Inicia o menu
-        $menu = new MenuGrafico(2);
+        $menu = new MenuGrafico(5);
 
         # Variáveis de Configuração
         $botao = new BotaoGrafico();
@@ -425,6 +425,15 @@ class AreaServidor {
         $botao->set_url('configuracao.php');
         $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
         $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
+        $menu->add_item($botao);
+        
+        # Cadastro de Serviços
+        $botao = new BotaoGrafico();
+        $botao->set_label('Serviços');
+        #$botao->set_target('blank');
+        $botao->set_title('Cadastro de Serviços');
+        $botao->set_imagem(PASTA_FIGURAS . 'lista.png', $tamanhoImage, $tamanhoImage);
+        $botao->set_url("cadastroServico.php");
         $menu->add_item($botao);
 
         # Cadastro de Atualizações
@@ -443,6 +452,15 @@ class AreaServidor {
         $botao->set_url('mensagem.php');
         $menu->add_item($botao);
 
+        # Menu de Documentos
+        $botao = new BotaoGrafico();
+        $botao->set_label('Menu de Documentos');
+        #$botao->set_target('blank');
+        $botao->set_title('Menu de Documentos do sistema GRH');
+        $botao->set_imagem(PASTA_FIGURAS . 'menu.png', $tamanhoImage, $tamanhoImage);
+        $botao->set_url("../../grh/grhSistema/cadastroMenuDocumentos.php");
+        $menu->add_item($botao);
+
         # Documentação
         $botao = new BotaoGrafico();
         $botao->set_label('Documentação');
@@ -451,14 +469,41 @@ class AreaServidor {
         $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
         $botao->set_url('documentacao.php');
         $menu->add_item($botao);
-
-        # Menu de Documentos
+        
+        # Controle de procedimentos
         $botao = new BotaoGrafico();
-        $botao->set_label('Menu de Documentos');
-        #$botao->set_target('blank');
-        $botao->set_title('Menu de Documentos do sistema GRH');
-        $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-        $botao->set_url("../../grh/grhSistema/cadastroMenuDocumentos.php");
+        $botao->set_label('Procedimentos');
+        $botao->set_url('procedimentos.php');
+        #$botao->set_url('pastaDigitalizada.php');
+        $botao->set_imagem(PASTA_FIGURAS . 'procedimentos.png', $tamanhoImage, $tamanhoImage);
+        $botao->set_title('Sistema de procedimentos');
+        $menu->add_item($botao);
+
+        # Controle de Rotinas 2
+        $botao = new BotaoGrafico();
+        $botao->set_label('Rotinas');
+        $botao->set_url('rotina.php');
+        #$botao->set_url('pastaDigitalizada.php');
+        $botao->set_imagem(PASTA_FIGURAS . 'rotina.jpg', $tamanhoImage, $tamanhoImage);
+        $botao->set_title('Sistema de controle de manuais de procedimentos');
+        $menu->add_item($botao);
+        
+        # Variáveis de Configuração
+        $botao = new BotaoGrafico();
+        $botao->set_label('Tarefas');
+        $botao->set_url('projeto.php');
+        $botao->set_imagem(PASTA_FIGURAS . 'atribuicoes.png', $tamanhoImage, $tamanhoImage);
+        $botao->set_title('Sistema de gestão de tarefas');
+        $botao->set_target("_blank");
+        $menu->add_item($botao);
+
+        # Cadastro de Atualizações
+        $botao = new BotaoGrafico();
+        $botao->set_label('Notas');
+        $botao->set_url('projetoNota.php');
+        $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
+        $botao->set_title('Sistema de notas dos sistemas');
+        $botao->set_target("_blank");
         $menu->add_item($botao);
 
         $menu->show();

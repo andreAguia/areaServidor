@@ -76,7 +76,7 @@ if ($acesso) {
 
             # botão de voltar da lista
             if (is_null($idServidor)) {
-                botaoVoltar('areaServidor.php?fase=usuarios');
+                botaoVoltar('administracao.php');
             } else {
                 botaoVoltar('../../grh/grhSistema/servidorMenu.php');
             }
