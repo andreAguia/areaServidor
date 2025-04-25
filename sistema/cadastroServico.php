@@ -5,7 +5,6 @@
  *  
  * By Alat
  */
-
 # Servidor logado 
 $idUsuario = null;
 
@@ -58,8 +57,7 @@ if ($acesso) {
     # select da lista
     $objeto->set_selectLista("SELECT idServico,
                                      categoria,
-                                     nome,
-                                     oque
+                                     nome
                                 FROM tbservico
                             ORDER BY categoria, nome");
 
@@ -80,9 +78,9 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(["id", "Categoria", "Nome", "O Que"]);
-    $objeto->set_width([5, 15, 15, 50]);
-    $objeto->set_align(["center", "center", "center", "left"]);
+    $objeto->set_label(["id", "Categoria", "Nome"]);
+    $objeto->set_width([5, 20, 60]);
+    $objeto->set_align(["center", "center", "left"]);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');

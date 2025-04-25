@@ -47,6 +47,45 @@ span#orgaoCedido{
 }
 
 /*******************************************
+ * Cadastro de Serviços da Uenf
+ *******************************************/
+p#servicoCategoria{
+    padding: 0px;
+    margin: 0px;
+    font-size: 16px;
+    text-align: left;    
+}
+
+a#servicoLink{
+    font-weight: normal;
+    color: #02548b;
+    font-size: 12px;
+}
+
+p#servicoTitulo{
+    font-size: 18px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+p#servicoTitulo2{
+    font-size: 16px;
+    text-align: left;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+}
+
+p#servicoTexto{
+    font-size: 14px;
+    text-align: justify;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+/*******************************************
  * Rotina de Documentação
  *******************************************/
 pre, code{
@@ -201,7 +240,6 @@ table#ttableVariaveisClasse tfoot td {
 tr#vigente{
     background-color:#8FBC8F;
 }
-
 
 /*******************************************
  * Cadastro de Usuários
