@@ -17,15 +17,20 @@ $acesso = Verifica::acesso($idUsuario, 1);
 if ($acesso) {
     # Conecta ao Banco de Dados
     $intra = new Intra();
+    $servico = new Servico();
 
     # Verifica a fase do programa
     $fase = get('fase', 'listar');
 
-    # pega o id (se tiver)
+    # Pega o id (se tiver)
     $id = soNumeros(get('id'));
+    $idServico = soNumeros(get('idServidor'));echo "idServico -> {$idServico}";
+
+    # Pega os dados desse serviço
+    $dados = $servico->get_dados($idServico);
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro'))) { 
+    if (is_null(post('parametro'))) {
         $parametro = retiraAspas(get_session('sessionParametro'));
     } else {
         $parametro = post('parametro');
@@ -44,7 +49,7 @@ if ($acesso) {
 
     # Começa uma nova página
     $page = new Page();
-    $page->set_jscript("<script>CKEDITOR.replace('textoProcedimento');</script>");
+    $page->set_jscript("<script>CKEDITOR.replace('texto');</script>");
     $page->iniciaPagina();
 
     # Cabeçalho da Página
@@ -55,19 +60,19 @@ if ($acesso) {
 
     ################################################################
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome('Procedimentos');
-
+    $objeto->set_nome("Anexos");
+    $objeto->set_subtitulo($dados["nome"]);
+    
     # botão de voltar da lista
-    $objeto->set_voltarLista("procedimentos.php?idProcedimento={$id}");    
+    $objeto->set_voltarLista("cadastroServico.php?id={$idServico}");
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');
     $objeto->set_parametroValue($parametro);
 
     # select da lista
-    $selectListar = "SELECT idProcedimento,
+    $selectListar = "SELECT idServicoAnexos,
                             categoria,
-                            subCategoria,
                             numOrdem,
                             titulo,
                             descricao,
@@ -83,49 +88,48 @@ if ($acesso) {
 
     $selectListar .= "     END,
                            visibilidade                                     
-                      FROM tbprocedimento 
-                     WHERE categoria LIKE '%{$parametro}%'
-                        OR subCategoria LIKE '%{$parametro}%'
-                        OR titulo LIKE '%{$parametro}%'
-                  ORDER BY categoria, subCategoria, numOrdem, titulo";
+                      FROM tbservicoanexos 
+                     WHERE (categoria LIKE '%{$parametro}%' OR titulo LIKE '%{$parametro}%')
+                       AND idServico = {$idServico}
+                  ORDER BY categoria, numOrdem, titulo";
 
     $objeto->set_selectLista($selectListar);
 
     # select do edita
     $objeto->set_selectEdita("SELECT tipo,
                                      categoria,
-                                     subCategoria,
                                      titulo,
                                      descricao,
                                      numOrdem,
                                      visibilidade,
                                      link,
                                      idRotina,
-                                     textoProcedimento
-                                FROM tbprocedimento
-                               WHERE idProcedimento = {$id}");
+                                     texto,
+                                     idServico
+                                FROM tbservicoanexos
+                               WHERE idServicoAnexos = {$id}");
 
     # Caminhos
-    $objeto->set_linkEditar('?fase=editar');
-    $objeto->set_linkExcluir('?fase=excluir');
-    $objeto->set_linkGravar('?fase=gravar');
-    $objeto->set_linkListar('?fase=listar');
+    $objeto->set_linkEditar("?fase=editar&idServico={$idServico}");
+    $objeto->set_linkExcluir("?fase=excluir&idServico={$idServico}");
+    $objeto->set_linkGravar("?fase=gravar&idServico={$idServico}");
+    $objeto->set_linkListar("?fase=listar&idServico={$idServico}");
 
     # Parametros da tabela
-    $objeto->set_label(["Id", "Categoria", "Sub-categoria", "Ordem", "Título", "Descrição", "Tipo", "Visibilidade"]);
-    $objeto->set_align(["center", "center", "center", "center", "left", "left"]);
+    $objeto->set_label(["Id", "Categoria", "Ordem", "Título", "Descrição", "Tipo", "Visibilidade"]);
+    $objeto->set_align(["center", "center", "center", "left", "left"]);
 
-    $objeto->set_rowspan([1, 2]);
+    $objeto->set_rowspan(1);
     $objeto->set_grupoCorColuna(1);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
 
     # Nome da tabela
-    $objeto->set_tabela('tbprocedimento');
+    $objeto->set_tabela('tbservicoanexos');
 
     # Nome do campo id
-    $objeto->set_idCampo('idProcedimento');
+    $objeto->set_idCampo('idServicoAnexos');
 
     # Tipo de label do formulário
     $objeto->set_formlabelTipo(1);
@@ -139,15 +143,9 @@ if ($acesso) {
 
     # Pega os dados da combo de categoria
     $categoriaLista = $intra->select('SELECT distinct categoria
-                                FROM tbprocedimento
+                                FROM tbservicoanexos
                             ORDER BY categoria');
     array_unshift($categoriaLista, array(null, null));
-
-    # Pega os dados da combo de categoria
-    $subCategoriaLista = $intra->select('SELECT distinct subCategoria
-                                FROM tbprocedimento
-                            ORDER BY subCategoria');
-    array_unshift($subCategoriaLista, array(null, null));
 
     # Campos para o formulario
     $objeto->set_campos([
@@ -167,14 +165,6 @@ if ($acesso) {
             'datalist' => $categoriaLista,
             'required' => true,
             'col' => 4,
-            'size' => 100),
-        array('linha' => 1,
-            'nome' => 'subCategoria',
-            'label' => 'sub-Categoria:',
-            'tipo' => 'texto',
-            'datalist' => $subCategoriaLista,
-            'required' => true,
-            'col' => 5,
             'size' => 100),
         array('linha' => 2,
             'nome' => 'titulo',
@@ -222,12 +212,20 @@ if ($acesso) {
             'col' => 12,
             'size' => 250),
         array('linha' => 7,
-            'nome' => 'textoProcedimento',
+            'nome' => 'texto',
             'label' => 'Texto:',
             'tipo' => 'editor',
             'tagHtml' => true,
             'size' => array(90, 5),
-            'title' => 'Texto')]);
+            'title' => 'Texto'),
+        array('linha' => 5,
+            'nome' => 'idServico',
+            'title' => 'idServico',
+            'tipo' => 'hidden',
+            'padrao' => $idServico,
+            'col' => 2,
+            'size' => 11),
+    ]);
 
     # idUsuário para o Log
     $objeto->set_idUsuario($idUsuario);

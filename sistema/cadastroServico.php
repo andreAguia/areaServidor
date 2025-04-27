@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cadastro de Computador
+ * Cadastro de Serviços
  *  
  * By Alat
  */
@@ -35,6 +35,14 @@ if ($acesso) {
 
     # Começa uma nova página
     $page = new Page();
+    $page->set_jscript("<script>"
+            . "CKEDITOR.replace('oque');"
+            . "CKEDITOR.replace('quem');"
+            . "CKEDITOR.replace('como');"
+            . "CKEDITOR.replace('obs');"
+            . "CKEDITOR.replace('documentos');"
+            . "CKEDITOR.replace('legislacao');"
+            . "</script>");
     $page->iniciaPagina();
 
     # Cabeçalho da Página
@@ -67,7 +75,9 @@ if ($acesso) {
                                      oque,
                                      quem,
                                      como,
-                                     obs
+                                     obs,
+                                     documentos,
+                                     legislacao
                                 FROM tbservico
                                 WHERE idServico = {$id}");
 
@@ -119,28 +129,47 @@ if ($acesso) {
             'linha' => 1),
         array('nome' => 'oque',
             'label' => 'O Que é:',
-            'tipo' => 'textarea',
+            'tipo' => 'editor',
+            'tagHtml' => true,
             'size' => array(90, 8),
             'title' => 'O que é.',
-            'col' => 12,
             'linha' => 2),
         array('nome' => 'quem',
             'label' => 'Quem Tem Direito:',
-            'tipo' => 'textarea',
+            'tipo' => 'editor',
+            'tagHtml' => true,
             'size' => array(90, 8),
             'title' => 'O que é.',
             'col' => 12,
             'linha' => 3),
         array('nome' => 'como',
             'label' => 'Como Solicitar:',
-            'tipo' => 'textarea',
+            'tipo' => 'editor',
+            'tagHtml' => true,
             'size' => array(90, 8),
             'title' => 'O que é.',
             'col' => 12,
             'linha' => 4),
         array('nome' => 'obs',
             'label' => 'Obs:',
-            'tipo' => 'textarea',
+            'tipo' => 'editor',
+            'tagHtml' => true,
+            'size' => array(90, 8),
+            'title' => 'O que é.',
+            'col' => 12,
+            'linha' => 2),
+        array('nome' => 'documentos',
+            'label' => 'Documentos:',
+            'tipo' => 'editor',
+            'tagHtml' => true,
+            'size' => array(90, 8),
+            'title' => 'O que é.',
+            'col' => 12,
+            'linha' => 2),
+        array('nome' => 'legislacao',
+            'label' => 'Legislação:',
+            'tipo' => 'editor',
+            'tagHtml' => true,
             'size' => array(90, 8),
             'title' => 'O que é.',
             'col' => 12,
@@ -149,6 +178,24 @@ if ($acesso) {
 
     # Log
     $objeto->set_idUsuario($idUsuario);
+
+    # Ver os serviços
+    $linkProc = new Link("Serviços", "../../areaServidor/sistema/servicos.php");
+    $linkProc->set_class('button');
+    $linkProc->set_title('Acessa a área de procedimentos');
+    $linkProc->set_target("_aba");
+
+    # array de botões    
+    $objeto->set_botaoListarExtra([$linkProc]);
+
+    # Anexos
+    $linkArea = new Link("Anexos", "cadastroServicoAnexos.php?idServidor={$id}");
+    $linkArea->set_class('button');
+    $linkArea->set_title('Vincula anexos a esse serviço');
+    $linkArea->set_target('_blank');    
+
+    # array de botões    
+    $objeto->set_botaoEditarExtra([$linkArea]);
 
     ################################################################
     switch ($fase) {

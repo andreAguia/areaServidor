@@ -31,13 +31,19 @@ if ($acesso) {
     $page = new Page();
     $page->iniciaPagina();
 
+    # Cabeçalho da Página
+    AreaServidor::cabecalho();
+
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
 
-    $top = new TitleBar("Serviços da GRH");
-    $top->show();
-    br();
+    if ($fase == "inicial") {
+        br();
+        $top = new TitleBar("Serviços da GRH");
+        $top->show();
+        br();
+    }
 
     # Limita o tamanho da tela
     $grid->fechaColuna();
@@ -108,37 +114,69 @@ if ($acesso) {
 
             $grid->abreColuna(12);
 
-            botaoVoltar('?');
-            br();
+            
+            # Cria um menu
+            $menu = new MenuBar();
 
-//            # Div onde vai exibir o servico
-//            $div = new Div("divNota");
-//            $div->abre();
+            # Voltar
+            $linkVoltar = new Link("Voltar", "?");
+            $linkVoltar->set_class('button');
+            $linkVoltar->set_accessKey('V');
+            $menu->add_link($linkVoltar, "left");
+            
+            $menu->show();
 
             # Título
-            p($dados["nome"], "servicoTitulo");
+            titulotable($dados["nome"]);
             br();
 
-            # O que é
-            p("O que é", "servicoTitulo2");
-            hr('documentacao');
-            echo $dados["oque"];
-            br(2);
+            $grid->fechaColuna();
+            $grid->abreColuna(8);
             
-            # quem
-            p("Quem Pode Requerer", "servicoTitulo2");
-            hr('documentacao');
-            echo $dados["quem"];
-            br(2);
-            
-            # Como
-            p("Como Requerer", "servicoTitulo2");
-            hr('documentacao');
-            echo $dados["como"];
-            
-//            $div->fecha();
+            # Div onde vai exibir o servico
+            $div = new Div("divNota");
+            $div->abre();
 
-            var_dump($dados);
+            # Define os Campos
+            $campos = [
+                ["O que é", "oque"],
+                ["Quem Pode Requerer", "quem"],
+                ["Como Requerer", "como"],
+                ["Observações", "obs"],
+            ];
+
+            # Percorre os campos
+            foreach ($campos as $item) {
+                if (!empty($dados[$item[1]])) {
+                    echo "<h3><b>{$item[0]}</b></h3>";
+                    echo $dados[$item[1]];
+                }
+            }
+
+            $div->fecha();
+            
+            $grid->fechaColuna();
+            $grid->abreColuna(4);
+            
+            # Div onde vai exibir o servico
+            $div = new Div("divNota");
+            $div->abre();
+            
+            # Define os Campos
+            $campos1 = [
+                ["Documentação", "documentos"],
+                ["Legislação", "legislacao"],
+            ];
+
+            # Percorre os campos
+            foreach ($campos1 as $item) {
+                if (!empty($dados[$item[1]])) {
+                    echo "<h3><b>{$item[0]}</b></h3>";
+                    echo $dados[$item[1]];
+                }
+            }
+
+            $div->fecha();
 
             $grid->fechaColuna();
             break;
