@@ -624,16 +624,18 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
                   AND situacao = 1";
 
                 # Verifica se tem espaços
-                if (strpos($parametroNome, " ") !== false) {
-                    # Separa as palavras
-                    $palavras = explode(' ', $parametroNome);
+                if (!empty($parametroNome)) {
+                    if (strpos($parametroNome, " ") !== false) {
+                        # Separa as palavras
+                        $palavras = explode(' ', $parametroNome);
 
-                    # Percorre as palavras
-                    foreach ($palavras as $item) {
-                        $select .= ' AND (tbpessoa.nome LIKE "%' . $item . '%")';
+                        # Percorre as palavras
+                        foreach ($palavras as $item) {
+                            $select .= ' AND (tbpessoa.nome LIKE "%' . $item . '%")';
+                        }
+                    } else {
+                        $select .= " AND tbpessoa.nome LIKE '%{$parametroNome}%'";
                     }
-                } else {
-                    $select .= " AND tbpessoa.nome LIKE '%{$parametroNome}%'";
                 }
 
                 $select .= " ORDER BY tbpessoa.nome";
@@ -723,16 +725,18 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
                             WHERE situacao = 1";
 
                 # Verifica se tem espaços
-                if (strpos($parametroNome, " ") !== false) {
-                    # Separa as palavras
-                    $palavras = explode(' ', $parametroNome);
+                if (!empty($parametroNome)) {
+                    if (strpos($parametroNome, " ") !== false) {
+                        # Separa as palavras
+                        $palavras = explode(' ', $parametroNome);
 
-                    # Percorre as palavras
-                    foreach ($palavras as $item) {
-                        $select .= ' AND (tbpessoa.nome LIKE "%' . $item . '%")';
+                        # Percorre as palavras
+                        foreach ($palavras as $item) {
+                            $select .= ' AND (tbpessoa.nome LIKE "%' . $item . '%")';
+                        }
+                    } else {
+                        $select .= " AND tbpessoa.nome LIKE '%{$parametroNome}%'";
                     }
-                } else {
-                    $select .= " AND tbpessoa.nome LIKE '%{$parametroNome}%'";
                 }
 
                 $select .= " ORDER BY tbpessoa.nome";
