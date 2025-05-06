@@ -588,7 +588,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         case "contatos" :
 
             # Permissão de Acesso
-            $acesso = Verifica::acesso($idUsuario, [1, 17]);
+            $acesso = Verifica::acesso($idUsuario, [1, 11]);
 
             if ($acesso) {
 
@@ -689,7 +689,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         case "comCpf" :
 
             # Permissão de Acesso
-            $acesso = Verifica::acesso($idUsuario, [1, 11]);
+            $acesso = Verifica::acesso($idUsuario, [1, 17]);
 
             if ($acesso) {
 
