@@ -114,10 +114,14 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     array_push($array, ['Listagem de Servidores', 'por Cargo Efetivo', 'servidorCargo']);
     array_push($array, ['Listagem de Servidores', 'por Lotação', 'porLotacao']);
     #array_push($array, ['Dados da Universidade', 'Organograma', 'organograma']);
-    
     # Acesso aos contatos dos servidores
     if (Verifica::acesso($idUsuario, [1, 11])) {
         array_push($array, ['Listagem de Servidores', 'com E-mails e Telefones', 'contatos']);
+    }
+
+    # Acesso aos contatos dos servidores com cpf
+    if (Verifica::acesso($idUsuario, [1, 17])) {
+        array_push($array, ['Listagem de Servidores', 'com CPF e Chefia Imediata', 'comCpf']);
     }
 
     # Somente Administradores
@@ -158,9 +162,8 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     $grid1->abreColuna(12, 9);
 
     switch ($fase) {
-        
+
 ##################################################################
-        
         # Exibe o Menu Inicial
         case "inicial" :
 
@@ -208,12 +211,10 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             break;
 
 ##################################################################
-        
         # Exibe o Menu Inicial
         case "pgto" :
 //            $grid2 = new Grid();
 //            $grid2->abreColuna(12, 12, 6);
-
             # Calendário de pgto
             $calend = new CalendarioPgto();
             $calend->exibeCalendario();
@@ -585,9 +586,9 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 ##################################################################
 
         case "contatos" :
-            
+
             # Permissão de Acesso
-            $acesso = Verifica::acesso($idUsuario, [1, 11]);
+            $acesso = Verifica::acesso($idUsuario, [1, 17]);
 
             if ($acesso) {
 
@@ -619,10 +620,23 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
                  FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
                                  LEFT JOIN tbhistlot ON (tbservidor.idServidor = tbhistlot.idServidor)
                                  LEFT JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
-                WHERE tbpessoa.nome LIKE '%{$parametroNome}%'
-                  AND tbhistlot.data = (select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)  
-                  AND situacao = 1  
-             ORDER BY tbpessoa.nome";
+                WHERE tbhistlot.data = (select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)  
+                  AND situacao = 1";
+
+                # Verifica se tem espaços
+                if (strpos($parametroNome, " ") !== false) {
+                    # Separa as palavras
+                    $palavras = explode(' ', $parametroNome);
+
+                    # Percorre as palavras
+                    foreach ($palavras as $item) {
+                        $select .= ' AND (tbpessoa.nome LIKE "%' . $item . '%")';
+                    }
+                } else {
+                    $select .= " AND tbpessoa.nome LIKE '%{$parametroNome}%'";
+                }
+
+                $select .= " ORDER BY tbpessoa.nome";
 
                 if (!empty($parametroNome)) {
                     # Executa o select 
@@ -649,6 +663,105 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
                         $tabela->set_classe(["pessoal", "pessoal", null, "pessoal", "pessoal"]);
                         $tabela->set_metodo(["get_idFuncionalEMatricula", "get_nomeECargoELotacao", null, "get_contatos"]);
                         $tabela->set_funcao([null, null, "nl2br2"]);
+                        $tabela->set_totalRegistro(true);
+                        $tabela->set_textoRessaltado($parametroNome);
+                        $tabela->show();
+                    }
+                } else {
+                    tituloTable("Contatos dos Servidores Ativos");
+                    $callout = new Callout();
+                    $callout->abre();
+                    br(2);
+                    p('Digite um nome para pesquisar', 'center');
+                    br();
+                    $callout->fecha();
+                }
+
+                # Grava no log a atividade
+                $atividade = "Pesquisou ({$parametroNome}) nos contatos dos servidores na área do servidor";
+                $data = date("Y-m-d H:i:s");
+                $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
+            }
+            break;
+
+##################################################################
+
+        case "comCpf" :
+
+            # Permissão de Acesso
+            $acesso = Verifica::acesso($idUsuario, [1, 11]);
+
+            if ($acesso) {
+
+                # Pega os parâmetros
+                $parametroNome = post('parametroNome', get_session('parametroNome'));
+
+                # Joga os parâmetros par as sessions
+                set_session('parametroNome', $parametroNome);
+
+                # Parâmetros
+                $form = new Form('?fase=comCpf');
+
+                # Nome ou Matrícula
+                $controle = new Input('parametroNome', 'texto', 'Nome:', 1);
+                $controle->set_size(55);
+                $controle->set_title('Nome do servidor:');
+                $controle->set_valor($parametroNome);
+                $controle->set_autofocus(true);
+                $controle->set_onChange('formPadrao.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(6);
+                $form->add_item($controle);
+                $form->show();
+
+                $select = "SELECT tbservidor.idServidor,
+                                  tbservidor.idServidor,
+                                  tbservidor.idServidor,
+                                  tbservidor.idServidor,
+                                  tbservidor.idPessoa
+                             FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
+                            WHERE situacao = 1";
+
+                # Verifica se tem espaços
+                if (strpos($parametroNome, " ") !== false) {
+                    # Separa as palavras
+                    $palavras = explode(' ', $parametroNome);
+
+                    # Percorre as palavras
+                    foreach ($palavras as $item) {
+                        $select .= ' AND (tbpessoa.nome LIKE "%' . $item . '%")';
+                    }
+                } else {
+                    $select .= " AND tbpessoa.nome LIKE '%{$parametroNome}%'";
+                }
+
+                $select .= " ORDER BY tbpessoa.nome";
+
+                if (!empty($parametroNome)) {
+                    # Executa o select 
+                    $conteudo = $pessoal->select($select);
+                    $totReg = $pessoal->count($select);
+
+                    if ($totReg == 0) {
+                        tituloTable("Contatos dos Servidores Ativos");
+                        $callout = new Callout();
+                        $callout->abre();
+                        br(2);
+                        p('Nenhum item encontrado !!', 'center');
+                        br();
+                        $callout->fecha();
+                    } else {
+                        # Monta a tabela
+                        $tabela = new Tabela();
+
+                        $tabela->set_titulo("Contatos dos Servidores Ativos");
+                        $tabela->set_conteudo($conteudo);
+                        $tabela->set_label(["ID/Matrícula", "Servidor", "Chefia Imediata", "Contatos", "Cpf"]);
+                        $tabela->set_width([10, 25, 25, 25, 10]);
+                        $tabela->set_align(["center", "left", "left", "left"]);
+                        $tabela->set_classe(["pessoal", "pessoal", 'pessoal', "pessoal", "pessoal", "pessoal"]);
+                        $tabela->set_metodo(["get_idFuncionalEMatricula", "get_nomeECargoELotacao", "get_chefiaImediataNomeCargo", "get_contatos", "get_cpf"]);
+                        #$tabela->set_funcao([null, null, "nl2br2"]);
                         $tabela->set_totalRegistro(true);
                         $tabela->set_textoRessaltado($parametroNome);
                         $tabela->show();
