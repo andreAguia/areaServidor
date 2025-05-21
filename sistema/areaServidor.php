@@ -538,9 +538,11 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             # Pega os parâmetros
             $parametroNomeMat = retiraAspas(post('parametroNomeMat', get_session('parametroNomeMat')));
+            $parametroSituacao = post('parametroSituacao', get_session('parametroSituacao', 1));
 
             # Joga os parâmetros par as sessions
             set_session('parametroNomeMat', $parametroNomeMat);
+            set_session('parametroSituacao', $parametroSituacao);
 
             # Parâmetros
             $form = new Form('?fase=nome');
@@ -556,6 +558,21 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $controle->set_col(8);
             $form->add_item($controle);
 
+            # Situação
+            $result = $pessoal->select('SELECT idsituacao, situacao
+                                          FROM tbsituacao                                
+                                      ORDER BY 1');
+
+            $controle = new Input('parametroSituacao', 'combo', 'Situação:', 1);
+            $controle->set_size(30);
+            $controle->set_title('Filtra por Situação');
+            $controle->set_array($result);
+            $controle->set_valor($parametroSituacao);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(4);
+            $form->add_item($controle);
+
             $form->show();
 
             # Lista de Servidores Ativos
@@ -563,9 +580,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             if (!is_null($parametroNomeMat)) {
                 $lista->set_matNomeId($parametroNomeMat);
                 $lista->set_paginacao(false);
-
-                # Somente Ativos
-                $lista->set_situacao(1);
+                $lista->set_situacao($parametroSituacao);
 
                 # Retira a edição
                 $lista->set_permiteEditar(false);
