@@ -43,16 +43,23 @@ if ($acesso) {
     $servico = new Doc();
 
     $select1 = "SELECT COLUMN_NAME
-                 FROM COLUMNS 
-                WHERE TABLE_SCHEMA = 'uenf_{$banco}' 
-                  AND TABLE_NAME = '{$table}'";
+                  FROM COLUMNS 
+                 WHERE TABLE_SCHEMA = 'uenf_{$banco}' 
+                   AND TABLE_NAME = '{$table}'
+              ORDER BY ORDINAL_POSITION";
     $conteudo1 = $servico->select($select1);
 
     # Pega os nomes das colunas
     $colunas = array();
     foreach ($conteudo1 as $item) {
         $colunas[] = $item[0];
-        $align[] = "left";
+
+        # Verifica se é id e centraliza
+        if (substr($item[0], 0, 2) == "id") {
+            $align[] = "center";
+        } else {
+            $align[] = "left";
+        }
     }
 
     # Pega o conteúdo da tabela
