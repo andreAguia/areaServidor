@@ -24,8 +24,8 @@ if ($acesso) {
 
     # Pega o id (se tiver)
     $id = soNumeros(get('id'));
-    $idServico = soNumeros(get('idServidor'));echo "idServico -> {$idServico}";
-
+    $idServico = soNumeros(get('idServico'));
+    
     # Pega os dados desse serviço
     $dados = $servico->get_dados($idServico);
 
@@ -96,12 +96,12 @@ if ($acesso) {
     $objeto->set_selectLista($selectListar);
 
     # select do edita
-    $objeto->set_selectEdita("SELECT tipo,
-                                     categoria,
-                                     titulo,
-                                     descricao,
+    $objeto->set_selectEdita("SELECT categoria,
                                      numOrdem,
                                      visibilidade,
+                                     tipo,
+                                     titulo,
+                                     descricao,
                                      link,
                                      idRotina,
                                      texto,
@@ -131,9 +131,6 @@ if ($acesso) {
     # Nome do campo id
     $objeto->set_idCampo('idServicoAnexos');
 
-    # Tipo de label do formulário
-    $objeto->set_formlabelTipo(1);
-
     # Pega os dados da combo de rotina
     $rotina = $intra->select('SELECT idRotina,
                                      CONCAT(categoria," - ",nome)
@@ -149,6 +146,30 @@ if ($acesso) {
 
     # Campos para o formulario
     $objeto->set_campos([
+        array('linha' => 1,            
+            'autofocus' => true,
+            'nome' => 'categoria',
+            'label' => 'Categoria:',
+            'tipo' => 'texto',
+            'datalist' => $categoriaLista,
+            'required' => true,
+            'col' => 4,
+            'size' => 100),        
+        array('linha' => 1,
+            'nome' => 'numOrdem',
+            'label' => 'numOrdem:',
+            'tipo' => 'texto',
+            'required' => true,
+            'col' => 2,
+            'size' => 4),
+        array('linha' => 1,
+            'nome' => 'visibilidade',
+            'label' => 'Visivel:',
+            'tipo' => 'combo',
+            'required' => true,
+            'array' => array(array(1, "Sim"), array(2, "Não")),
+            'col' => 2,
+            'size' => 15),
         array('linha' => 1,
             'col' => 3,
             'nome' => 'tipo',
@@ -157,15 +178,7 @@ if ($acesso) {
             'required' => true,
             'autofocus' => true,
             'array' => $arrayTipos,
-            'size' => 15),
-        array('linha' => 1,
-            'nome' => 'categoria',
-            'label' => 'Categoria:',
-            'tipo' => 'texto',
-            'datalist' => $categoriaLista,
-            'required' => true,
-            'col' => 4,
-            'size' => 100),
+            'size' => 15),        
         array('linha' => 2,
             'nome' => 'titulo',
             'label' => 'Título:',
@@ -178,24 +191,9 @@ if ($acesso) {
             'title' => 'Descrição detalhada da Categoria',
             'label' => 'Descrição:',
             'tipo' => 'texto',
+            'required' => true,
             'col' => 6,
-            'size' => 250),
-        array('linha' => 3,
-            'nome' => 'numOrdem',
-            'autofocus' => true,
-            'label' => 'numOrdem:',
-            'tipo' => 'texto',
-            'required' => true,
-            'col' => 2,
-            'size' => 4),
-        array('linha' => 3,
-            'nome' => 'visibilidade',
-            'label' => 'Visivel:',
-            'tipo' => 'combo',
-            'required' => true,
-            'array' => array(array(1, "Sim"), array(2, "Não")),
-            'col' => 2,
-            'size' => 15),
+            'size' => 250),        
         array('linha' => 4,
             'nome' => 'link',
             'title' => 'link',
@@ -220,6 +218,7 @@ if ($acesso) {
             'title' => 'Texto'),
         array('linha' => 5,
             'nome' => 'idServico',
+            'label' => 'idServico',
             'title' => 'idServico',
             'tipo' => 'hidden',
             'padrao' => $idServico,
@@ -231,8 +230,8 @@ if ($acesso) {
     $objeto->set_idUsuario($idUsuario);
 
     # Alterações para acessar diretamente da visualização dos procedimentos
-    $objeto->set_voltarForm("procedimentos.php?idProcedimento={$id}");
-    $objeto->set_linkListar("procedimentos.php?idProcedimento={$id}");
+//    $objeto->set_voltarForm("procedimentos.php?idProcedimento={$id}");
+//    $objeto->set_linkListar("procedimentos.php?idProcedimento={$id}");
 
     $procedimento = new Procedimento();
 
@@ -279,11 +278,7 @@ if ($acesso) {
 
         case "editar" :
         case "gravar" :
-            $objeto->$fase($id);
-            break;
-
         case "excluir" :
-            $objeto->set_linkListar('?');
             $objeto->$fase($id);
             break;
     }

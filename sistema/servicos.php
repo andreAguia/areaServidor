@@ -149,7 +149,9 @@ if ($acesso) {
             foreach ($campos as $item) {
                 if (!empty($dados[$item[1]])) {
                     echo "<h3><b>{$item[0]}</b></h3>";
+                    hr("geral");
                     echo $dados[$item[1]];
+                    br();
                 }
             }
 

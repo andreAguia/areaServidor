@@ -26,11 +26,11 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro'))) {                                     # Se o parametro não vier por post (for nulo)
-        $parametro = retiraAspas(get_session('sessionParametro')); # passa o parametro da session para a variavel parametro retirando as aspas
+    if (is_null(post('parametro'))) {
+        $parametro = retiraAspas(get_session('sessionParametro'));
     } else {
-        $parametro = post('parametro');        # Se vier por post, retira as aspas e passa para a variavel parametro			
-        set_session('sessionParametro', $parametro);      # transfere para a session para poder recuperá-lo depois
+        $parametro = post('parametro');
+        set_session('sessionParametro', $parametro);
     }
 
     # Começa uma nova página
@@ -65,7 +65,8 @@ if ($acesso) {
     # select da lista
     $objeto->set_selectLista("SELECT idServico,
                                      categoria,
-                                     nome
+                                     nome,
+                                     idServico
                                 FROM tbservico
                             ORDER BY categoria, nome");
 
@@ -75,9 +76,7 @@ if ($acesso) {
                                      oque,
                                      quem,
                                      como,
-                                     obs,
-                                     documentos,
-                                     legislacao
+                                     obs
                                 FROM tbservico
                                 WHERE idServico = {$id}");
 
@@ -88,9 +87,19 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(["id", "Categoria", "Nome"]);
+    $objeto->set_label(["id", "Categoria", "Nome", "Anexos"]);
     $objeto->set_width([5, 20, 60]);
     $objeto->set_align(["center", "center", "left"]);
+    
+    # Botão Anexos
+    $botao = new BotaoGrafico();
+    $botao->set_label('');
+    $botao->set_title('Cadastra os Anexos');
+    $botao->set_url("cadastroServicoAnexos.php?idServico=");
+    $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', 20, 20);
+
+    # Coloca o objeto link na tabela			
+    $objeto->set_link(array("", "", "", $botao));
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -157,22 +166,6 @@ if ($acesso) {
             'size' => array(90, 8),
             'title' => 'O que é.',
             'col' => 12,
-            'linha' => 2),
-        array('nome' => 'documentos',
-            'label' => 'Documentos:',
-            'tipo' => 'editor',
-            'tagHtml' => true,
-            'size' => array(90, 8),
-            'title' => 'O que é.',
-            'col' => 12,
-            'linha' => 2),
-        array('nome' => 'legislacao',
-            'label' => 'Legislação:',
-            'tipo' => 'editor',
-            'tagHtml' => true,
-            'size' => array(90, 8),
-            'title' => 'O que é.',
-            'col' => 12,
             'linha' => 2)
     ));
 
@@ -187,15 +180,6 @@ if ($acesso) {
 
     # array de botões    
     $objeto->set_botaoListarExtra([$linkProc]);
-
-    # Anexos
-    $linkArea = new Link("Anexos", "cadastroServicoAnexos.php?idServidor={$id}");
-    $linkArea->set_class('button');
-    $linkArea->set_title('Vincula anexos a esse serviço');
-    $linkArea->set_target('_blank');    
-
-    # array de botões    
-    $objeto->set_botaoEditarExtra([$linkArea]);
 
     ################################################################
     switch ($fase) {
