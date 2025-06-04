@@ -42,4 +42,25 @@ class Servico {
     }
     
     ###########################################################
+
+    public function get_anexos($id = null) {
+        /**
+         * Retorna um array com os anexos de um servico
+         * 
+         * @param $id integer null o id
+         * 
+         * @syntax $servico->get_Dados([$id]);  
+         */
+        # Pega os projetos cadastrados
+        $select = "SELECT *
+                     FROM tbservicoanexos
+                    WHERE idServico = {$id}
+                 ORDER BY categoria";
+
+        $intra = new Intra();
+        $row = $intra->select($select);
+        return $row;
+    }
+    
+    ###########################################################
 }

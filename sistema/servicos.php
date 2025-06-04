@@ -114,7 +114,6 @@ if ($acesso) {
 
             $grid->abreColuna(12);
 
-            
             # Cria um menu
             $menu = new MenuBar();
 
@@ -123,7 +122,7 @@ if ($acesso) {
             $linkVoltar->set_class('button');
             $linkVoltar->set_accessKey('V');
             $menu->add_link($linkVoltar, "left");
-            
+
             $menu->show();
 
             # Título
@@ -132,7 +131,7 @@ if ($acesso) {
 
             $grid->fechaColuna();
             $grid->abreColuna(8);
-            
+
             # Div onde vai exibir o servico
             $div = new Div("divNota");
             $div->abre();
@@ -156,27 +155,56 @@ if ($acesso) {
             }
 
             $div->fecha();
-            
+
             $grid->fechaColuna();
             $grid->abreColuna(4);
-            
+
             # Div onde vai exibir o servico
             $div = new Div("divNota");
             $div->abre();
-            
-            # Define os Campos
-            $campos1 = [
-                ["Documentação", "documentos"],
-                ["Legislação", "legislacao"],
-            ];
 
-            # Percorre os campos
-            foreach ($campos1 as $item) {
-                if (!empty($dados[$item[1]])) {
-                    echo "<h3><b>{$item[0]}</b></h3>";
-                    echo $dados[$item[1]];
+            $dados2 = $servico->get_anexos($id);
+            
+            # Menu
+            $menu = new Menu("menuProcedimentos");
+
+            $categoriaAtual = null;
+
+            # Percorre o array 
+            foreach ($dados2 as $valor) {
+                # Verifica se mudou a categoria
+                if ($categoriaAtual <> $valor["categoria"]) {
+                    $categoriaAtual = $valor["categoria"];
+                    $menu->add_item('titulo', $valor["categoria"], '#', "Categoria " . $valor["categoria"]);
+                }
+
+                if (empty($valor["title"])) {
+                    $title = $valor["texto"];
+                } else {
+                    $title = $valor["title"];
+                }
+
+                # Verifica qual o tipo: 1-Documento e 2-Link
+                if ($valor["tipo"] == 1) {
+                    # É do tipo Documento
+                    $arquivoDocumento = PASTA_DOCUMENTOS . $valor["idMenuDocumentos"] . ".pdf";
+                    if (file_exists($arquivoDocumento)) {
+                        # Caso seja PDF abre uma janela com o pdf
+                        $menu->add_item('linkWindow', $valor["texto"], PASTA_DOCUMENTOS . $valor["idMenuDocumentos"] . '.pdf', $title);
+                    } else {
+                        # Caso seja um .doc, somente faz o download
+                        $menu->add_item('link', $valor["texto"], PASTA_DOCUMENTOS . $valor["idMenuDocumentos"] . '.doc', $title);
+                    }
+                }
+
+                if ($valor["tipo"] == 2) {
+                    # É do tipo Link                    
+                    $menu->add_item('linkWindow', $valor["texto"], $valor["link"], $title);
                 }
             }
+
+
+            $menu->show();
 
             $div->fecha();
 
