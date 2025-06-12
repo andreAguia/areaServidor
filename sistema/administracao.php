@@ -310,25 +310,19 @@ if ($acesso) {
                         if ($mes == $parametroMes) {
 
                             if ($dia <> $diaselec) {
-                                # Verifica se o dia é zero e não fechao fieldset
+
+                                # Fecha a janela
                                 if ($diaselec <> 0) {
+                                    br();
                                     $field->fecha();
-
-                                    if (diaSemana("{$diaselec}/{$mes}/{$ano}") <> "Sábado") {
-                                        $grid->fechaColuna();
-                                    } else {
-                                        br();
-                                    }
-                                }
-
-                                # Abre uma nova coluna
-                                if (diaSemana("{$diaselec}/{$mes}/{$ano}") <> "Sábado") {
-                                    $grid->abreColuna(3);
+                                    $grid->fechaColuna();
                                 }
 
                                 # muda o dia selecionado
                                 $diaselec = $dia;
 
+                                # Abre a coçuna
+                                $grid->abreColuna(12, 4, 3);
                                 $field = new Fieldset();
                                 $field->abre();
                                 titulotable($dia . " - " . diaSemana("{$dia}/{$mes}/{$ano}"));
@@ -340,7 +334,8 @@ if ($acesso) {
                     }
                 }
 
-                $grid->fechaColuna();
+                br();
+                $field->fecha();
                 $grid->fechaGrid();
             } else {
                 br(3);
@@ -496,7 +491,7 @@ if ($acesso) {
                         $servidor->gravar($campos, $valor, $dados["idDependente"], "tbdependente", "idDependente");
                     }
                 }
-            }            
+            }
             loadPage("?");
             break;
 
