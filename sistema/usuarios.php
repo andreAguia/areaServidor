@@ -274,10 +274,11 @@ if ($acesso) {
                 $grid1->abreColuna(12);
 
                 # Pega os dados da combo
-                $parametroCombo = $intra->select("SELECT DISTINCT YEAR(data)
+                $parametroCombo = $intra->select("SELECT DISTINCT YEAR(data), 
+                                                         YEAR(data)
                                                     FROM tblog
                                                    WHERE idusuario = {$id} 
-                                                ORDER BY YEAR(data) DESC, MONTH(data) DESC", false);
+                                                ORDER BY YEAR(data) DESC");
                 
 
                 # Controle do mês
@@ -344,6 +345,7 @@ if ($acesso) {
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
                     $tabela->set_titulo("Browsers Preferidos");
+                    $tabela->set_subtitulo($parametroAno);
                     $tabela->set_label(["Browser", "Logins"]);
                     $tabela->set_align(["center"]);
                     $tabela->set_totalRegistro(false);
@@ -370,6 +372,7 @@ if ($acesso) {
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
                     $tabela->set_titulo("IPs Acessados");
+                    $tabela->set_subtitulo($parametroAno);
                     $tabela->set_label(["ip", "Logins"]);
                     $tabela->set_align(["center"]);
                     $tabela->set_totalRegistro(false);
@@ -404,7 +407,8 @@ if ($acesso) {
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
-                    $tabela->set_titulo("Atividade Mensal Detalhada");
+                    $tabela->set_titulo("Atividade Anual Detalhada");
+                    $tabela->set_subtitulo($parametroAno);
                     $tabela->set_width([10, 20, 10, 10, 5, 5, 35]);
                     $tabela->set_label(["Tipo", "Data", "IP", "Tabela", "Id", "IdServidor", "Atividade"]);
                     $tabela->set_align(["center", "center", "center", "center", "center", "center", "left"]);
