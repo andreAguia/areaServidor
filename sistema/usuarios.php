@@ -31,16 +31,15 @@ if ($acesso) {
     $idRegra = soNumeros(get('idRegra'));
     $ldLotacao = soNumeros(get('idLotacao'));
 
-    # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro'))) {
-        $parametro = retiraAspas(get_session('sessionParametro'));
-    } else {
-        $parametro = post('parametro');
-        set_session('sessionParametro', $parametro);
-    }
+    # Pega os parâmetros
+    $parametroAno = post('parametroAno', get_session('parametroAno', date("Y")));
+    $parametroTipo = post('parametroTipo', get_session('parametroTipo', '*'));
+    $parametro = post('parametro', get_session('parametro'));
 
-    # Pega o parametro de pesquisa (se tiver)
-    $parametroHistorico = post('historico');
+    # Joga os parâmetros par as sessions
+    set_session('parametroAno', $parametroAno);
+    set_session('parametroTipo', $parametroTipo);
+    set_session('parametro', $parametro);
 
     # Começa uma nova página
     $page = new Page();
@@ -275,58 +274,64 @@ if ($acesso) {
                 $grid1->abreColuna(12);
 
                 # Pega os dados da combo
-                $parametroMulti = $intra->select('SELECT DISTINCT CONCAT(MONTH(data),"/",YEAR(data))
+                $parametroCombo = $intra->select("SELECT DISTINCT YEAR(data)
                                                     FROM tblog
-                                                   WHERE idusuario = ' . $id . ' ORDER BY YEAR(data) DESC,MONTH(data) DESC');
+                                                   WHERE idusuario = {$id} 
+                                                ORDER BY YEAR(data) DESC, MONTH(data) DESC", false);
+                
 
-                $parametro = array();
+                # Controle do mês
+                $form = new Form('?fase=exibeAtividades&id=' . $id);
+                $form->set_class('formHistorico');
 
-                # Transforma $parametroMulti (array multi) em array simples
-                for ($i = 0; $i < count($parametroMulti); $i++) {
-                    $parametro[$i] = $parametroMulti[$i][0];
-                }
+                $controle = new Input('parametroAno', 'combo');
+                $controle->set_size(30);
+                $controle->set_title('Informe o Ano do histórico');
+                $controle->set_array($parametroCombo);
+                $controle->set_valor($parametroAno);
+                $controle->set_autofocus(true);
+                $controle->set_onChange('formHistorico.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(3);
+                $form->add_item($controle);
+                
+                $controle = new Input('parametroTipo', 'combo');
+                $controle->set_size(30);
+                $controle->set_title('Informe o tipo');
+                $controle->set_array([
+                    ["*","Todos"],
+                    [0,"Login"],
+                    [1,"Inclusão"],
+                    [2,"Alteraração"],
+                    [3,"Exclusão"],
+                    [4,"Relatório"],
+                    [5,"Erros"],
+                    [6,"Backups"],
+                    
+                ]);
+                $controle->set_valor($parametroTipo);
+                $controle->set_autofocus(true);
+                $controle->set_onChange('formHistorico.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(3);
+                $form->add_item($controle);
 
-                if (count($parametro) > 0) {
+                $form->show();
+
+                $ano = $parametroCombo[0];
+
+                if (count($parametroCombo) > 0) {
                     $grid2 = new Grid();
                     $grid2->abreColuna(3);
 
-                    # Controle do mês
-                    $form = new Form('?fase=exibeAtividades&id=' . $id);
-                    $form->set_class('formHistorico');
-
-                    $controle = new Input('historico', 'combo');
-                    $controle->set_size(30);
-                    $controle->set_title('Informe o mês do histórico');
-                    $controle->set_array($parametro);
-                    if (!is_null($parametroHistorico)) {
-                        $controle->set_valor($parametroHistorico);
-                    }
-                    $controle->set_autofocus(true);
-                    $controle->set_onChange('formHistorico.submit();');
-                    $controle->set_linha(1);
-                    $controle->set_col(12);
-                    $form->add_item($controle);
-
-                    $form->show();
-
-                    if (is_null($parametroHistorico)) {
-                        $parametroHistorico = $parametro[0];
-                    }
-
-                    # Trata o parâmetro                
-                    $parametroTratado = explode("/", $parametroHistorico);
-                    $mes = $parametroTratado[0];
-                    $ano = $parametroTratado[1];
-
                     # Browsers Preferidos
-                    $select = 'SELECT browser,
+                    $select = "SELECT browser,
                                count(*) as tot
                           FROM tblog
-                         WHERE idUsuario = ' . $id . ' 
+                         WHERE idUsuario = {$id} 
                            AND tipo = 0 
-                           AND YEAR(data) = ' . $ano . '
-                           AND MONTH(data) = ' . $mes . '      
-                      GROUP BY browser ORDER BY 2 desc';
+                           AND YEAR(data) = {$parametroAno}    
+                      GROUP BY browser ORDER BY 2 desc";
 
                     $conteudo = $intra->select($select, true);
 
@@ -339,21 +344,20 @@ if ($acesso) {
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
                     $tabela->set_titulo("Browsers Preferidos");
-                    $tabela->set_label(array("Browser", "Logins"));
-                    $tabela->set_align(array("center"));
+                    $tabela->set_label(["Browser", "Logins"]);
+                    $tabela->set_align(["center"]);
                     $tabela->set_totalRegistro(false);
-                    $tabela->set_rodape("Total de Logins: " . $soma);
+                    $tabela->set_rodape("Total de Logins: {$soma}");
                     $tabela->show();
 
                     # iPs 
-                    $select = 'SELECT ip,
+                    $select = "SELECT ip,
                                count(*) as tot
                           FROM tblog
-                         WHERE idUsuario = ' . $id . '
+                         WHERE idUsuario = {$id}
                            AND tipo = 0                         
-                           AND YEAR(data) = ' . $ano . '
-                           AND MONTH(data) = ' . $mes . '      
-                      GROUP BY ip ORDER BY 2 desc';
+                           AND YEAR(data) = {$parametroAno}    
+                      GROUP BY ip ORDER BY 2 desc";
 
                     $conteudo = $intra->select($select, true);
 
@@ -366,10 +370,10 @@ if ($acesso) {
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
                     $tabela->set_titulo("IPs Acessados");
-                    $tabela->set_label(array("ip", "Logins"));
-                    $tabela->set_align(array("center"));
+                    $tabela->set_label(["ip", "Logins"]);
+                    $tabela->set_align(["center"]);
                     $tabela->set_totalRegistro(false);
-                    $tabela->set_rodape("Total de Logins: " . $soma);
+                    $tabela->set_rodape("Total de Logins: {$soma}");
                     $tabela->show();
 
                     $grid2->fechaColuna();
@@ -380,7 +384,7 @@ if ($acesso) {
                     $grid2->abreColuna(9);
 
                     # select
-                    $select = 'SELECT tipo,
+                    $select = "SELECT tipo,
                                data,
                                ip,
                                tabela,
@@ -389,19 +393,22 @@ if ($acesso) {
                                atividade,                                      
                                idlog
                           FROM tblog
-                         WHERE idUsuario = ' . $id . '   
-                           AND YEAR(data) = ' . $ano . '
-                           AND MONTH(data) = ' . $mes;
+                         WHERE idUsuario = {$id}   
+                           AND YEAR(data) = {$parametroAno}";
+                    
+                    if($parametroTipo <> "*"){
+                       $select .= " AND tipo = {$parametroTipo}";
+                    }
 
                     $conteudo = $intra->select($select, true);
 
                     $tabela = new Tabela();
                     $tabela->set_conteudo($conteudo);
                     $tabela->set_titulo("Atividade Mensal Detalhada");
-                    $tabela->set_width(array(5, 20, 10, 10, 5, 5, 45));
-                    $tabela->set_label(array("", "Data", "IP", "Tabela", "Id", "IdServidor", "Atividade"));
-                    $tabela->set_align(array("center", "center", "center", "center", "center", "center", "left"));
-                    $tabela->set_funcao(array(null, "datetime_to_php", null, null, null, "exibeNomeTitle"));
+                    $tabela->set_width([10, 20, 10, 10, 5, 5, 35]);
+                    $tabela->set_label(["Tipo", "Data", "IP", "Tabela", "Id", "IdServidor", "Atividade"]);
+                    $tabela->set_align(["center", "center", "center", "center", "center", "center", "left"]);
+                    $tabela->set_funcao([null, "datetime_to_php", null, null, null, "exibeNomeTitle"]);
 
                     $tabela->set_formatacaoCondicional(array(array('coluna' => 0,
                             'valor' => 0,
@@ -426,7 +433,8 @@ if ($acesso) {
                     $imagemLoginIncorreto = new Imagem(PASTA_FIGURAS . 'loginIncorreto.png', 'Login Incorreto', 15, 15);
                     $imagemBackup = new Imagem(PASTA_FIGURAS . 'backup2.png', 'Backup', 15, 15);
 
-                    $tabela->set_imagemCondicional(array(array('coluna' => 0,
+                    $tabela->set_imagemCondicional(array(
+                        array('coluna' => 0,
                             'valor' => 0,
                             'operador' => '=',
                             'imagem' => $imagemLogin),
