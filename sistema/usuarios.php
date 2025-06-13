@@ -184,7 +184,7 @@ if ($acesso) {
             break;
 
         ##########################################################################################
-        
+
         case "aguardaAtividades":
             br(4);
             aguarde();
@@ -296,13 +296,12 @@ if ($acesso) {
                                                     FROM tblog
                                                    WHERE idusuario = {$id} 
                                                 ORDER BY YEAR(data) DESC");
-                
 
                 # Controle do mês
-                $form = new Form('?fase=aguardaAtividades&id=' . $id);
+                $form = new Form("?fase=aguardaAtividades&id={$id}");
                 $form->set_class('formHistorico');
 
-                $controle = new Input('parametroAno', 'combo');
+                $controle = new Input('parametroAno', 'combo', "Ano:", 1);
                 $controle->set_size(30);
                 $controle->set_title('Informe o Ano do histórico');
                 $controle->set_array($parametroCombo);
@@ -312,23 +311,21 @@ if ($acesso) {
                 $controle->set_linha(1);
                 $controle->set_col(3);
                 $form->add_item($controle);
-                
-                $controle = new Input('parametroTipo', 'combo');
+
+                $controle = new Input('parametroTipo', 'combo', "Tipo:", 1);
                 $controle->set_size(30);
-                $controle->set_title('Informe o tipo');
+                $controle->set_title('Informe o tipo de acesso');
                 $controle->set_array([
-                    ["*","Todos"],
-                    [0,"Login"],
-                    [1,"Inclusão"],
-                    [2,"Alteraração"],
-                    [3,"Exclusão"],
-                    [4,"Relatório"],
-                    [5,"Erros"],
-                    [6,"Backups"],
-                    
+                    ["*", "Todos"],
+                    [0, "Login"],
+                    [1, "Inclusão"],
+                    [2, "Alteraração"],
+                    [3, "Exclusão"],
+                    [4, "Relatório"],
+                    [5, "Erros"],
+                    [6, "Backups"],
                 ]);
                 $controle->set_valor($parametroTipo);
-                $controle->set_autofocus(true);
                 $controle->set_onChange('formHistorico.submit();');
                 $controle->set_linha(1);
                 $controle->set_col(3);
@@ -415,9 +412,9 @@ if ($acesso) {
                           FROM tblog
                          WHERE idUsuario = {$id}   
                            AND YEAR(data) = {$parametroAno}";
-                    
-                    if($parametroTipo <> "*"){
-                       $select .= " AND tipo = '{$parametroTipo}'";
+
+                    if ($parametroTipo <> "*") {
+                        $select .= " AND tipo = '{$parametroTipo}'";
                     }
 
                     $conteudo = $intra->select($select, true);
