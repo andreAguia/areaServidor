@@ -210,13 +210,9 @@ if ($acesso) {
             ############################
             # Menu
             $menu1 = new MenuBar();
-            
-            echo"oi";
 
             # Verifica o status do usuário editado
             $statusUsuario = $intra->get_tipoSenha($id);
-            
-            echo"oi";
 
             # Voltar
             $linkVoltar = new Link("Voltar", "?");
