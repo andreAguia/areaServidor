@@ -184,6 +184,23 @@ if ($acesso) {
             break;
 
         ##########################################################################################
+        
+        case "aguardaAtividades":
+            br(4);
+            aguarde();
+            br();
+
+            # Limita a tela
+            $grid1 = new Grid("center");
+            $grid1->abreColuna(5);
+            p("Aguarde...", "center");
+            $grid1->fechaColuna();
+            $grid1->fechaGrid();
+
+            loadPage("?fase=exibeAtividades&id={$id}");
+            break;
+
+        ################################################################
 
         case "exibeAtividades" :
             # Grid para o menu, os dados do usuário e informação sobre o status
@@ -193,9 +210,13 @@ if ($acesso) {
             ############################
             # Menu
             $menu1 = new MenuBar();
+            
+            echo"oi";
 
             # Verifica o status do usuário editado
             $statusUsuario = $intra->get_tipoSenha($id);
+            
+            echo"oi";
 
             # Voltar
             $linkVoltar = new Link("Voltar", "?");
@@ -282,7 +303,7 @@ if ($acesso) {
                 
 
                 # Controle do mês
-                $form = new Form('?fase=exibeAtividades&id=' . $id);
+                $form = new Form('?fase=aguardaAtividades&id=' . $id);
                 $form->set_class('formHistorico');
 
                 $controle = new Input('parametroAno', 'combo');
@@ -400,7 +421,7 @@ if ($acesso) {
                            AND YEAR(data) = {$parametroAno}";
                     
                     if($parametroTipo <> "*"){
-                       $select .= " AND tipo = {$parametroTipo}";
+                       $select .= " AND tipo = '{$parametroTipo}'";
                     }
 
                     $conteudo = $intra->select($select, true);
@@ -414,7 +435,8 @@ if ($acesso) {
                     $tabela->set_align(["center", "center", "center", "center", "center", "center", "left"]);
                     $tabela->set_funcao([null, "datetime_to_php", null, null, null, "exibeNomeTitle"]);
 
-                    $tabela->set_formatacaoCondicional(array(array('coluna' => 0,
+                    $tabela->set_formatacaoCondicional(array(
+                        array('coluna' => 0,
                             'valor' => 0,
                             'operador' => '=',
                             'id' => 'logLogin'),
