@@ -236,37 +236,20 @@ if ($acesso) {
     $procedimento = new Procedimento();
 
     # Dados da rotina de Upload
-    $pasta = PASTA_PROCEDIMENTOS;
+    $pasta = PASTA_SERVICOANEXOS;
     $nome = "Arquivo";
-    $tabela = "tbprocedimento";
+    $tabela = "tbservicoanexos";
 
-    # Carrega a rotina de acordo com o tipo de documento: jpg ou pdf
-    if ($procedimento->get_tipo($id) == 2) {
-
-        # Botão de Upload
-        if (!empty($id)) {
-
-            # Botão de Upload
-            $botao = new Button("Upload {$nome}");
-            $botao->set_url("procedimentoNotaUploadImagem.php?fase=upload&id={$id}");
-            $botao->set_title("Faz o Upload do {$nome}");
-            $botao->set_target("_blank");
-
-            $objeto->set_botaoEditarExtra([$botao]);
-        }
-    } elseif ($procedimento->get_tipo($id) == 3) {
+    # Botão de Upload
+    if (!empty($id)) {
 
         # Botão de Upload
-        if (!empty($id)) {
+        $botao = new Button("Upload {$nome}");
+        $botao->set_url("cadastroServicoAnexosUpload.php?fase=upload&id={$id}");
+        $botao->set_title("Faz o Upload do {$nome}");
+        $botao->set_target("_blank");
 
-            # Botão de Upload
-            $botao = new Button("Upload {$nome}");
-            $botao->set_url("procedimentoNotaUploadPdf.php?fase=upload&id={$id}");
-            $botao->set_title("Faz o Upload do {$nome}");
-            $botao->set_target("_blank");
-
-            $objeto->set_botaoEditarExtra([$botao]);
-        }
+        $objeto->set_botaoEditarExtra([$botao]);
     }
 
     ################################################################

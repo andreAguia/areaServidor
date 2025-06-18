@@ -50,9 +50,7 @@ if ($acesso) {
 
     switch ($fase) {
 
-        #############################################################################################################################
-        #   Inicial
-        ############################################################################################################################# 
+        ########################################################
 
         case "" :
         case "inicial" :
@@ -82,7 +80,7 @@ if ($acesso) {
                     $categoria = $item['categoria'];
 
                     # Inicia o painel
-                    $painel1 = new Callout('success');
+                    $painel1 = new Callout('primary');
                     $painel1->set_title($item['categoria']);
                     $painel1->abre();
                     p(bold(maiuscula($item['categoria'])), 'servicoCategoria');
@@ -106,6 +104,8 @@ if ($acesso) {
 
             $grid->fechaColuna();
             break;
+
+        ########################################################    
 
         case "exibeServico" :
 
@@ -132,7 +132,6 @@ if ($acesso) {
             $grid->fechaColuna();
             $grid->abreColuna(8);
 
-            # Div onde vai exibir o servico
             $div = new Div("divNota");
             $div->abre();
 
@@ -147,10 +146,16 @@ if ($acesso) {
             # Percorre os campos
             foreach ($campos as $item) {
                 if (!empty($dados[$item[1]])) {
-                    echo "<h3><b>{$item[0]}</b></h3>";
-                    hr("geral");
+                    
+                    $menu = new Menu("menuProcedimentos");
+                    $menu->add_item('titulo', $item[0], '#', $item[0]);
+                    $menu->show();
+                    
+//                    echo "<h6><b>{$item[0]}</b></h6>";
+//                    hr("geral");
+//                    br();
+
                     echo $dados[$item[1]];
-                    br();
                 }
             }
 
@@ -163,48 +168,62 @@ if ($acesso) {
             $div = new Div("divNota");
             $div->abre();
 
+            # Carrega os anexos
             $dados2 = $servico->get_anexos($id);
-            
-            # Menu
-            $menu = new Menu("menuProcedimentos");
 
+            # Defina a categoria para o agrupamento
             $categoriaAtual = null;
 
-            # Percorre o array 
-            foreach ($dados2 as $valor) {
-                # Verifica se mudou a categoria
-                if ($categoriaAtual <> $valor["categoria"]) {
-                    $categoriaAtual = $valor["categoria"];
-                    $menu->add_item('titulo', $valor["categoria"], '#', "Categoria " . $valor["categoria"]);
-                }
+            # Verifica se tem algum anexo
+            if (count($dados2) > 0) {
 
-                if (empty($valor["title"])) {
-                    $title = $valor["texto"];
-                } else {
-                    $title = $valor["title"];
-                }
+                # Menu
+                $menu = new Menu("menuProcedimentos");
 
-                # Verifica qual o tipo: 1-Documento e 2-Link
-                if ($valor["tipo"] == 1) {
-                    # É do tipo Documento
-                    $arquivoDocumento = PASTA_DOCUMENTOS . $valor["idMenuDocumentos"] . ".pdf";
-                    if (file_exists($arquivoDocumento)) {
-                        # Caso seja PDF abre uma janela com o pdf
-                        $menu->add_item('linkWindow', $valor["texto"], PASTA_DOCUMENTOS . $valor["idMenuDocumentos"] . '.pdf', $title);
+                # Percorre o array 
+                foreach ($dados2 as $valor) {
+                    # Verifica se mudou a categoria
+                    if ($categoriaAtual <> $valor["categoria"]) {
+                        $categoriaAtual = $valor["categoria"];
+                        $menu->add_item('titulo', $valor["categoria"], '#', "Categoria " . $valor["categoria"]);
+                    }
+
+                    if (empty($valor["title"])) {
+                        $title = $valor["texto"];
                     } else {
-                        # Caso seja um .doc, somente faz o download
-                        $menu->add_item('link', $valor["texto"], PASTA_DOCUMENTOS . $valor["idMenuDocumentos"] . '.doc', $title);
+                        $title = $valor["title"];
+                    }
+
+                    # Verifica qual o tipo: 1-Documento e 2-Link
+                    if ($valor["tipo"] == 1) {
+                        # É do tipo Documento
+                        $arquivoDocumento = PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . ".pdf";
+                        if (file_exists($arquivoDocumento)) {
+                            # Caso seja PDF abre uma janela com o pdf
+                            $menu->add_item('linkWindow', $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.pdf', $valor["descricao"]);
+                        } else {
+                            # Caso seja um .doc, somente faz o download
+                            $menu->add_item('link', $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.doc', $valor["descricao"]);
+                        }
+                    }
+
+                    # Tipo Link
+                    if ($valor["tipo"] == 2) {
+                        $menu->add_item('linkWindow',$valor["texto"], $valor["link"], $title);
+                    }
+
+                    # Tipo pdf
+                    if ($valor["tipo"] == 3) {
+                        $arquivoDocumento = PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . ".pdf";
+                        if (file_exists($arquivoDocumento)) {
+                            $menu->add_item('linkWindow', " - ".$valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.pdf', $valor["descricao"]);
+                        }
                     }
                 }
 
-                if ($valor["tipo"] == 2) {
-                    # É do tipo Link                    
-                    $menu->add_item('linkWindow', $valor["texto"], $valor["link"], $title);
-                }
+
+                $menu->show();
             }
-
-
-            $menu->show();
 
             $div->fecha();
 

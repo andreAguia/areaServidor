@@ -47,6 +47,7 @@ define("PASTA_ESTILOS", "../_css/");                                # Estilos Es
  */
 define("PASTA_FOTOS", "../../_arquivos/fotos/");                    # Fotos dos Servidores
 define("PASTA_PROCEDIMENTOS", "../../_arquivos/procedimentos/");    # arquivos para a rotina de procedimentos
+define("PASTA_SERVICOANEXOS", "../../_arquivos/servicoAnexos/");    # arquivos para a rotina de Servicos
 
 /*
  *  Tags aceitas em campos com htmlTag = true
@@ -58,7 +59,8 @@ define('TAGS', '<p></p><a></a><br/><br><div></div><table></table><tr></tr><td></
 /*
  *  Cria array dos meses
  */
-$mes = array(array("1", "Janeiro"),
+$mes = array(
+    array("1", "Janeiro"),
     array("2", "Fevereiro"),
     array("3", "Março"),
     array("4", "Abril"),

@@ -66,6 +66,7 @@ if ($acesso) {
     $objeto->set_selectLista("SELECT idServico,
                                      categoria,
                                      nome,
+                                     idServico,
                                      idServico
                                 FROM tbservico
                             ORDER BY categoria, nome");
@@ -87,19 +88,27 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(["id", "Categoria", "Nome", "Anexos"]);
-    $objeto->set_width([5, 20, 60]);
+    $objeto->set_label(["id", "Categoria", "Nome", "Anexos", "Ver"]);
+    $objeto->set_width([5, 20, 55, 5, 5]);
     $objeto->set_align(["center", "center", "left"]);
-    
+
     # Botão Anexos
-    $botao = new BotaoGrafico();
-    $botao->set_label('');
-    $botao->set_title('Cadastra os Anexos');
-    $botao->set_url("cadastroServicoAnexos.php?idServico=");
-    $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', 20, 20);
+    $botao1 = new BotaoGrafico();
+    $botao1->set_label('');
+    $botao1->set_title('Cadastra os Anexos');
+    $botao1->set_url("cadastroServicoAnexos.php?idServico=");
+    $botao1->set_imagem(PASTA_FIGURAS . 'documentacao.png', 20, 20);
+
+    # Botão ver
+    $botao2 = new BotaoGrafico();
+    $botao2->set_label('');
+    $botao2->set_title('Visualiza');
+    $botao2->set_target('_blank');
+    $botao2->set_url("servicos.php?fase=exibeServico&id=");
+    $botao2->set_imagem(PASTA_FIGURAS . 'olho.png', 20, 20);
 
     # Coloca o objeto link na tabela			
-    $objeto->set_link(array("", "", "", $botao));
+    $objeto->set_link(["", "", "", $botao1, $botao2]);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
