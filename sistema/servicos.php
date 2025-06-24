@@ -146,11 +146,11 @@ if ($acesso) {
             # Percorre os campos
             foreach ($campos as $item) {
                 if (!empty($dados[$item[1]])) {
-                    
+
                     $menu = new Menu("menuProcedimentos");
                     $menu->add_item('titulo', $item[0], '#', $item[0]);
                     $menu->show();
-                    
+
 //                    echo "<h6><b>{$item[0]}</b></h6>";
 //                    hr("geral");
 //                    br();
@@ -209,15 +209,14 @@ if ($acesso) {
 
                     # Tipo Link
                     if ($valor["tipo"] == 2) {
-                        $menu->add_item('linkWindow',$valor["texto"], $valor["link"], $title);
+                        $menu->add_item('linkWindow', $valor["texto"], $valor["link"], $title);
                     }
 
                     # Tipo pdf
                     if ($valor["tipo"] == 3) {
                         $arquivoDocumento = PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . ".pdf";
-                        if (file_exists($arquivoDocumento)) {
-                            $menu->add_item('linkWindow', " - ".$valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.pdf', $valor["descricao"]);
-                        }
+
+                        $menu->add_item('linkWindow', " - " . $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.pdf', $valor["descricao"]);
                     }
                 }
 
