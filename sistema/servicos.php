@@ -113,24 +113,22 @@ if ($acesso) {
             $dados = $servico->get_dados($id);
 
             $grid->abreColuna(12);
-
-            # Cria um menu
-            $menu = new MenuBar();
-
-            # Voltar
-            $linkVoltar = new Link("Voltar", "?");
-            $linkVoltar->set_class('button');
-            $linkVoltar->set_accessKey('V');
-            $menu->add_link($linkVoltar, "left");
-
-            $menu->show();
+//
+//            # Cria um menu
+//            $menu = new MenuBar();
+//
+//            # Voltar
+//            $linkVoltar = new Link("Voltar", "?");
+//            $linkVoltar->set_class('button');
+//            $linkVoltar->set_accessKey('V');
+//            $menu->add_link($linkVoltar, "left");
+//
+//            $menu->show();
 
             # Título
+            br();
             titulotable($dados["nome"]);
             br();
-
-            $grid->fechaColuna();
-            $grid->abreColuna(8);
 
             $div = new Div("divNota");
             $div->abre();
@@ -158,15 +156,6 @@ if ($acesso) {
                     echo $dados[$item[1]];
                 }
             }
-
-            $div->fecha();
-
-            $grid->fechaColuna();
-            $grid->abreColuna(4);
-
-            # Div onde vai exibir o servico
-            $div = new Div("divNota");
-            $div->abre();
 
             # Carrega os anexos
             $dados2 = $servico->get_anexos($id);
