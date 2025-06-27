@@ -88,8 +88,8 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(["id", "Categoria", "Nome", "Anexos", "Ver"]);
-    $objeto->set_width([5, 20, 55, 5, 5]);
+    $objeto->set_label(["id", "Categoria", "Nome", "Anexos"]);
+    $objeto->set_width([5, 20, 60, 5]);
     $objeto->set_align(["center", "center", "left"]);
 
     # Botão Anexos
@@ -99,16 +99,8 @@ if ($acesso) {
     $botao1->set_url("cadastroServicoAnexos.php?idServico=");
     $botao1->set_imagem(PASTA_FIGURAS . 'documentacao.png', 20, 20);
 
-    # Botão ver
-    $botao2 = new BotaoGrafico();
-    $botao2->set_label('');
-    $botao2->set_title('Visualiza');
-    $botao2->set_target('_blank');
-    $botao2->set_url("servicos.php?fase=exibeServico&id=");
-    $botao2->set_imagem(PASTA_FIGURAS . 'olho.png', 20, 20);
-
     # Coloca o objeto link na tabela			
-    $objeto->set_link(["", "", "", $botao1, $botao2]);
+    $objeto->set_link(["", "", "", $botao1]);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -185,7 +177,7 @@ if ($acesso) {
     $linkProc = new Link("Serviços", "../../areaServidor/sistema/servicos.php");
     $linkProc->set_class('button');
     $linkProc->set_title('Acessa a área de procedimentos');
-    $linkProc->set_target("_aba");
+    $linkProc->set_target("_blank");
 
     # array de botões    
     $objeto->set_botaoListarExtra([$linkProc]);

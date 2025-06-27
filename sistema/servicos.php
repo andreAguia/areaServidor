@@ -23,6 +23,7 @@ if ($acesso) {
 
     # Pega od Ids
     $id = get('id');
+    $idServicoAnexo = get('idServicoAnexo');
 
     # Variaveis
     $categoria = null;
@@ -54,10 +55,13 @@ if ($acesso) {
 
         case "" :
         case "inicial" :
+            /*
+             * Exibe o menu de serviços
+             */
 
             $grid->abreColuna(12, 6, 4);
 
-            # Pega os assuntos
+            # Pega as Categorias
             $select = "SELECT categoria,
                               nome,
                               idServico
@@ -66,7 +70,7 @@ if ($acesso) {
 
             $row = $intra->select($select);
 
-            # Monta os quadros
+            # Monta os quadros sendo um para cada categoria
             foreach ($row as $item) {
                 if ($item['categoria'] <> $categoria) {
 
@@ -109,116 +113,33 @@ if ($acesso) {
 
         case "exibeServico" :
 
-            $servico = new Servico();
-            $dados = $servico->get_dados($id);
-
             $grid->abreColuna(12);
-//
-//            # Cria um menu
-//            $menu = new MenuBar();
-//
-//            # Voltar
-//            $linkVoltar = new Link("Voltar", "?");
-//            $linkVoltar->set_class('button');
-//            $linkVoltar->set_accessKey('V');
-//            $menu->add_link($linkVoltar, "left");
-//
-//            $menu->show();
 
-            # Título
-            br();
-            titulotable($dados["nome"]);
-            br();
+            # Cria um menu
+            $menu = new MenuBar();
 
-            $div = new Div("divNota");
-            $div->abre();
+            # Voltar
+            $linkVoltar = new Link("Voltar", "?");
+            $linkVoltar->set_class('button');
+            $linkVoltar->set_accessKey('V');
+            $menu->add_link($linkVoltar, "left");
 
-            # Define os Campos
-            $campos = [
-                ["O que é", "oque"],
-                ["Quem Pode Requerer", "quem"],
-                ["Como Requerer", "como"],
-                ["Observações", "obs"],
-            ];
+            $menu->show();
 
-            # Percorre os campos
-            foreach ($campos as $item) {
-                if (!empty($dados[$item[1]])) {
-
-                    $menu = new Menu("menuProcedimentos");
-                    $menu->add_item('titulo', $item[0], '#', $item[0]);
-                    $menu->show();
-
-//                    echo "<h6><b>{$item[0]}</b></h6>";
-//                    hr("geral");
-//                    br();
-
-                    echo $dados[$item[1]];
-                }
-            }
-
-            # Carrega os anexos
-            $dados2 = $servico->get_anexos($id);
-
-            # Defina a categoria para o agrupamento
-            $categoriaAtual = null;
-
-            # Verifica se tem algum anexo
-            if (count($dados2) > 0) {
-
-                # Menu
-                $menu = new Menu("menuProcedimentos");
-
-                # Percorre o array 
-                foreach ($dados2 as $valor) {
-                    # Verifica se mudou a categoria
-                    if ($categoriaAtual <> $valor["categoria"]) {
-                        $categoriaAtual = $valor["categoria"];
-                        $menu->add_item('titulo', $valor["categoria"], '#', "Categoria " . $valor["categoria"]);
-                    }
-
-                    if (empty($valor["title"])) {
-                        $title = $valor["texto"];
-                    } else {
-                        $title = $valor["title"];
-                    }
-
-                    # Verifica qual o tipo: 1-Documento e 2-Link
-                    if ($valor["tipo"] == 1) {
-                        # É do tipo Documento
-                        $arquivoDocumento = PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . ".pdf";
-                        if (file_exists($arquivoDocumento)) {
-                            # Caso seja PDF abre uma janela com o pdf
-                            $menu->add_item('linkWindow', $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.pdf', $valor["descricao"]);
-                        } else {
-                            # Caso seja um .doc, somente faz o download
-                            $menu->add_item('link', $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.doc', $valor["descricao"]);
-                        }
-                    }
-
-                    # Tipo Link
-                    if ($valor["tipo"] == 2) {
-                        $menu->add_item('linkWindow', $valor["texto"], $valor["link"], $title);
-                    }
-
-                    # Tipo pdf
-                    if ($valor["tipo"] == 3) {
-                        $arquivoDocumento = PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . ".pdf";
-
-                        $menu->add_item('linkWindow', " - " . $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.pdf', $valor["descricao"]);
-                    }
-                }
-
-
-                $menu->show();
-            }
-
-            $div->fecha();
+            # Exibe o serviço
+            $servico = new Servico();
+            $servico->exibeServicos($id);
 
             $grid->fechaColuna();
             break;
 
-        ############################################################################    
+        ########################################################    
+
+        case "exibeDocumento" :
+
+            $servico = new Servico();
+            $servico->exibeProcedimento($idServicoAnexo);
+            break;
     }
 
 

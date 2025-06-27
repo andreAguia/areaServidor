@@ -93,7 +93,7 @@ if ($acesso) {
                        AND idServico = {$idServico}
                   ORDER BY categoria, numOrdem, titulo";
 
-    $objeto->set_selectLista($selectListar);
+    $objeto->set_selectLista("$selectListar&idServico={$idServico}");
 
     # select do edita
     $objeto->set_selectEdita("SELECT categoria,
