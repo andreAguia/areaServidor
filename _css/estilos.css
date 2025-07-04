@@ -52,14 +52,14 @@ span#orgaoCedido{
 p#servicoCategoria{
     padding: 0px;
     margin: 0px;
-    font-size: 16px;
+    font-size: 14px;
     text-align: left;    
 }
 
 a#servicoLink{
     font-weight: normal;
     color: #02548b;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 p#servicoTitulo{
