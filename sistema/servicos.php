@@ -23,7 +23,7 @@ if ($acesso) {
 
     # Pega od Ids
     $id = get('id');
-    $idServicoAnexo = get('idServicoAnexo');
+    $idServicoAnexos = get('idServicoAnexos');
 
     # Variaveis
     $categoria = null;
@@ -56,7 +56,7 @@ if ($acesso) {
         case "" :
         case "inicial" :
             /*
-             * Exibe o menu de serviços
+             * Exibe o Painel Inicial de Serviços por categoria
              */
 
             $grid->abreColuna(12, 6, 4);
@@ -112,6 +112,9 @@ if ($acesso) {
         ########################################################    
 
         case "exibeServico" :
+            /*
+             * Exibe a tela de Serviço
+             */
 
             $grid->abreColuna(12);
 
@@ -135,10 +138,17 @@ if ($acesso) {
 
         ########################################################    
 
-        case "exibeDocumento" :
+        case "exibeAnexoDocumento" :
+            /*
+             * Quando o anexo for um documento digitado
+             */
+
+            $grid->abreColuna(12);
 
             $servico = new Servico();
-            $servico->exibeProcedimento($idServicoAnexo);
+            $servico->exibeAnexoDocumento($idServicoAnexos);
+            
+            $grid->fechaColuna();
             break;
     }
 

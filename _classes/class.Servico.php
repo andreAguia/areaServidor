@@ -97,6 +97,10 @@ class Servico {
             }
         }
 
+        /*
+         * Anexos
+         */
+
         # Carrega os anexos
         $dados2 = $this->get_anexos($id);
 
@@ -124,22 +128,14 @@ class Servico {
                     $title = $valor["title"];
                 }
 
-                # Verifica qual o tipo: 1-Documento e 2-Link
+                # Documento Digitado
                 if ($valor["tipo"] == 1) {
-                    # É do tipo Documento
-                    $arquivoDocumento = PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . ".pdf";
-                    if (file_exists($arquivoDocumento)) {
-                        # Caso seja PDF abre uma janela com o pdf
-                        $menu->add_item('linkWindow', $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.pdf', $valor["descricao"]);
-                    } else {
-                        # Caso seja um .doc, somente faz o download
-                        $menu->add_item('link', $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.doc', $valor["descricao"]);
-                    }
+                    $menu->add_item('linkWindow', " - " . $valor["titulo"], "?fase=exibeAnexoDocumento&idServicoAnexos={$valor['idServicoAnexos']}", $title);
                 }
 
                 # Tipo Link
                 if ($valor["tipo"] == 2) {
-                    $menu->add_item('linkWindow', " - " . $valor["texto"], "?fase=exibeDocumento&idServicoAnexos={$valor['idServicoAnexos']}", $title);
+                    $menu->add_item('linkWindow', " - " . $valor["texto"], "?fase=exibeProcedimentoervicoAnexos={$valor['idServicoAnexos']}", $title);
                 }
 
                 # Tipo pdf
@@ -170,16 +166,16 @@ class Servico {
         # Pega os projetos cadastrados
         $select = "SELECT *
                      FROM tbservicoanexos
-                    WHERE idServicoAnexo = {$id}";
+                    WHERE idServicoAnexos = {$id}";
 
         $intra = new Intra();
-        $row = $intra->select($select);
+        $row = $intra->select($select, false);
         return $row;
     }
 
     ###########################################################
 
-    function exibeProcedimento($id, $editar = false) {
+    function exibeAnexoDocumento($id, $editar = false) {
 
         /**
          * Fornece todos os dados da categoria
@@ -187,182 +183,24 @@ class Servico {
         # Pega os dados
         $dados = $this->get_anexo($id);
 
-        $grid = new Grid();
-        $grid->abreColuna(12);
-
-        # Div onde vai exibir o procedimento
-        $div = new Div("divNota");
-        $div->abre();
-
         if (!empty($dados)) {
 
-            # Exibe de acordo com o tipo do arquivo
-            switch ($dados["tipo"]) {
-                case 1 : // documento
-                    br();
-                    # Botão de Editar
-                    if ($editar) {
-                        $divBtn = new Div("editarProcedimento");
-                        $divBtn->abre();
+            # Exibe o titulo
+            p("{$dados['categoria']} / {$dados['titulo']}", "procedimentoPai");
+            br();
 
-                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
-                        $btnEditar->set_class('button secondary');
-                        $btnEditar->set_title('Editar o Procedimento');
-                        $btnEditar->show();
+            p($dados['titulo'], "procedimentoTitulo");
+            p($dados['descricao'], "procedimentoDescricao");
+            hr("procedimento");
 
-                        $divBtn->fecha();
-                    }
-
-                    # Exibe o titulo
-                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
-                    br();
-
-                    p($dados['titulo'], "procedimentoTitulo");
-                    p($dados['descricao'], "procedimentoDescricao");
-                    hr("procedimento");
-
-                    if (empty($dados['textoProcedimento'])) {
-                        br(4);
-                        p("Não há conteúdo", "center");
-                        br(10);
-                    } else {
-                        echo $dados['textoProcedimento'];
-                    }
-                    break;
-                case 2: // arquivo jpg
-                    br();
-                    # Botão de Editar
-                    if ($editar) {
-                        $divBtn = new Div("editarProcedimento");
-                        $divBtn->abre();
-
-                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
-                        $btnEditar->set_class('button secondary');
-                        $btnEditar->set_title('Editar o Procedimento');
-                        $btnEditar->show();
-
-                        $divBtn->fecha();
-                    }
-
-                    # Exibe o titulo
-                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
-                    br();
-
-                    p($dados['titulo'], "procedimentoTitulo");
-                    p($dados['descricao'], "procedimentoDescricao");
-                    br();
-
-                    # Define o arquivo
-                    $arquivo = PASTA_PROCEDIMENTOS . $id . '.jpg';
-
-                    if (file_exists($arquivo)) {
-                        $figura = new Imagem($arquivo, $dados['descricao'], '100%', '100%');
-                        $figura->show();
-                    } else {
-                        br(4);
-                        p("Não há conteúdo", "center");
-                        br(10);
-                    }
-                    break;
-                case 3: // arquivo pdf
-                    br();
-                    # Botão de Editar
-                    if ($editar) {
-                        $divBtn = new Div("editarProcedimento");
-                        $divBtn->abre();
-
-                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
-                        $btnEditar->set_class('button secondary');
-                        $btnEditar->set_title('Editar o Procedimento');
-                        $btnEditar->show();
-
-                        $divBtn->fecha();
-                    }
-
-                    # Exibe o titulo
-                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
-                    br();
-
-                    p($dados['titulo'], "procedimentoTitulo");
-                    p($dados['descricao'], "procedimentoDescricao");
-                    br();
-
-                    # Define o arquivo
-                    $arquivo = PASTA_PROCEDIMENTOS . $idProcedimento . '.pdf';
-
-                    if (file_exists($arquivo)) {
-                        echo '<iframe src="' . PASTA_PROCEDIMENTOS . $idProcedimento . '.pdf" height="1000px" width="100%" marginwidth ="0" marginheight ="0" style="border:1px solid #d7d7d7;"></iframe>';
-                    } else {
-                        # Monta o painel
-                        $painel = new Callout();
-                        $painel->abre();
-
-                        # Exibe o titulo
-                        p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
-                        br();
-
-                        p($dados['titulo'], "procedimentoTitulo");
-                        p($dados['descricao'], "procedimentoDescricao");
-                        hr("procedimento");
-
-                        br(4);
-                        p("Não há conteúdo", "center");
-                        br(10);
-                        $painel->fecha();
-                    }
-                    break;
-                case 4: // link
-                    br();
-                    # Botão de Editar
-                    if ($editar) {
-                        $divBtn = new Div("editarProcedimento");
-                        $divBtn->abre();
-
-                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
-                        $btnEditar->set_class('button secondary');
-                        $btnEditar->set_title('Editar o Procedimento');
-                        $btnEditar->show();
-
-                        $divBtn->fecha();
-                    }
-
-                    # Exibe o titulo
-                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
-                    br();
-
-                    p($dados['titulo'], "procedimentoTitulo");
-                    p($dados['descricao'], "procedimentoDescricao");
-                    br();
-
-                    echo "<iframe src='{$dados['link']}' height='1000px' width='100%' marginwidth ='0' marginheight ='0' style='border:1px solid #d7d7d7;'></iframe>";
-                    break;
-                case 5: // rotina
-                    br();
-                    # Botão de Editar
-                    if ($editar) {
-                        $divBtn = new Div("editarProcedimento");
-                        $divBtn->abre();
-
-                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
-                        $btnEditar->set_class('button secondary');
-                        $btnEditar->set_title('Editar o Procedimento');
-                        $btnEditar->show();
-
-                        $divBtn->fecha();
-                    }
-
-                    # Exibe o titulo
-                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
-                    br();
-
-                    $rotina = new Rotina();
-                    $rotina->exibeRotina($dados['idRotina']);
-                    break;
+            if (empty($dados['texto'])) {
+                br(4);
+                p("Não há conteúdo", "center");
+                br(10);
+            } else {
+                echo $dados['texto'];
             }
-            $div->fecha();
         }
-        $grid->fechaColuna();
-        $grid->fechaGrid();
     }
 
     ###########################################################
