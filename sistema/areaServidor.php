@@ -204,6 +204,10 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $grid2->abreColuna(12, 12, 6);
 
             AreaServidor::moduloSistemasInternos($idUsuario);
+            
+            $grid1->fechaColuna();
+            $grid2->abreColuna(12);
+            
             AreaServidor::moduloSistemasExternos($idUsuario);
 
             $grid1->fechaColuna();

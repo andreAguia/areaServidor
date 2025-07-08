@@ -140,24 +140,14 @@ class AreaServidor {
 
         # Título
         titulo('Sistemas Externos');
-        br();
+        br(2);
 
         # Classes
         $pessoal = new Pessoal();
         $intra = new Intra();
-
-        # Verifica se é bolsista / estagiário           
-        $tipoPerfil = $pessoal->get_perfilTipo($pessoal->get_idPerfil($intra->get_idServidor($idUsuario)));
-
-        # Altera o menu de acordo com o usuário
-        if ($tipoPerfil == "Outros") {
-            $itens = 2;
-        } else {
-            $itens = 1;
-        }
-
+        
         # Inicia o menu
-        $menu = new MenuGrafico($itens);
+        $menu = new MenuGrafico(3);
         $menu->set_espacoEntreLink(true);
 
         # Sei
