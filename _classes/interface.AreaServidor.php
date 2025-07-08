@@ -155,7 +155,7 @@ class AreaServidor {
         $botao->set_title('Sistema Eletrônico de Informações');
         #$botao->set_label("Sei");
         $botao->set_imagem(PASTA_FIGURAS . "sei.png", 220, 60);
-        $botao->set_url("https://sei.fazenda.rj.gov.br/sip/login.php?sigla_orgao_sistema=ERJ&sigla_sistema=SEI&infra_url=L3NlaS8=");
+        $botao->set_url("https://sei.rj.gov.br/");
         $botao->set_target("_blank");
         $menu->add_item($botao);
 
