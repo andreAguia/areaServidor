@@ -127,6 +127,13 @@ if ($acesso) {
             $linkVoltar->set_accessKey('V');
             $menu->add_link($linkVoltar, "left");
 
+            if (Verifica::acesso($idUsuario, 1)) {
+                # Editar
+                $linkEditar = new Link("Editar", "?fase=editaServico&id={$id}");
+                $linkEditar->set_class('button');
+                $menu->add_link($linkEditar, "right");
+            }
+
             $menu->show();
 
             # Exibe o serviço
@@ -147,9 +154,32 @@ if ($acesso) {
 
             $servico = new Servico();
             $servico->exibeAnexoDocumento($idServicoAnexos);
-            
+
             $grid->fechaColuna();
             break;
+
+        ########################################################    
+
+        case "editaServico" :
+            /*
+             * Edita Serviço
+             */
+
+            $grid->abreColuna(12);
+
+            # Exibe o aguarde
+            br(8);
+            aguarde("Carregando");
+
+            # Informa a origem
+            set_session('voltaServico', "servicos.php?fase=exibeServico&id={$id}");
+
+            loadPage("cadastroServico.php?fase=editar&id={$id}");
+
+            $grid->fechaColuna();
+            break;
+
+        ########################################################
     }
 
 

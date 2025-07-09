@@ -22,6 +22,9 @@ if ($acesso) {
     # Verifica a fase do programa
     $fase = get('fase', 'listar');
 
+    # Define o link da volta
+    $voltaServico = get_session("voltaServico");
+
     # pega o id se tiver)
     $id = soNumeros(get('id'));
 
@@ -82,9 +85,15 @@ if ($acesso) {
                                 WHERE idServico = {$id}");
 
     # Caminhos
+    if (empty($voltaServico)) {
+        $objeto->set_linkListar('?fase=listar');
+    } else {
+        $objeto->set_voltarForm($voltaServico);
+        $objeto->set_linkListar($voltaServico);
+    }
+
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
-    $objeto->set_linkListar('?fase=listar');
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
@@ -143,18 +152,21 @@ if ($acesso) {
             'tagHtml' => true,
             'size' => array(90, 8),
             'title' => 'O que é.',
+            'required' => true,
             'linha' => 2),
         array('nome' => 'quem',
             'label' => 'Quem Tem Direito:',
             'tipo' => 'editor',
             'tagHtml' => true,
             'size' => array(90, 8),
+            'required' => true,
             'title' => 'O que é.',
             'col' => 12,
             'linha' => 3),
         array('nome' => 'como',
             'label' => 'Como Solicitar:',
             'tipo' => 'editor',
+            'required' => true,
             'tagHtml' => true,
             'size' => array(90, 8),
             'title' => 'O que é.',
