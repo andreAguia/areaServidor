@@ -37,17 +37,6 @@ if ($acesso) {
 
     # Limita o tamanho da tela
     $grid = new Grid();
-    $grid->abreColuna(12);
-
-    if ($fase == "inicial") {
-        br();
-        $top = new TitleBar("Serviços da GRH");
-        $top->show();
-        br();
-    }
-
-    # Limita o tamanho da tela
-    $grid->fechaColuna();
 
     switch ($fase) {
 
@@ -58,6 +47,31 @@ if ($acesso) {
             /*
              * Exibe o Painel Inicial de Serviços por categoria
              */
+
+            $grid->abreColuna(12);
+
+            if (Verifica::acesso($idUsuario, 1)) {
+
+                # Cria um menu
+                $menu = new MenuBar();
+
+                # Incluir
+                $linkEditar = new Link("Incluir", "?fase=editaServico");
+                $linkEditar->set_class('button');
+                $menu->add_link($linkEditar, "right");
+
+                $menu->show();
+            } else {
+                br();
+            }
+
+            # Titulo
+            $top = new TitleBar("Serviços da GRH");
+            $top->show();
+            br();
+
+            # Limita o tamanho da tela
+            $grid->fechaColuna();
 
             $grid->abreColuna(12, 6, 4);
 
@@ -172,8 +186,13 @@ if ($acesso) {
             aguarde("Carregando");
 
             # Informa a origem
-            set_session('voltaServico', "servicos.php?fase=exibeServico&id={$id}");
+            if (empty($id)) {
+                set_session('voltaServico', "servicos.php");
+            } else {
+                set_session('voltaServico', "servicos.php?fase=exibeServico&id={$id}");
+            }
 
+            # Vai para página de serviço
             loadPage("cadastroServico.php?fase=editar&id={$id}");
 
             $grid->fechaColuna();
