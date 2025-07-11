@@ -121,11 +121,10 @@ if ($acesso) {
     $objeto->set_idCampo('idServico');
 
     # Pega os dados da combo Usuario
-    $comboUsuario = $intra->select('SELECT idusuario,
-                                           usuario
-                                      FROM tbusuario
-                                  ORDER BY usuario');
-    array_unshift($comboUsuario, array(null, null));
+    $comboCategoria = $intra->select('SELECT distinct categoria
+                                        FROM tbservico
+                                    ORDER BY categoria');
+    array_unshift($comboCategoria, null);
 
     # Campos para o formulario
     $objeto->set_campos(array(
@@ -134,6 +133,7 @@ if ($acesso) {
             'tipo' => 'texto',
             'size' => 100,
             'title' => 'Categoria.',
+            'datalist' => $comboCategoria,
             'required' => true,
             'autofocus' => true,
             'col' => 6,
