@@ -115,6 +115,7 @@ class Servico {
 
             # Percorre o array 
             foreach ($dados2 as $valor) {
+
                 # Verifica se mudou a categoria
                 if ($categoriaAtual <> $valor["categoria"]) {
                     $categoriaAtual = $valor["categoria"];
@@ -128,20 +129,18 @@ class Servico {
                     $title = $valor["title"];
                 }
 
-                # Documento Digitado
-                if ($valor["tipo"] == 1) {
-                    $menu->add_item('linkWindow', " - " . $valor["titulo"], "?fase=exibeAnexoDocumento&idServicoAnexos={$valor['idServicoAnexos']}", $title);
+                # Documento Digitado e Link
+                if ($valor["tipo"] == 1 OR $valor["tipo"] == 4 OR $valor["tipo"] == 5) {
+                    $menu->add_item('linkWindow', " - " . $valor["titulo"], "?fase=exibeAnexo&idServicoAnexos={$valor['idServicoAnexos']}", $title);
                 }
 
-                # Tipo Link
+                # Tipo jpg
                 if ($valor["tipo"] == 2) {
-                    $menu->add_item('linkWindow', " - " . $valor["texto"], "?fase=exibeProcedimentoervicoAnexos={$valor['idServicoAnexos']}", $title);
+                    $menu->add_item('linkWindow', " - " . $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.jpg', $valor["descricao"]);
                 }
 
                 # Tipo pdf
                 if ($valor["tipo"] == 3) {
-                    $arquivoDocumento = PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . ".pdf";
-
                     $menu->add_item('linkWindow', " - " . $valor["titulo"], PASTA_SERVICOANEXOS . $valor["idServicoAnexos"] . '.pdf', $valor["descricao"]);
                 }
             }
@@ -175,7 +174,7 @@ class Servico {
 
     ###########################################################
 
-    function exibeAnexoDocumento($id, $editar = false) {
+    function exibeAnexo($id, $editar = false) {
 
         /**
          * Fornece todos os dados da categoria
@@ -185,20 +184,39 @@ class Servico {
 
         if (!empty($dados)) {
 
-            # Exibe o titulo
-            p("{$dados['categoria']} / {$dados['titulo']}", "procedimentoPai");
-            br();
+            # Se for documento
+            if ($dados['tipo'] == 1) {
 
-            p($dados['titulo'], "procedimentoTitulo");
-            p($dados['descricao'], "procedimentoDescricao");
-            hr("procedimento");
+                # Exibe o titulo
+                p("{$dados['categoria']} / {$dados['titulo']}", "procedimentoPai");
+                br();
 
-            if (empty($dados['texto'])) {
-                br(4);
-                p("Não há conteúdo", "center");
-                br(10);
-            } else {
-                echo $dados['texto'];
+                p($dados['titulo'], "procedimentoTitulo");
+                p($dados['descricao'], "procedimentoDescricao");
+                hr("procedimento");
+
+                if (empty($dados['texto'])) {
+                    br(4);
+                    p("Não há conteúdo", "center");
+                    br(10);
+                } else {
+                    echo $dados['texto'];
+                }
+            }
+
+            # Se for link
+            if ($dados['tipo'] == 4) {
+
+                br(3);
+                aguarde("Carregando ...");
+                loadPage($dados["link"]);
+            }
+            
+            # Se for rotina
+            if ($dados['tipo'] == 5) {
+
+                $rotina = new Rotina();
+                $rotina->exibeRotina($dados['idRotina']);
             }
         }
     }

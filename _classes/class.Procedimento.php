@@ -6,8 +6,38 @@ class Procedimento {
      * Abriga as várias rotina do Sistema de Manual de Procedimentos
      *
      * @author André Águia (Alat) - alataguia@gmail.com
-     *
      */
+    # Array com os tipos de procedimentos
+    private $tiposProcedimentos = null;
+
+    ###########################################################
+
+    /**
+     * Método Construtor
+     */
+    public function __construct() {
+        
+        # Define o array com os tipos de procedimentos
+        $this->tiposProcedimentos = [
+            [null, null],
+            [1, "Documento"],
+            [2, "Arquivo JPG"],
+            [3, "Arquivo PDF"],
+            [4, "Link"],
+            [5, "Rotina"],
+        ];
+    }
+
+    ###########################################################
+
+    function get_tiposProcedimento() {
+
+        /**
+         * Define o array de procedimentos
+         */
+        return $this->tiposProcedimentos;
+    }
+
     ##########################################################
 
     public function menuPrincipal($subCategoria = null, $idProcedimento = null, $editar = false) {

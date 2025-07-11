@@ -18,6 +18,7 @@ if ($acesso) {
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $servico = new Servico();
+    $procedimento = new Procedimento();
 
     # Verifica a fase do programa
     $fase = get('fase', 'listar');
@@ -38,14 +39,7 @@ if ($acesso) {
     }
 
     # Define os tipos de documentos
-    $arrayTipos = [
-        [null, null],
-        [1, "Documento"],
-        [2, "Arquivo JPG"],
-        [3, "Arquivo PDF"],
-        [4, "Link"],
-        [5, "Rotina"],
-    ];
+    $arrayTipos = $procedimento->get_tiposProcedimento();
 
     # Começa uma nova página
     $page = new Page();

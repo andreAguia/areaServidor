@@ -159,7 +159,7 @@ if ($acesso) {
 
         ########################################################    
 
-        case "exibeAnexoDocumento" :
+        case "exibeAnexo" :
             /*
              * Quando o anexo for um documento digitado
              */
@@ -167,7 +167,7 @@ if ($acesso) {
             $grid->abreColuna(12);
 
             $servico = new Servico();
-            $servico->exibeAnexoDocumento($idServicoAnexos);
+            $servico->exibeAnexo($idServicoAnexos);
 
             $grid->fechaColuna();
             break;
@@ -188,12 +188,11 @@ if ($acesso) {
             # Informa a origem
             if (empty($id)) {
                 set_session('voltaServico', "servicos.php");
+                loadPage("cadastroServico.php");
             } else {
                 set_session('voltaServico', "servicos.php?fase=exibeServico&id={$id}");
+                loadPage("cadastroServico.php?fase=editar&id={$id}");
             }
-
-            # Vai para página de serviço
-            loadPage("cadastroServico.php?fase=editar&id={$id}");
 
             $grid->fechaColuna();
             break;
