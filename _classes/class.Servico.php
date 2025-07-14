@@ -23,6 +23,79 @@ class Servico {
 
     ###########################################################
 
+    public function exibeMenu() {
+
+        # Limita o tamanho da tela
+        $grid = new Grid();
+        $grid->abreColuna(12);
+
+        # Titulo
+//        $top = new TitleBar("Serviços da GRH");
+//        $top->show();
+        tituloTable("Serviços da GRH");
+        br();
+
+        # Variaveis
+        $categoria = null;
+
+        # Limita o tamanho da tela
+        $grid->fechaColuna();
+
+        $grid->abreColuna(12, 6, 4);
+
+        # Pega as Categorias
+        $select = "SELECT categoria,
+                              nome,
+                              idServico
+                         FROM tbservico
+                     ORDER BY categoria, nome";
+
+        $intra = new Intra();
+        $row = $intra->select($select);
+
+        # Monta os quadros sendo um para cada categoria
+        foreach ($row as $item) {
+            if ($item['categoria'] <> $categoria) {
+
+                if (!is_null($categoria)) {
+                    # Finalisa o painel anterior
+                    echo "</ul>";
+                    $painel1->fecha();
+                }
+
+                # Atualiza a variável de categoria
+                $categoria = $item['categoria'];
+
+                # Inicia o painel
+                $painel1 = new Callout('primary');
+                $painel1->set_title($item['categoria']);
+                $painel1->abre();
+
+                p(bold(maiuscula($item['categoria'])), 'servicoCategoria');
+                hr('documentacao');
+
+                echo "<ul>";
+            }
+
+            echo "<li>";
+
+            $link = new Link($item['nome'], "servicos.php?fase=exibeServico&id=" . $item['idServico']);
+            $link->set_id('servicoLink');
+            $link->show();
+
+            echo "</li>";
+        }
+
+        # Fecha o último painel
+        echo "</ul>";
+        $painel1->fecha();
+
+        $grid->fechaColuna();
+        $grid->fechaGrid();
+    }
+
+    ###########################################################
+
     public function get_dados($id = null) {
         /**
          * Retorna um array com todas as informações
@@ -211,7 +284,7 @@ class Servico {
                 aguarde("Carregando ...");
                 loadPage($dados["link"]);
             }
-            
+
             # Se for rotina
             if ($dados['tipo'] == 5) {
 

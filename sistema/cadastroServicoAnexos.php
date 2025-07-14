@@ -78,16 +78,19 @@ if ($acesso) {
         }
     }
 
-    $selectListar .= " ELSE '' ";
-
-    $selectListar .= "     END,
-                           visibilidade                                     
+    $selectListar .= "     ELSE '' 
+                           END,
+                           CASE
+                              WHEN visibilidade = 's' THEN 'Sim'
+                              WHEN visibilidade = 'n' THEN 'Não'
+                              ELSE '---'
+                           END                                    
                       FROM tbservicoanexos 
                      WHERE (categoria LIKE '%{$parametro}%' OR titulo LIKE '%{$parametro}%')
                        AND idServico = {$idServico}
                   ORDER BY categoria, numOrdem, titulo";
 
-    $objeto->set_selectLista("$selectListar&idServico={$idServico}");
+    $objeto->set_selectLista($selectListar);
 
     # select do edita
     $objeto->set_selectEdita("SELECT categoria,
@@ -159,9 +162,8 @@ if ($acesso) {
         array('linha' => 1,
             'nome' => 'visibilidade',
             'label' => 'Visivel:',
-            'tipo' => 'combo',
+            'tipo' => 'simnao3',
             'required' => true,
-            'array' => array(array(1, "Sim"), array(2, "Não")),
             'col' => 2,
             'size' => 15),
         array('linha' => 1,

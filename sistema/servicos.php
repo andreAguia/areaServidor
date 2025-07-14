@@ -33,8 +33,7 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    AreaServidor::cabecalho();
-
+    #AreaServidor::cabecalho();
     # Limita o tamanho da tela
     $grid = new Grid();
 
@@ -49,6 +48,9 @@ if ($acesso) {
              */
 
             $grid->abreColuna(12);
+            
+            $servico = new Servico();
+            $servico->exibeMenu();
 
             if (Verifica::acesso($idUsuario, 1)) {
 
@@ -56,69 +58,16 @@ if ($acesso) {
                 $menu = new MenuBar();
 
                 # Incluir
-                $linkEditar = new Link("Incluir", "?fase=editaServico");
-                $linkEditar->set_class('button');
-                $menu->add_link($linkEditar, "right");
+                $linkEditar = new Link("Editar Serviços", "?fase=editaServico");
+                #$linkEditar->set_class('button');
+                $menu->add_link($linkEditar, "left");
 
                 $menu->show();
             } else {
                 br();
             }
 
-            # Titulo
-            $top = new TitleBar("Serviços da GRH");
-            $top->show();
-            br();
-
-            # Limita o tamanho da tela
-            $grid->fechaColuna();
-
-            $grid->abreColuna(12, 6, 4);
-
-            # Pega as Categorias
-            $select = "SELECT categoria,
-                              nome,
-                              idServico
-                         FROM tbservico
-                     ORDER BY categoria, nome";
-
-            $row = $intra->select($select);
-
-            # Monta os quadros sendo um para cada categoria
-            foreach ($row as $item) {
-                if ($item['categoria'] <> $categoria) {
-
-                    if (!is_null($categoria)) {
-                        # Finalisa o painel anterior
-                        echo "</ul>";
-                        $painel1->fecha();
-                    }
-
-                    # Atualiza a variável de categoria
-                    $categoria = $item['categoria'];
-
-                    # Inicia o painel
-                    $painel1 = new Callout('primary');
-                    $painel1->set_title($item['categoria']);
-                    $painel1->abre();
-                    p(bold(maiuscula($item['categoria'])), 'servicoCategoria');
-                    hr('documentacao');
-
-                    echo "<ul>";
-                }
-
-                echo "<li>";
-
-                $link = new Link($item['nome'], "?fase=exibeServico&id=" . $item['idServico']);
-                $link->set_id('servicoLink');
-                $link->show();
-
-                echo "</li>";
-            }
-
-            # Fecha o último painel
-            echo "</ul>";
-            $painel1->fecha();
+            
 
             $grid->fechaColuna();
             break;

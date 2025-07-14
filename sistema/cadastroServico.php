@@ -49,7 +49,7 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    AreaServidor::cabecalho();
+    #AreaServidor::cabecalho();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -59,7 +59,7 @@ if ($acesso) {
     $objeto->set_nome('Serviço');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('servicos.php');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
@@ -87,6 +87,7 @@ if ($acesso) {
     # Caminhos
     if (empty($voltaServico)) {
         $objeto->set_linkListar('?fase=listar');
+        $objeto->set_voltarForm('?fase=listar');
     } else {
         $objeto->set_voltarForm($voltaServico);
         $objeto->set_linkListar($voltaServico);
@@ -184,16 +185,7 @@ if ($acesso) {
 
     # Log
     $objeto->set_idUsuario($idUsuario);
-
-    # Ver os serviços
-    $linkProc = new Link("Serviços", "../../areaServidor/sistema/servicos.php");
-    $linkProc->set_class('button');
-    $linkProc->set_title('Acessa a área de procedimentos');
-    $linkProc->set_target("_blank");
-
-    # array de botões    
-    $objeto->set_botaoListarExtra([$linkProc]);
-
+    
     ################################################################
     switch ($fase) {
         case "" :

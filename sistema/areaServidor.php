@@ -101,6 +101,10 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         ['Geral', 'Aniversariantes', 'aniversariantes']
     ];
 
+    if (Verifica::acesso($idUsuario, 1)) {
+        array_push($array, ['Geral', 'Serviços da GRH', 'exibeServicos']);
+    }
+
     # Retira o menu de dados do servidor para quando o usuário for bolsista
     if ($perfilTipo <> "Outros") {
         array_push($array, ['Dados do Servidor', 'Histórico de Férias', 'historicoFerias', 'Exibe o Histórico de Férias do Servidor']);
@@ -204,10 +208,10 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $grid2->abreColuna(12, 12, 6);
 
             AreaServidor::moduloSistemasInternos($idUsuario);
-            
+
             $grid1->fechaColuna();
             $grid2->abreColuna(12);
-            
+
             AreaServidor::moduloSistemasExternos($idUsuario);
 
             $grid1->fechaColuna();
@@ -903,6 +907,9 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             break;
 
 ##################################################################
+        case "exibeServicos":
+            iframe("servicos.php");
+            break;
     }
 
     $grid1->fechaColuna();
