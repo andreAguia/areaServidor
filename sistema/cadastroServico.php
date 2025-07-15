@@ -49,7 +49,10 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    #AreaServidor::cabecalho();
+    $esconde = get_session("escondeCabecalho"); // Esconde quando for da area do Servidor e exibe quando for no sistema de rh
+    if (empty($esconde) OR !$esconde) {
+        AreaServidor::cabecalho();
+    }
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();

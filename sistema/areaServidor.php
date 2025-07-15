@@ -908,6 +908,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
 ##################################################################
         case "exibeServicos":
+            set_session("escondeCabecalho", true);
             iframe("servicos.php");
             break;
     }

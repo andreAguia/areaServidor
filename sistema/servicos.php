@@ -33,7 +33,12 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    #AreaServidor::cabecalho();
+    $esconde = get_session("escondeCabecalho"); // Esconde quando for da area do Servidor e exibe quando for no sistema de rh
+    if (empty($esconde) OR !$esconde) {
+        AreaServidor::cabecalho();
+        br();
+    }
+
     # Limita o tamanho da tela
     $grid = new Grid();
 
@@ -48,7 +53,7 @@ if ($acesso) {
              */
 
             $grid->abreColuna(12);
-            
+
             $servico = new Servico();
             $servico->exibeMenu();
 
@@ -57,17 +62,13 @@ if ($acesso) {
                 # Cria um menu
                 $menu = new MenuBar();
 
-                # Incluir
+                # Editar
                 $linkEditar = new Link("Editar Serviços", "?fase=editaServico");
                 #$linkEditar->set_class('button');
                 $menu->add_link($linkEditar, "left");
 
                 $menu->show();
-            } else {
-                br();
             }
-
-            
 
             $grid->fechaColuna();
             break;
@@ -92,7 +93,12 @@ if ($acesso) {
 
             if (Verifica::acesso($idUsuario, 1)) {
                 # Editar
-                $linkEditar = new Link("Editar", "?fase=editaServico&id={$id}");
+                $linkEditar = new Link("Editar Serviço", "?fase=editaServico&id={$id}");
+                $linkEditar->set_class('button');
+                $menu->add_link($linkEditar, "right");
+
+                # Editar Anexos
+                $linkEditar = new Link("Editar Anexos", "?fase=editaAnexo&id={$id}");
                 $linkEditar->set_class('button');
                 $menu->add_link($linkEditar, "right");
             }
@@ -142,6 +148,31 @@ if ($acesso) {
                 set_session('voltaServico', "servicos.php?fase=exibeServico&id={$id}");
                 loadPage("cadastroServico.php?fase=editar&id={$id}");
             }
+
+            $grid->fechaColuna();
+            break;
+
+        ########################################################    
+
+        case "editaAnexo" :
+            /*
+             * Edita Serviço
+             */
+
+            $grid->abreColuna(12);
+
+            # Exibe o aguarde
+            br(8);
+            aguarde("Carregando");
+
+            # Define a volta
+            set_session('voltaServico', "servicos.php?fase=exibeServico&id={$id}");
+
+            # Define o anexo de qual serviço está sendo manipulado
+            set_session('idServico', $id);
+
+            # Vai para a página
+            loadPage("cadastroServicoAnexos.php");
 
             $grid->fechaColuna();
             break;

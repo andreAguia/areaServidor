@@ -22,11 +22,16 @@ if ($acesso) {
 
     # Verifica a fase do programa
     $fase = get('fase', 'listar');
+    
+    # Define o link da volta
+    $voltaServico = get_session("voltaServico",'?fase=listar');
 
     # Pega o id (se tiver)
     $id = soNumeros(get('id'));
-    $idServico = soNumeros(get('idServico'));
     
+    # Pega o id do serviço
+    $idServico = get_session('idServico');
+        
     # Pega os dados desse serviço
     $dados = $servico->get_dados($idServico);
 
@@ -47,7 +52,10 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    AreaServidor::cabecalho();
+    $esconde = get_session("escondeCabecalho"); // Esconde quando for da area do Servidor e exibe quando for no sistema de rh
+    if (empty($esconde) OR !$esconde) {
+        AreaServidor::cabecalho();
+    }
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -58,7 +66,7 @@ if ($acesso) {
     $objeto->set_subtitulo($dados["nome"]);
     
     # botão de voltar da lista
-    $objeto->set_voltarLista("cadastroServico.php?id={$idServico}");
+    $objeto->set_voltarLista($voltaServico);
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');
@@ -107,10 +115,10 @@ if ($acesso) {
                                WHERE idServicoAnexos = {$id}");
 
     # Caminhos
-    $objeto->set_linkEditar("?fase=editar&idServico={$idServico}");
-    $objeto->set_linkExcluir("?fase=excluir&idServico={$idServico}");
-    $objeto->set_linkGravar("?fase=gravar&idServico={$idServico}");
-    $objeto->set_linkListar("?fase=listar&idServico={$idServico}");
+    $objeto->set_linkEditar("?fase=editar");
+    $objeto->set_linkExcluir("?fase=excluir");
+    $objeto->set_linkGravar("?fase=gravar");
+    $objeto->set_linkListar('?fase=listar');
 
     # Parametros da tabela
     $objeto->set_label(["Id", "Categoria", "Ordem", "Título", "Descrição", "Tipo", "Visibilidade"]);

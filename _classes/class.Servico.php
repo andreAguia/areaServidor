@@ -38,9 +38,7 @@ class Servico {
         # Variaveis
         $categoria = null;
 
-        # Limita o tamanho da tela
         $grid->fechaColuna();
-
         $grid->abreColuna(12, 6, 4);
 
         # Pega as Categorias
@@ -142,9 +140,16 @@ class Servico {
         # Pega os dados desse servico
         $dados = $this->get_dados($id);
 
+        # Limita o tamanho da tela
+        $grid = new Grid();
+        $grid->abreColuna(12);
+
         # Título
         titulotable($dados["nome"]);
         br();
+
+        $grid->fechaColuna();
+        $grid->abreColuna(8);
 
         $div = new Div("divNota");
         $div->abre();
@@ -170,9 +175,14 @@ class Servico {
             }
         }
 
+        $div->fecha();
+        $grid->fechaColuna();
+
         /*
          * Anexos
          */
+
+        $grid->abreColuna(4);
 
         # Carrega os anexos
         $dados2 = $this->get_anexos($id);
@@ -182,6 +192,10 @@ class Servico {
 
         # Verifica se tem algum anexo
         if (count($dados2) > 0) {
+
+            $painel1 = new Callout('success');
+            $painel1->set_title('Anexos');
+            $painel1->abre();
 
             # Menu
             $menu = new Menu("menuProcedimentos");
@@ -193,7 +207,7 @@ class Servico {
                 if ($categoriaAtual <> $valor["categoria"]) {
                     $categoriaAtual = $valor["categoria"];
                     $menu->add_item('titulo', $valor["categoria"], '#', "Categoria " . $valor["categoria"]);
-                    $menu->add_item('br');
+                    #$menu->add_item('br');
                 }
 
                 if (empty($valor["title"])) {
@@ -220,9 +234,11 @@ class Servico {
 
 
             $menu->show();
+            $painel1->fecha();
         }
 
-        $div->fecha();
+        $grid->fechaColuna();
+        $grid->fechaGrid();
     }
 
     ###########################################################
