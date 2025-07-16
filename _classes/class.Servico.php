@@ -288,6 +288,11 @@ class Servico {
         /**
          * Fornece todos os dados da categoria
          */
+        
+        # Limita o tamanho da tela
+        $grid = new Grid();
+        $grid->abreColuna(12);
+        
         # Pega os dados
         $dados = $this->get_anexo($id);
 
@@ -328,6 +333,9 @@ class Servico {
                 $rotina->exibeRotina($dados['idRotina']);
             }
         }
+        
+        $grid->fechaColuna();
+        $grid->fechaGrid();
     }
 
     ###########################################################
