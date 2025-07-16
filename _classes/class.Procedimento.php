@@ -24,8 +24,7 @@ class Procedimento {
             [2, "Arquivo JPG"],
             [3, "Arquivo PDF"],
             [4, "Link"],
-            [5, "Rotina"],
-            [6, "Anexo Serviço"]
+            [5, "Rotina"]
         ];
     }
 
