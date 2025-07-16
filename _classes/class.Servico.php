@@ -23,15 +23,13 @@ class Servico {
 
     ###########################################################
 
-    public function exibeMenu() {
+    public function exibeMenu($idUsuario = null) {
 
         # Limita o tamanho da tela
         $grid = new Grid();
         $grid->abreColuna(12);
 
         # Titulo
-//        $top = new TitleBar("Serviços da GRH");
-//        $top->show();
         tituloTable("Serviços da GRH");
         br();
 
@@ -87,6 +85,29 @@ class Servico {
         # Fecha o último painel
         echo "</ul>";
         $painel1->fecha();
+
+        if (Verifica::acesso($idUsuario, 1)) {
+
+            # Inicia o painel
+            $painel1 = new Callout('success');
+            $painel1->set_title($item['categoria']);
+            $painel1->abre();
+
+            p(bold("CONFIGURAÇÕES"), 'servicoCategoria');
+            hr('documentacao');
+
+            echo "<ul>";
+            echo "<li>";
+
+            $link = new Link("Editar Serviços", "?fase=editaServico");
+            $link->set_id('servicoLink');
+            $link->show();
+
+            echo "</li>";
+            echo "</ul>";
+
+            $painel1->fecha();
+        }
 
         $grid->fechaColuna();
         $grid->fechaGrid();

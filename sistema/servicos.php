@@ -55,20 +55,7 @@ if ($acesso) {
             $grid->abreColuna(12);
 
             $servico = new Servico();
-            $servico->exibeMenu();
-
-            if (Verifica::acesso($idUsuario, 1)) {
-
-                # Cria um menu
-                $menu = new MenuBar();
-
-                # Editar
-                $linkEditar = new Link("Editar Serviços", "?fase=editaServico");
-                #$linkEditar->set_class('button');
-                $menu->add_link($linkEditar, "left");
-
-                $menu->show();
-            }
+            $servico->exibeMenu($idUsuario);           
 
             $grid->fechaColuna();
             break;
