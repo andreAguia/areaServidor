@@ -288,11 +288,6 @@ class Servico {
         /**
          * Fornece todos os dados da categoria
          */
-        
-        # Limita o tamanho da tela
-        $grid = new Grid();
-        $grid->abreColuna(12);
-        
         # Pega os dados
         $dados = $this->get_anexo($id);
 
@@ -300,6 +295,10 @@ class Servico {
 
             # Se for documento
             if ($dados['tipo'] == 1) {
+
+                # Limita o tamanho da tela
+                $grid = new Grid("center");
+                $grid->abreColuna(10);
 
                 # Exibe o titulo
                 p("{$dados['categoria']} / {$dados['titulo']}", "procedimentoPai");
@@ -316,6 +315,9 @@ class Servico {
                 } else {
                     echo $dados['texto'];
                 }
+
+                $grid->fechaColuna();
+                $grid->fechaGrid();
             }
 
             # Se for link
@@ -333,9 +335,6 @@ class Servico {
                 $rotina->exibeRotina($dados['idRotina']);
             }
         }
-        
-        $grid->fechaColuna();
-        $grid->fechaGrid();
     }
 
     ###########################################################
