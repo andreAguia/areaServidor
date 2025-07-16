@@ -712,14 +712,14 @@ p#pDescricao {
  *******************************************/
 
 p#procedimentoPai{
-    font-size: 13px;
+    font-size: 12px;
     padding: 0px;
     margin: 0px;
     text-align: left;
 }
 
 p#procedimentoTitulo{
-    font-size: 20px;
+    font-size: 16px;
     padding: 0px;
     margin: 0px;
     text-align: center;
@@ -740,47 +740,39 @@ hr#procedimento{
 }
 
 div#divNota ul,li{
-    font-size: 13px;
+    font-size: 12px;
 }
 
 div#divNota ul{
-    font-size: 13px;
+    font-size: 12px;
     padding-top: 3px;
 }
 
 div#divNota h1{
-    font-size: 18px;
+    font-size: 15px;
     padding-bottom: 5px;
     padding-top: 3px;
 }
 
 div#divNota h2{
-    font-size: 16px;
+    font-size: 14px;
     padding-bottom: 3px;
     padding-top: 3px;
 }
 
 div#divNota h3{
-    font-size: 14px;
+    font-size: 13px;
     padding-bottom: 2px;
     padding-top: 3px;
 }
 
 div#divNota {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 div#editarProcedimento{
     position: relative;
     float: right;
-}
-
-div#menuSuspensoProcedimentos{
-    display: none;
-    position: absolute;
-    top: 50px;
-    padding: 5px;
-    border:#f0f0f0 thin solid;
 }
 
 /*******************************************
