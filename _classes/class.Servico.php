@@ -239,7 +239,7 @@ class Servico {
 
                 # Documento Digitado e Link
                 if ($valor["tipo"] == 1 OR $valor["tipo"] == 4 OR $valor["tipo"] == 5) {
-                    $menu->add_item('linkWindow', " - " . $valor["titulo"], "?fase=exibeAnexo&idServicoAnexos={$valor['idServicoAnexos']}", $title);
+                    $menu->add_item('linkWindow', " - " . $valor["titulo"], "?fase=exibeAnexo&idServicoAnexos={$valor['idServicoAnexos']}", $valor["descricao"]);
                 }
 
                 # Tipo jpg

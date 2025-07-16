@@ -20,7 +20,7 @@ class Procedimento {
         # Define o array com os tipos de procedimentos
         $this->tiposProcedimentos = [
             [null, null],
-            [1, "Documento"],
+            [1, "Digitado"],
             [2, "Arquivo JPG"],
             [3, "Arquivo PDF"],
             [4, "Link"],
