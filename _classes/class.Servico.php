@@ -253,7 +253,6 @@ class Servico {
                 }
             }
 
-
             $menu->show();
             $painel1->fecha();
         }
