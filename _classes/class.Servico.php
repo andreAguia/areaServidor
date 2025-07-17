@@ -313,7 +313,13 @@ class Servico {
                     p("Não há conteúdo", "center");
                     br(10);
                 } else {
+                    # Div onde vai exibir o procedimento
+                    $div = new Div("divNota");
+                    $div->abre();
+                    
                     echo $dados['texto'];
+                    
+                    $div->fecha();
                 }
 
                 $grid->fechaColuna();
