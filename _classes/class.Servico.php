@@ -301,7 +301,7 @@ class Servico {
                 $grid->abreColuna(10);
 
                 # Exibe o titulo
-                p("{$dados['categoria']} / {$dados['titulo']}", "procedimentoPai");
+                #p("{$dados['categoria']} / {$dados['titulo']}", "procedimentoPai");
                 br();
 
                 p($dados['titulo'], "procedimentoTitulo");
