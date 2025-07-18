@@ -174,12 +174,20 @@ if ($acesso) {
 //            $botao->set_title('Insere o idServidor na tabela do sispatri importada por Gustavo');
 //            #$menu->add_item($botao);
 //            
-            # AuxEducacao
+//            # AuxEducacao
+//            $botao = new BotaoGrafico();
+//            $botao->set_label('Auxílio Educação');
+//            $botao->set_url('?fase=auxEducacao');
+//            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+//            $botao->set_title('Prepara o banco de dados para o cadastro do Aux Educação');
+//            $menu->add_item($botao);
+            
+            # Contas bancárias
             $botao = new BotaoGrafico();
-            $botao->set_label('Auxílio Educação');
-            $botao->set_url('?fase=auxEducacao');
+            $botao->set_label('Contas Bancárias');
+            $botao->set_url('?fase=contasBancarias');
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Prepara o banco de dados para o cadastro do Aux Educação');
+            $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
             $menu->add_item($botao);
 
             $menu->show();
@@ -493,6 +501,18 @@ if ($acesso) {
                 }
             }
             loadPage("?");
+            break;
+
+        ########################################################################################
+
+        case "contasBancarias" :
+            
+            # Botão voltar
+            botaoVoltar("administracao.php?fase=importacao");
+            titulo('Importação de Dados Bancários');
+            
+            br(6);
+            construcao("Rotina em desenvolvimento.");
             break;
 
 ########################################################################################
