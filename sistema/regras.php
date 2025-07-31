@@ -44,19 +44,19 @@ if ($acesso) {
     $area = new AreaServidor();
 
     # Cabeçalho da Página
-    if ($fase <> 'servidoresPermissao'){
-        AreaServidor::cabecalho();
-    }
+//    if ($fase <> 'servidoresPermissao'){
+//        AreaServidor::cabecalho();
+//    }
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
 
     ################################################################
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    $objeto->set_nome('Regras');
+    $objeto->set_nome('Permissões');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+//    $objeto->set_voltarLista('administracao.php');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');

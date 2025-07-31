@@ -46,7 +46,7 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    AreaServidor::cabecalho();
+    #AreaServidor::cabecalho();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -62,7 +62,7 @@ if ($acesso) {
     $objeto->set_nome('Usuários');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    #$objeto->set_voltarLista('administracao.php');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');

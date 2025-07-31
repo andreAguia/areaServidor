@@ -29,26 +29,30 @@ if ($acesso) {
     set_session('idServidor', $idServidor);
 
     # Pega o parametro de pesquisa (se tiver)
-    $parametro = retiraAspas(post('parametro', get_session('parametro', date("Y-m-d"))));
+    $parametroData = retiraAspas(post('parametroData', get_session('parametroData', date("Y-m-d"))));
     $usuarioLog = post('usuarioLog', get_session('usuarioLog'));
     $usuarioIp = post('usuarioIp', get_session('usuarioIp'));
     $idTabela = post('idTabela', get_session('idTabela'));
     $tabela = post('tabela', get_session('tabela'));
     $idServidorPesquisado = post('idServidorPesquisado', get_session('idServidorPesquisado'));
 
-    set_session('parametro', $parametro);
+    set_session('parametroData', $parametroData);
     set_session('usuarioLog', $usuarioLog);
     set_session('usuarioIp', $usuarioIp);
     set_session('idTabela', $idTabela);
     set_session('tabela', $tabela);
     set_session('idServidorPesquisado', $idServidorPesquisado);
+    
+    echo $idServidor;
 
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    AreaServidor::cabecalho();
+    if (!is_null($idServidor)) {
+        AreaServidor::cabecalho();
+    }
 
     # Limita o tamanho da tela
     $grid = new Grid();
@@ -76,23 +80,23 @@ if ($acesso) {
 
             # botão de voltar da lista
             if (is_null($idServidor)) {
-                botaoVoltar('administracao.php');
+                #botaoVoltar('administracao.php');
             } else {
                 botaoVoltar('../../grh/grhSistema/servidorMenu.php');
             }
 
             # Informa o dia da semana
             if (is_null($idServidor)) {
-                p(diaSemana(date_to_php($parametro)), "f18", "center");
+                p(diaSemana(date_to_php($parametroData)), "f18", "center");
             }
 
             # Formulário de Pesquisa
             $form = new Form('?');
 
-            $controle = new Input('parametro', 'date', 'Entre com a data', 1);
+            $controle = new Input('parametroData', 'date', 'Entre com a data', 1);
             $controle->set_size(30);
             $controle->set_title('Insira a data');
-            $controle->set_valor($parametro);
+            $controle->set_valor($parametroData);
             $controle->set_autofocus(true);
             $controle->set_onChange('formPadrao.submit();');
             $controle->set_linha(1);
@@ -110,7 +114,7 @@ if ($acesso) {
                  WHERE ';
 
             if (is_null($idServidor)) {
-                $select .= ' date(data) = "' . $parametro . '"';
+                $select .= ' date(data) = "' . $parametroData . '"';
             } else {
                 $select .= ' tblog.idServidor = ' . $idServidor;
             }
@@ -140,7 +144,7 @@ if ($acesso) {
                  WHERE ';
 
             if (is_null($idServidor)) {
-                $select2 .= ' date(data) = "' . $parametro . '"';
+                $select2 .= ' date(data) = "' . $parametroData . '"';
             } else {
                 $select2 .= ' idServidor = ' . $idServidor;
             }
@@ -169,7 +173,7 @@ if ($acesso) {
                  WHERE ';
 
             if (is_null($idServidor)) {
-                $select3 .= ' date(data) = "' . $parametro . '"';
+                $select3 .= ' date(data) = "' . $parametroData . '"';
             } else {
                 $select3 .= ' idServidor = ' . $idServidor;
             }
@@ -198,7 +202,7 @@ if ($acesso) {
                  WHERE ';
 
             if (is_null($idServidor)) {
-                $select4 .= ' date(data) = "' . $parametro . '"';
+                $select4 .= ' date(data) = "' . $parametroData . '"';
             } else {
                 $select4 .= ' idServidor = ' . $idServidor;
             }
@@ -221,13 +225,13 @@ if ($acesso) {
             $form->add_item($controle);
 
             # Pega o id Servidor
-            $result5 = $intra->select('SELECT DISTINCT idServidor,
+            $result5 = $intra->select("SELECT DISTINCT idServidor,
                                         tbpessoa.nome
                                    FROM tblog JOIN uenf_grh.tbservidor USING (idServidor)
                                               JOIN uenf_grh.tbpessoa USING (idPessoa)
-                                  WHERE date(data) = "' . $parametro . '"
+                                  WHERE date(data) = '{$parametroData}`
                                     AND idServidor IS NOT null  
-                               ORDER BY 2');
+                               ORDER BY 2");
             array_unshift($result5, array(null, '-- Todos --'));
 
             $controle = new Input('idServidorPesquisado', 'combo', 'Servidor', 1);
@@ -260,7 +264,7 @@ if ($acesso) {
 
             # Quando for histórico de um único servidor
             if (is_null($idServidor)) {
-                $select .= ' date(data) = "' . $parametro . '"';
+                $select .= ' date(data) = "' . $parametroData . '"';
             } else {
                 $select .= ' idServidor = ' . $idServidor;
             }

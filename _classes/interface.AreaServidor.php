@@ -87,6 +87,98 @@ class AreaServidor {
     #################################################################
 
     /**
+     * Método menuPrincipal
+     * Exibe o manu principal
+     * 
+     * @param    string $idUsuario -> Usuário logado
+     */
+    public static function menuPrincipal($fase = null, $idUsuario = null) {
+
+        # Conecta ao Banco de Dados
+        $intra = new Intra();
+        $pessoal = new Pessoal();
+
+        # Pega informaćões do usuário logado
+        $idServidor = $intra->get_idServidor($idUsuario);
+        $idPerfil = $pessoal->get_idPerfil($idServidor);
+        $perfilTipo = $pessoal->get_perfilTipo($idPerfil);
+
+        # Array do menu
+        $array = [
+            ['Geral', 'Inicial', 'inicial'],
+            ['Geral', 'Calendário de Pagamento', 'pgto'],
+            ['Geral', 'Aniversariantes', 'aniversariantes']
+        ];
+
+        # Somente admin
+        if (Verifica::acesso($idUsuario, 1)) {
+            array_push($array, ['Geral', 'Serviços da GRH', 'exibeServicos']);
+        }
+
+        # Retira o menu de dados do servidor para quando o usuário for bolsista
+        if ($perfilTipo <> "Outros") {
+            array_push($array, ['Dados do Servidor', 'Histórico de Férias', 'historicoFerias', 'Exibe o Histórico de Férias do Servidor']);
+            array_push($array, ['Dados do Servidor', 'Histórico de Afastamentos', 'afastamentoGeral']);
+            array_push($array, ['Dados do Servidor', 'Histórico de Lic.Prêmio', 'historicoPremio']);
+        }
+
+        # Acrescenta outros itens
+        array_push($array, ['Listagem de Servidores', 'por Nome', 'nome']);
+        array_push($array, ['Listagem de Servidores', 'em Férias no seu Setor', 'feriasSetor']);
+        array_push($array, ['Listagem de Servidores', 'por Cargo em Comissão', 'cargoComissao']);
+        array_push($array, ['Listagem de Servidores', 'por Cargo Efetivo', 'servidorCargo']);
+        array_push($array, ['Listagem de Servidores', 'por Lotação', 'porLotacao']);
+        
+        # Acesso aos contatos dos servidores
+        if (Verifica::acesso($idUsuario, [1, 11])) {
+            array_push($array, ['Listagem de Servidores', 'com E-mails e Telefones', 'contatos']);
+        }
+
+        # Acesso aos contatos dos servidores com cpf
+        if (Verifica::acesso($idUsuario, [1, 17])) {
+            array_push($array, ['Listagem de Servidores', 'com CPF e Chefia Imediata', 'comCpf']);
+        }
+
+        # Somente Admin
+        if (Verifica::acesso($idUsuario, 1)) {
+            array_push($array, ['Gestão de Usuários', 'Cadastro de Usuários', 'usuarios']);
+            array_push($array, ['Gestão de Usuários', 'Permissões de Acesso', 'regras']);
+            array_push($array, ['Gestão de Usuários', 'Histórico de Acesso', 'historico']);
+        }
+
+        # Zera o agruppamento para a rotina que monta o menu
+        $agrupamento = "";
+
+        # Menu
+        titulo("Menu");
+
+        $menu = new Menu();
+        #$menu->add_item('titulo', 'Menu');
+
+        foreach ($array as $item) {
+            # Verifica se mudou o agrupamento
+            if ($agrupamento <> $item[0]) {
+                $menu->add_item('titulo1', $item[0]);
+                $agrupamento = $item[0];
+            }
+
+            # Adiciona o link verificando se é o ativo
+            if ($fase == $item[2]) {
+                $menu->add_item('link', "<b>| {$item[1]} |</b>", "?fase={$item[2]}", isset($item[3]) ? $item[3] : null, null, isset($item[4]) ? $item[4] : null);
+            } else {
+                $menu->add_item('link', $item[1], "?fase={$item[2]}", isset($item[3]) ? $item[3] : null, null, isset($item[4]) ? $item[4] : null);
+            }
+            #add_item($tipo = 'link', $label = null, $url = '#', $title = null, $accessKey = null, $target = null)
+        }
+
+        $menu->show();
+        
+        # Exibe 
+    }
+
+    ###########################################################
+
+    /**
      * Método moduloSistemasInternos
      * 
      * Exibe o menu de Sistemas Internos
@@ -145,7 +237,7 @@ class AreaServidor {
         # Classes
         $pessoal = new Pessoal();
         $intra = new Intra();
-        
+
         # Inicia o menu
         $menu = new MenuGrafico(3);
         $menu->set_espacoEntreLink(true);
@@ -416,7 +508,7 @@ class AreaServidor {
         $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
         $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
         $menu->add_item($botao);
-        
+
         # Cadastro de Serviços
         $botao = new BotaoGrafico();
         $botao->set_label('Serviços');
@@ -459,7 +551,7 @@ class AreaServidor {
         $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
         $botao->set_url('documentacao.php');
         $menu->add_item($botao);
-        
+
         # Controle de procedimentos
         $botao = new BotaoGrafico();
         $botao->set_label('Procedimentos');
@@ -477,7 +569,7 @@ class AreaServidor {
         $botao->set_imagem(PASTA_FIGURAS . 'rotina.jpg', $tamanhoImage, $tamanhoImage);
         $botao->set_title('Sistema de controle de manuais de procedimentos');
         $menu->add_item($botao);
-        
+
         # Variáveis de Configuração
         $botao = new BotaoGrafico();
         $botao->set_label('Tarefas');
