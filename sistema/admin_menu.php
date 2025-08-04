@@ -72,33 +72,30 @@ if (Verifica::acesso($idUsuario, 1)) {
 
         ##################################################################
 
-        case "usuarios":
-            iframe("admin_usuarios.php");
-            break;
-
-        ##################################################################
-
-        case "regras":
-            iframe("regras.php");
-            break;
-
-        ##################################################################
-
-        case "historico":
-            set_session("idServidor");
-            iframe("admin_historico.php");
-            break;
-
-        ##################################################################
-
         case "menuSistema":
             # Título
-            tituloTable('Sistema');
+            tituloTable('Gestão do Sistema');
             $tamanhoImage = 64;
             br();
 
             # Inicia o menu
             $menu = new MenuGrafico(4);
+
+            # Cadastro de Atualizações
+            $botao = new BotaoGrafico();
+            $botao->set_label('Atualizações');
+            $botao->set_url('admin_atualizacao.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'atualizacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Gerencia o cadastro de atualizações');
+            $menu->add_item($botao);
+
+            # Cadastro de Mensagens
+            $botao = new BotaoGrafico();
+            $botao->set_label('Mensagens');
+            $botao->set_title('Cadastro de Mensagens');
+            $botao->set_imagem(PASTA_FIGURAS . 'mensagem.jpg', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_mensagem.php');
+            $menu->add_item($botao);
 
             # Variáveis de Configuração
             $botao = new BotaoGrafico();
@@ -110,27 +107,79 @@ if (Verifica::acesso($idUsuario, 1)) {
 
             # Documentação
             $botao = new BotaoGrafico();
-            $botao->set_label('Documentação');
+            $botao->set_label('Documentação<br/>Problemas');
             #$botao->set_target('blank');
             $botao->set_title('Documentação do Sistema');
             $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
             $botao->set_url('admin_documentacao.php');
             $menu->add_item($botao);
 
-            # Cadastro de Atualizações
+            $menu->show();
+            break;
+
+        ##################################################################
+
+        case "menuProcedimento":
+            # Título
+            tituloTable('Procedimentos');
+            $tamanhoImage = 64;
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(4);
+
+            # Cadastro de Serviços
             $botao = new BotaoGrafico();
-            $botao->set_label('Atualizações');
-            $botao->set_url('atualizacao.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'atualizacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Gerencia o cadastro de atualizações');
+            $botao->set_label('Serviços');
+            #$botao->set_target('blank');
+            $botao->set_title('Cadastro de Serviços');
+            $botao->set_imagem(PASTA_FIGURAS . 'lista.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url("cadastroServico.php");
             $menu->add_item($botao);
 
-            # Cadastro de Mensagens
+            # Controle de procedimentos
             $botao = new BotaoGrafico();
-            $botao->set_label('Mensagens');
-            $botao->set_title('Cadastro de Mensagens');
-            $botao->set_imagem(PASTA_FIGURAS . 'mensagem.jpg', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('mensagem.php');
+            $botao->set_label('Procedimentos');
+            $botao->set_url('procedimentos.php');
+            #$botao->set_url('pastaDigitalizada.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'procedimentos.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de procedimentos');
+            $menu->add_item($botao);
+
+            # Controle de Rotinas 2
+            $botao = new BotaoGrafico();
+            $botao->set_label('Rotinas');
+            $botao->set_url('admin_rotina.php');
+            #$botao->set_url('pastaDigitalizada.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'rotina.jpg', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de controle de manuais de procedimentos');
+            $menu->add_item($botao);
+
+            # Menu de Documentos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Menu de Documentos');
+            #$botao->set_target('blank');
+            $botao->set_title('Menu de Documentos do sistema GRH');
+            $botao->set_imagem(PASTA_FIGURAS . 'menu.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url("../../grh/grhSistema/cadastroMenuDocumentos.php");
+            $menu->add_item($botao);
+
+            # Tarefas
+            $botao = new BotaoGrafico();
+            $botao->set_label('Tarefas');
+            $botao->set_url('projeto.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'atribuicoes.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de gestão de tarefas');
+            $botao->set_target("_blank");
+            $menu->add_item($botao);
+
+            # Notas
+            $botao = new BotaoGrafico();
+            $botao->set_label('Notas');
+            $botao->set_url('projetoNota.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de notas dos sistemas');
+            $botao->set_target("_blank");
             $menu->add_item($botao);
 
             $menu->show();

@@ -42,8 +42,8 @@ if ($acesso) {
     $page->set_jscript('<script>CKEDITOR.replace("procedimento");</script>');
     $page->iniciaPagina();
 
-    # Cabeçalho da Página
-    AreaServidor::cabecalho();
+//    # Cabeçalho da Página
+//    AreaServidor::cabecalho();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -63,7 +63,7 @@ if ($acesso) {
     $objeto->set_subtitulo("{$rotina->get_descricaoRotina($idRotina)}");
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('rotina.php');
+    $objeto->set_voltarLista('admin_rotina.php');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
@@ -111,9 +111,6 @@ if ($acesso) {
 
     # Nome do campo id
     $objeto->set_idCampo('idRotinaItens');
-
-    # Tipo de label do formulário
-    $objeto->set_formlabelTipo(1);
 
     # Campos para o formulario
     $objeto->set_campos(array(
@@ -169,7 +166,7 @@ if ($acesso) {
     ));
 
     # Cargos Ativos
-    $botao = new Button("Editar Rotina Principal", "rotina.php?fase=editar&id={$idRotina}");
+    $botao = new Button("Editar Rotina Principal", "admin_rotina.php?fase=editar&id={$idRotina}");
     $botao->set_title("Edita os dados da tarefa");
 
     $objeto->set_botaoListarExtra([$botao]);

@@ -26,12 +26,8 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro')))         # Se o parametro não vier por post (for nulo)
-        $parametro = retiraAspas(get_session('sessionParametro'));# passa o parametro da session para a variavel parametro retirando as aspas
-    else {
-        $parametro = post('parametro');        # Se vier por post, retira as aspas e passa para a variavel parametro			
-        set_session('sessionParametro', $parametro);      # transfere para a session para poder recuperá-lo depois
-    }
+    $parametro = post('parametro', retiraAspas(get_session('sessionParametro')));
+    set_session('sessionParametro', $parametro);
 
     # Ordem da tabela
     $orderCampo = get('orderCampo');
@@ -42,7 +38,7 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    AreaServidor::cabecalho();
+    #AreaServidor::cabecalho();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -52,7 +48,7 @@ if ($acesso) {
     $objeto->set_nome('Mensagem');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('admin_menu.php?fase=menuSistema');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');

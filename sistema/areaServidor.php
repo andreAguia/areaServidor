@@ -851,6 +851,12 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             break;
 
         ##################################################################
+
+        case "menuProcedimento":
+            iframe("admin_menu.php?fase=menuProcedimento");
+            break;
+
+        ##################################################################
     }
 
     $grid1->fechaColuna();

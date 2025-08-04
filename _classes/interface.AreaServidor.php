@@ -142,7 +142,8 @@ class AreaServidor {
         # Somente Admin
         if (Verifica::acesso($idUsuario, 1)) {
             array_push($array, ['Administração', 'Gestão de Usuários', 'menuUsuario']);
-            array_push($array, ['Administração', 'Sistema', 'menuSistema']);
+            array_push($array, ['Administração', 'Gestão do Sistema', 'menuSistema']);
+            array_push($array, ['Administração', 'Procedimentos', 'menuProcedimento']);
         }
 
         # Zera o agruppamento para a rotina que monta o menu

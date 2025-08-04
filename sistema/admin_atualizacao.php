@@ -26,12 +26,8 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro')))
-        $parametro = retiraAspas(get_session('sessionParametro'));
-    else {
-        $parametro = post('parametro');
-        set_session('sessionParametro', $parametro);
-    }
+    $parametro = post('parametro', retiraAspas(get_session('sessionParametro')));
+    set_session('sessionParametro', $parametro);
 
     # Pega as versões desse ano
     $selectVersao = "SELECT versao FROM tbatualizacao WHERE YEAR(data) = YEAR(NOW()) ORDER BY data desc, versao desc";
@@ -52,7 +48,7 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    AreaServidor::cabecalho();
+    #AreaServidor::cabecalho();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -62,7 +58,7 @@ if ($acesso) {
     $objeto->set_nome('Atualizações');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('admin_menu.php?fase=menuSistema');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar nos campos Versão e/ou Data:');
@@ -76,6 +72,7 @@ if ($acesso) {
                                 FROM tbatualizacao
                                WHERE versao LIKE '%{$parametro}%'
                                   OR data LIKE '%{$parametro}%'
+                                  OR alteracoes LIKE '%{$parametro}%'    
                             ORDER BY 1 desc");
 
     # select do edita

@@ -26,21 +26,17 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro'))) {
-        $parametro = retiraAspas(get_session('sessionParametro'));
-    } else {
-        $parametro = post('parametro');
-        set_session('sessionParametro', $parametro);
-    }
+    $parametro = post('parametro', retiraAspas(get_session('sessionParametro')));
+    set_session('sessionParametro', $parametro);
 
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
 
-    # Cabeçalho da Página
-    if ($fase <> "ver") {
-        AreaServidor::cabecalho();
-    }
+//    # Cabeçalho da Página
+//    if ($fase <> "ver") {
+//        AreaServidor::cabecalho();
+//    }
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -50,8 +46,8 @@ if ($acesso) {
     $objeto->set_nome('Rotina');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
-
+    $objeto->set_voltarLista('admin_menu.php?fase=menuProcedimento');
+    
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
     $objeto->set_parametroValue($parametro);
@@ -117,9 +113,6 @@ if ($acesso) {
     # Nome do campo id
     $objeto->set_idCampo('idRotina');
 
-    # Tipo de label do formulário
-    $objeto->set_formlabelTipo(1);
-
     # Campos para o formulario
     $objeto->set_campos(array(
         array('nome' => 'categoria',
@@ -175,7 +168,7 @@ if ($acesso) {
                 loadPage("?fase=editar");
             } else {
                 set_session('idRotina', $id);
-                loadPage("rotinaItens.php");
+                loadPage("admin_rotinaItens.php");
             }
             break;
 

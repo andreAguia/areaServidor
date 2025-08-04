@@ -86,28 +86,28 @@ class Servico {
         echo "</ul>";
         $painel1->fecha();
 
-        if (Verifica::acesso($idUsuario, 1)) {
-
-            # Inicia o painel
-            $painel1 = new Callout('success');
-            $painel1->set_title($item['categoria']);
-            $painel1->abre();
-
-            p(bold("CONFIGURAÇÕES"), 'servicoCategoria');
-            hr('documentacao');
-
-            echo "<ul>";
-            echo "<li>";
-
-            $link = new Link("Editar Serviços", "?fase=editaServico");
-            $link->set_id('servicoLink');
-            $link->show();
-
-            echo "</li>";
-            echo "</ul>";
-
-            $painel1->fecha();
-        }
+//        if (Verifica::acesso($idUsuario, 1)) {
+//
+//            # Inicia o painel
+//            $painel1 = new Callout('success');
+//            $painel1->set_title($item['categoria']);
+//            $painel1->abre();
+//
+//            p(bold("CONFIGURAÇÕES"), 'servicoCategoria');
+//            hr('documentacao');
+//
+//            echo "<ul>";
+//            echo "<li>";
+//
+//            $link = new Link("Editar Serviços", "?fase=editaServico");
+//            $link->set_id('servicoLink');
+//            $link->show();
+//
+//            echo "</li>";
+//            echo "</ul>";
+//
+//            $painel1->fecha();
+//        }
 
         $grid->fechaColuna();
         $grid->fechaGrid();
