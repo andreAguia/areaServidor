@@ -141,9 +141,8 @@ class AreaServidor {
 
         # Somente Admin
         if (Verifica::acesso($idUsuario, 1)) {
-            array_push($array, ['Gestão de Usuários', 'Cadastro de Usuários', 'usuarios']);
-            array_push($array, ['Gestão de Usuários', 'Permissões de Acesso', 'regras']);
-            array_push($array, ['Gestão de Usuários', 'Histórico de Acesso', 'historico']);
+            array_push($array, ['Administração', 'Gestão de Usuários', 'menuUsuario']);
+            array_push($array, ['Administração', 'Sistema', 'menuSistema']);
         }
 
         # Zera o agruppamento para a rotina que monta o menu
@@ -432,23 +431,20 @@ class AreaServidor {
      * 
      * Exibe o menu de Gestão de Usuários
      */
-    private static function moduloUsuarios($idUsuario) {
-
-        $painel = new Callout();
-        $painel->abre();
+    public static function moduloUsuarios($idUsuario) {
 
         # Título
-        titulo('Usuários');
+        tituloTable('Gestão de Usuários');
         $tamanhoImage = 64;
         br();
 
         # Inicia o menu
-        $menu = new MenuGrafico(2);
+        $menu = new MenuGrafico(3);
 
         # Administração de Usuários
         $botao = new BotaoGrafico();
         $botao->set_label('Usuários');
-        $botao->set_url('usuarios.php');
+        $botao->set_url('?fase=usuarios');
         $botao->set_imagem(PASTA_FIGURAS . 'usuarios.png', $tamanhoImage, $tamanhoImage);
         $botao->set_title('Gerencia os Usuários');
         $menu->add_item($botao);
@@ -475,10 +471,9 @@ class AreaServidor {
         $botao->set_title('Cadastro de computadores com acesso ao sistema');
         $botao->set_imagem(PASTA_FIGURAS . 'computador.png', $tamanhoImage, $tamanhoImage);
         $botao->set_url('computador.php');
-        $menu->add_item($botao);
+        #$menu->add_item($botao);
 
         $menu->show();
-        $painel->fecha();
     }
 
     ###########################################################

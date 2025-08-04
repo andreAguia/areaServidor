@@ -23,89 +23,60 @@ if ($acesso) {
     # Verifica a fase do programa
     $fase = get('fase', 'listar');
 
-    # Varifica a Categoria
-    $categoria = get("categoria", get_session('categoria', "Acesso"));
-    set_session('categoria', $categoria);
-
     # pega o id se tiver)
     $id = soNumeros(get('id'));
 
-    # Ordem da tabela
-    $orderCampo = get('orderCampo', 2);
-    $orderTipo = get('order_tipo', 'asc');
+    # Pega o parametro de pesquisa (se tiver)
+    $parametro = post('parametro', retiraAspas(get_session('sessionParametro', "Todos")));
+    set_session('sessionParametro', $parametro);
 
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    AreaServidor::cabecalho();
-
+    #AreaServidor::cabecalho();
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
 
-    if ($fase == "listar") {
-        # Limita o tamanho da tela
-        $grid = new Grid();
-        $grid->abreColuna(12);
+    # Limita o tamanho da tela
+    $grid = new Grid();
+    $grid->abreColuna(12);
 
-        # Botão voltar
-        $linkBotao1 = new Link("Voltar", 'administracao.php');
-        $linkBotao1->set_class('button');
-        $linkBotao1->set_title('Volta para a página anterior');
-        $linkBotao1->set_accessKey('V');
-
-        # Código
-        $linkBotao2 = new Link("Incluir", '?fase=editar');
-        $linkBotao2->set_class('button');
-        $linkBotao2->set_title('Incluir uma nova variavel de configuraçao');
-        $linkBotao2->set_accessKey('I');
-
-        # Cria um menu
-        $menu = new MenuBar();
-        $menu->add_link($linkBotao1, "left");
-        $menu->add_link($linkBotao2, "right");
-        $menu->show();
-
-        $grid->fechaColuna();
-        $grid->fechaGrid();
-    }
+    $grid->fechaColuna();
+    $grid->fechaGrid();
 
     ################################################################
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
-    if (is_null($categoria)) {
-        $objeto->set_nome('Configurações do Sistema');
-    } else {
-        $objeto->set_nome('Configurações do Sistema - ' . $categoria);
-    }
+    $objeto->set_nome('Configurações do Sistema');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('admin_menu.php?fase=menuSistema');
 
-    # ordenação
-    if (is_null($orderCampo)) {
-        $orderCampo = 1;
-    }
-
-    if (is_null($orderTipo)) {
-        $orderTipo = 'asc';
-    }
+    # controle de pesquisa
+    $result2 = $intra->select('SELECT distinct categoria, categoria FROM tbvariaveis ORDER BY 1');
+    array_unshift($result2, "Todos");
+    $objeto->set_parametroLabel('Pesquisar');
+    $objeto->set_parametroValue($parametro);
+    $objeto->set_tipoCampoPesquisa("combo");
+    $objeto->set_arrayPesquisa($result2);
 
     # select da lista
-    $select = 'SELECT categoria,
+    $select = "SELECT categoria,
                       nome,                      
                       comentario,
                       valor,
                       idVariaveis
-                 FROM tbvariaveis';
+                 FROM tbvariaveis";
 
-    if (!is_null($categoria)) {
-        $select .= ' WHERE categoria = "' . $categoria . '" ';
+    if ($parametro <> "Todos") {
+        $select .= " WHERE categoria = '{$parametro}'";
     }
 
-    $select .= ' ORDER BY ' . $orderCampo . ' ' . $orderTipo;
+    $select .= " ORDER BY categoria, nome";
 
     $objeto->set_selectLista($select);
+
     # select do edita
     $objeto->set_selectEdita('SELECT categoria,
                                      nome,                                     
@@ -114,14 +85,7 @@ if ($acesso) {
                                 FROM tbvariaveis
                                WHERE idVariaveis = ' . $id);
 
-    # ordem da lista
-    $objeto->set_orderCampo($orderCampo);
-    $objeto->set_orderTipo($orderTipo);
-    $objeto->set_orderChamador('?fase=listar');
-
     # Caminhos
-    $objeto->set_botaoVoltarLista(false);
-    $objeto->set_botaoIncluir(false);
     $objeto->set_linkEditar('?fase=editar');
     $objeto->set_linkGravar('?fase=gravar');
     $objeto->set_linkListar('?fase=listar');
@@ -129,7 +93,7 @@ if ($acesso) {
 
     # Parametros da tabela
     $objeto->set_label(["Categoria", "Nome", "Comentário", "Valor"]);
-    $objeto->set_width([10,10,50,20]);		
+    $objeto->set_width([10, 10, 50, 20]);
     $objeto->set_align(["center", "left", "left", "left"]);
 
     # Classe do banco de dados
@@ -141,7 +105,7 @@ if ($acesso) {
     # Nome do campo id
     $objeto->set_idCampo('idVariaveis');
 
-    # Pega as etiquetas cadastradas
+    # Pega as categorias cadastradas
     $select = 'SELECT distinct categoria
                  FROM tbvariaveis
                 WHERE categoria is not null
@@ -193,36 +157,7 @@ if ($acesso) {
     switch ($fase) {
         case "" :
         case "listar" :
-            # Divide a página em 2 colunas
-            $grid = new Grid();
-            $grid->abreColuna(2);
-            br();
-
-            $menu = new Menu("menuVertical");
-            $result = $intra->select('SELECT distinct categoria, categoria
-                                              FROM tbvariaveis                                
-                                          ORDER BY 1');
-
-            $menu->add_item('titulo1', "Categoria", "#");
-            foreach ($result as $value) {
-                $menu->add_item('link', $value[0], "?categoria=" . $value[0]);
-                #$botao = new Link($value[0],"?categoria=".$value[0]);
-                #$botao->set_class('button success');
-                #$botao->set_title('Filtra para categoria: '.$value[0]);
-                #$menu[] = $botao;
-            }
-            $menu->show();
-            $objeto->set_botaoListarExtra($menu);
-
-            $grid->fechaColuna();
-
-            ############################################
-            # Área do Sistema
-            $grid->abreColuna(10);
-
             $objeto->listar();
-            $grid->fechaColuna();
-            $grid->fechaGrid();
             break;
 
         case "editar" :

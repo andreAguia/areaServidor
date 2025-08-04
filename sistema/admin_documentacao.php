@@ -21,7 +21,7 @@ if ($acesso) {
 
     # Verifica a fase do programa
     $fase = get('fase');
-    $sistema = get('sistema');
+    $sistema = get('sistema', "Framework");
 
     # Pega od Ids
     $idProcedimento = get('idProcedimento', get_session('idProcedimento'));
@@ -34,82 +34,43 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    AreaServidor::cabecalho();
-
+    #AreaServidor::cabecalho();
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
+
+    # Define os sistemas
+    $sistemas = ["Framework", "Grh", "Área do Servidor"];
 
     # Cria um menu
     $menu1 = new MenuBar("button-group");
 
     # Sair da Área do Servidor
-    $linkVoltar = new Link("Voltar", 'administracao.php');
+    $linkVoltar = new Link("Voltar", 'admin_menu.php?fase=menuSistema');
     $linkVoltar->set_class('button');
     $linkVoltar->set_title('Voltar a página anterior');
     $menu1->add_link($linkVoltar, "left");
 
-    # Procedimentos
-    $linkProcedimento = new Link("Procedimentos", "procedimentoNota.php");
-    $linkProcedimento->set_class('button');
-    $linkProcedimento->set_title('Gerencia as categorias');
-    #$menu1->add_link($linkProcedimento,"right");
+    # Sispemas
+    foreach ($sistemas as $categorias) {
+        $link = new Link($categorias, "?fase=sistema&sistema={$categorias}");
+
+        if ($sistema == $categorias) {
+            $link->set_class('button');
+        } else {
+            $link->set_class('hollow button');
+        }
+        $link->set_title('Gerencia as categorias');
+        $menu1->add_link($link, "right");
+    }
 
     $menu1->show();
 
-    # Título
-    titulo("Documentação");
-
-    # Define o grid
-    $col1P = 0;
-    $col1M = 4;
-    $col1L = 3;
-
-    $col2P = 12 - $col1P;
-    $col2M = 12 - $col1M;
-    $col2L = 12 - $col1L;
-
-    # Limita o tamanho da tela
-    $grid = new Grid();
-    $grid->abreColuna($col1P, $col1M, $col1L);
-    br();
-
-    # Menu Principal
-    $menu = new Menu("menuProcedimentos");
-    $grupoarquivo = null;
-    $sistemas = ["Framework", "Grh", "Área do Servidor"];
-
-    $menu->add_item('titulo', 'Sistemas', '#', 'Acessa a documentação do sistema.');
-
-    # Percorre os sistemas
-    foreach ($sistemas as $categorias) {
-        $menu->add_item('link', '📁 ' . $categorias, '?fase=sistema&sistema=' . $categorias, 'Acessa a documentação do sistema ' . $categorias);
-    }
-
-    $menu->show();
-    $grid->fechaColuna();
-
-    # Define a coluna de Conteúdo
-    $grid->abreColuna($col2P, $col2M, $col2L);
-
     switch ($fase) {
-
-        #############################################################################################################################
-        #   Inicial
-        ############################################################################################################################# 
-
-        case "" :
-
-            break;
-
-        ############################################################################
 
         case "sistema" :
 
-            $callout = new Callout();
-            $callout->abre();
-
-            tituloTable($sistema);
+            tituloTable("Documentação", null, $sistema);
 
             $grid = new Grid();
             $grid->abreColuna(6);
@@ -221,8 +182,6 @@ if ($acesso) {
 
             $grid->fechaColuna();
             $grid->fechaGrid();
-
-            $callout->fecha();
             break;
 
         ############################################################################

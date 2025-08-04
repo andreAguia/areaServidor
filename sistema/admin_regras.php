@@ -26,11 +26,11 @@ if ($acesso) {
     $id = soNumeros(get('id'));
     
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro'))) {     # Se o parametro n?o vier por post (for nulo)
+    if (is_null(post('parametro'))) {
         $parametro = retiraAspas(get_session('sessionParametro'));
-    } else {  # passa o parametro da session para a variavel parametro retirando as aspas
-        $parametro = post('parametro');                # Se vier por post, retira as aspas e passa para a variavel parametro
-        set_session('sessionParametro', $parametro);    # transfere para a session para poder recuperá-lo depois
+    } else {
+        $parametro = post('parametro');
+        set_session('sessionParametro', $parametro);
     }
 
     # pega o id do computador para quando for emitir ficha de OS
@@ -56,7 +56,7 @@ if ($acesso) {
     $objeto->set_nome('Permissões');
 
     # botão de voltar da lista
-//    $objeto->set_voltarLista('administracao.php');
+    $objeto->set_voltarLista('admin_menu.php?fase=menuUsuario');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');

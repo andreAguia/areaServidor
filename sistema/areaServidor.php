@@ -12,7 +12,7 @@ $idUsuario = null;
 include ("_config.php");
 
 if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
-    
+
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $pessoal = new Pessoal();
@@ -90,11 +90,9 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     Grh::listaDadosServidor($idServidor);
 
     $grid1->fechaColuna();
-    
-    #########################################################
-    # Exibe o Menu
     $grid1->abreColuna(12, 3);
 
+    # Exibe o Menu
     AreaServidor::menuPrincipal($fase, $idUsuario);
     br();
 
@@ -103,7 +101,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
     switch ($fase) {
 
-      ##################################################################
+        ##################################################################
         # Exibe o Menu Inicial
         case "inicial" :
 
@@ -154,24 +152,15 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $grid1->fechaGrid();
             break;
 
-      ##################################################################
-        # Exibe o Menu Inicial
+        ##################################################################
+
         case "pgto" :
-//            $grid2 = new Grid();
-//            $grid2->abreColuna(12, 12, 6);
             # Calendário de pgto
             $calend = new CalendarioPgto();
             $calend->exibeCalendario();
-
-//            $grid2->fechaColuna();
-//            $grid2->abreColuna(12, 12, 6);
-//            
-//
-//            $grid1->fechaColuna();
-//            $grid1->fechaGrid();
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "aniversariantes" :
 
@@ -260,7 +249,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $tabela->show();
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "cargoComissao" :
             # Formulário
@@ -327,7 +316,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "servidorCargo" :
             $form = new Form('?fase=servidorCargo');
@@ -384,7 +373,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "organograma" :
             titulo("Organograma da UENF");
@@ -400,7 +389,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "historicoFerias" :
 
@@ -438,7 +427,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "historicoPremio" :
 
@@ -461,7 +450,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "afastamentoGeral" :
 
@@ -476,7 +465,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "nome" :
 
@@ -542,7 +531,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             }
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "contatos" :
 
@@ -645,7 +634,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             }
             break;
 
-      ##################################################################
+        ##################################################################
 
         case "comCpf" :
 
@@ -746,7 +735,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             }
             break;
 
-      ##################################################################    
+        ##################################################################    
 
         case "feriasSetor" :
 
@@ -796,8 +785,8 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-      ##################################################################        
- 
+        ##################################################################        
+
         case "porLotacao" :
             $form = new Form('?fase=porLotacao');
 
@@ -842,36 +831,31 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $intra->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-       ##################################################################        
- 
+        ##################################################################        
+
         case "exibeServicos":
             set_session("escondeCabecalho", true);
             iframe("servicos.php");
             break;
-        
+
         ##################################################################
-        
-        case "usuarios":
-            iframe("usuarios.php");
+
+        case "menuUsuario":
+            iframe("admin_menu.php?fase=menuUsuario");
             break;
-        
+
         ##################################################################
-        
-        case "regras":
-            iframe("regras.php");
+
+        case "menuSistema":
+            iframe("admin_menu.php?fase=menuSistema");
             break;
-        
+
         ##################################################################
-        
-        case "historico":
-            set_session("idServidor");
-            iframe("historico.php");
-            break;
     }
-    
+
     $grid1->fechaColuna();
     $grid1->abreColuna(12);
-    
+
     # Exibe o rodapé da página    
     AreaServidor::rodape($idUsuario);
 
@@ -879,7 +863,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     $grid1->fechaGrid();
 
     $page->terminaPagina();
-    
 } else {
     loadPage("login.php");
 }
