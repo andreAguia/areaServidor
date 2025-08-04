@@ -20,6 +20,10 @@ if (Verifica::acesso($idUsuario, 1)) {
     # Verifica a fase do programa
     $fase = get('fase');
 
+    # Limpa a session de Pesquisa
+    set_session('sessionParametro');
+    set_session('idServidor');
+
     switch ($fase) {
 
         case "menuUsuario":
@@ -52,7 +56,7 @@ if (Verifica::acesso($idUsuario, 1)) {
             $botao->set_label('Histórico de Acesso');
             $botao->set_title('Histórico Geral do Sistema');
             $botao->set_imagem(PASTA_FIGURAS . 'historico.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('historico.php');
+            $botao->set_url('admin_historico.php');
             $menu->add_item($botao);
 
             # Computadores (IPs)
@@ -82,7 +86,7 @@ if (Verifica::acesso($idUsuario, 1)) {
 
         case "historico":
             set_session("idServidor");
-            iframe("historico.php");
+            iframe("admin_historico.php");
             break;
 
         ##################################################################
@@ -92,8 +96,6 @@ if (Verifica::acesso($idUsuario, 1)) {
             tituloTable('Sistema');
             $tamanhoImage = 64;
             br();
-            
-            set_session('sessionParametro');
 
             # Inicia o menu
             $menu = new MenuGrafico(4);
@@ -104,7 +106,7 @@ if (Verifica::acesso($idUsuario, 1)) {
             $botao->set_url('admin_configuracao.php');
             $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
-            $menu->add_item($botao);            
+            $menu->add_item($botao);
 
             # Documentação
             $botao = new BotaoGrafico();
@@ -130,7 +132,7 @@ if (Verifica::acesso($idUsuario, 1)) {
             $botao->set_imagem(PASTA_FIGURAS . 'mensagem.jpg', $tamanhoImage, $tamanhoImage);
             $botao->set_url('mensagem.php');
             $menu->add_item($botao);
-            
+
             $menu->show();
             break;
 

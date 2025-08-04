@@ -42,8 +42,6 @@ if ($acesso) {
     set_session('idTabela', $idTabela);
     set_session('tabela', $tabela);
     set_session('idServidorPesquisado', $idServidorPesquisado);
-    
-    echo $idServidor;
 
     # Começa uma nova página
     $page = new Page();
@@ -80,14 +78,9 @@ if ($acesso) {
 
             # botão de voltar da lista
             if (is_null($idServidor)) {
-                #botaoVoltar('administracao.php');
+                botaoVoltar('admin_menu.php?fase=menuUsuario');
             } else {
                 botaoVoltar('../../grh/grhSistema/servidorMenu.php');
-            }
-
-            # Informa o dia da semana
-            if (is_null($idServidor)) {
-                p(diaSemana(date_to_php($parametroData)), "f18", "center");
             }
 
             # Formulário de Pesquisa
@@ -226,12 +219,12 @@ if ($acesso) {
 
             # Pega o id Servidor
             $result5 = $intra->select("SELECT DISTINCT idServidor,
-                                        tbpessoa.nome
-                                   FROM tblog JOIN uenf_grh.tbservidor USING (idServidor)
-                                              JOIN uenf_grh.tbpessoa USING (idPessoa)
-                                  WHERE date(data) = '{$parametroData}`
-                                    AND idServidor IS NOT null  
-                               ORDER BY 2");
+                                              tbpessoa.nome
+                                         FROM tblog JOIN uenf_grh.tbservidor USING (idServidor)
+                                                    JOIN uenf_grh.tbpessoa USING (idPessoa)
+                                        WHERE date(data) = '{$parametroData}'
+                                          AND idServidor IS NOT null  
+                                     ORDER BY 2");
             array_unshift($result5, array(null, '-- Todos --'));
 
             $controle = new Input('idServidorPesquisado', 'combo', 'Servidor', 1);
@@ -302,6 +295,12 @@ if ($acesso) {
             # Monta a tabela
             $tabela = new Tabela();
             $tabela->set_titulo("Histórico do Dia");
+
+            # Informa o dia da semana
+            if (is_null($idServidor)) {
+                $tabela->set_subtitulo(date_to_php($parametroData) . " - " . diaSemana(date_to_php($parametroData)));
+            }
+
             $tabela->set_conteudo($row);
             $tabela->set_label(["Usuário", "Data", "IP", "Tabela", "Id", "Servidor", "Tipo", "Atividade"]);
             $tabela->set_width([8, 8, 8, 10, 5, 15, 5, 36]);

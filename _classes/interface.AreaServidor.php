@@ -462,7 +462,7 @@ class AreaServidor {
         $botao->set_label('Histórico');
         $botao->set_title('Histórico Geral do Sistema');
         $botao->set_imagem(PASTA_FIGURAS . 'historico.png', $tamanhoImage, $tamanhoImage);
-        $botao->set_url('historico.php');
+        $botao->set_url('admin_historico.php');
         $menu->add_item($botao);
 
         # Computadores (IPs)
