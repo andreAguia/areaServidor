@@ -54,8 +54,8 @@ if ($acesso) {
     ################################################################
     # Exibe os dados do Usuario
     if (!empty($id)) {
-        $objeto->set_rotinaExtraEditar("get_DadosServidor");
-        $objeto->set_rotinaExtraEditarParametro($intra->get_idServidor($id));
+        $objeto->set_rotinaExtraEditar("listaDadosUsuario");
+        $objeto->set_rotinaExtraEditarParametro($id);
     }
 
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
@@ -502,8 +502,7 @@ if ($acesso) {
             botaoVoltar('?fase=exibeAtividades&id=' . $id);
 
             # Exibe os dados do Usuário
-            Grh::listaDadosServidor($intra->get_idServidor($id));
-            #titulo('Permissões');
+            AreaServidor::listaDadosUsuario($id);
 
             if (!is_null($id)) {
                 $grid = new Grid();

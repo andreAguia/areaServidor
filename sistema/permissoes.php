@@ -31,10 +31,6 @@ if ($acesso) {
     $anoBase = post('anoBase', date('Y'));
     $mesBase = post('mesBase', date('m'));
 
-    # Ordem da tabela
-    $orderCampo = get('orderCampo');
-    $orderTipo = get('orderTipo');
-
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
@@ -60,29 +56,18 @@ if ($acesso) {
     $objeto->set_voltarLista('usuarios.php');
     $objeto->set_voltarForm('?idUsuarioPesquisado=' . $idUsuarioPesquisado);
 
-    # ordenação
-    if (is_null($orderCampo))
-        $orderCampo = 2;
-
-    if (is_null($orderTipo))
-        $orderTipo = 'asc';
-
     # select da lista
-    $objeto->set_selectLista('SELECT tbregra.idRegra,
+    $objeto->set_selectLista("SELECT tbregra.idRegra,
                                      tbregra.nome,
                                      tbregra.descricao,									
                                      tbpermissao.idPermissao
                                 FROM tbregra LEFT JOIN tbpermissao on tbregra.idRegra = tbpermissao.idRegra
-                               WHERE tbpermissao.idUsuario = ' . $idUsuarioPesquisado . '
-                            ORDER BY ' . $orderCampo . ' ' . $orderTipo);
+                               WHERE tbpermissao.idUsuario = {$idUsuarioPesquisado}
+                            ORDER BY 2, asc");
 
-    # ordem da lista
-    $objeto->set_orderCampo($orderCampo);
-    $objeto->set_orderTipo($orderTipo);
-    $objeto->set_orderChamador('?fase=listar&usuarioSelecionado=' . $idUsuarioPesquisado);
-
-    # botões
-    $objeto->set_botaoEditar(false);        # Não exibe o botão editar
+    # Não exibe o botão editar
+    $objeto->set_botaoEditar(false);
+    
     # Caminhos
     $objeto->set_linkEditar('?fase=editar&idUsuarioPesquisado=' . $idUsuarioPesquisado);
     $objeto->set_linkExcluir('?fase=excluir&idUsuarioPesquisado=' . $idUsuarioPesquisado);

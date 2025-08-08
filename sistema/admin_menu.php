@@ -25,6 +25,10 @@ if (Verifica::acesso($idUsuario, 1)) {
     set_session('idServidor');
 
     switch ($fase) {
+        
+        /*
+         * Usuários
+         */
 
         case "menuUsuario":
             # Título
@@ -134,7 +138,7 @@ if (Verifica::acesso($idUsuario, 1)) {
             #$botao->set_target('blank');
             $botao->set_title('Cadastro de Serviços');
             $botao->set_imagem(PASTA_FIGURAS . 'lista.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url("cadastroServico.php");
+            $botao->set_url("admin_servicos.php");
             $menu->add_item($botao);
 
             # Controle de procedimentos

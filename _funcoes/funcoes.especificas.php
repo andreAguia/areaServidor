@@ -217,5 +217,16 @@ function exibeTarefa($texto) {
 }
 
 ##########################################################
+/**
+ * Função que exibe dados dos usuário
+ */
+
+function listaDadosUsuario($id) {
+
+    # Exibe os dados do Usuário
+    AreaServidor::listaDadosUsuario($id);
+}
+
+##########################################################
 
 

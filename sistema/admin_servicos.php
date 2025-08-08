@@ -49,10 +49,10 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    $esconde = get_session("escondeCabecalho"); // Esconde quando for da area do Servidor e exibe quando for no sistema de rh
-    if (empty($esconde) OR !$esconde) {
-        AreaServidor::cabecalho();
-    }
+//    $esconde = get_session("escondeCabecalho"); // Esconde quando for da area do Servidor e exibe quando for no sistema de rh
+//    if (empty($esconde) OR !$esconde) {
+//        AreaServidor::cabecalho();
+//    }
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -62,7 +62,7 @@ if ($acesso) {
     $objeto->set_nome('Serviço');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('servicos.php');
+    $objeto->set_voltarLista('admin_menu.php?fase=menuProcedimento');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
