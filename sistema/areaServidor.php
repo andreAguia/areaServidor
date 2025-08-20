@@ -46,63 +46,68 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     $page = new Page();
     $page->iniciaPagina();
 
-    # Cabeçalho
-    AreaServidor::cabecalho();
+    if ($fase <> "servidorPhp" AND $fase <> "servidorWeb") {
 
-    $grid1 = new Grid();
-    $grid1->abreColuna(12);
+        # Cabeçalho
+        AreaServidor::cabecalho();
 
-    # Cria um menu
-    $menu1 = new MenuBar();
+        $grid1 = new Grid();
+        $grid1->abreColuna(12);
 
-    # Sair da Área do Servidor
-    $linkVoltar = new Link("Sair", "login.php");
-    $linkVoltar->set_class('button');
-    $linkVoltar->set_title('Sair do Sistema');
-    $linkVoltar->set_confirma('Tem certeza que deseja sair do sistema?');
-    $menu1->add_link($linkVoltar, "left");
+        # Cria um menu
+        $menu1 = new MenuBar();
 
-    # Administração do Sistema
-    if (Verifica::acesso($idUsuario, 1)) {   // Somente Administradores
-        $linkAdm = new Link("Administração", "administracao.php");
-        $linkAdm->set_class('button success');
-        $linkAdm->set_title('Administração dos Sistemas');
-        $menu1->add_link($linkAdm, "right");
+        # Sair da Área do Servidor
+        $linkVoltar = new Link("Sair", "login.php");
+        $linkVoltar->set_class('button');
+        $linkVoltar->set_title('Sair do Sistema');
+        $linkVoltar->set_confirma('Tem certeza que deseja sair do sistema?');
+        $menu1->add_link($linkVoltar, "left");
+
+        # Administração do Sistema
+        if (Verifica::acesso($idUsuario, 1)) {   // Somente Administradores
+            $linkAdm = new Link("Administração", "administracao.php");
+            $linkAdm->set_class('button success');
+            $linkAdm->set_title('Administração dos Sistemas');
+            $menu1->add_link($linkAdm, "right");
+        }
+
+        # Alterar Senha
+        $linkSenha = new Link("Alterar Senha", "trocarSenha.php");
+        $linkSenha->set_class('button');
+        $linkSenha->set_title('Altera a senha do usuário logado');
+        $menu1->add_link($linkSenha, "right");
+
+        # Sobre
+        $linkSobre = new Link("Sobre", "?fase=sobre");
+        $linkSobre->set_class('button');
+        $linkSobre->set_title('Exibe informações do Sistema');
+        #$menu1->add_link($linkSobre,"right");
+
+        $menu1->show();
+
+        titulo('Área do Servidor');
+
+        # Exibe os dados do Servidor            
+        Grh::listaDadosServidor($idServidor);
+
+        $grid1->fechaColuna();
+        $grid1->abreColuna(12, 3);
+
+        /*
+         *  Exibe o Menu Lateral
+         */
+        AreaServidor::menuPrincipal($fase, $idUsuario);
+        br();
+
+        $grid1->fechaColuna();
+        $grid1->abreColuna(12, 9);
     }
-
-    # Alterar Senha
-    $linkSenha = new Link("Alterar Senha", "trocarSenha.php");
-    $linkSenha->set_class('button');
-    $linkSenha->set_title('Altera a senha do usuário logado');
-    $menu1->add_link($linkSenha, "right");
-
-    # Sobre
-    $linkSobre = new Link("Sobre", "?fase=sobre");
-    $linkSobre->set_class('button');
-    $linkSobre->set_title('Exibe informações do Sistema');
-    #$menu1->add_link($linkSobre,"right");
-
-    $menu1->show();
-
-    titulo('Área do Servidor');
-
-    # Exibe os dados do Servidor            
-    Grh::listaDadosServidor($idServidor);
-
-    $grid1->fechaColuna();
-    $grid1->abreColuna(12, 3);
-
-    # Exibe o Menu
-    AreaServidor::menuPrincipal($fase, $idUsuario);
-    br();
-
-    $grid1->fechaColuna();
-    $grid1->abreColuna(12, 9);
 
     switch ($fase) {
 
         ##################################################################
-        # Exibe o Menu Inicial
+        # Área Principal Inicial
         case "inicial" :
 
             # Limpa as sessions usadas nos sistemas e módulos
@@ -111,6 +116,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             set_session('feriasLotacao');
             set_session('servidorLotacao');
             set_session('servidorCargoComissao');
+            set_session('idServidor');
 
             # Limpa as sessions usadas servidor geral e contatos
             set_session('parametroNomeMat');
@@ -840,33 +846,270 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
         ##################################################################
 
-        case "menuUsuario":
-            iframe("admin_menu.php?fase=menuUsuario");
+        case "menuAdmin":
+            # Tamanho do icone
+            $tamanhoImage = 64;
+
+            # Limita o tamanho da tela
+            $grid = new Grid();
+            $grid->abreColuna(6);   
+            
+            # Título
+            tituloTable('Procedimentos');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Cadastro de Serviços
+            $botao = new BotaoGrafico();
+            $botao->set_label('Serviços');
+            #$botao->set_target('blank');
+            $botao->set_title('Cadastro de Serviços');
+            $botao->set_imagem(PASTA_FIGURAS . 'lista.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url("admin_servicos.php");
+            $menu->add_item($botao);
+
+            # Controle de procedimentos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Procedimentos');
+            $botao->set_url('procedimentos.php');
+            #$botao->set_url('pastaDigitalizada.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'procedimentos.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de procedimentos');
+            $menu->add_item($botao);
+
+            # Controle de Rotinas 2
+            $botao = new BotaoGrafico();
+            $botao->set_label('Rotinas');
+            $botao->set_url('admin_rotina.php');
+            #$botao->set_url('pastaDigitalizada.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'rotina.jpg', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de controle de manuais de procedimentos');
+            $menu->add_item($botao);
+
+            # Menu de Documentos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Menu de Documentos');
+            #$botao->set_target('blank');
+            $botao->set_title('Menu de Documentos do sistema GRH');
+            $botao->set_imagem(PASTA_FIGURAS . 'menu.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url("../../grh/grhSistema/cadastroMenuDocumentos.php");
+            $menu->add_item($botao);
+
+            # Tarefas
+            $botao = new BotaoGrafico();
+            $botao->set_label('Tarefas');
+            $botao->set_url('projeto.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'atribuicoes.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de gestão de tarefas');
+            $botao->set_target("_blank");
+            $menu->add_item($botao);
+
+            # Notas
+            $botao = new BotaoGrafico();
+            $botao->set_label('Notas');
+            $botao->set_url('projetoNota.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de notas dos sistemas');
+            $botao->set_target("_blank");
+            $menu->add_item($botao);
+
+            $menu->show();
+            
+            $grid->fechaColuna(); 
+            $grid->abreColuna(6); 
+
+            # Título            
+            tituloTable('Gestão do Sistema');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Cadastro de Atualizações
+            $botao = new BotaoGrafico();
+            $botao->set_label('Atualizações');
+            $botao->set_url('admin_atualizacao.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'atualizacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Gerencia o cadastro de atualizações');
+            $menu->add_item($botao);
+
+            # Cadastro de Mensagens
+            $botao = new BotaoGrafico();
+            $botao->set_label('Mensagens');
+            $botao->set_title('Cadastro de Mensagens');
+            $botao->set_imagem(PASTA_FIGURAS . 'mensagem.jpg', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_mensagem.php');
+            $menu->add_item($botao);
+
+            # Variáveis de Configuração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Configurações');
+            $botao->set_url('admin_configuracao.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
+            $menu->add_item($botao);
+
+            # Documentação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Documentação<br/>Problemas');
+            #$botao->set_target('blank');
+            $botao->set_title('Documentação do Sistema');
+            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_documentacao.php');
+            $menu->add_item($botao);
+
+            # Informação do PHP
+            $botao = new BotaoGrafico();
+            $botao->set_label('Servidor PHP');
+            $botao->set_title('Informações sobre&#10;a versão do PHP');
+            $botao->set_imagem(PASTA_FIGURAS . 'phpInfo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=servidorPhp');
+            $botao->set_target('blank');
+            $menu->add_item($botao);
+
+            # Informação do Servidor Web
+            $botao = new BotaoGrafico();
+            $botao->set_label('Servidor Web');
+            $botao->set_title('Informações sobre&#10;o servidor web');
+            $botao->set_imagem(PASTA_FIGURAS . 'webServer.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=servidorWeb');
+            $botao->set_target('blank');
+            $menu->add_item($botao);
+
+            $menu->show();
+            
+            $grid->fechaColuna(); 
+            $grid->abreColuna(6); 
+
+            # Título
+            br();
+            tituloTable('Gestão de Usuários');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Administração de Usuários
+            $botao = new BotaoGrafico();
+            $botao->set_label('Cadastro de Usuários');
+            $botao->set_url('admin_usuarios.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'usuarios.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Gerencia os Usuários');
+            $menu->add_item($botao);
+
+            # Regras
+            $botao = new BotaoGrafico();
+            $botao->set_label('Regras de Acesso');
+            $botao->set_url('admin_regras.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'regras.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Cadastro de Regras');
+            $menu->add_item($botao);
+
+            # Histórico Geral
+            $botao = new BotaoGrafico();
+            $botao->set_label('Histórico de Acesso');
+            $botao->set_title('Histórico Geral do Sistema');
+            $botao->set_imagem(PASTA_FIGURAS . 'historico.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_historico.php');
+            $menu->add_item($botao);
+
+            # Computadores (IPs)
+            $botao = new BotaoGrafico();
+            $botao->set_label('Acesso ao Sistema');
+            $botao->set_title('Cadastro de computadores com acesso ao sistema');
+            $botao->set_imagem(PASTA_FIGURAS . 'computador.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('computador.php');
+            #$menu->add_item($botao);
+
+            $menu->show();
+            
+            $grid->fechaColuna(); 
+            $grid->abreColuna(6); 
+             
+            br();
+            tituloTable('Banco de Dados');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Backup
+            $botao = new BotaoGrafico();
+            $botao->set_label('Backup');
+            $botao->set_title('Acessa a área de backup');
+            $botao->set_imagem(PASTA_FIGURAS . 'backup.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=pastaBackup');
+            $menu->add_item($botao);
+
+            # Importação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Importação');
+            $botao->set_title('Executa a rotina de importação');
+            $botao->set_imagem(PASTA_FIGURAS . 'importacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=importacao');
+            $menu->add_item($botao);
+
+            # PhpMyAdmin
+            $botao = new BotaoGrafico();
+            $botao->set_label('PhpMyAdmin');
+            $botao->set_title('Executa o PhpMyAdmin');
+            $botao->set_target('_blank');
+            $botao->set_imagem(PASTA_FIGURAS . 'mysql.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('http://127.0.0.1/phpmyadmin');
+            $menu->add_item($botao);
+
+            # Registros órfãos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Registros Órfãos');
+            $botao->set_title('Faz varredura para encontrar registros órfãos');
+            $botao->set_imagem(PASTA_FIGURAS . 'regOrf.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('registroOrfao.php');
+            $menu->add_item($botao);
+
+            # Documentação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Documentação');
+            #$botao->set_target('blank');
+            $botao->set_title('Documentação do Banco de Dados');
+            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('documentaBd.php');
+            $menu->add_item($botao);
+
+            $menu->show();
+            
+            $grid->fechaColuna();
+            $grid->fechaGrid();
+            br();
             break;
 
         ##################################################################
 
-        case "menuSistema":
-            iframe("admin_menu.php?fase=menuSistema");
+        case "servidorPhp" :
+            phpinfo();
             break;
 
-        ##################################################################
+        ########################################################################################
 
-        case "menuProcedimento":
-            iframe("admin_menu.php?fase=menuProcedimento");
+        case "servidorWeb" :
+            AreaServidor::moduloServidorWeb();
             break;
 
-        ##################################################################
+        ########################################################################################
     }
 
-    $grid1->fechaColuna();
-    $grid1->abreColuna(12);
+    if ($fase <> "servidorPhp" AND $fase <> "servidorWeb") {
 
-    # Exibe o rodapé da página    
-    AreaServidor::rodape($idUsuario);
+        $grid1->fechaColuna();
+        $grid1->abreColuna(12);
 
-    $grid1->fechaColuna();
-    $grid1->fechaGrid();
+        # Exibe o rodapé da página    
+        AreaServidor::rodape($idUsuario);
+
+        $grid1->fechaColuna();
+        $grid1->fechaGrid();
+    }
 
     $page->terminaPagina();
 } else {

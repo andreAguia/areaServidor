@@ -29,12 +29,8 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro'))) {
-        $parametro = retiraAspas(get_session('sessionParametro'));
-    } else {
-        $parametro = post('parametro');
-        set_session('sessionParametro', $parametro);
-    }
+    $parametro = retiraAspas(post('parametro', get_session('sessionParametro')));
+    set_session('sessionParametro', $parametro);
 
     # Começa uma nova página
     $page = new Page();
@@ -49,10 +45,8 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-//    $esconde = get_session("escondeCabecalho"); // Esconde quando for da area do Servidor e exibe quando for no sistema de rh
-//    if (empty($esconde) OR !$esconde) {
-//        AreaServidor::cabecalho();
-//    }
+    AreaServidor::cabecalho();
+    br();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -62,20 +56,27 @@ if ($acesso) {
     $objeto->set_nome('Serviço');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('admin_menu.php?fase=menuProcedimento');
-
+    $objeto->set_voltarLista('areaServidor.php?fase=menuAdmin');
+    
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
     $objeto->set_parametroValue($parametro);
 
     # select da lista
-    $objeto->set_selectLista("SELECT idServico,
-                                     categoria,
-                                     nome,
-                                     idServico,
-                                     idServico
-                                FROM tbservico
-                            ORDER BY categoria, nome");
+    $select = "SELECT idServico,
+                    categoria,
+                    nome,
+                    idServico,
+                    idServico
+               FROM tbservico";
+
+    if (!empty($parametro)) {
+        $select .= " WHERE categoria LIKE '%{$parametro}%' OR nome LIKE '%{$parametro}%'";
+    }
+
+    $select .= " ORDER BY categoria, nome";
+    
+    $objeto->set_selectLista($select);
 
     # select do edita
     $objeto->set_selectEdita("SELECT categoria,

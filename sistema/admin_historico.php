@@ -48,9 +48,7 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    if (!is_null($idServidor)) {
-        AreaServidor::cabecalho();
-    }
+    AreaServidor::cabecalho();
 
     # Limita o tamanho da tela
     $grid = new Grid();
@@ -78,7 +76,7 @@ if ($acesso) {
 
             # botão de voltar da lista
             if (is_null($idServidor)) {
-                botaoVoltar('admin_menu.php?fase=menuUsuario');
+                botaoVoltar('areaServidor.php?fase=menuAdmin');
             } else {
                 botaoVoltar('../../grh/grhSistema/servidorMenu.php');
             }

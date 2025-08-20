@@ -46,7 +46,7 @@ if ($acesso) {
     $objeto->set_nome('Rotina');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('admin_menu.php?fase=menuProcedimento');
+    $objeto->set_voltarLista('admin_menu.php?fase=menuAdmin');
     
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');

@@ -34,7 +34,9 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    #AreaServidor::cabecalho();
+    AreaServidor::cabecalho();
+    br();
+    
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
@@ -45,8 +47,8 @@ if ($acesso) {
     # Cria um menu
     $menu1 = new MenuBar("button-group");
 
-    # Sair da Área do Servidor
-    $linkVoltar = new Link("Voltar", 'admin_menu.php?fase=menuSistema');
+    # Voltar
+    $linkVoltar = new Link("Voltar", 'areaServidor.php?fase=menuAdmin');
     $linkVoltar->set_class('button');
     $linkVoltar->set_title('Voltar a página anterior');
     $menu1->add_link($linkVoltar, "left");

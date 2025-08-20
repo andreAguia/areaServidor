@@ -34,7 +34,7 @@ if ($acesso) {
     # Pega os parâmetros
     $parametroAno = post('parametroAno', get_session('parametroAno', date("Y")));
     $parametroTipo = post('parametroTipo', get_session('parametroTipo', '*'));
-    $parametro = post('parametro', get_session('parametro'));
+    $parametro = retiraAspas(post('parametro', get_session('sessionParametro')));
 
     # Joga os parâmetros par as sessions
     set_session('parametroAno', $parametroAno);
@@ -46,7 +46,8 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    #AreaServidor::cabecalho();
+    AreaServidor::cabecalho();
+    br();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -62,7 +63,7 @@ if ($acesso) {
     $objeto->set_nome('Usuários');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('admin_menu.php?fase=menuUsuario');
+    $objeto->set_voltarLista('areaServidor.php?fase=menuAdmin');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');

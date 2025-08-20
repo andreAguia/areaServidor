@@ -27,7 +27,7 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    $parametro = post('parametro', retiraAspas(get_session('sessionParametro', "Todos")));
+    $parametro = retiraAspas(post('parametro', get_session('sessionParametro')));
     set_session('sessionParametro', $parametro);
 
     # Começa uma nova página
@@ -35,23 +35,18 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    #AreaServidor::cabecalho();
+    AreaServidor::cabecalho();
+    br();
+    
     # Abre um novo objeto Modelo
-    $objeto = new Modelo();
-
-    # Limita o tamanho da tela
-    $grid = new Grid();
-    $grid->abreColuna(12);
-
-    $grid->fechaColuna();
-    $grid->fechaGrid();
+    $objeto = new Modelo();    
 
     ################################################################
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
     $objeto->set_nome('Configurações do Sistema');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('admin_menu.php?fase=menuSistema');
+    $objeto->set_voltarLista('areaServidor.php?fase=menuAdmin');
 
     # controle de pesquisa
     $result2 = $intra->select('SELECT distinct categoria, categoria FROM tbvariaveis ORDER BY 1');

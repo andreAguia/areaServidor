@@ -26,12 +26,8 @@ if ($acesso) {
     $id = soNumeros(get('id'));
     
     # Pega o parametro de pesquisa (se tiver)
-    if (is_null(post('parametro'))) {
-        $parametro = retiraAspas(get_session('sessionParametro'));
-    } else {
-        $parametro = post('parametro');
-        set_session('sessionParametro', $parametro);
-    }
+    $parametro = retiraAspas(post('parametro', get_session('sessionParametro')));
+    set_session('sessionParametro', $parametro);
 
     # pega o id do computador para quando for emitir ficha de OS
     $computador = get('regra');
@@ -44,9 +40,10 @@ if ($acesso) {
     $area = new AreaServidor();
 
     # Cabeçalho da Página
-//    if ($fase <> 'servidoresPermissao'){
-//        AreaServidor::cabecalho();
-//    }
+    if ($fase <> 'servidoresPermissao'){
+        AreaServidor::cabecalho();
+        br();
+    }
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -56,7 +53,7 @@ if ($acesso) {
     $objeto->set_nome('Permissões');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('admin_menu.php?fase=menuUsuario');
+    $objeto->set_voltarLista('areaServidor.php?fase=menuAdmin');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar');

@@ -26,7 +26,7 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    $parametro = post('parametro', retiraAspas(get_session('sessionParametro')));
+    $parametro = retiraAspas(post('parametro', get_session('sessionParametro')));
     set_session('sessionParametro', $parametro);
 
     # Pega as versões desse ano
@@ -48,7 +48,8 @@ if ($acesso) {
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    #AreaServidor::cabecalho();
+    AreaServidor::cabecalho();
+    br();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -58,7 +59,7 @@ if ($acesso) {
     $objeto->set_nome('Atualizações');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('admin_menu.php?fase=menuSistema');
+    $objeto->set_voltarLista('areaServidor.php?fase=menuAdmin');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar nos campos Versão e/ou Data:');

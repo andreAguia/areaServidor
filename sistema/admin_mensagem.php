@@ -26,19 +26,16 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    $parametro = post('parametro', retiraAspas(get_session('sessionParametro')));
+    $parametro = retiraAspas(post('parametro', get_session('sessionParametro')));
     set_session('sessionParametro', $parametro);
-
-    # Ordem da tabela
-    $orderCampo = get('orderCampo');
-    $orderTipo = get('order_tipo');
 
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
 
     # Cabeçalho da Página
-    #AreaServidor::cabecalho();
+    AreaServidor::cabecalho();
+    br();
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -48,35 +45,23 @@ if ($acesso) {
     $objeto->set_nome('Mensagem');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('admin_menu.php?fase=menuSistema');
+    $objeto->set_voltarLista('areaServidor.php?fase=menuAdmin');
 
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
     $objeto->set_parametroValue($parametro);
 
-    # ordenação
-    if (is_null($orderCampo))
-        $orderCampo = 1;
-
-    if (is_null($orderTipo))
-        $orderTipo = 'asc';
-
     # select da lista
-    $objeto->set_selectLista('SELECT idmensagem,
+    $objeto->set_selectLista("SELECT idMensagem,
                                      mensagem
                                 FROM tbmensagem
-                               WHERE mensagem LIKE "%' . $parametro . '%"	    
-                            ORDER BY ' . $orderCampo . ' ' . $orderTipo);
+                               WHERE mensagem LIKE '%{$parametro}%'	    
+                            ORDER BY idMensagem");
 
     # select do edita
-    $objeto->set_selectEdita('SELECT mensagem							    
+    $objeto->set_selectEdita("SELECT mensagem							    
                                 FROM tbmensagem
-                               WHERE idmensagem = ' . $id);
-
-    # ordem da lista
-    $objeto->set_orderCampo($orderCampo);
-    $objeto->set_orderTipo($orderTipo);
-    $objeto->set_orderChamador('?fase=listar');
+                               WHERE idMensagem = {$id}");
 
     # Caminhos
     $objeto->set_linkEditar('?fase=editar');
@@ -85,9 +70,9 @@ if ($acesso) {
     $objeto->set_linkExcluir('?fase=excluir');
 
     # Parametros da tabela
-    $objeto->set_label(array("id", "Mensagem"));
-    $objeto->set_width(array(5, 85));
-    $objeto->set_align(array("center", "left"));
+    $objeto->set_label(["id", "Mensagem"]);
+    $objeto->set_width([5, 85]);
+    $objeto->set_align(["center", "left"]);
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
@@ -96,7 +81,7 @@ if ($acesso) {
     $objeto->set_tabela('tbmensagem');
 
     # Nome do campo id
-    $objeto->set_idCampo('idmensagem');
+    $objeto->set_idCampo('idMensagem');
 
     # Campos para o formulario
     $objeto->set_campos(array(
