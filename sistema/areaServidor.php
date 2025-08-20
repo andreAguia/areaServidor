@@ -854,6 +854,170 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $grid = new Grid();
             $grid->abreColuna(12, 12, 6);
 
+            # Título            
+            tituloTable('Gestão do Sistema');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Cadastro de Atualizações
+            $botao = new BotaoGrafico();
+            $botao->set_label('Atualizações');
+            $botao->set_url('admin_atualizacao.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'atualizacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Gerencia o cadastro de atualizações');
+            $menu->add_item($botao);
+
+            # Cadastro de Mensagens
+            $botao = new BotaoGrafico();
+            $botao->set_label('Mensagens');
+            $botao->set_title('Cadastro de Mensagens');
+            $botao->set_imagem(PASTA_FIGURAS . 'mensagem.jpg', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_mensagem.php');
+            $menu->add_item($botao);
+
+            # Variáveis de Configuração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Configurações');
+            $botao->set_url('admin_configuracao.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
+            $menu->add_item($botao);
+
+            # Documentação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Documentação<br/>Problemas');
+            #$botao->set_target('blank');
+            $botao->set_title('Documentação do Sistema');
+            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_documentacao.php');
+            $menu->add_item($botao);
+
+            # Informação do PHP
+            $botao = new BotaoGrafico();
+            $botao->set_label('Servidor PHP');
+            $botao->set_title('Informações sobre&#10;a versão do PHP');
+            $botao->set_imagem(PASTA_FIGURAS . 'phpInfo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=servidorPhp');
+            $botao->set_target('blank');
+            $menu->add_item($botao);
+
+            # Informação do Servidor Web
+            $botao = new BotaoGrafico();
+            $botao->set_label('Servidor Web');
+            $botao->set_title('Informações sobre&#10;o servidor web');
+            $botao->set_imagem(PASTA_FIGURAS . 'webServer.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=servidorWeb');
+            $botao->set_target('blank');
+            $menu->add_item($botao);
+
+            $menu->show();
+            br();
+
+            $grid->fechaColuna();
+            $grid->abreColuna(12, 12, 6);
+
+            # Título
+            tituloTable('Banco de Dados');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Backup
+            $botao = new BotaoGrafico();
+            $botao->set_label('Backup');
+            $botao->set_title('Acessa a área de backup');
+            $botao->set_imagem(PASTA_FIGURAS . 'backup.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=pastaBackup');
+            $menu->add_item($botao);
+
+            # Importação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Importação');
+            $botao->set_title('Executa a rotina de importação');
+            $botao->set_imagem(PASTA_FIGURAS . 'importacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=importacao');
+            $menu->add_item($botao);
+
+            # PhpMyAdmin
+            $botao = new BotaoGrafico();
+            $botao->set_label('PhpMyAdmin');
+            $botao->set_title('Executa o PhpMyAdmin');
+            $botao->set_target('_blank');
+            $botao->set_imagem(PASTA_FIGURAS . 'mysql.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('http://127.0.0.1/phpmyadmin');
+            $menu->add_item($botao);
+
+            # Registros órfãos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Registros Órfãos');
+            $botao->set_title('Faz varredura para encontrar registros órfãos');
+            $botao->set_imagem(PASTA_FIGURAS . 'regOrf.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('registroOrfao.php');
+            $menu->add_item($botao);
+
+            # Documentação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Documentação');
+            #$botao->set_target('blank');
+            $botao->set_title('Documentação do Banco de Dados');
+            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('documentaBd.php');
+            $menu->add_item($botao);
+
+            $menu->show();
+            br();
+
+            $grid->fechaColuna();
+            $grid->abreColuna(12, 12, 6);
+
+            # Título
+            tituloTable('Gestão de Usuários');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Administração de Usuários
+            $botao = new BotaoGrafico();
+            $botao->set_label('Cadastro de Usuários');
+            $botao->set_url('admin_usuarios.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'usuarios.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Gerencia os Usuários');
+            $menu->add_item($botao);
+
+            # Regras
+            $botao = new BotaoGrafico();
+            $botao->set_label('Regras de Acesso');
+            $botao->set_url('admin_regras.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'regras.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Cadastro de Regras');
+            $menu->add_item($botao);
+
+            # Histórico Geral
+            $botao = new BotaoGrafico();
+            $botao->set_label('Histórico de Acesso');
+            $botao->set_title('Histórico Geral do Sistema');
+            $botao->set_imagem(PASTA_FIGURAS . 'historico.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_historico.php');
+            $menu->add_item($botao);
+
+            # Computadores (IPs)
+            $botao = new BotaoGrafico();
+            $botao->set_label('Acesso ao Sistema');
+            $botao->set_title('Cadastro de computadores com acesso ao sistema');
+            $botao->set_imagem(PASTA_FIGURAS . 'computador.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('computador.php');
+            #$menu->add_item($botao);
+
+            $menu->show();
+            br();
+
+            $grid->fechaColuna();
+            $grid->abreColuna(12, 12, 6);
+
             # Título
             tituloTable('Procedimentos');
             br();
@@ -916,172 +1080,10 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $menu->add_item($botao);
 
             $menu->show();
-
-            $grid->fechaColuna();
-            $grid->abreColuna(12, 12, 6);
-
-            # Título            
-            tituloTable('Gestão do Sistema');
             br();
-
-            # Inicia o menu
-            $menu = new MenuGrafico(3);
-
-            # Cadastro de Atualizações
-            $botao = new BotaoGrafico();
-            $botao->set_label('Atualizações');
-            $botao->set_url('admin_atualizacao.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'atualizacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Gerencia o cadastro de atualizações');
-            $menu->add_item($botao);
-
-            # Cadastro de Mensagens
-            $botao = new BotaoGrafico();
-            $botao->set_label('Mensagens');
-            $botao->set_title('Cadastro de Mensagens');
-            $botao->set_imagem(PASTA_FIGURAS . 'mensagem.jpg', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('admin_mensagem.php');
-            $menu->add_item($botao);
-
-            # Variáveis de Configuração
-            $botao = new BotaoGrafico();
-            $botao->set_label('Configurações');
-            $botao->set_url('admin_configuracao.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
-            $menu->add_item($botao);
-
-            # Documentação
-            $botao = new BotaoGrafico();
-            $botao->set_label('Documentação<br/>Problemas');
-            #$botao->set_target('blank');
-            $botao->set_title('Documentação do Sistema');
-            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('admin_documentacao.php');
-            $menu->add_item($botao);
-
-            # Informação do PHP
-            $botao = new BotaoGrafico();
-            $botao->set_label('Servidor PHP');
-            $botao->set_title('Informações sobre&#10;a versão do PHP');
-            $botao->set_imagem(PASTA_FIGURAS . 'phpInfo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('?fase=servidorPhp');
-            $botao->set_target('blank');
-            $menu->add_item($botao);
-
-            # Informação do Servidor Web
-            $botao = new BotaoGrafico();
-            $botao->set_label('Servidor Web');
-            $botao->set_title('Informações sobre&#10;o servidor web');
-            $botao->set_imagem(PASTA_FIGURAS . 'webServer.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('?fase=servidorWeb');
-            $botao->set_target('blank');
-            $menu->add_item($botao);
-
-            $menu->show();
-
-            $grid->fechaColuna();
-            $grid->abreColuna(12, 12, 6);
-
-            # Título
-            br();
-            tituloTable('Gestão de Usuários');
-            br();
-
-            # Inicia o menu
-            $menu = new MenuGrafico(3);
-
-            # Administração de Usuários
-            $botao = new BotaoGrafico();
-            $botao->set_label('Cadastro de Usuários');
-            $botao->set_url('admin_usuarios.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'usuarios.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Gerencia os Usuários');
-            $menu->add_item($botao);
-
-            # Regras
-            $botao = new BotaoGrafico();
-            $botao->set_label('Regras de Acesso');
-            $botao->set_url('admin_regras.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'regras.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Cadastro de Regras');
-            $menu->add_item($botao);
-
-            # Histórico Geral
-            $botao = new BotaoGrafico();
-            $botao->set_label('Histórico de Acesso');
-            $botao->set_title('Histórico Geral do Sistema');
-            $botao->set_imagem(PASTA_FIGURAS . 'historico.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('admin_historico.php');
-            $menu->add_item($botao);
-
-            # Computadores (IPs)
-            $botao = new BotaoGrafico();
-            $botao->set_label('Acesso ao Sistema');
-            $botao->set_title('Cadastro de computadores com acesso ao sistema');
-            $botao->set_imagem(PASTA_FIGURAS . 'computador.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('computador.php');
-            #$menu->add_item($botao);
-
-            $menu->show();
-
-            $grid->fechaColuna();
-            $grid->abreColuna(12, 12, 6);
-
-            br();
-            tituloTable('Banco de Dados');
-            br();
-
-            # Inicia o menu
-            $menu = new MenuGrafico(3);
-
-            # Backup
-            $botao = new BotaoGrafico();
-            $botao->set_label('Backup');
-            $botao->set_title('Acessa a área de backup');
-            $botao->set_imagem(PASTA_FIGURAS . 'backup.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('?fase=pastaBackup');
-            $menu->add_item($botao);
-
-            # Importação
-            $botao = new BotaoGrafico();
-            $botao->set_label('Importação');
-            $botao->set_title('Executa a rotina de importação');
-            $botao->set_imagem(PASTA_FIGURAS . 'importacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('?fase=importacao');
-            $menu->add_item($botao);
-
-            # PhpMyAdmin
-            $botao = new BotaoGrafico();
-            $botao->set_label('PhpMyAdmin');
-            $botao->set_title('Executa o PhpMyAdmin');
-            $botao->set_target('_blank');
-            $botao->set_imagem(PASTA_FIGURAS . 'mysql.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('http://127.0.0.1/phpmyadmin');
-            $menu->add_item($botao);
-
-            # Registros órfãos
-            $botao = new BotaoGrafico();
-            $botao->set_label('Registros Órfãos');
-            $botao->set_title('Faz varredura para encontrar registros órfãos');
-            $botao->set_imagem(PASTA_FIGURAS . 'regOrf.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('registroOrfao.php');
-            $menu->add_item($botao);
-
-            # Documentação
-            $botao = new BotaoGrafico();
-            $botao->set_label('Documentação');
-            #$botao->set_target('blank');
-            $botao->set_title('Documentação do Banco de Dados');
-            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('documentaBd.php');
-            $menu->add_item($botao);
-
-            $menu->show();
 
             $grid->fechaColuna();
             $grid->fechaGrid();
-            br();
             break;
 
         ##################################################################
