@@ -852,8 +852,8 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             # Limita o tamanho da tela
             $grid = new Grid();
-            $grid->abreColuna(6);   
-            
+            $grid->abreColuna(12, 12, 6);
+
             # Título
             tituloTable('Procedimentos');
             br();
@@ -916,9 +916,9 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $menu->add_item($botao);
 
             $menu->show();
-            
-            $grid->fechaColuna(); 
-            $grid->abreColuna(6); 
+
+            $grid->fechaColuna();
+            $grid->abreColuna(12, 12, 6);
 
             # Título            
             tituloTable('Gestão do Sistema');
@@ -979,9 +979,9 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $menu->add_item($botao);
 
             $menu->show();
-            
-            $grid->fechaColuna(); 
-            $grid->abreColuna(6); 
+
+            $grid->fechaColuna();
+            $grid->abreColuna(12, 12, 6);
 
             # Título
             br();
@@ -1024,10 +1024,10 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             #$menu->add_item($botao);
 
             $menu->show();
-            
-            $grid->fechaColuna(); 
-            $grid->abreColuna(6); 
-             
+
+            $grid->fechaColuna();
+            $grid->abreColuna(12, 12, 6);
+
             br();
             tituloTable('Banco de Dados');
             br();
@@ -1078,7 +1078,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $menu->add_item($botao);
 
             $menu->show();
-            
+
             $grid->fechaColuna();
             $grid->fechaGrid();
             br();
