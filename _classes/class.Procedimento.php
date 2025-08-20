@@ -370,29 +370,35 @@ class Procedimento {
                     }
                     break;
                 case 4: // link
-                    br();
-                    # Botão de Editar
-                    if ($editar) {
-                        $divBtn = new Div("editarProcedimento");
-                        $divBtn->abre();
+                    
+                    loadPage($dados['link']);
+//                    br();
+//                    # Botão de Editar
+//                    if ($editar) {
+//                        $divBtn = new Div("editarProcedimento");
+//                        $divBtn->abre();
+//
+//                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
+//                        $btnEditar->set_class('button secondary');
+//                        $btnEditar->set_title('Editar o Procedimento');
+//                        $btnEditar->show();
+//
+//                        $divBtn->fecha();
+//                    }
+//
+//                    # Exibe o titulo
+//                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
+//                    br();
+//
+//                    p($dados['titulo'], "procedimentoTitulo");
+//                    p($dados['descricao'], "procedimentoDescricao");
+//                    br();
+//                    
+//                    echo $dados['link'];
+//                    
+//                    iframe($dados['link']);
 
-                        $btnEditar = new Link("<i class='fi-pencil'></i>", "procedimentoNota.php?fase=editar&id=$idProcedimento");
-                        $btnEditar->set_class('button secondary');
-                        $btnEditar->set_title('Editar o Procedimento');
-                        $btnEditar->show();
-
-                        $divBtn->fecha();
-                    }
-
-                    # Exibe o titulo
-                    p("{$dados['categoria']} / {$dados['subCategoria']} / {$dados['titulo']}", "procedimentoPai");
-                    br();
-
-                    p($dados['titulo'], "procedimentoTitulo");
-                    p($dados['descricao'], "procedimentoDescricao");
-                    br();
-
-                    echo "<iframe src='{$dados['link']}' height='1000px' width='100%' marginwidth ='0' marginheight ='0' style='border:1px solid #d7d7d7;'></iframe>";
+                    #echo "<iframe src='{$dados['link']}' height='1000px' width='100%' marginwidth ='0' marginheight ='0' style='border:1px solid #d7d7d7;'></iframe>";
                     break;
                 case 5: // rotina
                     br();

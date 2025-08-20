@@ -113,6 +113,7 @@ class AreaServidor {
         # Somente admin
         if (Verifica::acesso($idUsuario, 1)) {
             array_push($array, ['Geral', 'Serviços da GRH', 'exibeServicos']);
+            array_push($array, ['Geral', 'Administração', 'menuAdmin']);
         }
 
         # Retira o menu de dados do servidor para quando o usuário for bolsista
@@ -128,7 +129,7 @@ class AreaServidor {
         array_push($array, ['Listagem de Servidores', 'por Cargo em Comissão', 'cargoComissao']);
         array_push($array, ['Listagem de Servidores', 'por Cargo Efetivo', 'servidorCargo']);
         array_push($array, ['Listagem de Servidores', 'por Lotação', 'porLotacao']);
-        
+
         # Acesso aos contatos dos servidores
         if (Verifica::acesso($idUsuario, [1, 11])) {
             array_push($array, ['Listagem de Servidores', 'com E-mails e Telefones', 'contatos']);
@@ -137,13 +138,6 @@ class AreaServidor {
         # Acesso aos contatos dos servidores com cpf
         if (Verifica::acesso($idUsuario, [1, 17])) {
             array_push($array, ['Listagem de Servidores', 'com CPF e Chefia Imediata', 'comCpf']);
-        }
-
-        # Somente Admin
-        if (Verifica::acesso($idUsuario, 1)) {
-            array_push($array, ['Administração', 'Gestão de Usuários', 'menuUsuario']);
-            array_push($array, ['Administração', 'Gestão do Sistema', 'menuSistema']);
-            array_push($array, ['Administração', 'Procedimentos', 'menuProcedimento']);
         }
 
         # Zera o agruppamento para a rotina que monta o menu
@@ -171,9 +165,8 @@ class AreaServidor {
             #add_item($tipo = 'link', $label = null, $url = '#', $title = null, $accessKey = null, $target = null)
         }
 
+        # Exibe o menu
         $menu->show();
-        
-        # Exibe 
     }
 
     ###########################################################
@@ -327,7 +320,6 @@ class AreaServidor {
         br(2);
     }
 
-    #################################################################
     #################################################################
 
     /**
