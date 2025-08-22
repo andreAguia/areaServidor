@@ -125,6 +125,7 @@ class AreaServidor {
 
         # Acrescenta outros itens
         array_push($array, ['Listagem de Servidores', 'por Nome', 'nome']);
+        array_push($array, ['Listagem de Servidores', 'por Nome com Foto', 'nomeFoto']);
         array_push($array, ['Listagem de Servidores', 'em Férias no seu Setor', 'feriasSetor']);
         array_push($array, ['Listagem de Servidores', 'por Cargo em Comissão', 'cargoComissao']);
         array_push($array, ['Listagem de Servidores', 'por Cargo Efetivo', 'servidorCargo']);
