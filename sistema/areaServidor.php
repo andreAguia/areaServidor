@@ -69,7 +69,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $linkAdm = new Link("Administração", "administracao.php");
             $linkAdm->set_class('button success');
             $linkAdm->set_title('Administração dos Sistemas');
-            $menu1->add_link($linkAdm, "right");
+            #$menu1->add_link($linkAdm, "right");
         }
 
         # Alterar Senha
@@ -539,6 +539,73 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
         ##################################################################
 
+        case "nomeFoto" :
+
+            # Pega os parâmetros
+            $parametroNomeMat = retiraAspas(post('parametroNomeMat', get_session('parametroNomeMat')));
+            $parametroSituacao = post('parametroSituacao', get_session('parametroSituacao', 1));
+
+            # Joga os parâmetros par as sessions
+            set_session('parametroNomeMat', $parametroNomeMat);
+            set_session('parametroSituacao', $parametroSituacao);
+
+            # Parâmetros
+            $form = new Form('?fase=nomeFoto');
+
+            # Nome ou Matrícula
+            $controle = new Input('parametroNomeMat', 'texto', 'Nome, Mat. ou Id:', 1);
+            $controle->set_size(55);
+            $controle->set_title('Nome, matrícula ou ID:');
+            $controle->set_valor($parametroNomeMat);
+            $controle->set_autofocus(true);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(8);
+            $form->add_item($controle);
+
+            # Situação
+            $result = $pessoal->select('SELECT idsituacao, situacao
+                                          FROM tbsituacao                                
+                                      ORDER BY 1');
+
+            $controle = new Input('parametroSituacao', 'combo', 'Situação:', 1);
+            $controle->set_size(30);
+            $controle->set_title('Filtra por Situação');
+            $controle->set_array($result);
+            $controle->set_valor($parametroSituacao);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(4);
+            $form->add_item($controle);
+
+            $form->show();
+
+            # Lista de Servidores Ativos
+            $lista = new ListaServidores2('Servidores');
+            if (!is_null($parametroNomeMat)) {
+                $lista->set_matNomeId($parametroNomeMat);
+                $lista->set_paginacao(false);
+                $lista->set_situacao($parametroSituacao);
+                $lista->set_comFoto(true);
+
+                # Retira a edição
+                $lista->set_permiteEditar(false);
+                $lista->set_paginacao(false);
+
+                $lista->showTabela();
+            } else {
+                tituloTable("Servidores");
+                $callout = new Callout();
+                $callout->abre();
+                br(2);
+                p("Informe o Nome, Matrícula ou idFuncional", 'f14', 'center');
+                br();
+                $callout->fecha();
+            }
+            break;
+
+        ##################################################################
+
         case "contatos" :
 
             # Permissão de Acesso
@@ -924,6 +991,15 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             # Inicia o menu
             $menu = new MenuGrafico(3);
+            
+            # PhpMyAdmin
+            $botao = new BotaoGrafico();
+            $botao->set_label('PhpMyAdmin');
+            $botao->set_title('Executa o PhpMyAdmin');
+            $botao->set_target('_blank');
+            $botao->set_imagem(PASTA_FIGURAS . 'mysql.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('http://127.0.0.1/phpmyadmin');
+            $menu->add_item($botao);
 
             # Backup
             $botao = new BotaoGrafico();
@@ -938,16 +1014,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_label('Importação');
             $botao->set_title('Executa a rotina de importação');
             $botao->set_imagem(PASTA_FIGURAS . 'importacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('?fase=importacao');
-            $menu->add_item($botao);
-
-            # PhpMyAdmin
-            $botao = new BotaoGrafico();
-            $botao->set_label('PhpMyAdmin');
-            $botao->set_title('Executa o PhpMyAdmin');
-            $botao->set_target('_blank');
-            $botao->set_imagem(PASTA_FIGURAS . 'mysql.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('http://127.0.0.1/phpmyadmin');
+            $botao->set_url('admin_importacao.php');
             $menu->add_item($botao);
 
             # Registros órfãos
