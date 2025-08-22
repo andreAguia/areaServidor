@@ -32,7 +32,7 @@ if ($acesso) {
     $menu = new MenuBar();
 
     # Botão voltar
-    $linkBotao1 = new Link("Voltar", 'administracao.php');
+    $linkBotao1 = new Link("Voltar", 'areaServidor.php?fase=menuAdmin');
     $linkBotao1->set_class('button');
     $linkBotao1->set_title('Volta para a página anterior');
     $linkBotao1->set_accessKey('V');
