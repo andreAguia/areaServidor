@@ -113,6 +113,11 @@ if ($acesso) {
 
             # Verifica a existência do arquivo
             if (file_exists($arquivo)) {
+                
+                # Informa que o arquivo foi encontrado
+                echo "Arquivo Encontrado!";
+                
+                
                 $lines = file($arquivo);
 
                 # Inicia variáveis
