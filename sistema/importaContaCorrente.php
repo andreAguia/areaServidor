@@ -115,8 +115,7 @@ if ($acesso) {
             if (file_exists($arquivo)) {
                 
                 # Informa que o arquivo foi encontrado
-                echo "Arquivo Encontrado!";
-                
+                echo "Arquivo Encontrado!";                
                 
                 $lines = file($arquivo);
 
@@ -143,6 +142,8 @@ if ($acesso) {
 
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($lines as $linha) {
+                    
+                    echo $linha;
                     
                     # retira os caracteres especiaus
                     $linha = htmlspecialchars($linha);
@@ -178,11 +179,7 @@ if ($acesso) {
                         }
                         
                         
-                    }
-
-                    # Pega os dados tratados
-                    
-                    
+                    }                    
                     
                     # Inicia a linha
                     echo "<tr>";
