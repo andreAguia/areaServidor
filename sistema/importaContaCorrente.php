@@ -143,10 +143,12 @@ if ($acesso) {
                 # Percorre o arquivo e guarda os dados em um array
                 foreach ($lines as $linha) {
                     
-                    echo $linha;
+                    echo "oi";
                     
                     # retira os caracteres especiaus
                     $linha = htmlspecialchars($linha);
+                    
+                    echo "oi2";
                     
                     # Separa as colunas usando a virgula
                     $parte = explode(",", $linha);
