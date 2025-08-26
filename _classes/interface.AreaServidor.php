@@ -114,6 +114,7 @@ class AreaServidor {
         if (Verifica::acesso($idUsuario, 1)) {
             array_push($array, ['Geral', 'Serviços da GRH', 'exibeServicos']);
             array_push($array, ['Geral', 'Administração', 'menuAdmin']);
+            array_push($array, ['Geral', 'Banco de Dados', 'menuBanco']);
         }
 
         # Retira o menu de dados do servidor para quando o usuário for bolsista
