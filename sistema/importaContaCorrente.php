@@ -152,14 +152,20 @@ if ($acesso) {
                     
                     # Separa as colunas usando a virgula
                     $parte = explode(",", $linha);
+                    
+                    echo "oi3";
 
                     # Pega os dados
                     $cpf = $parte[0];
                     $nome = $parte[1];
                     $conta = $parte[2];
                     
+                    echo "oi4";
+                    
                     # Formata o CPF
                     $cpfTratado = formatCnpjCpf($cpf);
+                    
+                    echo "oi5";
                                                             
                     # Valida o cpf
                     if(!validaCpf($cpfTratado)){
