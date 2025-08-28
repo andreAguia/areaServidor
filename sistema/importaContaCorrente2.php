@@ -99,7 +99,14 @@ if ($acesso) {
 
             # Abre o banco de dados
             $pessoal = new Pessoal();
-            $select = "SELECT idServidor, idServidor, idServidor, idServidor FROM tbservidor JOIN tbpessoa USING (idPessoa) ORDER BY tbpessoa.nome";
+            $select = "SELECT idServidor, 
+                              idServidor, 
+                              idServidor, 
+                              idServidor 
+                         FROM tbservidor JOIN tbpessoa USING (idPessoa)
+                                         LEFT JOIN tbhistbanco USING (idServidor)
+                      ORDER BY tbhistbanco.idBanco, tbpessoa.nome";
+            
             $row = $pessoal->select($select);
 
             # Monta a tabela
