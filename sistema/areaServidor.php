@@ -541,66 +541,72 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
         case "nomeFoto" :
 
-            # Pega os parâmetros
-            $parametroNomeMat = retiraAspas(post('parametroNomeMat', get_session('parametroNomeMat')));
-            $parametroSituacao = post('parametroSituacao', get_session('parametroSituacao', 1));
+            # Permissão de Acesso
+            $acesso = Verifica::acesso($idUsuario, [1, 18]);
 
-            # Joga os parâmetros par as sessions
-            set_session('parametroNomeMat', $parametroNomeMat);
-            set_session('parametroSituacao', $parametroSituacao);
+            if ($acesso) {
 
-            # Parâmetros
-            $form = new Form('?fase=nomeFoto');
+                # Pega os parâmetros
+                $parametroNomeMat = retiraAspas(post('parametroNomeMat', get_session('parametroNomeMat')));
+                $parametroSituacao = post('parametroSituacao', get_session('parametroSituacao', 1));
 
-            # Nome ou Matrícula
-            $controle = new Input('parametroNomeMat', 'texto', 'Nome, Mat. ou Id:', 1);
-            $controle->set_size(55);
-            $controle->set_title('Nome, matrícula ou ID:');
-            $controle->set_valor($parametroNomeMat);
-            $controle->set_autofocus(true);
-            $controle->set_onChange('formPadrao.submit();');
-            $controle->set_linha(1);
-            $controle->set_col(8);
-            $form->add_item($controle);
+                # Joga os parâmetros par as sessions
+                set_session('parametroNomeMat', $parametroNomeMat);
+                set_session('parametroSituacao', $parametroSituacao);
 
-            # Situação
-            $result = $pessoal->select('SELECT idsituacao, situacao
+                # Parâmetros
+                $form = new Form('?fase=nomeFoto');
+
+                # Nome ou Matrícula
+                $controle = new Input('parametroNomeMat', 'texto', 'Nome, Mat. ou Id:', 1);
+                $controle->set_size(55);
+                $controle->set_title('Nome, matrícula ou ID:');
+                $controle->set_valor($parametroNomeMat);
+                $controle->set_autofocus(true);
+                $controle->set_onChange('formPadrao.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(8);
+                $form->add_item($controle);
+
+                # Situação
+                $result = $pessoal->select('SELECT idsituacao, situacao
                                           FROM tbsituacao                                
                                       ORDER BY 1');
 
-            $controle = new Input('parametroSituacao', 'combo', 'Situação:', 1);
-            $controle->set_size(30);
-            $controle->set_title('Filtra por Situação');
-            $controle->set_array($result);
-            $controle->set_valor($parametroSituacao);
-            $controle->set_onChange('formPadrao.submit();');
-            $controle->set_linha(1);
-            $controle->set_col(4);
-            $form->add_item($controle);
+                $controle = new Input('parametroSituacao', 'combo', 'Situação:', 1);
+                $controle->set_size(30);
+                $controle->set_title('Filtra por Situação');
+                $controle->set_array($result);
+                $controle->set_valor($parametroSituacao);
+                $controle->set_onChange('formPadrao.submit();');
+                $controle->set_linha(1);
+                $controle->set_col(4);
+                $form->add_item($controle);
 
-            $form->show();
+                $form->show();
 
-            # Lista de Servidores Ativos
-            $lista = new ListaServidores2('Servidores');
-            if (!is_null($parametroNomeMat)) {
-                $lista->set_matNomeId($parametroNomeMat);
-                $lista->set_paginacao(false);
-                $lista->set_situacao($parametroSituacao);
-                $lista->set_comFoto(true);
+                # Lista de Servidores Ativos
+                $lista = new ListaServidores2('Servidores');
+                if (!is_null($parametroNomeMat)) {
+                    $lista->set_matNomeId($parametroNomeMat);
+                    $lista->set_paginacao(false);
+                    $lista->set_situacao($parametroSituacao);
+                    $lista->set_comFoto(true);
 
-                # Retira a edição
-                $lista->set_permiteEditar(false);
-                $lista->set_paginacao(false);
+                    # Retira a edição
+                    $lista->set_permiteEditar(false);
+                    $lista->set_paginacao(false);
 
-                $lista->showTabela();
-            } else {
-                tituloTable("Servidores");
-                $callout = new Callout();
-                $callout->abre();
-                br(2);
-                p("Informe o Nome, Matrícula ou idFuncional", 'f14', 'center');
-                br();
-                $callout->fecha();
+                    $lista->showTabela();
+                } else {
+                    tituloTable("Servidores");
+                    $callout = new Callout();
+                    $callout->abre();
+                    br(2);
+                    p("Informe o Nome, Matrícula ou idFuncional", 'f14', 'center');
+                    br();
+                    $callout->fecha();
+                }
             }
             break;
 
