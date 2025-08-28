@@ -29,12 +29,15 @@ if ($acesso) {
 
     # Parâmetros da importação
     $contador = 0;
-    $problemas = 0;    
+    $problemas = 0;
 
     # Limita o tamanho da tela
     $grid = new Grid();
     $grid->abreColuna(12);
     br();
+
+    # Nome da rotina
+    $titulo = "Dados Bancários - Importa da Tabela Antiga para a Tabela Nova";
 
     #########################################################################
 
@@ -45,12 +48,6 @@ if ($acesso) {
             # Cria um menu
             $menu = new MenuBar();
 
-            # Botão voltar
-            $linkVoltar = new Link("Voltar", 'administracao.php');
-            $linkVoltar->set_class('button');
-            $linkVoltar->set_title('Volta para a página anterior');
-            $linkVoltar->set_accessKey('V');
-            #$menu->add_link($linkVoltar, "left");
             # Analisa
             $linkAnalisa = new Link("Analisa", "?fase=inicia");
             $linkAnalisa->set_class('button');
@@ -59,7 +56,7 @@ if ($acesso) {
 
             $menu->show();
 
-            titulo('Importação da Conta Corrente de arquivo do Excell para o banco de dados');
+            titulo($titulo);
             break;
 
         #########################################################################
@@ -75,9 +72,6 @@ if ($acesso) {
         #########################################################################
 
         case "analisa" :
-
-            # Arquivo a ser importado
-            $arquivo = "../../importacao/banco.csv";
 
             # Cria um menu
             $menu = new MenuBar();
@@ -97,7 +91,7 @@ if ($acesso) {
             $menu->add_link($linkBotao2, "right");
             $menu->show();
 
-            titulo("Importação do Arquivo de Contas Bancárias");
+            titulo($titulo);
 
             # Cria um painel
             $painel = new Callout();
@@ -105,104 +99,26 @@ if ($acesso) {
 
             # Abre o banco de dados
             $pessoal = new Pessoal();
+            $select = "SELECT idServidor, idServidor, idServidor, idServidor FROM tbservidor JOIN tbpessoa USING (idPessoa) ORDER BY tbpessoa.nome";
+            $row = $pessoal->select($select);
 
-            $problemaNome = 0;
+            # Monta a tabela
+            $tabela = new Tabela();
+            $tabela->set_titulo("Servidores");
+            $tabela->set_conteudo($row);
+            $tabela->set_label(["Servidor", "Tabela Antiga", "Tabela Atual", "Analisa"]);
+            $tabela->set_align(["left"]);
+            #$tabela->set_width([10, 10, 10, 25, 15, 25]);
+            $tabela->set_classe(["Pessoal", "Pessoal", "Pessoal", "Pessoal"]);
+            $tabela->set_metodo(["get_nomeECargo", "exibe_contaBancariaAntiga", "exibe_contaBancaria", "analisaImportacaoContaBancaria"]);
+            $tabela->show();
 
-            # Verifica a existência do arquivo
-            if (file_exists($arquivo)) {
-
-                # Pega as linha do arquivo
-                $lines = file($arquivo);
-
-                # Inicia a Tabela
-                echo "<table border=1>";
-
-                echo "<col style = 'width:5%'>";
-                echo "<col style = 'width:20%'>";
-                echo "<col style = 'width:20%'>";
-                echo "<col style = 'width:20%'>";
-                echo "<col style = 'width:30%'>";
-
-                echo "<tr>";
-                echo "<th>#</th>";
-                echo "<th>CPF</th>";
-                echo "<th>Nome Planilha</th>";
-                echo "<th>Nome Sistema</th>";
-                echo "<th>Conta</th>";
-                echo "</tr>";
-
-                # Percorre o arquivo e guarda os dados em um array
-                foreach ($lines as $linha) {
-
-                    # retira os caracteres especiaus
-                    $linha = htmlspecialchars($linha);
-
-                    # Separa as colunas usando a virgula
-                    $parte = explode(",", $linha);
-
-                    # Pega os dados
-                    $cpf = $parte[0];
-                    $nome = $parte[1];
-                    $conta = $parte[2];
-
-                    # Separa a conta
-                    $item = explode(" - ", $parte[2]);
-
-                    # Retira os zeros à esquerda do número da conta
-                    $item[2] = intval($item[2]);
-
-                    # Formata o CPF
-                    $cpfTratado = formatCnpjCpf($cpf);
-
-                    # Valida o cpf
-                    if (!validaCpf($cpfTratado)) {
-                        $nomeSistema = "CPF INVÁLIDO !!";
-                    } else {
-                        # Pega o idPessoa e idServidor
-                        $idPessoa = $pessoal->get_idPessoaCpf($cpfTratado);
-                        $idServidor = $pessoal->get_idServidoridPessoa($idPessoa);
-
-                        if (empty($idPessoa)) {
-                            $nomeSistema = "<b>IdPessoa Vazio</b>";
-                            $problemas++;
-                        } else {
-                            # Pega o nome
-                            $nomeSistema = $pessoal->get_nomeidPessoa($idPessoa);
-
-                            if (empty($nomeSistema)) {
-                                echo "Nome nÃo Encontrado";
-                            }
-                        }
-                    }
-
-                    # Inicia a linha
-                    echo "<tr>";
-
-                    $contador++;
-
-                    echo "<td id='center'>{$contador}</td>";
-                    echo "<td id='center'>{$cpf}<br/>{$cpfTratado}</td>";
-                    echo "<td id='left'>{$nome}<br/>IdServidor:{$idServidor}</td>";
-                    echo "<td id='left'>{$nomeSistema}</td>";
-                    echo "<td id='left'>{$conta}<br/>{$item[0]} / {$item[1]} / {$item[2]}</td>";
-                    echo "</tr>";
-                }
-
-                echo "</table>";
-
-                echo "Registros analisados: {$contador}";
-                echo "<br/>Problemas com idPessoa: {$problemas}";
-
-                br(2);
-                # Botão importar
-                $linkBotao1 = new Link("Importar", '?fase=aguarda2');
-                $linkBotao1->set_class('button');
-                $linkBotao1->set_title('Volta para a página anterior');
-                $linkBotao1->set_accessKey('I');
-                $linkBotao1->show();
-            } else {
-                echo "Arquivo não encontrado";
-            }
+            # Botão importar
+            $linkBotao1 = new Link("Importar", '?fase=aguarda2');
+            $linkBotao1->set_class('button');
+            $linkBotao1->set_title('Volta para a página anterior');
+            $linkBotao1->set_accessKey('I');
+            $linkBotao1->show();
 
             $painel->fecha();
             break;
@@ -214,7 +130,7 @@ if ($acesso) {
             br(4);
             aguarde("Importando ...");
 
-            loadPage('?fase=importa');
+            #loadPage('?fase=importa');
             break;
 
         #########################################################################
@@ -224,7 +140,7 @@ if ($acesso) {
             # Arquivo a ser importado
             $arquivo = "../../importacao/banco.csv";
 
-            titulo('Importação das contas Correntes');
+            titulo($titulo);
 
             # Cria um painel
             $painel = new Callout();
@@ -279,18 +195,36 @@ if ($acesso) {
                         $campos = array("idServidor", "idBanco", "agencia", "conta", "padrao", "obs");
                         $valor = array($idServidor, 4, $item[1], $item[2], "s", "Importado em " . date('d/m/Y'));
                         $pessoal->gravar($campos, $valor, null, "tbhistbanco", "idHistBanco", false);
-                    }else{
+                    } else {
                         $problemas++;
                     }
                 }
             } else {
                 echo "Arquivo não encontrado";
             }
-            
+
             echo "Registros Importados: {$contador}";
             echo "<br/>Problemas encontrados: {$problemas}";
 
             $painel->fecha();
+            break;
+
+        #########################################################################
+
+        case "importaBaseAntiga" :
+            # Pega o Servidor
+            $idServidor = get("idServidor");
+            $padrao = get("padrao","s");
+
+            # Pega os dados da tabela antiga
+            $baseAntiga = $servidor->get_contaBancariaAntiga($idServidor);
+
+            # Salva na nova
+            $campos = array("idServidor", "idBanco", "agencia", "conta", "padrao", "obs");
+            $valor = array($idServidor, $baseAntiga[0], $baseAntiga[1], $baseAntiga[2], $padrao, "Importado em " . date('d/m/Y'));
+            $servidor->gravar($campos, $valor, null, "tbhistbanco", "idHistBanco", false);
+            
+            loadPage("?fase=inicia");
             break;
 
         #########################################################################    

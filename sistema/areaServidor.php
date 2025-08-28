@@ -919,7 +919,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             # Limita o tamanho da tela
             $grid = new Grid();
-            $grid->abreColuna(12, 12, 6);
+            $grid->abreColuna(12);
 
             /*
              * Sistemas            
@@ -928,7 +928,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             br();
 
             # Inicia o menu
-            $menu = new MenuGrafico(3);
+            $menu = new MenuGrafico(5);
 
             # Cadastro de Atualizações
             $botao = new BotaoGrafico();
@@ -936,6 +936,15 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_url('admin_atualizacao.php');
             $botao->set_imagem(PASTA_FIGURAS . 'atualizacao.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Gerencia o cadastro de atualizações');
+            $menu->add_item($botao);
+
+            # Menu de Documentos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Menu de Documentos');
+            #$botao->set_target('blank');
+            $botao->set_title('Menu de Documentos do sistema GRH');
+            $botao->set_imagem(PASTA_FIGURAS . 'menu.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url("../../grh/grhSistema/cadastroMenuDocumentos.php");
             $menu->add_item($botao);
 
             # Cadastro de Mensagens
@@ -984,17 +993,14 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $menu->show();
             br();
 
-            $grid->fechaColuna();
-            $grid->abreColuna(12, 12, 6);
-
-            /* 
+            /*
              * Usuários
              */
             tituloTable('Gestão de Usuários');
             br();
 
             # Inicia o menu
-            $menu = new MenuGrafico(3);
+            $menu = new MenuGrafico(5);
 
             # Administração de Usuários
             $botao = new BotaoGrafico();
@@ -1032,6 +1038,17 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             br();
 
             $grid->fechaColuna();
+            $grid->fechaGrid();
+            break;
+
+        ##################################################################
+
+        case "menuProcedimentos":
+            # Tamanho do icone
+            $tamanhoImage = 64;
+
+            # Limita o tamanho da tela
+            $grid = new Grid();
             $grid->abreColuna(12);
 
             /*
@@ -1041,7 +1058,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             br();
 
             # Inicia o menu
-            $menu = new MenuGrafico(6);
+            $menu = new MenuGrafico(5);
 
             # Cadastro de Serviços
             $botao = new BotaoGrafico();
@@ -1070,15 +1087,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_title('Sistema de controle de manuais de procedimentos');
             $menu->add_item($botao);
 
-            # Menu de Documentos
-            $botao = new BotaoGrafico();
-            $botao->set_label('Menu de Documentos');
-            #$botao->set_target('blank');
-            $botao->set_title('Menu de Documentos do sistema GRH');
-            $botao->set_imagem(PASTA_FIGURAS . 'menu.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url("../../grh/grhSistema/cadastroMenuDocumentos.php");
-            $menu->add_item($botao);
-
             # Tarefas
             $botao = new BotaoGrafico();
             $botao->set_label('Tarefas');
@@ -1104,7 +1112,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $grid->fechaGrid();
             break;
 
-         ##################################################################
+        ##################################################################
 
         case "menuBanco":
             # Tamanho do icone
@@ -1121,8 +1129,8 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             br();
 
             # Inicia o menu
-            $menu = new MenuGrafico(4);
-            
+            $menu = new MenuGrafico(5);
+
             # PhpMyAdmin
             $botao = new BotaoGrafico();
             $botao->set_label('PhpMyAdmin');
@@ -1170,12 +1178,21 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             br();
 
             # Inicia o menu
-            $menu = new MenuGrafico(4);
-            
+            $menu = new MenuGrafico(5);
+
             # Contas bancárias
             $botao = new BotaoGrafico();
-            $botao->set_label('Contas Bancárias');
+            $botao->set_label('Planilha -> Contas Bancárias');
             $botao->set_url('importaContaCorrente.php');
+            $botao->set_target('_blank');
+            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
+            $menu->add_item($botao);
+
+            # Contas bancárias
+            $botao = new BotaoGrafico();
+            $botao->set_label('tabela velha -> tabela nova');
+            $botao->set_url('importaContaCorrente2.php');
             $botao->set_target('_blank');
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
