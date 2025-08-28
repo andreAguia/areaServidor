@@ -105,7 +105,7 @@ if ($acesso) {
                               idServidor 
                          FROM tbservidor JOIN tbpessoa USING (idPessoa)
                                          LEFT JOIN tbhistbanco USING (idServidor)
-                      ORDER BY tbhistbanco.idBanco, tbpessoa.nome";
+                      ORDER BY tbhistbanco.idBanco desc";
             
             $row = $pessoal->select($select);
 
