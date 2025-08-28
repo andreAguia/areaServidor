@@ -105,6 +105,7 @@ if ($acesso) {
                               idServidor 
                          FROM tbservidor JOIN tbpessoa USING (idPessoa)
                                          LEFT JOIN tbhistbanco USING (idServidor)
+                        WHERE tbhistbanco.idBanco IS NULL
                       ORDER BY tbhistbanco.idBanco desc";
             
             $row = $pessoal->select($select);
