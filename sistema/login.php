@@ -19,6 +19,7 @@ $pessoal = new Pessoal();
 # Verifica se o sistema está fora do ar em manutenção
 $ipManutencao = $intra->get_variavel('ipAdmin'); // ip isento da mensagem
 $ipMaquina = $_SERVER['REMOTE_ADDR'];   // ip da máquina
+
 # Define a senha padrão de acordo com o que está nas variáveis
 define("SENHA_PADRAO", $intra->get_variavel('senhaPadrao'));
 
