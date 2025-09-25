@@ -51,11 +51,9 @@ class BackupBancoDados {
         # Conecta ao Banco de Dados
         $intra = new Intra();
 
-        # Data e Hora
-        $hora = date("H");
-
-        # Atualiza a hora do último backup
-        $intra->set_variavel("backupHora", $hora);
+        # Grava o dia e a hora do backup
+        $intra->set_variavel("backupDia", date("d"));
+        $intra->set_variavel("backupHora", date("H"));          
 
         # Define o nome do arquivo
         $pedaco1 = date("Y.m.d");
@@ -65,10 +63,6 @@ class BackupBancoDados {
         # Executa o backup no Linux
         shell_exec("/var/www/html/areaServidor/sistema/executaBackup $arquivo");
 
-        # Envia o arquivo por email
-        $pedaco1 = date_to_php($pedaco1, ".");
-        $assunto = "Backup de " . $pedaco1 . " as " . $pedaco2;
-
         # Pega o tipo do backup
         if ($this->tipo == 1) {
             $textoTipo = "Automático";
@@ -76,71 +70,8 @@ class BackupBancoDados {
             $textoTipo = "Manual";
         }
 
-        # Pega o nome do sistema nas variáveis
-        $nomeSistema = $intra->get_variavel("sistemaGrh");
-
-        $mensagem = "UENF - Universidade Estadual do Norte Fluminense<br/>";
-        $mensagem .= "GRH - Gerência de Recursos Humanos<br/>";
-        $mensagem .= $nomeSistema . "<br/><br/>";
-        $mensagem .= "Este é um e-mail automático. Não é necessário respondê-lo.";
-        $mensagem .= "<br/><br/>";
-        $mensagem .= "Backup da Base de Dados realizado.";
-        $mensagem .= "<br/>";
-        $mensagem .= "Tipo: $textoTipo<br/>";
-        $mensagem .= "Data: $pedaco1<br/>";
-        $mensagem .= "Hora: $pedaco2<br/>";
-        $mensagem .= str_repeat("-", 80) . "<br/>";
-        $mensagem .= "Segue, em anexo, os arquivos do backup<br/>";
-        $mensagem .= "Qualquer dúvida entre em contato com a GRH.";
-
-        # Pega os email a serem usados nas variáveis
-        $para = $intra->get_variavel("backupEmailPara");
-        $copia = $intra->get_variavel("backupEmailCopia");
-        $senha = $intra->get_variavel("senhaEmail");
-
-        # Inicia o email
-        $mail = new EnviaEmail($assunto, $mensagem,$senha);
-
-        # Define o endereço de origem
-        $numPara = explode(",", $para);
-        if (count($numPara) > 1) {
-            foreach ($numPara as $destinatario) {
-                $mail->set_para($destinatario);
-            }
-        } else {
-            $mail->set_para($para);
-        }
-
-        # Define o endereço para cópia
-        if (!is_null($copia)) {
-            $numCopia = explode(",", $copia);
-            if (count($numCopia) > 1) {
-                foreach ($numCopia as $comCopia) {
-                    $mail->set_comCopia($comCopia);
-                }
-            } else {
-                $mail->set_comCopia($copia);
-            }
-        }
-
-        $mail->set_deNome("Sistema de Pessoal");
-
-        $arquivo = $arquivo . '.tar';
-
-        #$caminho = '../../_backup/';            
-        $caminho = '/var/www/html/_backup/';
-        $mail->set_anexo($caminho . $arquivo);
-
-        $mail->envia();
-
         # Grava no log a atividade
         $intra->registraLog($this->idUsuario, date("Y-m-d H:i:s"), "Backup $textoTipo realizado", null, null, 6);
-
-        if (!empty($mail->erro)) {
-            $intra->registraLog($this->idUsuario, date("Y-m-d H:i:s"), $mail->erro, null, null, 5);
-        }else{
-            $intra->registraLog($this->idUsuario, date("Y-m-d H:i:s"), "Email com o backup enviado com sucesso.", null, null, 6);
-        }
     }
 
     ###########################################################
