@@ -7,7 +7,6 @@
  * By Alat
  */
 class AreaServidor {
-    
     #################################################################
 
     /**
@@ -27,6 +26,8 @@ class AreaServidor {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_mulher.jpg', 'Dia Internacional da Mulher', 190, 60);
         } elseif (($mes == 12) AND ($dia < 26)) {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_natal.png', 'Feliz Natal', 200, 60);
+        } elseif ($mes == 10) {
+            $imagem = new Imagem(PASTA_FIGURAS . 'uenf_outubro.png', 'Outubro Rosa', 200, 120);
         } else {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf.png', 'Uenf - Universidade Estadual do Norte Fluminense', 190, 60);
         }
@@ -129,12 +130,12 @@ class AreaServidor {
 
         # Acrescenta outros itens
         array_push($array, ['Listagem de Servidores', 'por Nome', 'nome']);
-        
+
         # Acesso aos contatos dos servidores com foto
         if (Verifica::acesso($idUsuario, [1, 18])) {
             array_push($array, ['Listagem de Servidores', 'por Nome com Foto', 'nomeFoto']);
         }
-        
+
         array_push($array, ['Listagem de Servidores', 'em Férias no seu Setor', 'feriasSetor']);
         array_push($array, ['Listagem de Servidores', 'por Cargo em Comissão', 'cargoComissao']);
         array_push($array, ['Listagem de Servidores', 'por Cargo Efetivo', 'servidorCargo']);
@@ -391,7 +392,7 @@ class AreaServidor {
     }
 
     ##########################################################
-    
+
     /**
      * Método moduloServidorWeb
      * 
