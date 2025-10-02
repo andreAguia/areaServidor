@@ -934,7 +934,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             br();
 
             # Inicia o menu
-            $menu = new MenuGrafico(5);
+            $menu = new MenuGrafico(6);
 
             # Cadastro de Atualizações
             $botao = new BotaoGrafico();
@@ -976,7 +976,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_title('Documentação do Sistema');
             $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
             $botao->set_url('admin_documentacao.php');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
 
             # Informação do PHP
             $botao = new BotaoGrafico();
@@ -1002,11 +1002,15 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             /*
              * Usuários
              */
+            
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+            
             tituloTable('Gestão de Usuários');
             br();
 
             # Inicia o menu
-            $menu = new MenuGrafico(5);
+            $menu = new MenuGrafico(3);
 
             # Administração de Usuários
             $botao = new BotaoGrafico();
@@ -1039,6 +1043,88 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'computador.png', $tamanhoImage, $tamanhoImage);
             $botao->set_url('computador.php');
             #$menu->add_item($botao);
+
+            $menu->show();
+            br();
+            /*
+             *  Banco de Dados
+             */
+            
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+            
+            tituloTable('Banco de Dados');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # PhpMyAdmin
+            $botao = new BotaoGrafico();
+            $botao->set_label('PhpMyAdmin');
+            $botao->set_title('Executa o PhpMyAdmin');
+            $botao->set_target('_blank');
+            $botao->set_imagem(PASTA_FIGURAS . 'mysql.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('http://127.0.0.1/phpmyadmin');
+            $menu->add_item($botao);
+
+            # Backup
+            $botao = new BotaoGrafico();
+            $botao->set_label('Backup');
+            $botao->set_title('Acessa a área de backup');
+            $botao->set_imagem(PASTA_FIGURAS . 'backup.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=pastaBackup');
+            $menu->add_item($botao);
+
+            # Registros órfãos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Registros Órfãos');
+            $botao->set_title('Faz varredura para encontrar registros órfãos');
+            $botao->set_imagem(PASTA_FIGURAS . 'regOrf.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('registroOrfao.php');
+            $menu->add_item($botao);
+
+            # Documentação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Documentação');
+            #$botao->set_target('blank');
+            $botao->set_title('Documentação do Banco de Dados');
+            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('documentaBd.php');
+            $menu->add_item($botao);
+
+            $menu->show();
+            br();
+
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+
+            /*
+             * Importação
+             */
+            tituloTable('Importação');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Contas bancárias
+            $botao = new BotaoGrafico();
+            $botao->set_label('Planilha -> Contas Bancárias');
+            $botao->set_url('importaContaCorrente.php');
+            $botao->set_target('_blank');
+            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
+            $menu->add_item($botao);
+
+            # Contas bancárias
+            $botao = new BotaoGrafico();
+            $botao->set_label('tabela velha -> tabela nova');
+            $botao->set_url('importaContaCorrente2.php');
+            $botao->set_target('_blank');
+            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
+            $menu->add_item($botao);
 
             $menu->show();
             br();
@@ -1109,99 +1195,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Sistema de notas dos sistemas');
             $botao->set_target("_blank");
-            $menu->add_item($botao);
-
-            $menu->show();
-            br();
-
-            $grid->fechaColuna();
-            $grid->fechaGrid();
-            break;
-
-        ##################################################################
-
-        case "menuBanco":
-            # Tamanho do icone
-            $tamanhoImage = 64;
-
-            # Limita o tamanho da tela
-            $grid = new Grid();
-            $grid->abreColuna(12);
-
-            /*
-             *  Banco de Dados
-             */
-            tituloTable('Banco de Dados');
-            br();
-
-            # Inicia o menu
-            $menu = new MenuGrafico(5);
-
-            # PhpMyAdmin
-            $botao = new BotaoGrafico();
-            $botao->set_label('PhpMyAdmin');
-            $botao->set_title('Executa o PhpMyAdmin');
-            $botao->set_target('_blank');
-            $botao->set_imagem(PASTA_FIGURAS . 'mysql.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('http://127.0.0.1/phpmyadmin');
-            $menu->add_item($botao);
-
-            # Backup
-            $botao = new BotaoGrafico();
-            $botao->set_label('Backup');
-            $botao->set_title('Acessa a área de backup');
-            $botao->set_imagem(PASTA_FIGURAS . 'backup.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('?fase=pastaBackup');
-            $menu->add_item($botao);
-
-            # Registros órfãos
-            $botao = new BotaoGrafico();
-            $botao->set_label('Registros Órfãos');
-            $botao->set_title('Faz varredura para encontrar registros órfãos');
-            $botao->set_imagem(PASTA_FIGURAS . 'regOrf.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('registroOrfao.php');
-            $menu->add_item($botao);
-
-            # Documentação
-            $botao = new BotaoGrafico();
-            $botao->set_label('Documentação');
-            #$botao->set_target('blank');
-            $botao->set_title('Documentação do Banco de Dados');
-            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('documentaBd.php');
-            $menu->add_item($botao);
-
-            $menu->show();
-            br();
-
-            $grid->fechaColuna();
-            $grid->abreColuna(12);
-
-            /*
-             * Importação
-             */
-            tituloTable('Importação');
-            br();
-
-            # Inicia o menu
-            $menu = new MenuGrafico(5);
-
-            # Contas bancárias
-            $botao = new BotaoGrafico();
-            $botao->set_label('Planilha -> Contas Bancárias');
-            $botao->set_url('importaContaCorrente.php');
-            $botao->set_target('_blank');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
-            $menu->add_item($botao);
-
-            # Contas bancárias
-            $botao = new BotaoGrafico();
-            $botao->set_label('tabela velha -> tabela nova');
-            $botao->set_url('importaContaCorrente2.php');
-            $botao->set_target('_blank');
-            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
             $menu->add_item($botao);
 
             $menu->show();
