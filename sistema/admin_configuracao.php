@@ -27,7 +27,7 @@ if ($acesso) {
     $id = soNumeros(get('id'));
 
     # Pega o parametro de pesquisa (se tiver)
-    $parametro = retiraAspas(post('parametro', get_session('sessionParametro')));
+    $parametro = retiraAspas(post('parametro', get_session('sessionParametro', "Todos")));
     set_session('sessionParametro', $parametro);
 
     # Começa uma nova página
@@ -37,9 +37,9 @@ if ($acesso) {
     # Cabeçalho da Página
     AreaServidor::cabecalho();
     br();
-    
+
     # Abre um novo objeto Modelo
-    $objeto = new Modelo();    
+    $objeto = new Modelo();
 
     ################################################################
     # Nome do Modelo (aparecerá nos fildset e no caption da tabela)
@@ -88,8 +88,13 @@ if ($acesso) {
 
     # Parametros da tabela
     $objeto->set_label(["Categoria", "Nome", "Comentário", "Valor"]);
-    $objeto->set_width([10, 10, 50, 20]);
+    $objeto->set_width([10, 10, 45, 25]);
     $objeto->set_align(["center", "left", "left", "left"]);
+    
+    if ($parametro == "Todos") {
+        $objeto->set_rowspan(0);
+        $objeto->set_grupoCorColuna(0);
+    }
 
     # Classe do banco de dados
     $objeto->set_classBd('Intra');
