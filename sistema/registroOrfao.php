@@ -44,7 +44,7 @@ if ($acesso) {
 
         case "fazendo" :
             # Botão voltar
-            $linkBotao1 = new Link("Voltar", 'administracao.php');
+            $linkBotao1 = new Link("Voltar", 'areaServidor.php?fase=menuAdmin');
             $linkBotao1->set_class('button');
             $linkBotao1->set_title('Volta para a página anterior');
             $linkBotao1->set_accessKey('V');
@@ -64,18 +64,28 @@ if ($acesso) {
             titulo('Descobrindo Registros Órfãos');
             br();
 
-            ### tbpessoa
+            /*
+             *  idPessoa
+             */
             tituloTable('Tabela tbpessoa');
             br();
 
             $grid2 = new Grid();
-            $tabelasPessoa = ["tbdependente", "tbdocumentacao", "tbformacao"];
+            $tabelasPessoa = [
+                "tbdependente",
+                "tbdocumentacao",
+                "tbformacao"
+            ];
+
             foreach ($tabelasPessoa as $tt) {
                 $grid2->abreColuna(4);
+
                 tituloTable($tt);
+
                 $select = "SELECT * FROM $tt WHERE idPessoa NOT IN (SELECT idPessoa FROM tbpessoa)";
                 $row = $servidor->select($select, false);
-                if (count($row[0]) == 0) {
+
+                if (empty($row[0])) {
                     br(2);
                     p("Nenhum registro órfão encontrado !", "center");
                     br(2);
@@ -88,18 +98,41 @@ if ($acesso) {
             $grid2->fechaGrid();
             hr();
 
-            ### tbservidor
+            /*
+             *  tbservidor
+             */
             tituloTable('Tabela tbservidor');
             br();
 
             $grid2 = new Grid();
-            $tabelasPessoa = ["tbatestado", "tbaverbacao", "tbcedido", "tbcomissao", "tbdiaria", "tbelogio", "tbferias", "tbfolga", "tbgratificacao", "tbhistcessao", "tbhistlot", "tblicenca", "tbprogressao", "tbpublicacaopremio", "tbtrabalhotre", "tbtrienio"];
+            $tabelasPessoa = [
+                "tbatestado",
+                "tbaverbacao",
+                "tbcedido",
+                "tbcomissao",
+                "tbdiaria",
+                "tbelogio",
+                "tbferias",
+                "tbfolga",
+                "tbgratificacao",
+                "tbhistcessao",
+                "tbhistlot",
+                "tblicenca",
+                "tbprogressao",
+                "tbpublicacaopremio",
+                "tbtrabalhotre",
+                "tbtrienio"
+            ];
+
             foreach ($tabelasPessoa as $tt) {
                 $grid2->abreColuna(4);
+
                 tituloTable($tt);
+
                 $select = "SELECT * FROM $tt WHERE idServidor NOT IN (SELECT idServidor FROM tbservidor)";
                 $row = $servidor->select($select, false);
-                if (count($row[0]) == 0) {
+
+                if (empty($row[0])) {
                     br(2);
                     p("Nenhum registro órfão encontrado !", "center");
                     br(2);
