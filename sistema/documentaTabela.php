@@ -27,7 +27,7 @@ if ($acesso) {
     $tabela = get('id');
 
     # Botão voltar
-    $linkBotaoVoltar = new Link("Voltar", 'documentaBd.php?banco=' . $banco);
+    $linkBotaoVoltar = new Link("Voltar", 'admin_documentaBd.php?banco=' . $banco);
     $linkBotaoVoltar->set_class('button float-left');
     $linkBotaoVoltar->set_title('Volta para a página anterior');
     $linkBotaoVoltar->set_accessKey('V');

@@ -109,6 +109,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             set_session('servidorLotacao');
             set_session('servidorCargoComissao');
             set_session('idServidor');
+            set_session('sessionParametro');
 
             # Limpa as sessions usadas servidor geral e contatos
             set_session('parametroNomeMat');
@@ -918,6 +919,8 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             # Limita o tamanho da tela
             $grid = new Grid();
             $grid->abreColuna(12);
+            
+            set_session('sessionParametro');
 
             /*
              * Sistemas            
@@ -967,8 +970,9 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             #$botao->set_target('blank');
             $botao->set_title('Documentação do Sistema');
             $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('admin_documentacao.php');
+            $botao->set_url('admin_documentacao.php');            
             #$menu->add_item($botao);
+            
             # Informação do PHP
             $botao = new BotaoGrafico();
             $botao->set_label('Servidor PHP');
@@ -1064,7 +1068,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_label('Backup');
             $botao->set_title('Acessa a área de backup');
             $botao->set_imagem(PASTA_FIGURAS . 'backup.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('pastaBackup.php');
+            $botao->set_url('admin_backup.php');
             $menu->add_item($botao);
 
             # Registros órfãos
@@ -1072,7 +1076,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_label('Registros Órfãos');
             $botao->set_title('Faz varredura para encontrar registros órfãos');
             $botao->set_imagem(PASTA_FIGURAS . 'regOrf.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('registroOrfao.php');
+            $botao->set_url('admin_registroOrfao.php');
             $menu->add_item($botao);
 
             # Documentação
@@ -1081,7 +1085,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             #$botao->set_target('blank');
             $botao->set_title('Documentação do Banco de Dados');
             $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('documentaBd.php');
+            $botao->set_url('admin_documentaBd.php');
             $menu->add_item($botao);
 
             $menu->show();
@@ -1213,7 +1217,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $processo = new Processo();
             $processo->run("php backup.php 2 $idUsuario");
 
-            loadPage('pastaBackup.php');
+            loadPage('admin_backup.php');
             break;
 
         ##################################################################

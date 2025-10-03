@@ -26,7 +26,7 @@ if ($acesso) {
     $grid->abreColuna(12);
 
     # Botão voltar
-    $linkBotao1 = new Link("Voltar", "documentaBd.php?banco=$banco");
+    $linkBotao1 = new Link("Voltar", "admin_documentaBd.php?banco=$banco");
     $linkBotao1->set_class('button');
     $linkBotao1->set_title('Volta para a página anterior');
     $linkBotao1->set_accessKey('V');
