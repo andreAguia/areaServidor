@@ -963,15 +963,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
             $menu->add_item($botao);
-
-            # Documentação
-            $botao = new BotaoGrafico();
-            $botao->set_label('Documentação<br/>Problemas');
-            #$botao->set_target('blank');
-            $botao->set_title('Documentação do Sistema');
-            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('admin_documentacao.php');            
-            #$menu->add_item($botao);
             
             # Informação do PHP
             $botao = new BotaoGrafico();
@@ -1079,15 +1070,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_url('admin_registroOrfao.php');
             $menu->add_item($botao);
 
-            # Documentação
-            $botao = new BotaoGrafico();
-            $botao->set_label('Documentação');
-            #$botao->set_target('blank');
-            $botao->set_title('Documentação do Banco de Dados');
-            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('admin_documentaBd.php');
-            $menu->add_item($botao);
-
             $menu->show();
             br();
 
@@ -1119,6 +1101,39 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_target('_blank');
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
+            $menu->add_item($botao);
+
+            $menu->show();
+            br();
+            
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+
+            /*
+             * Documentação
+             */
+            tituloTable('Documentação');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Documentação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Banco de Dados');
+            #$botao->set_target('blank');
+            $botao->set_title('Documentação do Banco de Dados');
+            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_documentaBd.php');
+            $menu->add_item($botao);
+
+            # Documentação
+            $botao = new BotaoGrafico();
+            $botao->set_label('Código');
+            #$botao->set_target('blank');
+            $botao->set_title('Documentação do Código');
+            $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_documentacao.php');            
             $menu->add_item($botao);
 
             $menu->show();
