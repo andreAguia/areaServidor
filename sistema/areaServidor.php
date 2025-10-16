@@ -509,6 +509,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             if (!is_null($parametroNomeMat)) {
                 $lista->set_matNomeId($parametroNomeMat);
                 $lista->set_paginacao(false);
+                $lista->set_detalhado(true);
                 $lista->set_situacao($parametroSituacao);
 
                 # Retira a edição
@@ -676,7 +677,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
                         $tabela->set_titulo("Contatos dos Servidores Ativos");
                         $tabela->set_conteudo($conteudo);
-                        $tabela->set_label(["ID/Matrícula", "Servidor", "Ramais", "Contatos"]);
+                        $tabela->set_label(["ID/Matrícula", "Servidor", "Ramais do Setor", "Contatos do Servidor"]);
                         $tabela->set_width([10, 25, 40, 25]);
                         $tabela->set_align(["center", "left", "left", "left"]);
                         $tabela->set_classe(["pessoal", "pessoal", null, "pessoal", "pessoal"]);
