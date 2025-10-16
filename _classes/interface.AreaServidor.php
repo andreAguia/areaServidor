@@ -179,7 +179,27 @@ class AreaServidor {
         $menu->show();
     }
 
-    ###########################################################
+    ######################################################################################################################
+
+    /**
+     * Método moduloEventos
+     */
+    public static function moduloEventos() {
+        
+        # Título
+        titulo('9ª Semana do Servidor');
+        br();
+
+        $botao = new BotaoGrafico();
+        $botao->set_label();
+        $botao->set_url("#");
+        $botao->set_imagem(PASTA_FIGURAS . 'semanaServidor2025.jpeg', '90%', '90%');
+        $botao->set_title('Semana do Servidor');
+        #$botao->set_target("_blank");
+        $botao->show();
+    }
+
+    ######################################################################################################################
 
     /**
      * Método moduloSistemasInternos
@@ -242,7 +262,7 @@ class AreaServidor {
         $intra = new Intra();
 
         # Inicia o menu
-        $menu = new MenuGrafico(3);
+        $menu = new MenuGrafico(1);
         $menu->set_espacoEntreLink(true);
 
         # Sei
