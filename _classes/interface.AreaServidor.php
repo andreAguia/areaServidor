@@ -262,7 +262,7 @@ class AreaServidor {
         $intra = new Intra();
 
         # Inicia o menu
-        $menu = new MenuGrafico(1);
+        $menu = new MenuGrafico(3);
         $menu->set_espacoEntreLink(true);
 
         # Sei

@@ -134,14 +134,19 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $grid2 = new Grid();
             $grid2->abreColuna(12, 12, 6);
 
-            AreaServidor::moduloEventos();            
+            AreaServidor::moduloSobre();
+            #AreaServidor::moduloEventos();            
             #AreaServidor::moduloSispatri();
 
             $grid2->fechaColuna();
             $grid2->abreColuna(12, 12, 6);
 
             AreaServidor::moduloSistemasInternos($idUsuario);
-            AreaServidor::moduloSobre();
+            #AreaServidor::moduloSistemasExternos($idUsuario);
+
+            $grid1->fechaColuna();
+            $grid2->abreColuna(12);
+
             AreaServidor::moduloSistemasExternos($idUsuario);
 
             $grid1->fechaColuna();
