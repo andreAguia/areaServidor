@@ -27,7 +27,9 @@ class AreaServidor {
         } elseif (($mes == 12) AND ($dia < 26)) {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_natal.png', 'Feliz Natal', 200, 60);
         } elseif ($mes == 10) {
-            $imagem = new Imagem(PASTA_FIGURAS . 'uenf_outubro.png', 'Outubro Rosa', 200, 120);
+            $imagem = new Imagem(PASTA_FIGURAS . 'uenf_outubro.png', 'Outubro Rosa', 250, 150);
+        } elseif ($mes == 11) {
+            $imagem = new Imagem(PASTA_FIGURAS . 'uenf_novembro.png', 'Novembro Azul',  250, 150);
         } else {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf.png', 'Uenf - Universidade Estadual do Norte Fluminense', 190, 60);
         }
