@@ -59,7 +59,7 @@ if ($acesso) {
 
             $menu->show();
 
-            titulo('Importação da Conta Corrente de arquivo do Excell para o banco de dados');
+            titulo("Importação do Arquivo do SEI");
             break;
 
         #########################################################################
