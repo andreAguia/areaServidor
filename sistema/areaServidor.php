@@ -1105,6 +1105,15 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
             $menu->add_item($botao);
+            
+            # Sei
+            $botao = new BotaoGrafico();
+            $botao->set_label('Sis Águia -> SEI');
+            $botao->set_url('importaSei.php');
+            $botao->set_target('_blank');
+            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Informa os CPFs do sistema para o SEI');
+            $menu->add_item($botao);
 
             $menu->show();
             br();
