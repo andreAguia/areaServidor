@@ -145,7 +145,6 @@ if ($acesso) {
                     $orgao = $parte[0];
                     $login = $parte[1];
                     $nome = $parte[2];
-                    $cpf = $parte[3];
                     $ativo = $parte[4];
                     
                     # Procura o nome no sistema
@@ -153,9 +152,9 @@ if ($acesso) {
                     
                     # Pega o cpf
                     if(!empty($idPessoa)){
-                        $cpf .= "<br/>".$pessoal->get_cpf($idPessoa);
+                        $cpf = preg_replace('/\D/', '', $pessoal->get_cpf($idPessoa));
                     }else{
-                        $cpf .= "<br/>NÃO ENCONTRADO !";
+                        $cpf = "";
                         $problemas++;
                     }
 
