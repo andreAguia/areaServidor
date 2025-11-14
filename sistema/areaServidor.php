@@ -128,6 +128,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             set_session('parametroEmpresa');
             set_session('parametroNatureza');
             set_session('parametroObjeto');
+            set_session('parametroSiafe');
             set_session('parametroSetorRequisitante');
             set_session('inclusaoEmpresa');
             set_session('aba');
