@@ -130,6 +130,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             set_session('parametroObjeto');
             set_session('parametroSetorRequisitante');
             set_session('inclusaoEmpresa');
+            set_session('aba');
 
             $grid2 = new Grid();
             $grid2->abreColuna(12, 12, 6);
