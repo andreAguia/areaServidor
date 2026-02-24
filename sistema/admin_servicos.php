@@ -56,7 +56,7 @@ if ($acesso) {
     $objeto->set_nome('Serviço');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('areaServidor.php?fase=menuProcedimentos');
+    $objeto->set_voltarLista('areaServidor.php?fase=menuAdmin');
     
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
