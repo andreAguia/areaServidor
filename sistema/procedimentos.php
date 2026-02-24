@@ -25,10 +25,10 @@ if ($acesso) {
     # Pega od Ids
     $idProcedimento = get('idProcedimento');
     $subCategoria = get('subCategoria');
+    $categoria = get('categoria');
 
     # Joga os parâmetros par as sessions
     #set_session('idProcedimento', $idProcedimento);
-
     # Começa uma nova página
     $page = new Page();
     $page->iniciaPagina();
@@ -73,11 +73,30 @@ if ($acesso) {
 
         case "" :
         case "exibeProcedimento" :
+
+            # Verifica se é um procedimento propriamente dito
             if (!empty($idProcedimento)) {
+                # Verifica se pode ou não ser editado (user admin)
                 if (Verifica::acesso($idUsuario, 1)) {
                     $procedimento->exibeProcedimento($idProcedimento, true);
                 } else {
                     $procedimento->exibeProcedimento($idProcedimento);
+                }
+            } else {
+                # Verifica se é a tela inicial
+                if (empty($subCategoria)) {
+                    # Verifica se é categoria
+                    if (empty($categoria)) {
+                        br(10);
+                        p("Procedimentos GRH", "f26", "center");
+                        p("Versão: " . VERSAO . "<br/>Atualizado em: " . ATUALIZACAO, "f12", "center");
+                    } else {
+                        # Verifica se é subcategoria
+                        $procedimento->exibeProcedimentoCategoria($categoria);
+                    }
+                } else {
+                    # Verifica se é subcategoria
+                    $procedimento->exibeProcedimentoSubCategoria2($subCategoria);
                 }
             }
             break;

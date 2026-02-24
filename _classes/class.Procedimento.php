@@ -16,7 +16,7 @@ class Procedimento {
      * Método Construtor
      */
     public function __construct() {
-        
+
         # Define o array com os tipos de procedimentos
         $this->tiposProcedimentos = [
             [null, null],
@@ -91,7 +91,7 @@ class Procedimento {
 
         # Exibe os itens
         foreach ($arrayCategorias as $valor) {
-            $menu1->add_item('titulo', '<b>' . $valor["categoria"] . '</b>');
+            $menu1->add_item('titulo', '<b>' . $valor["categoria"] . '</b>', '?fase=exibeProcedimento&categoria=' . $valor["categoria"]);
             $categoriaAnterior = $valor["categoria"];
             $subCategoriaAnterior = null;
             $tituloAnterior = null;
@@ -186,6 +186,7 @@ class Procedimento {
         $intra = new Intra();
 
         $select = "SELECT titulo,
+                          categoria,
                            idProcedimento
                       FROM tbprocedimento
                      WHERE titulo IS NOT NULL 
@@ -370,7 +371,7 @@ class Procedimento {
                     }
                     break;
                 case 4: // link                    
-                    
+
                     br();
                     # Botão de Editar
                     if ($editar) {
@@ -392,9 +393,9 @@ class Procedimento {
                     p($dados['titulo'], "procedimentoTitulo");
                     p($dados['descricao'], "procedimentoDescricao");
                     br();
-                    
+
                     echo $dados['link'];
-                    
+
                     iframe($dados['link']);
 
                     echo "<iframe src='{$dados['link']}' height='1000px' width='100%' marginwidth ='0' marginheight ='0' style='border:1px solid #d7d7d7;'></iframe>";
@@ -479,6 +480,87 @@ class Procedimento {
                 br();
             }
         }
+    }
+
+    ###########################################################
+
+    public function exibeProcedimentoSubCategoria2($subCategoria) {
+        /**
+         * exibe os procedimentos da subCategoria
+         * 
+         * @param $id integer null o id
+         * 
+         * @syntax $rotina->exibeRotina([$id]);  
+         */
+        # Acessa o banco de dados
+        $intra = new Intra();
+
+        # Pega os itens de uma subCategoria
+        $row = $this->get_menuTitulos($subCategoria);
+        br();
+
+        # Exibe o titulo
+        p("{$row[0]['categoria']} / {$subCategoria}", "procedimentoPai");
+        br();
+
+        p($subCategoria, "procedimentoTitulo");
+        hr("procedimento");
+        br();
+
+        # Inicia o menu           
+        $menu1 = new Menu("menuProcedimentos");
+
+        foreach ($row as $valor3) {
+            $menu1->add_item('sublink', "- {$valor3['titulo']}", '?fase=exibeProcedimento&idProcedimento=' . $valor3["idProcedimento"]);
+        }
+
+        # exibe o menu
+        $menu1->show();
+    }
+
+    ###########################################################
+
+    public function exibeProcedimentoCategoria($categoria) {
+        /**
+         * exibe os procedimentos da categoria
+         * 
+         * @param $id integer null o id
+         * 
+         * @syntax $rotina->exibeRotina([$id]);  
+         */
+        # Acessa o banco de dados
+        $intra = new Intra();
+
+        # Pega os itens de uma categoria
+        $row = $this->get_menuSubCategorias($categoria);
+        br();
+
+        # Exibe o titulo
+        p($categoria, "procedimentoPai");
+        br();
+
+        p($categoria, "procedimentoTitulo");
+        hr("procedimento");
+        br();
+
+        # Inicia o menu           
+        $menu1 = new Menu("menuProcedimentos");
+
+        foreach ($row as $valor3) {
+
+            # Exibe as subcategorias se estiver aberto
+            $menu1->add_item('link', $valor3["subCategoria"], '?fase=exibeProcedimento&subCategoria=' . $valor3["subCategoria"]);
+
+            # Pega os itens de uma subCategoria
+            $row2 = $this->get_menuTitulos($valor3["subCategoria"]);
+
+            foreach ($row2 as $valor3) {
+                $menu1->add_item('sublink', "- {$valor3['titulo']}", '?fase=exibeProcedimento&idProcedimento=' . $valor3["idProcedimento"]);
+            }
+        }
+
+        # exibe o menu
+        $menu1->show();
     }
 
     ###########################################################
