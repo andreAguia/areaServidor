@@ -921,20 +921,20 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             # Tamanho do icone
             $tamanhoImage = 64;
 
-            # Limita o tamanho da tela
-            $grid = new Grid();
-            $grid->abreColuna(12);
-            
             set_session('sessionParametro');
 
             /*
              * Sistemas            
              */
+
+            $grid = new Grid();
+            $grid->abreColuna(6);
+
             tituloTable('Gestão do Sistema');
             br();
 
             # Inicia o menu
-            $menu = new MenuGrafico(6);
+            $menu = new MenuGrafico(3);
 
             # Cadastro de Atualizações
             $botao = new BotaoGrafico();
@@ -959,32 +959,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_title('Cadastro de Mensagens');
             $botao->set_imagem(PASTA_FIGURAS . 'mensagem.jpg', $tamanhoImage, $tamanhoImage);
             $botao->set_url('admin_mensagem.php');
-            $menu->add_item($botao);
-
-            # Variáveis de Configuração
-            $botao = new BotaoGrafico();
-            $botao->set_label('Configurações');
-            $botao->set_url('admin_configuracao.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
-            $menu->add_item($botao);
-            
-            # Informação do PHP
-            $botao = new BotaoGrafico();
-            $botao->set_label('Servidor PHP');
-            $botao->set_title('Informações sobre&#10;a versão do PHP');
-            $botao->set_imagem(PASTA_FIGURAS . 'phpInfo.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('?fase=servidorPhp');
-            $botao->set_target('blank');
-            $menu->add_item($botao);
-
-            # Informação do Servidor Web
-            $botao = new BotaoGrafico();
-            $botao->set_label('Servidor Web');
-            $botao->set_title('Informações sobre&#10;o servidor web');
-            $botao->set_imagem(PASTA_FIGURAS . 'webServer.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('?fase=servidorWeb');
-            $botao->set_target('blank');
             $menu->add_item($botao);
 
             $menu->show();
@@ -1037,6 +1011,84 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             $menu->show();
             br();
+            
+             /*
+             * Procedimentos
+             */
+
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+
+            tituloTable('Procedimentos');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Controle de procedimentos
+            $botao = new BotaoGrafico();
+            $botao->set_label('Procedimentos');
+            $botao->set_url('procedimentos.php');
+            #$botao->set_url('pastaDigitalizada.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'procedimentos.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de procedimentos');
+            $botao->set_target("_blank");
+            $menu->add_item($botao);
+
+            # Controle de Rotinas 2
+            $botao = new BotaoGrafico();
+            $botao->set_label('Rotinas');
+            $botao->set_url('admin_rotina.php');
+            #$botao->set_url('pastaDigitalizada.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'rotina.jpg', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de controle de manuais de procedimentos');
+            $menu->add_item($botao);
+
+            $menu->show();
+            br();
+
+            /*
+             * Servidor Web
+             */
+
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+
+            tituloTable('Servidor Web');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Variáveis de Configuração
+            $botao = new BotaoGrafico();
+            $botao->set_label('Configurações');
+            $botao->set_url('admin_configuracao.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'configuracao.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Edita as Variáveis de&#10;configuração da Intranet');
+            $menu->add_item($botao);
+
+            # Informação do PHP
+            $botao = new BotaoGrafico();
+            $botao->set_label('Servidor PHP');
+            $botao->set_title('Informações sobre&#10;a versão do PHP');
+            $botao->set_imagem(PASTA_FIGURAS . 'phpInfo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=servidorPhp');
+            $botao->set_target('blank');
+            $menu->add_item($botao);
+
+            # Informação do Servidor Web
+            $botao = new BotaoGrafico();
+            $botao->set_label('Servidor Web');
+            $botao->set_title('Informações sobre&#10;o servidor web');
+            $botao->set_imagem(PASTA_FIGURAS . 'webServer.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('?fase=servidorWeb');
+            $botao->set_target('blank');
+            $menu->add_item($botao);
+
+            $menu->show();
+            br();
+
             /*
              *  Banco de Dados
              */
@@ -1084,6 +1136,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             /*
              * Importação
              */
+
             tituloTable('Importação');
             br();
 
@@ -1107,7 +1160,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
             $menu->add_item($botao);
-            
+
             # Sei
             $botao = new BotaoGrafico();
             $botao->set_label('Sis Águia -> SEI');
@@ -1119,7 +1172,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             $menu->show();
             br();
-            
+
             $grid->fechaColuna();
             $grid->abreColuna(6);
 
@@ -1147,9 +1200,51 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             #$botao->set_target('blank');
             $botao->set_title('Documentação do Código');
             $botao->set_imagem(PASTA_FIGURAS . 'documentacao.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('admin_documentacao.php');            
+            $botao->set_url('admin_documentacao.php');
             $menu->add_item($botao);
 
+            $menu->show();
+            br();
+            
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+            
+             /*
+             * Em Desenvolvimento
+             */
+            tituloTable('Em Desenvolvimento');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Cadastro de Serviços
+            $botao = new BotaoGrafico();
+            $botao->set_label('Serviços');
+            #$botao->set_target('blank');
+            $botao->set_title('Cadastro de Serviços');
+            $botao->set_imagem(PASTA_FIGURAS . 'lista.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url("admin_servicos.php");
+            $menu->add_item($botao);            
+
+            # Tarefas
+            $botao = new BotaoGrafico();
+            $botao->set_label('Tarefas');
+            $botao->set_url('projeto.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'atribuicoes.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de gestão de tarefas');
+            $botao->set_target("_blank");
+            $menu->add_item($botao);
+
+            # Notas
+            $botao = new BotaoGrafico();
+            $botao->set_label('Notas');
+            $botao->set_url('projetoNota.php');
+            $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Sistema de notas dos sistemas');
+            $botao->set_target("_blank");
+            
+            $menu->add_item($botao);
             $menu->show();
             br();
 
@@ -1176,50 +1271,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             # Inicia o menu
             $menu = new MenuGrafico(5);
 
-            # Cadastro de Serviços
-            $botao = new BotaoGrafico();
-            $botao->set_label('Serviços');
-            #$botao->set_target('blank');
-            $botao->set_title('Cadastro de Serviços');
-            $botao->set_imagem(PASTA_FIGURAS . 'lista.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url("admin_servicos.php");
-            $menu->add_item($botao);
-
-            # Controle de procedimentos
-            $botao = new BotaoGrafico();
-            $botao->set_label('Procedimentos');
-            $botao->set_url('procedimentos.php');
-            #$botao->set_url('pastaDigitalizada.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'procedimentos.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Sistema de procedimentos');
-            $menu->add_item($botao);
-
-            # Controle de Rotinas 2
-            $botao = new BotaoGrafico();
-            $botao->set_label('Rotinas');
-            $botao->set_url('admin_rotina.php');
-            #$botao->set_url('pastaDigitalizada.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'rotina.jpg', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Sistema de controle de manuais de procedimentos');
-            $menu->add_item($botao);
-
-            # Tarefas
-            $botao = new BotaoGrafico();
-            $botao->set_label('Tarefas');
-            $botao->set_url('projeto.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'atribuicoes.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Sistema de gestão de tarefas');
-            $botao->set_target("_blank");
-            $menu->add_item($botao);
-
-            # Notas
-            $botao = new BotaoGrafico();
-            $botao->set_label('Notas');
-            $botao->set_url('projetoNota.php');
-            $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_title('Sistema de notas dos sistemas');
-            $botao->set_target("_blank");
-            $menu->add_item($botao);
+            
 
             $menu->show();
             br();

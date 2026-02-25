@@ -33,10 +33,11 @@ if ($acesso) {
     $page = new Page();
     $page->iniciaPagina();
 
-//    # Cabeçalho da Página
-//    if ($fase <> "ver") {
-//        AreaServidor::cabecalho();
-//    }
+    # Cabeçalho da Página
+    if ($fase <> "ver") {
+        AreaServidor::cabecalho();
+        br();
+    }
 
     # Abre um novo objeto Modelo
     $objeto = new Modelo();
@@ -46,7 +47,7 @@ if ($acesso) {
     $objeto->set_nome('Rotina');
 
     # botão de voltar da lista
-    $objeto->set_voltarLista('admin_menu.php?fase=menuAdmin');
+    $objeto->set_voltarLista('areaServidor.php?fase=menuAdmin');
     
     # controle de pesquisa
     $objeto->set_parametroLabel('Pesquisar:');
