@@ -136,14 +136,14 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $grid2 = new Grid();
             $grid2->abreColuna(12, 12, 6);
 
-            AreaServidor::moduloSobre();
             #AreaServidor::moduloEventos();            
-            #AreaServidor::moduloSispatri();
+            AreaServidor::moduloSispatri();
 
             $grid2->fechaColuna();
             $grid2->abreColuna(12, 12, 6);
 
             AreaServidor::moduloSistemasInternos($idUsuario);
+            AreaServidor::moduloSobre();
             #AreaServidor::moduloSistemasExternos($idUsuario);
 
             $grid1->fechaColuna();
@@ -1011,8 +1011,8 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             $menu->show();
             br();
-            
-             /*
+
+            /*
              * Procedimentos
              */
 
@@ -1205,11 +1205,11 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             $menu->show();
             br();
-            
+
             $grid->fechaColuna();
             $grid->abreColuna(6);
-            
-             /*
+
+            /*
              * Em Desenvolvimento
              */
             tituloTable('Em Desenvolvimento');
@@ -1225,7 +1225,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_title('Cadastro de Serviços');
             $botao->set_imagem(PASTA_FIGURAS . 'lista.png', $tamanhoImage, $tamanhoImage);
             $botao->set_url("admin_servicos.php");
-            $menu->add_item($botao);            
+            $menu->add_item($botao);
 
             # Tarefas
             $botao = new BotaoGrafico();
@@ -1243,7 +1243,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'contratos.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Sistema de notas dos sistemas');
             $botao->set_target("_blank");
-            
+
             $menu->add_item($botao);
             $menu->show();
             br();
@@ -1270,8 +1270,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             # Inicia o menu
             $menu = new MenuGrafico(5);
-
-            
 
             $menu->show();
             br();
