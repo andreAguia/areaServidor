@@ -460,7 +460,8 @@ class Procedimento {
 
             # Verifica quantas rotinas existem nesta catagoria
             if (count($row) == 1) {
-                $this->exibeProcedimento($row["idProcedimento"]);
+                $this->exibeProcedimento($row[0]["idProcedimento"]);
+                
             } else {
 
                 foreach ($row as $item) {
