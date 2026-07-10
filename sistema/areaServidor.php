@@ -965,6 +965,38 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             br();
 
             /*
+             * Histórico de Acesso
+             */
+
+            $grid->fechaColuna();
+            $grid->abreColuna(6);
+
+            tituloTable('Histórico de Acesso');
+            br();
+
+            # Inicia o menu
+            $menu = new MenuGrafico(3);
+
+            # Histórico Diário
+            $botao = new BotaoGrafico();
+            $botao->set_label('Histórico Diário');
+            $botao->set_title('Histórico Diário');
+            $botao->set_imagem(PASTA_FIGURAS . 'historico.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_historico.php');
+            $menu->add_item($botao);
+            
+            # Histórico Mensal
+            $botao = new BotaoGrafico();
+            $botao->set_label('Histórico Mensal');
+            $botao->set_title('Histórico Mensal');
+            $botao->set_imagem(PASTA_FIGURAS_GRH. 'diaria.jpg', $tamanhoImage, $tamanhoImage);
+            $botao->set_url('admin_historico_mensal.php');
+            $menu->add_item($botao);
+
+            $menu->show();
+            br();
+            
+            /*
              * Usuários
              */
 
@@ -993,14 +1025,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_title('Cadastro de Regras');
             $menu->add_item($botao);
 
-            # Histórico Geral
-            $botao = new BotaoGrafico();
-            $botao->set_label('Histórico de Acesso');
-            $botao->set_title('Histórico Geral do Sistema');
-            $botao->set_imagem(PASTA_FIGURAS . 'historico.png', $tamanhoImage, $tamanhoImage);
-            $botao->set_url('admin_historico.php');
-            $menu->add_item($botao);
-
             # Computadores (IPs)
             $botao = new BotaoGrafico();
             $botao->set_label('Acesso ao Sistema');
@@ -1011,6 +1035,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             $menu->show();
             br();
+
 
             /*
              * Procedimentos
