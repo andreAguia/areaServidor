@@ -862,7 +862,33 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-        ##################################################################        
+        ##################################################################    
+
+        case "afastamentoSetor" :
+
+            # Pega o ano
+            $ano = date("Y");
+
+            # Pega a Lotação atual do usuário
+            $idLotacao = $pessoal->get_idLotacao($idServidor);
+
+            # Exibe a tabela de Servidores afastados
+            $afast = new ListaAfastamentos();
+            $afast->set_ano($ano);
+            #$afast->set_mes($parametroMes);
+            $afast->set_lotacao($idLotacao);
+            $afast->set_idFuncional(false);
+            $afast->exibeDetalhes(false);
+            $afast->exibeTabela();
+
+            # Grava no log a atividade
+            $atividade = 'Visualizou os servidores em afastamento do próprio setor na área do servidor';
+            $Objetolog = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
+            break;
+
+        ##################################################################           
 
         case "porLotacao" :
             $form = new Form('?fase=porLotacao');
