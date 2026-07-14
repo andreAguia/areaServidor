@@ -1335,6 +1335,12 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             phpinfo();
             break;
 
+        ##################################################################        
+
+        case "proUenfSetor" :
+            construcao("Rotina Em Desenvolvimento.");
+            break;
+
         ##################################################################
 
         case "servidorWeb" :

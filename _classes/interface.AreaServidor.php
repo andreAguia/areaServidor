@@ -152,6 +152,8 @@ class AreaServidor {
             array_push($array, ['Listagem de Servidores', 'com CPF e Chefia Imediata', 'comCpf']);
         }
 
+        array_push($array, ['Listagem de Servidores', 'Folha de Presença PróUenf seu Setor', 'proUenfSetor']);
+        
         # Zera o agruppamento para a rotina que monta o menu
         $agrupamento = "";
 
