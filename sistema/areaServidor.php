@@ -1338,7 +1338,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         ##################################################################        
 
         case "proUenfSetor" :
-            construcao("Rotina Em Desenvolvimento.");
+            emConstrucao("Lamentamos profundamente, mas<br/>esta rotina ainda não está pronta.</br></br>Que tal tomar um café?", 1, PASTA_FIGURAS_GERAIS . 'cafe.png');
             break;
 
         ##################################################################
