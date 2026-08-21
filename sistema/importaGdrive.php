@@ -145,9 +145,9 @@ if ($acesso) {
 
                     if (!empty($idPessoa)) {
                         $idServidor = $pessoal->get_idServidoridPessoa($idPessoa);
-                        $nomeSistema = $pessoal->get_nome($idPessoa);
+                        $nomeSistema = $pessoal->get_nomeidPessoa($idPessoa);
                     } else {
-                        $nomeSistema = "Não Encontrado";
+                        $nomeSistema = "<span label class='label warning'>Não Encontrado</span>";                        
                         $naoEncontrado++;
                     }
 
@@ -158,20 +158,21 @@ if ($acesso) {
 
                     $contador++;
                     echo "<tr>";
-                    echo "<td>$contador</td>";
+                    echo "<td style='text-align: center;'>$contador</td>";
                     echo "<td>$nome</td>";
                     echo "<td>$link</td>";
                     echo "<td>$id</td>";
-                    echo "<td>$idPessoa</td>";
+                    echo "<td style='text-align: center;'>$idPessoa</td>";
                     echo "<td>$nomeSistema</td>";
 
                     echo "</tr>";
                 }
 
                 echo "</table>";
+                br(2);
 
-                echo "Registros analisados: {$contador}";
-                echo "Registros Não encontrador: {$naoEncontrado}";
+                echo "Registros analisados: {$contador}<br/>";
+                echo "Registros Não encontrador: {$naoEncontrado}<br/>";
                 echo "Registros Encontradoe: " . $contador - $naoEncontrado;
 
                 br(2);
@@ -182,7 +183,7 @@ if ($acesso) {
                 $linkBotao1->set_accessKey('I');
                 #$linkBotao1->show();
             } else {
-                echo "Arquivo de Férias não encontrado";
+                echo "Arquivo não encontrado";
             }
 
             $painel->fecha();
