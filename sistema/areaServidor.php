@@ -1201,7 +1201,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_target('_blank');
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
 
             # Contas bancárias
             $botao = new BotaoGrafico();
@@ -1210,7 +1210,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_target('_blank');
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
-            $menu->add_item($botao);
+            #$menu->add_item($botao);
 
             # Sei
             $botao = new BotaoGrafico();
@@ -1219,6 +1219,15 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_target('_blank');
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Informa os CPFs do sistema para o SEI');
+            #$menu->add_item($botao);
+            
+            # Pastas Funcionais do Google Drve para o sistema
+            $botao = new BotaoGrafico();
+            $botao->set_label('Google Drive -> Águia');
+            $botao->set_url('importaGdrive.php');
+            $botao->set_target('_blank');
+            $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
+            $botao->set_title('Cadastra os links das pastas dos servidores para o sistema');
             $menu->add_item($botao);
 
             $menu->show();
