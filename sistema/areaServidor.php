@@ -46,7 +46,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     $page = new Page();
     $page->iniciaPagina();
 
-    if ($fase <> "servidorPhp" AND $fase <> "servidorWeb" AND $fase <> "backup") {
+    if ($fase <> "servidorPhp" AND $fase <> "servidorWeb" AND $fase <> "backup" AND $fase <> "proUenfSetor") {
 
         # Cabeçalho
         AreaServidor::cabecalho();
@@ -143,6 +143,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $grid2->fechaColuna();
             $grid2->abreColuna(12, 12, 6);
 
+            
             AreaServidor::moduloSistemasInternos($idUsuario);            
             #AreaServidor::moduloSistemasExternos($idUsuario);
 
@@ -1347,7 +1348,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         ##################################################################        
 
         case "proUenfSetor" :
-            emConstrucao("Lamentamos profundamente, mas<br/>esta rotina ainda não está pronta.</br></br>Que tal tomar um café?", 1, PASTA_FIGURAS_GERAIS . 'cafe.png');
+            loadPage("../relatorios/folhaPresenca.mensal.horarios.php");
             break;
 
         ##################################################################
@@ -1368,7 +1369,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         ##################################################################
     }
 
-    if ($fase <> "servidorPhp" AND $fase <> "servidorWeb" AND $fase <> "backup") {
+    if ($fase <> "servidorPhp" AND $fase <> "servidorWeb" AND $fase <> "backup" AND $fase <> "proUenfSetor") {
 
         $grid1->fechaColuna();
         $grid1->abreColuna(12);

@@ -29,7 +29,7 @@ class AreaServidor {
         } elseif ($mes == 10) {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_outubro.png', 'Outubro Rosa', 250, 150);
         } elseif ($mes == 11) {
-            $imagem = new Imagem(PASTA_FIGURAS . 'uenf_novembro.png', 'Novembro Azul',  250, 150);
+            $imagem = new Imagem(PASTA_FIGURAS . 'uenf_novembro.png', 'Novembro Azul', 250, 150);
         } else {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf.png', 'Uenf - Universidade Estadual do Norte Fluminense', 190, 60);
         }
@@ -152,8 +152,8 @@ class AreaServidor {
             array_push($array, ['Listagem de Servidores', 'com CPF e Chefia Imediata', 'comCpf']);
         }
 
-        array_push($array, ['Listagem de Servidores', 'Folha de Presença PróUenf seu Setor', 'proUenfSetor']);
-        
+        array_push($array, ['Listagem de Servidores', 'Folha de Presença PróUenf seu Setor', 'proUenfSetor', NULL, '_blank']);
+
         # Zera o agruppamento para a rotina que monta o menu
         $agrupamento = "";
 
@@ -172,11 +172,20 @@ class AreaServidor {
 
             # Adiciona o link verificando se é o ativo
             if ($fase == $item[2]) {
-                $menu->add_item('link', "<b>| {$item[1]} |</b>", "?fase={$item[2]}", isset($item[3]) ? $item[3] : null, null, isset($item[4]) ? $item[4] : null);
+                $menu->add_item('link',
+                        "<b>| {$item[1]} |</b>",
+                        "?fase={$item[2]}",
+                        isset($item[3]) ? $item[3] : null,
+                        null,
+                        isset($item[4]) ? $item[4] : null);
             } else {
-                $menu->add_item('link', $item[1], "?fase={$item[2]}", isset($item[3]) ? $item[3] : null, null, isset($item[4]) ? $item[4] : null);
+                $menu->add_item('link',
+                        $item[1],
+                        "?fase={$item[2]}",
+                        isset($item[3]) ? $item[3] : null,
+                        null,
+                        isset($item[4]) ? $item[4] : null);
             }
-            #add_item($tipo = 'link', $label = null, $url = '#', $title = null, $accessKey = null, $target = null)
         }
 
         # Exibe o menu
@@ -189,7 +198,7 @@ class AreaServidor {
      * Método moduloEventos
      */
     public static function moduloEventos() {
-        
+
         # Título
         titulo('9ª Semana do Servidor');
         br();
@@ -220,10 +229,10 @@ class AreaServidor {
         # Inicia o menu
         if (Verifica::acesso($idUsuario, 1)) {
             $menu = new MenuGrafico(2);
-        }
-
-        if (Verifica::acesso($idUsuario, [9, 10])) {
+        } elseif (Verifica::acesso($idUsuario, [2, 9, 10])) {
             $menu = new MenuGrafico(1);
+        } else {
+            return;
         }
         $menu->set_espacoEntreLink(true);
 
