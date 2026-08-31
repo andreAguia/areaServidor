@@ -133,27 +133,44 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             set_session('inclusaoEmpresa');
             set_session('aba');
 
-            $grid2 = new Grid();
-            $grid2->abreColuna(12, 12, 6);
+            if (Verifica::acesso($idUsuario, [1, 2, 9, 10])) {
 
-            #AreaServidor::moduloEventos();            
-            #AreaServidor::moduloSispatri();
-            AreaServidor::moduloSobre();
+                $grid2 = new Grid();
+                $grid2->abreColuna(12, 12, 6);
 
-            $grid2->fechaColuna();
-            $grid2->abreColuna(12, 12, 6);
+                #AreaServidor::moduloEventos();            
+                #AreaServidor::moduloSispatri();
+                AreaServidor::moduloSobre();
 
-            
-            AreaServidor::moduloSistemasInternos($idUsuario);            
-            #AreaServidor::moduloSistemasExternos($idUsuario);
+                $grid2->fechaColuna();
+                $grid2->abreColuna(12, 12, 6);
 
-            $grid1->fechaColuna();
-            $grid2->abreColuna(12);
+                AreaServidor::moduloSistemasInternos($idUsuario);
+                #AreaServidor::moduloSistemasExternos($idUsuario);
 
-            AreaServidor::moduloSistemasExternos($idUsuario);
+                $grid2->fechaColuna();
+                $grid2->abreColuna(12);
 
-            $grid1->fechaColuna();
-            $grid1->fechaGrid();
+                AreaServidor::moduloSistemasExternos($idUsuario);
+
+                $grid2->fechaColuna();
+                $grid2->fechaGrid();
+            }else{
+                $grid2 = new Grid();
+                $grid2->abreColuna(12);
+
+                #AreaServidor::moduloEventos();            
+                #AreaServidor::moduloSispatri();
+                AreaServidor::moduloSobre();
+
+                $grid2->fechaColuna();
+                $grid2->abreColuna(12);
+
+                AreaServidor::moduloSistemasExternos($idUsuario);
+
+                $grid2->fechaColuna();
+                $grid2->fechaGrid();
+            }
             break;
 
         ##################################################################
@@ -1011,18 +1028,18 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'historico.png', $tamanhoImage, $tamanhoImage);
             $botao->set_url('admin_historico.php');
             $menu->add_item($botao);
-            
+
             # Histórico Mensal
             $botao = new BotaoGrafico();
             $botao->set_label('Histórico Mensal');
             $botao->set_title('Histórico Mensal');
-            $botao->set_imagem(PASTA_FIGURAS_GRH. 'diaria.jpg', $tamanhoImage, $tamanhoImage);
+            $botao->set_imagem(PASTA_FIGURAS_GRH . 'diaria.jpg', $tamanhoImage, $tamanhoImage);
             $botao->set_url('admin_historico_mensal.php');
             $menu->add_item($botao);
 
             $menu->show();
             br();
-            
+
             /*
              * Usuários
              */
@@ -1062,7 +1079,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             $menu->show();
             br();
-
 
             /*
              * Procedimentos
@@ -1203,7 +1219,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
             #$menu->add_item($botao);
-
             # Contas bancárias
             $botao = new BotaoGrafico();
             $botao->set_label('tabela velha -> tabela nova');
@@ -1212,7 +1227,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Prepara o banco de dados para a importação de contas bancárias');
             #$menu->add_item($botao);
-
             # Sei
             $botao = new BotaoGrafico();
             $botao->set_label('Sis Águia -> SEI');
@@ -1221,7 +1235,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $botao->set_imagem(PASTA_FIGURAS . 'codigo.png', $tamanhoImage, $tamanhoImage);
             $botao->set_title('Informa os CPFs do sistema para o SEI');
             #$menu->add_item($botao);
-            
             # Pastas Funcionais do Google Drve para o sistema
             $botao = new BotaoGrafico();
             $botao->set_label('Google Drive -> Águia');
