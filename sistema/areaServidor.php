@@ -514,7 +514,8 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             # Situação
             $result = $pessoal->select('SELECT idsituacao, situacao
-                                          FROM tbsituacao                                
+                                          FROM tbsituacao 
+                                          WHERE idsituacao < 7 
                                       ORDER BY 1');
 
             $controle = new Input('parametroSituacao', 'combo', 'Situação:', 1);
