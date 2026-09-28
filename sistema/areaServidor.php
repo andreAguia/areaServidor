@@ -586,8 +586,9 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
                 $form->add_item($controle);
 
                 # Situação
-                $result = $pessoal->select('SELECT idsituacao, situacao
-                                          FROM tbsituacao                                
+            $result = $pessoal->select('SELECT idsituacao, situacao
+                                          FROM tbsituacao 
+                                          WHERE idsituacao < 7 
                                       ORDER BY 1');
 
                 $controle = new Input('parametroSituacao', 'combo', 'Situação:', 1);
