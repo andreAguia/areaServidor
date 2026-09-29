@@ -21,6 +21,9 @@ class AreaServidor {
         # Verifica se a imagem é comemorativa
         $dia = date("d");
         $mes = date("m");
+        
+        # Pega a idade da Uenf
+        $idadeUenf = idade(DATA_ANIVERSARIO_UENF);
 
         if (($dia == 8) AND ($mes == 3)) {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_mulher.jpg', 'Dia Internacional da Mulher', 190, 60);
@@ -31,7 +34,7 @@ class AreaServidor {
         } elseif ($mes == 11) {
             $imagem = new Imagem(PASTA_FIGURAS . 'uenf_novembro.png', 'Novembro Azul', 250, 150);
         } else {
-            $imagem = new Imagem(PASTA_FIGURAS . 'uenf.png', 'Uenf - Universidade Estadual do Norte Fluminense', 190, 60);
+            $imagem = new Imagem(PASTA_FIGURAS . 'uenf.png', "Uenf&#10;Universidade Estadual do Norte Fluminense&#10;{$idadeUenf} anos", 190, 60);
         }
 
         $cabec = new Div('center');
