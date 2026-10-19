@@ -32,12 +32,14 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     $parametroComissao = post('parametroComissao', get_session('parametroComissao'));
     $parametroLotacao = post('parametroLotacao', get_session('parametroLotacao', $pessoal->get_idLotacao($idServidor)));
     $parametroMes = post('parametroMes', get_session('parametroMes', date('m')));
+    $parametroAno = post('parametroAno', get_session('parametroAno', date("Y")));
 
     # joga os parâmetros para a session
     set_session('parametroCargo', $parametroCargo);
     set_session('parametroComissao', $parametroComissao);
     set_session('parametroLotacao', $parametroLotacao);
     set_session('parametroMes', $parametroMes);
+    set_session('parametroAno', $parametroAno);
 
     # Pega o idServidor Pesquisado da rotina de pasta digitaliozada
     $idServidorPesquisado = get("idServidorPesquisado");
@@ -155,7 +157,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
                 $grid2->fechaColuna();
                 $grid2->fechaGrid();
-            }else{
+            } else {
                 $grid2 = new Grid();
                 $grid2->abreColuna(12);
 
@@ -586,7 +588,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
                 $form->add_item($controle);
 
                 # Situação
-            $result = $pessoal->select('SELECT idsituacao, situacao
+                $result = $pessoal->select('SELECT idsituacao, situacao
                                           FROM tbsituacao 
                                           WHERE idsituacao < 7 
                                       ORDER BY 1');
@@ -836,8 +838,26 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
         case "feriasSetor" :
 
-            # Pega o ano
-            $ano = date("Y");
+            # Formulário de Pesquisa
+            $form = new Form('?fase=feriasSetor');
+
+            # Cria um array com os anos possíveis
+            $anoInicial = 2020;
+            $anoAtual = date('Y');
+            $anoFruicao = arrayPreenche($anoInicial, $anoAtual + 2, "d");
+
+            $controle = new Input('parametroAno', 'combo', 'Ano:', 1);
+            $controle->set_size(8);
+            $controle->set_title('Filtra por Ano exercício');
+            $controle->set_array($anoFruicao);
+            $controle->set_valor($parametroAno);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_linha(1);
+            $controle->set_col(2);
+            $controle->set_autofocus(true);
+            $form->add_item($controle);
+
+            $form->show();
 
             # Pega a Lotação atual do usuário
             $idLotacao = $pessoal->get_idLotacao($idServidor);
@@ -856,14 +876,14 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
                                          JOIN tbferias ON (tbservidor.idServidor = tbferias.idServidor)
                                          JOIN tbsituacao ON (tbservidor.situacao = tbsituacao.idSituacao)
                    WHERE tbhistlot.data =(select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)
-                     AND YEAR(tbferias.dtInicial) = $ano
+                     AND YEAR(tbferias.dtInicial) = $parametroAno
                      AND (tblotacao.idlotacao = $idLotacao)
                 ORDER BY dtInicial";
 
             $result = $pessoal->select($select);
 
             $tabela = new Tabela();
-            $tabela->set_titulo("Servidores em Férias em {$ano}");
+            $tabela->set_titulo("Servidores em Férias em {$parametroAno}");
             $tabela->set_subtitulo($pessoal->get_nomeLotacao($idLotacao));
             $tabela->set_label(['Mês', 'Servidor', 'Exercício', 'Inicio', 'Dias', 'Fim', 'Período', 'Status']);
             $tabela->set_align(["center", "left"]);
