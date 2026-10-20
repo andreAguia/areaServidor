@@ -844,7 +844,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             # Cria um array com os anos possíveis
             $anoInicial = 2020;
             $anoAtual = date('Y');
-            $anoFruicao = arrayPreenche($anoInicial, $anoAtual + 2, "d");
+            $anoFruicao = arrayPreenche($anoInicial, $anoAtual + 1, "d");
 
             $controle = new Input('parametroAno', 'combo', 'Ano:', 1);
             $controle->set_size(8);
@@ -861,6 +861,20 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
             # Pega a Lotação atual do usuário
             $idLotacao = $pessoal->get_idLotacao($idServidor);
+
+            # Menu de Abas
+            $tab = new Tab([
+                "Ano de Fruição",
+                "Ano de Exercício"
+            ]);
+
+            ############################
+
+            /*
+             * Ano de Fruição
+             */
+
+            $tab->abreConteudo();
 
             $select = "SELECT month(tbferias.dtInicial),
                          tbservidor.idServidor,
@@ -883,7 +897,7 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $result = $pessoal->select($select);
 
             $tabela = new Tabela();
-            $tabela->set_titulo("Servidores em Férias em {$parametroAno}");
+            $tabela->set_titulo("Férias Fruídas em {$parametroAno}");
             $tabela->set_subtitulo($pessoal->get_nomeLotacao($idLotacao));
             $tabela->set_label(['Mês', 'Servidor', 'Exercício', 'Inicio', 'Dias', 'Fim', 'Período', 'Status']);
             $tabela->set_align(["center", "left"]);
@@ -894,6 +908,53 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $tabela->set_rowspan(0);
             $tabela->set_grupoCorColuna(0);
             $tabela->show();
+
+            $tab->fechaConteudo();
+
+            ############################
+
+            /*
+             * Ano de Exercício
+             */
+
+            $tab->abreConteudo();
+
+            $select = "SELECT tbservidor.idServidor,
+                         tbferias.anoExercicio,
+                         tbferias.dtInicial,
+                         tbferias.numDias,
+                         date_format(ADDDATE(tbferias.dtInicial,tbferias.numDias-1),'%d/%m/%Y') as dtf,
+                         idFerias,
+                         tbferias.status
+                    FROM tbservidor LEFT JOIN tbpessoa ON (tbservidor.idPessoa = tbpessoa.idPessoa)
+                                         JOIN tbhistlot ON (tbservidor.idServidor = tbhistlot.idServidor)
+                                         JOIN tblotacao ON (tbhistlot.lotacao=tblotacao.idLotacao)
+                                         JOIN tbferias ON (tbservidor.idServidor = tbferias.idServidor)
+                                         JOIN tbsituacao ON (tbservidor.situacao = tbsituacao.idSituacao)
+                   WHERE tbhistlot.data =(select max(data) from tbhistlot where tbhistlot.idServidor = tbservidor.idServidor)
+                     AND tbferias.anoExercicio = {$parametroAno}
+                     AND tblotacao.idlotacao = {$idLotacao}
+                ORDER BY tbpessoa.nome, dtInicial";
+
+            $result = $pessoal->select($select);
+
+            $tabela = new Tabela();
+            $tabela->set_titulo("Férias do Exercício de {$parametroAno}");
+            $tabela->set_subtitulo($pessoal->get_nomeLotacao($idLotacao));
+            $tabela->set_label(['Servidor', 'Exercício', 'Inicio', 'Dias', 'Fim', 'Período', 'Status']);
+            $tabela->set_align(["left"]);
+            $tabela->set_funcao([null, null, "date_to_php"]);
+            $tabela->set_classe(["pessoal", null, null, null, null, "pessoal"]);
+            $tabela->set_metodo(["get_nomeECargoELotacao", null, null, null, null, "get_feriasPeriodo"]);
+            $tabela->set_conteudo($result);
+            
+            $tabela->set_rowspan(0);
+            $tabela->set_grupoCorColuna(0);
+            
+            $tabela->show();
+
+            $tab->fechaConteudo();
+            $tab->show();
 
             # Grava no log a atividade
             $atividade = 'Visualizou os servidores em férias do próprio setor na área do servidor';
