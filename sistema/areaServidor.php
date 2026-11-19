@@ -80,6 +80,12 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
         $menu1->show();
 
+        # Informa se estamos em manutenção
+        if ($intra->get_variavel('manutencao')) {
+             label('Em Manutenção');
+        }
+        
+        # Titulo
         titulo('Área do Servidor');
 
         # Exibe os dados do Servidor            
