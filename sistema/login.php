@@ -19,7 +19,6 @@ $pessoal = new Pessoal();
 # Verifica se o sistema está fora do ar em manutenção
 $ipManutencao = $intra->get_variavel('ipAdmin'); // ip isento da mensagem
 $ipMaquina = $_SERVER['REMOTE_ADDR'];   // ip da máquina
-
 # Define a senha padrão de acordo com o que está nas variáveis
 define("SENHA_PADRAO", $intra->get_variavel('senhaPadrao'));
 
@@ -46,18 +45,15 @@ switch ($fase) {
 
         # Login 
         $grid = new Grid("center");
-        $grid->abreColuna(10, 5, 4);
 
         if ($intra->get_variavel('manutencao')) {
-            $callout = new Callout("alert");
-            $callout->abre();
-
-            p("Atenção! Sistema em manutenção!"
-                    . "<br/>Somente usuários administradores podem acessar"
-                    . "<br/>Aguarde alguns minutos e tente novamente", "center");
-
-            $callout->fecha();
+            $grid->abreColuna(10);
+            calloutAlert("Somente usuários administradores podem acessar<br/>Aguarde alguns minutos e tente novamente", "Atenção!<br/>Sistema em Manutenção!", "center");
+            br();
+            $grid->fechaColuna();
         }
+
+        $grid->abreColuna(10, 5, 4);
 
         $callout = new Callout("secondary");
         $callout->abre();
@@ -378,8 +374,8 @@ switch ($fase) {
         } else {
             $pagina = 'areaServidor.php';
         }
-        
-         # Define a largura da página
+
+        # Define a largura da página
         $grid = new Grid();
         $grid->abreColuna(12);
         br();
@@ -401,7 +397,7 @@ switch ($fase) {
         $div->fecha();
         br();
 
-        p('⁠No Dia Internacional da Mulher, eu troco os parabéns, as flores e os chocolates<br/>por respeito, igualdade e voz, todos os outros dias do ano.', 'center');        
+        p('⁠No Dia Internacional da Mulher, eu troco os parabéns, as flores e os chocolates<br/>por respeito, igualdade e voz, todos os outros dias do ano.', 'center');
 
         # Grava no log a atividade
         $intra->registraLog($idUsuario, date("Y-m-d H:i:s"), 'Recebeu os parabéns do sistema pelo dia das mulheres.', null, null, 7);
