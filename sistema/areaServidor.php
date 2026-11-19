@@ -16,6 +16,11 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     # Conecta ao Banco de Dados
     $intra = new Intra();
     $pessoal = new Pessoal();
+    
+    # Informa se estamos em manutenção
+    if ($intra->get_variavel('manutencao')) {
+        label('Em Manutenção');
+    }
 
     # Verifica a fase do programa
     $fase = get('fase', 'inicial');
@@ -79,11 +84,6 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
         #$menu1->add_link($linkSobre,"right");
 
         $menu1->show();
-
-        # Informa se estamos em manutenção
-        if ($intra->get_variavel('manutencao')) {
-             label('Em Manutenção');
-        }
         
         # Titulo
         titulo('Área do Servidor');
