@@ -27,12 +27,140 @@ $fase = get('fase');
 
 # Começa uma nova página
 $page = new Page();
+
+# Define as rotinas comemorativas que vão receber os fogos
+$arrayFogos = ["parabens", "diaServidor", "diaMulher"];
+
+# Fogos
+if (in_array($fase, $arrayFogos)) {
+    $page->set_cssExtra("
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        /* A linha overflow: hidden; foi removida para liberar a rolagem */
+        font-family: sans-serif;
+    }
+    canvas {
+        position: fixed; /* Mantém os fogos fixos na tela mesmo ao rolar */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999; /* Opcional: garante que os fogos apareçam por cima do conteúdo */
+    }
+    .btn-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+    }
+</style>");
+}
+
 $page->iniciaPagina();
 
 # Cabeçalho
 if ($fase <> "diaServidor" AND $fase <> "diaMulher") {
     AreaServidor::cabecalho("Login do Sistema");
     br(2);
+}
+
+# Fogos corpo
+if (in_array($fase, $arrayFogos)) {
+    echo "
+    <canvas id=\"canvasFogos\"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvasFogos');
+        const ctx = canvas.getContext('2d');
+
+        function ajustarCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        ajustarCanvas();
+        window.addEventListener('resize', ajustarCanvas);
+
+        // CORREÇÃO: Array iniciado corretamente
+        let particulas = [];
+        const cores = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33F3', '#33FFF0', '#FFAF33'];
+
+        class Particula {
+            constructor(x, y, cor) {
+                this.x = x;
+                this.y = y;
+                this.cor = cor;
+                this.raio = Math.random() * 3 + 1;
+                
+                const angulo = Math.random() * Math.PI * 2;
+                const velocidade = Math.random() * 6 + 2;
+                
+                this.vx = Math.cos(angulo) * velocidade;
+                // CORREÇÃO: Linha limpa e sem erros de sintaxe
+                this.vy = Math.sin(angulo) * velocidade;
+                
+                this.alpha = 1;
+                this.gravidade = 0.08;
+            }
+
+            desenhar() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.raio, 0, Math.PI * 2);
+                ctx.fillStyle = this.cor;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            atualizar() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravidade;
+                this.alpha -= 0.015;
+            }
+        }
+
+        function criarExplosao(x, y) {
+            const quantidade = 80;
+            const corAleatoria = cores[Math.floor(Math.random() * cores.length)];
+            for (let i = 0; i < quantidade; i++) {
+                particulas.push(new Particula(x, y, corAleatoria));
+            }
+        }
+
+        function criarExplosaoManual() {
+            criarExplosao(window.innerWidth / 2, window.innerHeight / 2);
+            setTimeout(() => criarExplosao(window.innerWidth * 0.2, window.innerHeight * 0.4), 200);
+            setTimeout(() => criarExplosao(window.innerWidth * 0.8, window.innerHeight * 0.4), 400);
+        }
+
+        function animar() {
+            // Limpa o canvas deixando-o transparente
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particulas = particulas.filter(p => p.alpha > 0);
+
+            particulas.forEach(particula => {
+                particula.atualizar();
+                particula.desenhar();
+            });
+
+            requestAnimationFrame(animar);
+        }
+
+        // Fogos automáticos a cada 800 milissegundos
+        setInterval(() => {
+            const xAleatorio = Math.random() * canvas.width;
+            const yAleatorio = Math.random() * (canvas.height * 0.6);
+            criarExplosao(xAleatorio, yAleatorio);
+        }, 200);
+
+        animar();
+    </script>";
 }
 
 ################################################################################
