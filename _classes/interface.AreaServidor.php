@@ -162,7 +162,7 @@ class AreaServidor {
             array_push($array, ['Listagem de Servidores', 'com CPF e Chefia Imediata', 'comCpf']);
         }
         
-        # Folha de Presença Próuenf de toda a Uenf ou só do seu setor
+        # Folha de Presença Próuenf da diretoria ou só do seu setor
         if (Verifica::acesso($idUsuario, [1, 21])) {
             array_push($array, ['Listagem de Servidores', 'Folha PróUenf sua Diretoria', 'proUenfDiretoria', NULL, '_blank']);
         } else {
