@@ -161,8 +161,13 @@ class AreaServidor {
         if (Verifica::acesso($idUsuario, [1, 17])) {
             array_push($array, ['Listagem de Servidores', 'com CPF e Chefia Imediata', 'comCpf']);
         }
-
-        array_push($array, ['Listagem de Servidores', 'Folha de Presença PróUenf seu Setor', 'proUenfSetor', NULL, '_blank']);
+        
+        # Folha de Presença Próuenf de toda a Uenf ou só do seu setor
+        if (Verifica::acesso($idUsuario, [1, 21])) {
+            array_push($array, ['Listagem de Servidores', 'Folha PróUenf sua Diretoria', 'proUenfDiretoria', NULL, '_blank']);
+        } else {
+            array_push($array, ['Listagem de Servidores', 'Folha PróUenf seu Setor', 'proUenfSetor', NULL, '_blank']);
+        }
 
         # Zera o agruppamento para a rotina que monta o menu
         $agrupamento = "";

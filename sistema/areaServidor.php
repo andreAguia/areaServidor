@@ -53,7 +53,11 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
     $page = new Page();
     $page->iniciaPagina();
 
-    if ($fase <> "servidorPhp" AND $fase <> "servidorWeb" AND $fase <> "backup" AND $fase <> "proUenfSetor") {
+    if ($fase <> "servidorPhp" 
+            AND $fase <> "servidorWeb" 
+            AND $fase <> "backup" 
+            AND $fase <> "proUenfSetor"
+            AND $fase <> "proUenfDiretoria") {
 
         # Cabeçalho
         AreaServidor::cabecalho();
@@ -1495,6 +1499,12 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
 
         case "proUenfSetor" :
             loadPage("../relatorios/folhaPresenca.mensal.horarios.php");
+            break;
+
+        ##################################################################        
+
+        case "proUenfDiretoria" :
+            loadPage("../relatorios/folhaPresenca.mensal.horarios.diretoria.php");
             break;
 
         ##################################################################
