@@ -21,7 +21,7 @@ class AreaServidor {
         # Verifica se a imagem é comemorativa
         $dia = date("d");
         $mes = date("m");
-        
+
         # Pega a idade da Uenf
         $idadeUenf = idade(DATA_ANIVERSARIO_UENF);
 
@@ -140,7 +140,14 @@ class AreaServidor {
         }
 
         array_push($array, ['Listagem de Servidores', 'em Férias no seu Setor', 'feriasSetor']);
-        array_push($array, ['Listagem de Servidores', 'em Afastamento no seu Setor', 'afastamentoSetor']);
+
+        # Acesso aos servidores com afastamento de toda a Uenf ou só do seu setor
+        if (Verifica::acesso($idUsuario, [1, 20])) {
+            array_push($array, ['Listagem de Servidores', 'em Afastamento', 'afastamentoUenf']);
+        } else {
+            array_push($array, ['Listagem de Servidores', 'em Afastamento no seu Setor', 'afastamentoSetor']);
+        }
+        
         array_push($array, ['Listagem de Servidores', 'por Cargo em Comissão', 'cargoComissao']);
         array_push($array, ['Listagem de Servidores', 'por Cargo Efetivo', 'servidorCargo']);
         array_push($array, ['Listagem de Servidores', 'por Lotação', 'porLotacao']);

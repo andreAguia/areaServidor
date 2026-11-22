@@ -995,7 +995,51 @@ if (Verifica::acesso($idUsuario, [1, 3, 9, 10, 11])) {
             $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
             break;
 
-        ##################################################################           
+        ##################################################################    
+
+        case "afastamentoUenf" :
+
+            # Pega o ano
+            $ano = date("Y");
+            
+            # Lotação 
+            $form = new Form('?fase=afastamentoUenf');            
+            $result = $pessoal->select('(SELECT idlotacao, concat(IFnull(tblotacao.DIR,"")," - ",IFnull(tblotacao.GER,"")," - ",IFnull(tblotacao.nome,"")) lotacao
+                                          FROM tblotacao
+                                         WHERE ativo) UNION (SELECT distinct DIR, DIR
+                                          FROM tblotacao
+                                         WHERE ativo)
+                                      ORDER BY 2');
+            array_unshift($result, array(null, '-- Todos --'));
+
+            $controle = new Input('parametroLotacao', 'combo', 'Lotação:', 1);
+            $controle->set_size(30);
+            $controle->set_title('Filtra por Lotação');
+            $controle->set_array($result);
+            $controle->set_valor($parametroLotacao);
+            $controle->set_onChange('formPadrao.submit();');
+            $controle->set_col(9);
+            $controle->set_linha(1);
+            $form->add_item($controle);
+            $form->show();
+
+            # Exibe a tabela de Servidores afastados
+            $afast = new ListaAfastamentos();
+            $afast->set_ano($ano);
+            #$afast->set_mes($parametroMes);
+            $afast->set_lotacao($parametroLotacao);
+            $afast->set_idFuncional(false);
+            $afast->exibeDetalhes(false);
+            $afast->exibeTabela();
+
+            # Grava no log a atividade
+            $atividade = 'Visualizou os servidores em afastamento na Uenf';
+            $Objetolog = new Intra();
+            $data = date("Y-m-d H:i:s");
+            $Objetolog->registraLog($idUsuario, $data, $atividade, null, null, 7);
+            break;
+
+        ##################################################################                      
 
         case "porLotacao" :
             $form = new Form('?fase=porLotacao');
